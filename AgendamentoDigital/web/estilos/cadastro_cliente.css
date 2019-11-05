@@ -1,0 +1,29 @@
+h11 {
+    color:red;
+}
+
+#logo {
+        width:50%;
+        height:50%;
+}
+
+.panel-heading{
+    font-size:150%;
+}
+
+.glyphicon-span-link {
+    cursor: pointer;
+}
+
+.idade {
+    display: none;
+}
+
+.verificaUsuario {
+    display: none;
+}
+
+.form-control:invalid {
+    border: 2px solid #ff7070;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(233, 102, 102, 0.6);
+}
