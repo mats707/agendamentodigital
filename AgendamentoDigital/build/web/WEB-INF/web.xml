@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1">
-        
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
         <filter-name>AcessoAdministrativo</filter-name>
-        <filter-class>AutorizacaoDeAcesso.AcessoAdministrativo</filter-class>
+        <filter-class>AutorizacaoDeAcesso.AcessoFuncionarioAdministrador</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AcessoAdministrativo</filter-name>
-        <url-pattern>/cadastros/admin/*</url-pattern>
+        <url-pattern>/pages/admin/*</url-pattern>
+        <url-pattern>/CadastrarUsuario</url-pattern>
+        <url-pattern>/ListarUsuario</url-pattern>
+        <url-pattern>/BuscarUsuario</url-pattern>
+        <url-pattern>/ExcluirUsuario</url-pattern>
+        <url-pattern>/AlterarUsuario</url-pattern>
+        <!--<url-pattern>/CadastrarServico</url-pattern>
+        <url-pattern>/ListarServico</url-pattern>
+        <url-pattern>/BuscarServico</url-pattern>
+        <url-pattern>/ExcluirServico</url-pattern>
+        <url-pattern>/AlterarServico</url-pattern>-->
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AcessoComum</filter-name>
+        <filter-class>AutorizacaoDeAcesso.AcessoFuncionarioComum</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AcessoComum</filter-name>
+        <url-pattern>/pages/user/*</url-pattern>
     </filter-mapping>
     
     <filter>
@@ -20,12 +34,12 @@
     </filter>
     <filter-mapping>
         <filter-name>AcessoLogado</filter-name>
-        <url-pattern>/paginas/*</url-pattern>
-    </filter-mapping>    
+        <url-pattern>/pages/*</url-pattern>
+    </filter-mapping>
     
-    <session-config>       
+    <session-config>
         <session-timeout>
-            3000
+            5000
         </session-timeout>
     </session-config>
 </web-app>

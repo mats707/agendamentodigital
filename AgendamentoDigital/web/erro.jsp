@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -8,7 +9,7 @@
     </head>
     <body>
         <h1>Error!</h1>
-        <%= ((Exception)request.getAttribute("erro")).getMessage() %>
+        <%= request.getAttribute("erro") %>
         <a href="${site}/index.jsp">Página Inicial</a>
     </body>
 </html>

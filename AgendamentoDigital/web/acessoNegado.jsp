@@ -1,3 +1,6 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="pt-br" >
 
@@ -6,10 +9,9 @@
         <title>Acesso negado</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-        <script src="vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="estilos/403-forbidden/css/style.css">
+        <script src="plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <link href="plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="dist/css/403-forbidden/css/style.css" rel="stylesheet" type="text/css"/>
 
 
     </head>
@@ -21,10 +23,10 @@
                 <div class="lock"><div class="top"></div><div class="bottom"></div></div>
                 3</h1>
             <p>Acesso negado!</p>
-            <a class="btn btn-warning" href="/MiNiFinance/">Ir para o início</a>
+            <a class="btn btn-warning" href="index.jsp">Ir para o inÃ­cio</a>
         </div>
 
-        <script  src="estilos/403-forbidden/js/index.js"></script>
+        <script src="dist/css/403-forbidden/js/index.js" type="text/javascript"></script>
 
     </body>
 

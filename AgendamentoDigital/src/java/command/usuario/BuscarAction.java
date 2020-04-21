@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.UsuarioDAO;
 import static java.lang.System.out;
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -23,13 +24,15 @@ public class BuscarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        request.setAttribute("pagina", "pages/admin/listarUsuario.jsp");
+        
         Usuario objUsuario = new Usuario();
-
+        
         objUsuario.setEmail(request.getParameter("email"));
 
-        UsuarioDAO dao = new UsuarioDAO();
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-        dao.buscar(objUsuario);
+        usuarioDAO.buscar(objUsuario);
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 

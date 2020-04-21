@@ -21,8 +21,10 @@ public interface IUsuarioDAO {
     public ArrayList<Usuario> listar();
     
     public void buscar(Usuario usuario);
+    
+    public Usuario buscaCompleta(Usuario usuario);
    
-    public boolean alterar(Usuario usuario);
+    public String alterarUsuario(Usuario usuario);
 
     public boolean excluir(Usuario usuario);
     

@@ -35,7 +35,7 @@ public class AcessoLogado implements Filter{
         if(usuarioLogado != null){
             chain.doFilter(request, response);
         }else{
-            ((HttpServletResponse)response).sendRedirect("/MiNiFinance/naoAutenticado.jsp");
+            ((HttpServletResponse)response).sendRedirect("/AgendamentoDigital/naoAutenticado.jsp");
         }
     }
 

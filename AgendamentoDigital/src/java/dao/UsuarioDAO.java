@@ -16,13 +16,22 @@ import util.geraHash;
 
 public class UsuarioDAO implements IUsuarioDAO {
 
-    private static final String CADASTRA_NOVO_USUARIO = "INSERT INTO usuario (id, email, senha, celular, perfil) VALUES (nextval('sqn_usuario'),?,?,?,(select id from PerfilAcesso where nome ilike ?));";
-    private static final String AUTENTICA_USUARIO = "SELECT u.email, u.senha, u.celular, p.nome as perfil FROM usuario u INNER JOIN perfilAcesso p "
+    private static final String CADASTRA_NOVO_USUARIO = "INSERT INTO sistema.usuario (id, email, senha, celular, perfil) VALUES (nextval('sistema.sqn_usuario'),?,?,?,(select id from sistema.perfilacesso where nome ilike ?));";
+    private static final String ALTERA_USUARIO = "UPDATE sistema.usuario\n"
+            + "SET email = ?,"
+            + "senha = ?,\n"
+            + "celular = ?,\n"
+            + "perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?))\n"
+            + "WHERE id = ?";
+    private static final String AUTENTICA_USUARIO = "SELECT u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=? AND u.senha=?";
-    private static final String BUSCAR = "SELECT u.email, p.nome as perfil FROM usuario u INNER JOIN perfilAcesso p "
+    private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
-    private static final String LISTAR = "SELECT u.email, p.nome as perfil FROM usuario u INNER JOIN perfilAcesso p "
+    private static final String LISTAR = "SELECT u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id ORDER BY u.email;";
+    private static final String DELETAR = "DELETE FROM sistema.usuario WHERE id = ?";
+    private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+            + "ON u.perfil = p.id WHERE u.id=? AND u.email=? AND u.celular=? AND p.nome=?";
 
     private Connection conexao;
 
@@ -30,7 +39,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     public String cadastraNovoUsuario(Usuario usuario) {
 
         String sqlReturnCode = "0";
-        
+
         PreparedStatement pstmt = null;
         try {
             conexao = ConectaBanco.getConexao();
@@ -49,7 +58,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
-            
+
             sqlReturnCode = sqlErro.getSQLState();
 
             return sqlReturnCode;
@@ -114,6 +123,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             while (rs.next()) {
                 Usuario novoUsuario = new Usuario();
                 novoUsuario.setEmail(rs.getString("email"));
+                novoUsuario.setCelular(Long.parseLong(rs.getString("celular")));
                 novoUsuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
 
                 //add na lista
@@ -122,7 +132,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             return listaUsuario;
 
         } catch (Exception ex) {
-            
+
             return listaUsuario;
 
         } finally {
@@ -155,7 +165,9 @@ public class UsuarioDAO implements IUsuarioDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
                 usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
             }
 
@@ -173,12 +185,117 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public boolean alterar(Usuario sexo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Usuario buscaCompleta(Usuario usuario) {
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCA_COMPLETA);
+
+            pstmt.setInt(1, usuario.getIdUsuario());
+            pstmt.setString(2, usuario.getEmail());
+            pstmt.setLong(3, usuario.getCelular());
+            pstmt.setString(4, usuario.getPerfil().name());
+
+            usuario.setIdUsuario(null);
+            usuario.setEmail(null);
+            usuario.setCelular(null);
+            usuario.setPerfil(null);
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
+                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+            }
+            
+            return usuario;
+
+        } catch (Exception ex) {
+            
+            return usuario;
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
     @Override
-    public boolean excluir(Usuario sexo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String alterarUsuario(Usuario usuario) {
+
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt = null;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(ALTERA_USUARIO, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, usuario.getEmail());
+            pstmt.setString(2, usuario.getSenha());
+            pstmt.setLong(3, usuario.getCelular());
+            pstmt.setString(4, usuario.getPerfil().toString());
+            pstmt.setInt(5, usuario.getIdUsuario());
+            pstmt.execute();
+
+            final ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                usuario.setIdUsuario(rs.getInt("id"));
+            }
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean excluir(Usuario usuario) {
+
+        PreparedStatement pstmt = null;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(DELETAR);
+            pstmt.setInt(1, usuario.getIdUsuario());
+            pstmt.execute();
+
+            return true;
+
+        } catch (SQLException sqlErro) {
+
+            return false;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
     }
 };

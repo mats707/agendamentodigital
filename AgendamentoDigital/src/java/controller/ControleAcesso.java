@@ -36,15 +36,11 @@ public class ControleAcesso extends HttpServlet {
                     HttpSession sessaoUsuario = request.getSession();
                     sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
                     //redireciona para a pagina principal
-                    if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOADMIN)) {
-                        response.sendRedirect("paginas/principal_admin.jsp");
-                    } else if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
-                        response.sendRedirect("paginas/principal.jsp");
-                    } else {
-                        response.sendRedirect("paginas/agendamento.jsp");
-                    }
+
+                    response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
+                    
                 } else {
-                    RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+                    RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
                     request.setAttribute("msg", "Email ou Senha Incorreto!");
                     rd.forward(request, response);
                 }
@@ -53,9 +49,23 @@ public class ControleAcesso extends HttpServlet {
                 sessaoUsuario.removeAttribute("usuarioAutenticado");
                 response.sendRedirect("logout.jsp");
 
+            } else if (acao.equals("Validar")) {
+
+                //cria uma sessao para resgatar o usuario
+                HttpSession sessaoUsuario = request.getSession();
+                Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+
+                //se o usuario existe no banco de dados
+                if (usuarioAutenticado != null) {
+                    response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
+                } else {
+                    RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
+                    rd.forward(request, response);
+                }
+
             }
         } catch (Exception erro) {
-            RequestDispatcher rd = request.getRequestDispatcher("/erro.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
             request.setAttribute("erro", erro);
             rd.forward(request, response);
         }
@@ -71,5 +81,20 @@ public class ControleAcesso extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+    }
+
+    private String direcionar(PerfilDeAcesso perfil) {
+
+        //redireciona para a pagina principal
+        switch (perfil) {
+            case FUNCIONARIOADMIN:
+                return ("pages/admin/home.jsp");
+            case FUNCIONARIOCOMUM:
+                return ("pages/user/index3.jsp");
+            case CLIENTECOMUM:
+                return ("pages/client/index2.jsp");
+            default:
+                return ("");
+        }
     }
 }

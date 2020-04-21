@@ -23,9 +23,9 @@ import javax.servlet.RequestDispatcher;
     "/CadastrarUsuario",
     "/ListarUsuario",
     "/BuscarUsuario",
-    "/ExcluirUsuario",
+    "/DeletarUsuario",
     "/IniciarEdicaoUsuario",
-    "/EditarUsuario"})
+    "/AlterarUsuario"})
 public class ControleUsuario extends HttpServlet {
 
     /**
@@ -44,15 +44,15 @@ public class ControleUsuario extends HttpServlet {
             String uri = request.getRequestURI();
             String acao = "";
 
-            if (uri.equals(request.getContextPath() + "/ExcluirUsuario")) {
-                acao = "Excluir";
+            if (uri.equals(request.getContextPath() + "/DeletarUsuario")) {
+                acao = "Deletar";
             } else if (uri.equals(request.getContextPath() + "/ListarUsuario")) {
                 acao = "Listar";
             } else if (uri.equals(request.getContextPath() + "/IniciarEdicaoUsuario")) {
                 acao = "IniciarEdicao";
             } else if (uri.equals(request.getContextPath() + "/CadastrarUsuario")) {
                 acao = "Cadastrar";
-            } else if (uri.equals(request.getContextPath() + "/EditarUsuario")) {
+            } else if (uri.equals(request.getContextPath() + "/AlterarUsuario")) {
                 acao = "Alterar";
             } else if (uri.equals(request.getContextPath() + "/BuscarUsuario")) {
                 acao = "Buscar";
@@ -77,12 +77,8 @@ public class ControleUsuario extends HttpServlet {
             rd.forward(request, response);
 
         } catch (Exception e) {
-            e.printStackTrace();
-
-            request.setAttribute("msg", e);
-
-            RequestDispatcher rd = request.getRequestDispatcher("/cadastros/admin/cadastro_usuario.jsp");
-
+            RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
+            request.setAttribute("erro", e);
             rd.forward(request, response);
         }
     }

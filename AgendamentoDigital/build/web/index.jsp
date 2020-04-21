@@ -2,115 +2,47 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>        
-        <title>Login - Agendamento Digital</title>
+<html>
+    <head>
+        <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!--===============================================================================================-->	
-        <link rel="icon" type="image/png" href="util/imagens/favicon.png"/>
-        <!--===============================================================================================-->
-        <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-        <!--===============================================================================================-->
-        <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-        <!--===============================================================================================-->
-        <link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
-        <!--===============================================================================================-->
-        <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-        <!--===============================================================================================-->	
-        <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-        <!--===============================================================================================-->
-        <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-        <!--===============================================================================================-->
-        <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-        <!--===============================================================================================-->	
-        <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-        <!--===============================================================================================-->
-        <link href="estilos/util.css" rel="stylesheet" type="text/css"/>
-        <link href="estilos/estiloLogin.css" rel="stylesheet" type="text/css"/>
-        <!--===============================================================================================-->
-        <c:set var="site" value="${'/AgendamentoDigital'}" scope="session"  />
+        <title>Agendamento Digital | Página Inicial</title>
+        <c:set var="site" value="${'/AgendamentoDigital'}" scope="application"  />
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">
+        <!-- Ionicons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="./dist/css/adminlte.min.css">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <link href="dist/styles/agendamentodigital.css" rel="stylesheet" type="text/css"/>
     </head>
-    <body>	
-        <div class="limiter">
-            <div class="container-login100 image-bg">                     
+    <body class="hold-transition start-page">
+        <!-- Automatic element centering -->
+        <div class="login-box">
+            <div class="login-logo">
+                <a href="${site}/index2.html"><b>Agendamento</b>DIGITAL</a>
+            </div>
+            <div class="card">
+                <form action="${site}/ControleAcesso" method="post">
+                    <input type="text" id="acao" name="acao" value="Validar" hidden>
+                    <button type="submit" class="btn btn-navy btn-lg btn-block">Acessar o site</button>
+                </form>
+            </div>
 
-                <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
-                    <form class="login100-form validate-form" method="POST" id="formLogin" name="formLogin" action="/AgendamentoDigital/ControleAcesso">
-                        <span class="login100-form-title p-b-49">
-                            Login
-                        </span>
-
-                        <div class="wrap-input100 validate-input m-b-23" data-validate = "Necessário Email">
-                            <span class="label-input100">Email</span>
-                            <input class="input100" id="inputEmail" type="email" name="inputEmail" placeholder="Digite seu email">
-                            <span class="focus-input100" data-symbol="&#xf206;"></span>
-                        </div>
-
-                        <div class="wrap-input100 validate-input" data-validate="Necessário Senha">
-                            <span class="label-input100">Senha</span>
-                            <input class="input100" id="inputPassword" type="password" name="inputPassword" placeholder="Digite sua senha">
-                            <span class="focus-input100" data-symbol="&#xf190;"></span>
-                        </div>
-
-
-
-                        <p class="login-invalid">
-                            <c:if test="${msg!=null}">
-                                <font color="red">${msg}</font>
-                            </c:if>
-                        </p>
-
-                        <div class="text-right p-t-8 p-b-31">
-                            <a href="forgot-password.jsp">
-                                Esqueceu sua senha?
-                            </a>
-                        </div>
-
-                        <div class="container-login100-form-btn" id="btnlogar">
-                            <div class="wrap-login100-form-btn">
-                                <div class="login100-form-bgbtn"></div>
-                                <a class="login100-form-btn btn btn-block">
-                                    <input type="submit" value="Entrar" name="acao"/>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="text-right p-t-8 p-b-5">
-                            <a></a>
-                        </div>
-
-                       <div class="container-login100-form-btn" id="btnvoltar">
-                            <div class="wrap-login100-form-btn">
-                                <div class="signin100-form-bgbtn login100-form-bgbtn"></div>
-                                <a class="login100-form-btn btn btn-block" href="${site}/cadastros/cliente/cadastro_cliente.jsp">
-                                    Cadastrar
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+            <div class="lockscreen-footer text-center">
+                Copyright &copy; 2019-2020 <b><a href="http://mafera.com" class="text-black">Mafera Soft</a></b><br>
+                All rights reserved
             </div>
         </div>
+        <!-- /.center -->
 
-
-        <div id="dropDownSelect1"></div>
-
-        <!--===============================================================================================-->
-        <script src="scripts/jquery.js" type="text/javascript"></script>
-        <!--===============================================================================================-->
-        <script src="vendor/animsition/js/animsition.min.js" type="text/javascript"></script>
-        <!--===============================================================================================-->
-        <script src="vendor/bootstrap/js/popper.js" type="text/javascript"></script>
-        <script src="vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <!--===============================================================================================-->
-        <script src="vendor/select2/select2.min.js" type="text/javascript"></script>
-        <!--===============================================================================================-->
-        <script src="vendor/daterangepicker/moment.min.js" type="text/javascript"></script>
-        <script src="vendor/daterangepicker/daterangepicker.js" type="text/javascript"></script>
-        <!--===============================================================================================-->
-        <script src="vendor/countdowntime/countdowntime.js" type="text/javascript"></script>
-        <!--===============================================================================================-->
-
+        <!-- jQuery -->
+        <script src="${site}/plugins/jquery/jquery.min.js"></script>
+        <!-- Bootstrap 4 -->
+        <script src="${site}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

@@ -22,6 +22,8 @@ public class ListarAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        
+        request.setAttribute("pagina", "pages/admin/listarUsuario.jsp");
 
         ArrayList<Usuario> arr = new ArrayList<Usuario>();
 

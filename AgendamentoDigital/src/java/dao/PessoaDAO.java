@@ -16,10 +16,10 @@ import util.ConectaBanco;
 
 public class PessoaDAO implements IPessoaDAO {
 
-    private static final String SELECT_ALL = "SELECT * FROM pessoa ORDER BY id;";
-    private static final String BUSCAR = "SELECT * FROM pessoa WHERE nome ilike ?;";
+    private static final String SELECT_ALL = "SELECT * FROM sistema.pessoa ORDER BY id;";
+    private static final String BUSCAR = "SELECT * FROM sistema.pessoa WHERE nome ilike ?;";
     private static final String INSERT =
-            "INSERT INTO pessoa (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
+            "INSERT INTO sistema.pessoa (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
             + "  VALUES (NEXTVAL('sqn_pessoa'),\n"
             + "		?,\n"
             + "		?,\n"
