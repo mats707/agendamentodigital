@@ -29,6 +29,11 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(api.restCategoria.class);
+        resources.add(api.restCategoriaServico.class);
+        resources.add(api.restServico.class);
+        resources.add(api.restUsuario.class);
+        resources.add(services.restCliente.class);
         resources.add(services.restServico.class);
         resources.add(services.restUsuario.class);
     }

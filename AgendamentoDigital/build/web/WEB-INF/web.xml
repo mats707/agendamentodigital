@@ -29,9 +29,18 @@
     </filter-mapping>
     
     <filter>
+        <filter-name>AcessoCliente</filter-name>
+        <filter-class>AutorizacaoDeAcesso.AcessoCliente</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AcessoCliente</filter-name>
+        <url-pattern>/pages/client/*</url-pattern>
+    </filter-mapping>
+    <filter>
         <filter-name>AcessoLogado</filter-name>
         <filter-class>AutorizacaoDeAcesso.AcessoLogado</filter-class>
     </filter>
+
     <filter-mapping>
         <filter-name>AcessoLogado</filter-name>
         <url-pattern>/pages/*</url-pattern>
