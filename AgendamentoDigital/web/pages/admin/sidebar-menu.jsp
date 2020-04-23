@@ -208,8 +208,8 @@
 
                 </li>
 
-                <li id="menuPai" class="nav-item has-treeview">
-                    <a href="#" id="usuarios" class="nav-link">
+                <li id="menuPaiagenda" class="nav-item has-treeview">
+                    <a href="#" id="agenda" class="nav-link">
                         <i class="nav-icon far fa-user"></i>
                         <p>
                             Agenda
@@ -225,28 +225,13 @@
                         </li>
                     </ul>
                 </li>
-                <li id="menuPaicategorias" class="nav-item has-treeview">
-                    <a href="#" id="categorias" class="nav-link">
-                        <i class="nav-icon far fa-user"></i>
+                <li class="nav-item">
+                    <a href="${site}/CadastrarCategoriaServico" id="categoria" class="nav-link">
+                        <i class="nav-icon fas fa-tasks"></i>
                         <p>
                             Categorias
-                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="${site}/CadastrarCategoriaServico" id="cadastrarCategoria" class="nav-link">
-                                <i class="fas fa-user-plus nav-icon"></i>
-                                <p>Cadastrar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="${site}/ListarCategoriaServico" id="listarCategoria" class="nav-link">
-                                <i class="fas fa-user-tag nav-icon"></i>
-                                <p>Listar</p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
             </ul>
         </nav>

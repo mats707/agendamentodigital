@@ -21,7 +21,7 @@ public class CadastrarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "pages/admin/cadastrarServico.jsp");
+        request.setAttribute("pagina", "pages/admin/servicos/cadastrar.jsp");
 
         return "";
     }

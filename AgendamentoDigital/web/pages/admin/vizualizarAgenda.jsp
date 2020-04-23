@@ -345,4 +345,9 @@
 
             </div>
             </body>
+            
+        <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
+        <script>
+            includeHTMLNav("agenda", "visualizarAgenda");
+        </script>
 </html>

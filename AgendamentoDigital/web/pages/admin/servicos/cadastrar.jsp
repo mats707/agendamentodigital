@@ -40,12 +40,14 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
         <!-- Tempusdominus Bbootstrap 4 -->
         <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+        <link href="${site}/pages/admin/servicos/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="../sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -98,25 +100,17 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Descrição:</label>
-
                                                 <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-edit"></i></span>
-                                                    </div>
-                                                    <input id="descricao" name="descricao" type="text" class="form-control">
+                                                    <textarea id="descricao" class="form-control" rows="1"></textarea>
                                                 </div>
                                                 <!-- /.input group -->
                                             </div>
-                                            <div class="form-group">
-                                                <label>Valor</label>
 
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-coins"></i></span>
-                                                    </div>
-                                                    <input id="valor" name="valor" type="text" class="form-control">
-                                                </div>
-                                                <!-- /.input group -->
+                                            <div id="groupListaCategorias" class="form-group">
+                                                <label>Categoria</label>
+                                                <select id="listaCategorias" class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger" style="width: 100%;">
+                                                    <option selected disabled>Selecione uma categoria</option>
+                                                </select>
                                             </div>
                                             <div class="row">
                                                 <!-- /.col -->
@@ -140,11 +134,11 @@
                                 <!-- /.card -->
                             </div>
                             <!-- /.col (left) -->
-                            
+
                             <div class="col-md-6">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h3 class="card-title">Serviço Final</h3>
+                                        <h3 class="card-title">Detalhes</h3>
 
                                         <div class="card-tools">
                                             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -153,6 +147,18 @@
                                     <div class="card-body">
 
                                         <form id="cadastrarServico" action="${site}/CadastrarServico" method="post">
+
+                                            <div class="form-group">
+                                                <label for="valor">Valor</label>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                                    </div>
+                                                    <input id="valor" name="valor" class="form-control" type="money" required placeholder="0,00" step="1" min="0">
+                                                </div>
+                                                <!-- /.input group -->
+                                            </div>
                                             <!-- Date dd/mm/yyyy -->
                                             <div class="form-group">
                                                 <label>Nome:</label>
@@ -385,16 +391,26 @@
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
+        <script src="${site}/plugins/select2/js/i18n/pt-BR.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
-                $('.select2').select2()
+                $('.select2').select2({
+                    language: "pt-BR",
+                    state: "pt-BR"
+                })
 
                 $('[data-mask]').inputmask()
 
+                //Initialize MaskMoney
+                $('[type=money]').maskMoney({
+                    thousands: '.',
+                    decimal: ','
+                })
             })
         </script>
-        <script src="cadastrarServico.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
 
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
@@ -402,5 +418,8 @@
         <script src="${site}/plugins/raphael/raphael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+
+        <!-- Mask Money -->
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
     </body>
 </html>
