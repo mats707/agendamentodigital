@@ -75,8 +75,7 @@ create table Servico(
   nome varchar(100) not null,
   descricao varchar(500),
   valor money,
-  duracao time, --select cast('11:00 PM' as time);
-  intervalo interval, --select cast('11:00 PM' as time);
+  duracao integer, --select cast('11:00 PM' as time);
   categoria integer,
   funcionarios integer[],
   camposadicionais integer[],

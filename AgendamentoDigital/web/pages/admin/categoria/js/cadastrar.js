@@ -31,7 +31,7 @@ $(document).ready(function () {
             };
             var rmvCategoria = function () {
                 categorias.pop();
-                descricoes.pop()
+                descricoes.pop();
                 document.getElementById('lblCategorias').innerHTML = "";
                 for (var i = 0; i < categorias.length; i++) {
                     categorias[i] = categorias[i].replace(/[^0-9a-zA-Z ]+/g, '');

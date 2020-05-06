@@ -47,8 +47,7 @@ public class restCategoriaServico {
 
         CategoriaServicoDAO objDao = new CategoriaServicoDAO();
         
-        ArrayList<CategoriaServico> arr;
-        arr = objDao.listar();
+        ArrayList<CategoriaServico> arr = objDao.listar();
 
         return objgson.toJson(arr);
     }

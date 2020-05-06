@@ -24,6 +24,8 @@ public interface ICategoriaServicoDAO {
     
     public void buscar(CategoriaServico categoriaServico);
     
+    public void buscarCategoria(CategoriaServico categoriaServico);
+    
     public CategoriaServico buscaCompleta(CategoriaServico categoriaServico);
    
     public String alterar(CategoriaServico categoriaServico);
