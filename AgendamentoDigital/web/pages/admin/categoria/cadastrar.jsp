@@ -229,9 +229,8 @@
     </script>
     <script src="${site}/pages/admin/categoria/js/cadastrar.js" type="text/javascript"></script>
     
-    <script>
-        var result = "${msg}";
-        includeHTMLNav("categorias", "cadastrarCategoria");
+    <script>    
+        includeHTMLNav("categorias", "");
     </script>
 
     <!-- PAGE PLUGINS -->

@@ -5,17 +5,23 @@ function includeHTMLNav(menuPai, pagina) {
         "visualizarAgenda"];
 
     for (i = 0; i < subitemPagina.length; i++) {
-        document.getElementById(subitemPagina[i]).classList.remove("active");
-        if (pagina == subitemPagina[i]) {
-            document.getElementById(subitemPagina[i]).classList.add("active");
-            document.getElementById("menuPai" + menuPai).classList.add("menu-open");
+        var element = document.getElementById(subitemPagina[i]);
+        if (element != null) {
+            element.classList.remove("active");
+            if (pagina == subitemPagina[i]) {
+                element.classList.add("active");
+                document.getElementById("menuPai" + menuPai).classList.add("menu-open");
+            }
         }
     }
 
     for (i = 0; i < itemMenu.length; i++) {
-        document.getElementById(itemMenu[i]).classList.remove("active");
-        if (menuPai == itemMenu[i]) {
-            document.getElementById(itemMenu[i]).classList.add("active");
+        var element = document.getElementById(itemMenu[i]);
+        if (element != null) {
+            element.classList.remove("active");
+            if (menuPai == itemMenu[i]) {
+                element.classList.add("active");
+            }
         }
     }
 

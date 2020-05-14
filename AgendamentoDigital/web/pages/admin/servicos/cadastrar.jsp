@@ -73,19 +73,19 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form id="cadastrarServico" action="${site}/CadastrarServico" method="post">
+                        <form id="frmCadastrarServico" action="${site}/CadastrarServico" method="post">
                             <div class="row">
                                 <div class="col-md-6">
 
                                     <div class="card card-danger">
                                         <div class="card-header">
-                                            <h3 class="card-title">Categoria de Serviço</h3>
+                                            <h3 class="card-title">Informações do Serviço</h3>
 
                                             <div class="card-tools">
                                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                             </div>
                                         </div>
-                                        <div class="card-body">
+                                        <div id="divInfoServico" class="card-body">
 
                                             <!-- Date dd/mm/yyyy -->
                                             <div class="form-group">
@@ -108,12 +108,15 @@
                                             </div>
 
                                             <div id="groupListaCategorias" class="form-group">
-                                                <label>Categoria</label>
+                                                <label>Categoria: </label>
+                                                <span id="spanListaCategorias">
+
+                                                </span>
                                             </div>
                                             <div class="row">
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                    <button id="btnLimpar1" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
+                                                    <button id="btnLimparInfo" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,7 +135,7 @@
                                                 <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                             </div>
                                         </div>
-                                        <div class="card-body">
+                                        <div id="divDetalhesServico" class="card-body">
                                             <div class="form-group">
                                                 <label for="valor">Valor</label>
 
@@ -162,18 +165,8 @@
                                             <div class="row">
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                    <button id="btnLimpar2" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
+                                                    <button id="btnLimparDetalhe" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
                                                 </div>
-                                                <!-- /.col -->
-                                                <div class="col-8">
-                                                    <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
-                                                </div>
-                                                <!-- /.col -->
-                                                <p class="text-${colorMsg} mb-3">
-                                                    <c:if test="${msg!=null}">
-                                                        ${msg}
-                                                    </c:if>
-                                                </p>
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
@@ -183,6 +176,13 @@
 
                                 <!-- /.col (right) -->
                             </div>
+                            <!-- /.col -->
+                            <div class="card card-success">
+                                <div class="card-body">
+                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+                                </div>
+                            </div>
+                            <!-- /.col -->
                         </form>
                     </div>
                     <!-- /.container-fluid -->

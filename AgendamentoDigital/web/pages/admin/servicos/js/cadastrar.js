@@ -7,7 +7,7 @@ $(document).ready(function () {
     function autosize() {
         var el = this;
         setTimeout(function () {
-            el.style.cssText = 'height:auto; padding:0';
+            el.style.cssText = 'height:auto; padding:.375rem .75rem';
             // for box-sizing other than "content-box" use:
             // el.style.cssText = '-moz-box-sizing:content-box';
             el.style.cssText = 'height:' + el.scrollHeight + 'px';
@@ -24,3 +24,4 @@ function changeValue() {
         output.innerHTML = this.value;
     };
 }
+
