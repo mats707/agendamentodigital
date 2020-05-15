@@ -216,8 +216,11 @@
     <script>
         $(function () {
             //Initialize Select2 Elements
-            $('.select2').select2()
-
+            $('.select2').select2({
+                language: "pt-BR",
+                state: "pt-BR"
+            })
+            
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
@@ -228,8 +231,8 @@
         })
     </script>
     <script src="${site}/pages/admin/categoria/js/cadastrar.js" type="text/javascript"></script>
-    
-    <script>    
+
+    <script>
         includeHTMLNav("categorias", "");
     </script>
 

@@ -53,48 +53,4 @@ public class restServico {
 
         return objgson.toJson(servico);
     }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("CadastrarCategoria/{categorias}")
-    public String cadastrarCategoriaNome(@PathParam("categorias") String stringCategorias) throws SQLException, ClassNotFoundException {
-
-        String result = "{}";
-
-        //Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-        ServicoDAO servicoDAO = new ServicoDAO();
-
-        String[] categorias;
-        Servico lastService = new Servico();
-
-        categorias = stringCategorias.split("\\,");
-
-        if (categorias != null) {
-            Servico newCategoria = new Servico();
-            newCategoria.setNome(categorias[0]);
-            newCategoria.setServicoPai(lastService);
-            String sqlState = servicoDAO.cadastraNovaCategoria(newCategoria);
-            if (sqlState == "0") {
-                lastService = newCategoria;
-                for (int i = 1; i < categorias.length; i++) {
-                    Servico subCategoria = new Servico();
-                    subCategoria.setNome(categorias[i]);
-                    subCategoria.setServicoPai(lastService);
-                    sqlState = servicoDAO.cadastraNovoServico(subCategoria);
-                    if (sqlState == "0") {
-                        lastService = subCategoria;
-                        result = "{\"id\":\"0\",\"descricao\":\"Cadastrado com Sucesso!\"}";
-                    } else {
-                        result = "{\"id\":\"1\",\"descricao\":\"Categoria " + categorias[i] + " inválida\"}";
-                    }
-                }
-            } else {
-                result = "{\"id\":\"1\",\"descricao\":\"Categoria " + categorias[0] + " inválida\"}";
-            }
-        } else {
-            result = "{\"id\":\"1\",\"descricao\":\"Categoria(s) inválida(s)\"}";
-        }
-
-        return result;
-    }
 }

@@ -61,7 +61,7 @@ $(document).ready(function () {
 });
 
 function lerJson(result) {
-    $("#target").html('<table id="tabUser" class="table table-bordered"><thead><tr><th style="width: 100%">Email</th><th style="width: 100%">Celular</th><th style="width: 100%">Perfil</th><th style="width: 100%">Edit</th><th style="width: 100%">Delete</th></tr></thead>' + $.map(result, function (d) {
+    $("#target").html('<table id="tabUser" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">Email</th><th style="width: auto">Celular</th><th style="width: auto">Perfil</th><th style="width: auto">Edit</th><th style="width: auto">Delete</th></tr></thead>' + $.map(result, function (d) {
         return '<tr><td>' + $.map(d, function (e) {
             return e;
         }).join('</td><td>') + '</td><td><a href="#" id="edituser" class="nav-link" data-toggle="modal" data-target="#editModal" ><i class="nav-icon fas fa-edit"></i></a></td><td><a href="#" id="deleteuser" class="nav-link" data-toggle="modal" data-target="#deleteModal" ><i class="nav-icon fas fa-trash-alt"></i></a></td></tr>'

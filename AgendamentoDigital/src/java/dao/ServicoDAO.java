@@ -1,6 +1,7 @@
 package dao;
 
 import dao.interfaces.IServicoDAO;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,15 +10,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Funcionario;
 import modelos.Servico;
 import util.ConectaBanco;
 
 public class ServicoDAO implements IServicoDAO {
 
-    private static final String CADASTRA_NOVA_CATEGORIA = "INSERT INTO sistema.servico (id, nome, descricao, valor)\n"
-            + "VALUES (nextval('sistema.sqn_servico'),?,?,?);";
-    private static final String CADASTRA_SUB_CATEGORIA = "INSERT INTO sistema.servico (id, nome, descricao, valor, servicopai)\n"
-            + "VALUES (nextval('sistema.sqn_servico'),?,?,?,?);";
+    private static final String CADASTRAR = "INSERT INTO sistema.servico (id, nome, descricao, valor, duracao, categoria, funcionarios, camposadicionais) \n"
+            + "VALUES (nextval('sistema.sqn_servico'),?,?,?::NUMERIC::MONEY ,?,?,?,NULL);";
     private static final String CADASTRA_NOVO_SERVICO = "INSERT INTO sistema.servico (id, nome, descricao, valor, servicopai)\n"
             + "VALUES (nextval('sistema.sqn_servico'),?,?,?,?);";
     private static final String ALTERA_SERVICO = "UPDATE sistema.servico "
@@ -33,66 +33,50 @@ public class ServicoDAO implements IServicoDAO {
 
     private Connection conexao;
 
-    @Override
-    public String cadastraNovaCategoria(Servico servico) {
-
-        String sqlReturnCode = "0";
-
-        PreparedStatement pstmt = null;
-        try {
-            conexao = ConectaBanco.getConexao();
-            pstmt = conexao.prepareStatement(CADASTRA_NOVA_CATEGORIA, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setString(1, servico.getNome());
-            pstmt.setString(2, servico.getDescricao());
-            pstmt.setDouble(3, servico.getValor());
-            pstmt.execute();
-
-            final ResultSet rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                servico.setIdServico(rs.getInt("id"));
-            }
-
-            return sqlReturnCode;
-
-        } catch (SQLException sqlErro) {
-
-            sqlReturnCode = sqlErro.getSQLState();
-
-            return sqlReturnCode;
-
-        } finally {
-            if (conexao != null) {
-                try {
-                    conexao.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
+    public static String removeLastCharacter(String str) {
+        String result = null;
+        if ((str != null) && (str.length() > 0)) {
+            result = str.substring(0, str.length() - 1);
         }
+        return result;
     }
 
     @Override
-    public String cadastraNovoServico(Servico servico) {
+    public String cadastrar(Servico servico) {
+
+        conexao = ConectaBanco.getConexao();
+
+        //'{"1","2"}'
+        ArrayList<String> funcionarios = new ArrayList<String>();
+        //conexao.createArrayOf("VARCHAR", new Object[]{"1", "2", "3"});
+
+        for (Funcionario funcionario : servico.getFuncionarios()) {
+            funcionarios.add(String.valueOf(funcionario.getIdFuncionario()));
+        }
+        Array arrayFuncionarios = null;
 
         String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
-            conexao = ConectaBanco.getConexao();
-            pstmt = conexao.prepareStatement(CADASTRA_NOVO_SERVICO, Statement.RETURN_GENERATED_KEYS);
+            pstmt = conexao.prepareStatement(CADASTRAR, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, servico.getNome());
             pstmt.setString(2, servico.getDescricao());
             pstmt.setDouble(3, servico.getValor());
-            if (servico.getServicoPai().getIdServico() == null) {
-                pstmt.setString(4, null);
-            } else {
-                pstmt.setInt(4, servico.getServicoPai().getIdServico());
+            pstmt.setTime(4, servico.getDuracao());
+            pstmt.setInt(5, servico.getCategoria().getIdCategoriaServico());
+            try {
+                arrayFuncionarios = conexao.createArrayOf("INTEGER", funcionarios.toArray());
+            } catch (SQLException ex) {
+                Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
+            pstmt.setArray(6, arrayFuncionarios);
+
             pstmt.execute();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                servico.setIdServico(rs.getInt("id"));
+                servico.setIdServico(Integer.parseInt(rs.getString("id")));
             }
 
             return sqlReturnCode;
@@ -101,7 +85,7 @@ public class ServicoDAO implements IServicoDAO {
 
             sqlReturnCode = sqlErro.getSQLState();
 
-            return sqlReturnCode;
+            return pstmt.toString();
 
         } finally {
             if (conexao != null) {
@@ -133,7 +117,6 @@ public class ServicoDAO implements IServicoDAO {
                 novoServico.setNome(rs.getString("nome"));
                 novoServico.setDescricao(rs.getString("descricao"));
                 novoServico.setValor(Double.parseDouble(rs.getString("valor")));
-                novoServico.getServicoPai().setIdServico(Integer.parseInt(rs.getString("servicoPai")));
 
                 //add na lista
                 listaServico.add(novoServico);
@@ -174,14 +157,10 @@ public class ServicoDAO implements IServicoDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Servico servicoPai = new Servico();
-
                 servico.setIdServico(Integer.parseInt(rs.getString("id")));
                 servico.setNome(rs.getString("nome"));
                 servico.setDescricao(rs.getString("descricao"));
                 servico.setValor(Double.parseDouble(rs.getString("valor")));
-                servicoPai.setIdServico(Integer.parseInt(rs.getString("servicopai")));
-                servico.setServicoPai(servicoPai);
             }
 
         } catch (Exception ex) {
@@ -212,12 +191,11 @@ public class ServicoDAO implements IServicoDAO {
             pstmt.setString(2, servico.getNome());
             pstmt.setString(3, servico.getDescricao());
             pstmt.setDouble(4, servico.getValor());
-            pstmt.setInt(5, servico.getServicoPai().getIdServico());
 
             servico.setIdServico(null);
             servico.setNome(null);
             servico.setDescricao(null);
-            servico.setValor(0);
+            servico.setValor(null);
 
             //executa
             ResultSet rs = pstmt.executeQuery();
@@ -227,7 +205,6 @@ public class ServicoDAO implements IServicoDAO {
                 servico.setNome(rs.getString("nome"));
                 servico.setDescricao(rs.getString("descricao"));
                 servico.setValor(Double.parseDouble(rs.getString("valor")));
-                servico.getServicoPai().setIdServico(Integer.parseInt(rs.getString("servicoPai")));
             }
 
             return servico;

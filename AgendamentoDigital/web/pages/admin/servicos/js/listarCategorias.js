@@ -1,5 +1,6 @@
 
 var listaCategorias = ['0'];
+var listaCategoriasText = [];
 var listaCategoriasCadastradas = [];
 var idCategoriaPaiSelected = "0";
 var ObjListaCategorias;
@@ -70,20 +71,34 @@ $(document).ready(function () {
 });
 
 function exibeFilho(element) {
-    const idElement = element.id;
+    var displayBlock = "block";
+    var btnVoltar = document.getElementById('btnVoltarCategoria');
+    if (btnVoltar == null) {
+        $("#groupListaCategorias").append('<span class="input-group-btn">\n\
+        <button id="btnVoltarCategoria" class="btn btn-default" type="button" onclick="voltarCategoria();">\n\
+        Voltar um n\u00EDvel da categoria\n\
+        </button>\n\
+        </span>');
+    } else {
+        document.getElementById("btnVoltarCategoria").style.display = displayBlock;
+    }
+
+    var idElement = element.id;
     var displayNone = 'none';
     var displayBlock = 'block';
 
     if (idElement === 0) {
         listaCategorias = ['0'];
+        listaCategoriasText = [''];
     }
     idCategoriaPaiSelected = idElement;
     console.log(idCategoriaPaiSelected + " foi selecionado!");
-    idCategoriaSelected = $("#" + idCategoriaPaiSelected + " :selected").val();
+    var idCategoriaSelected = $("#" + idCategoriaPaiSelected + " :selected").val();
+    var idCategoriaSelectedText = $("#" + idCategoriaPaiSelected + " :selected").text();
 
     //Usar cadastrar categoria para realizar a listagem de categoria
     document.getElementById("spanListaCategorias").innerHTML += "<a id='categoria-" + idCategoriaSelected + "' data-categoriaPai='" + idCategoriaPaiSelected + "' onclick='exibeFilho(this);' href='#'>";
-    document.getElementById("spanListaCategorias").innerHTML += $("#" + idCategoriaPaiSelected + " :selected").text();
+    document.getElementById("spanListaCategorias").innerHTML += idCategoriaSelectedText;
     document.getElementById("spanListaCategorias").innerHTML += "</a>";
     document.getElementById(idCategoriaPaiSelected).style.display = displayNone;
 
@@ -95,8 +110,23 @@ function exibeFilho(element) {
 
     //Adiciona a combobox que foi exibida
     listaCategorias.push(idCategoriaSelected);
-    console.log(listaCategorias);
-    console.log(listaCategorias[listaCategorias.length - 1]);
+    listaCategoriasText.push(idCategoriaSelectedText);
+    
+    //Remove a categoria antiga
+    var idAnterior = document.getElementById('categoriaFinal');
+    if(idAnterior != null)
+        document.getElementById('frmCadastrarServico').removeChild(idAnterior);
+
+    //Salva a categoria que sera inserida
+    var inputCategoria = document.createElement('input');
+    inputCategoria.id = 'categoriaFinal';
+    console.log("Categoria que sera cadastrada = " + inputCategoria.id);
+    inputCategoria.type = 'hidden';
+    inputCategoria.name = inputCategoria.id;
+    inputCategoria.value = listaCategorias[listaCategorias.length - 1];
+    console.log("Valor da categoria que sera cadastrada = " + inputCategoria.value);
+    //Adiciona nova categoria
+    document.getElementById('frmCadastrarServico').appendChild(inputCategoria);
 
     //alert("listaCategorias: " + listaCategorias);
     //alert("idCategoriaPaiSelected: " + idCategoriaPaiSelected);
@@ -122,15 +152,6 @@ function exibeFilho(element) {
 //            }
 //        }
 //    }
-}
-
-function wait(ms)
-{
-    var d = new Date();
-    var d2 = null;
-    do {
-        d2 = new Date();
-    } while (d2 - d < ms);
 }
 
 document.getElementById("btnLimparInfo").addEventListener('click', function () {
@@ -187,7 +208,57 @@ function limparCategorias() {
     document.getElementById("spanListaCategorias").innerHTML = "";
     document.getElementById(idCategoriaPaiSelected).style.display = displayBlock;
 
+    //Ocultar botão Voltar Categoria
+    document.getElementById("btnVoltarCategoria").style.display = displayNone;
+
     //Adiciona a combobox que foi exibida
     listaCategorias = ['0'];
+    listaCategoriasText = [];
 }
 
+function voltarCategoria() {
+
+    //Propriedades de display
+    var displayNone = 'none';
+    var displayBlock = 'block';
+
+    //Obter as ultimas listas que foram exibidas
+    console.log("LISTA");
+    console.log(listaCategorias);
+    console.log(listaCategoriasText);
+    if (listaCategoriasText.length >= 1) {
+
+        if (listaCategoriasText.length == 1)
+            document.getElementById("btnVoltarCategoria").style.display = displayNone;
+        else
+            document.getElementById("btnVoltarCategoria").style.display = displayBlock;
+
+        var ultimaCategoria = document.getElementById('listaCategorias-' + listaCategorias[listaCategorias.length - 1]);
+        var penultimaCategoria = document.getElementById('listaCategorias-' + listaCategorias[listaCategorias.length - 2]);
+
+        //Exibir a penultima lista
+        if (ultimaCategoria != null) {
+            var idUltimaCategoria = ultimaCategoria.id;
+            document.getElementById(idUltimaCategoria).style.display = displayNone;
+        }
+        var idPenultimaCategoria = penultimaCategoria.id;
+        document.getElementById(idPenultimaCategoria).style.display = displayBlock;
+        document.getElementById(idPenultimaCategoria).selectedIndex = 0;
+
+        //Remove a ultima lista que foi exibida
+        listaCategorias.pop();
+        listaCategoriasText.pop();
+
+        //Alterar SPAN
+        var spanLista = '';
+        for (var i = 0; i < listaCategoriasText.length; i++) {
+            spanLista += listaCategoriasText[i] + " > ";
+        }
+        document.getElementById("spanListaCategorias").innerHTML = spanLista;
+
+        console.log("listaCategoriasText");
+        console.log(listaCategoriasText);
+    } else {
+        document.getElementById("btnVoltarCategoria").style.display = displayNone;
+    }
+}

@@ -14,9 +14,7 @@ import modelos.Servico;
  */
 public interface IServicoDAO {
 
-    public String cadastraNovaCategoria(Servico servico);
-    
-    public String cadastraNovoServico(Servico servico);
+    public String cadastrar(Servico servico);
     
     public ArrayList<Servico> listar();
     

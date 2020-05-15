@@ -32,6 +32,8 @@
         <!-- Select2 -->
         <link rel="stylesheet" href="${site}/plugins/select2/css/select2.min.css">
         <link rel="stylesheet" href="${site}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Bootstrap4 Duallistbox -->
         <link rel="stylesheet" href="${site}/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
         <!-- Theme style -->
@@ -102,7 +104,7 @@
                                             <div class="form-group">
                                                 <label>Descrição:</label>
                                                 <div class="input-group mb-3">
-                                                    <textarea id="descricao" class="form-control" rows="1"></textarea>
+                                                    <textarea id="descricao"  name="descricao" class="form-control" rows="1"></textarea>
                                                 </div>
                                                 <!-- /.input group -->
                                             </div>
@@ -155,10 +157,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <label>Funcionários</label>
-                                                <select class="select2" multiple="multiple" data-placeholder="Selecione um ou mais funcionários" style="width: 100%;">
-                                                    <option>Matheus do Nascimento</option>
-                                                    <option>Felipe Jesus</option>
-                                                    <option>Rafael Pereira</option>
+                                                <select id="listaFuncionarios" name="listaFuncionarios" class="select2" multiple="multiple" data-placeholder="Selecione um ou mais funcionários" style="width: 100%;">
                                                 </select>
                                             </div>
                                             <!-- /.form-group -->
@@ -207,6 +206,7 @@
         <!-- ./wrapper -->
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
+        <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
         <script>
             includeHTMLNav("servicos", "cadastrarServico");
         </script>
@@ -248,8 +248,14 @@
         <script src="${site}/plugins/moment/moment.min.js"></script>
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
+        <script src="${site}/plugins/select2/js/select2.full.js" type="text/javascript"></script>
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
         <script src="${site}/plugins/select2/js/i18n/pt-BR.js" type="text/javascript"></script>
+        <!-- SweetAlert2 -->
+        <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
+        <!-- Toastr -->
+        <script src="${site}/plugins/toastr/toastr.min.js"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -267,9 +273,23 @@
                 })
             })
         </script>
+        <script type="text/javascript">
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'center',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                type: '${funcaoStatus}',
+                title: ' ${funcaoMsg}'
+            });
+
+        </script>
         <script src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
         <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
-
+        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
+        
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
         <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
