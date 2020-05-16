@@ -12,11 +12,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Pessoa;
 import modelos.Cliente;
+import modelos.Usuario;
 import util.ConectaBanco;
 
 public class PessoaDAO implements IPessoaDAO {
 
-    private static final String SELECT_ALL = "SELECT * FROM sistema.pessoa ORDER BY id;";
+    private static final String LISTAR = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa ORDER BY id;";
     private static final String BUSCAR = "SELECT * FROM sistema.pessoa WHERE nome ilike ?;";
     private static final String INSERT =
             "INSERT INTO sistema.pessoa (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
@@ -47,7 +48,7 @@ public class PessoaDAO implements IPessoaDAO {
             conexao = ConectaBanco.getConexao();
 
             //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(SELECT_ALL);
+            PreparedStatement pstmt = conexao.prepareStatement(LISTAR);
 
             //executa
             ResultSet rs = pstmt.executeQuery();
@@ -55,7 +56,13 @@ public class PessoaDAO implements IPessoaDAO {
             while (rs.next()) {
                 //a cada loop
                 Pessoa novoPessoa = new Pessoa();
-                novoPessoa.setIdPessoa(rs.getInt("id"));
+                novoPessoa.setIdPessoa(Integer.parseInt(rs.getString("id")));
+                novoPessoa.setNome(rs.getString("nome"));
+                novoPessoa.setDataNascimento(rs.getDate("dataNascimento"));
+                
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("usuario")));
+                novoPessoa.setUsuario(usuario);
 
                 //add na lista
                 listaPessoa.add(novoPessoa);

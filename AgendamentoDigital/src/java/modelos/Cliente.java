@@ -6,8 +6,6 @@ public class Cliente extends Pessoa {
 
     private Integer idCliente;
 
-    private Usuario usuario;
-
     public int getIdCliente() {
         return idCliente;
     }
@@ -16,18 +14,9 @@ public class Cliente extends Pessoa {
         this.idCliente = idCliente;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Cliente(Integer idCliente, Usuario usuario, Integer idPessoa, String nome, Date dataNascimento) {
-        super(idPessoa, nome, dataNascimento);
+        super(idPessoa, nome, dataNascimento, usuario);
         this.idCliente = idCliente;
-        this.usuario = usuario;
     }
     
     public Cliente() {

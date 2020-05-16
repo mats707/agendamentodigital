@@ -12,11 +12,11 @@
         <url-pattern>/BuscarUsuario</url-pattern>
         <url-pattern>/ExcluirUsuario</url-pattern>
         <url-pattern>/AlterarUsuario</url-pattern>
-        <!--<url-pattern>/CadastrarServico</url-pattern>
+        <url-pattern>/CadastrarServico</url-pattern>
         <url-pattern>/ListarServico</url-pattern>
         <url-pattern>/BuscarServico</url-pattern>
         <url-pattern>/ExcluirServico</url-pattern>
-        <url-pattern>/AlterarServico</url-pattern>-->
+        <url-pattern>/AlterarServico</url-pattern>
     </filter-mapping>
     
     <filter>

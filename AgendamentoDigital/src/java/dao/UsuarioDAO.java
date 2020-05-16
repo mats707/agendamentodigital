@@ -27,7 +27,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "ON u.perfil = p.id WHERE u.email=? AND u.senha=?";
     private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
-    private static final String LISTAR = "SELECT u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String LISTAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id ORDER BY u.email;";
     private static final String DELETAR = "DELETE FROM sistema.usuario WHERE id = ?";
     private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
@@ -122,6 +122,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
             while (rs.next()) {
                 Usuario novoUsuario = new Usuario();
+                novoUsuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
                 novoUsuario.setEmail(rs.getString("email"));
                 novoUsuario.setCelular(Long.parseLong(rs.getString("celular")));
                 novoUsuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));

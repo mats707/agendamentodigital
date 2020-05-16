@@ -9,6 +9,8 @@ public class Pessoa {
     private String nomePessoa;
 
     private Date dataNascimento;
+    
+    private Usuario usuario;
 
     public Integer getIdPessoa() {
         return idPessoa;
@@ -34,10 +36,19 @@ public class Pessoa {
         this.dataNascimento = dataNascimento;
     }
 
-    public Pessoa(Integer idPessoa, String nomePessoa, Date dataNascimento){
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Pessoa(Integer idPessoa, String nomePessoa, Date dataNascimento, Usuario usuario){
         this.idPessoa = idPessoa;
         this.nomePessoa = nomePessoa;
         this.dataNascimento = dataNascimento;
+        this.usuario = usuario;
     }
 
     public Pessoa() {
