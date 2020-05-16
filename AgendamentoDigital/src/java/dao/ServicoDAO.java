@@ -7,10 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Funcionario;
+import modelos.CategoriaServico;
 import modelos.Servico;
 import util.ConectaBanco;
 
@@ -27,7 +29,7 @@ public class ServicoDAO implements IServicoDAO {
             + "servicoPai = ? "
             + "WHERE id = ?";
     private static final String BUSCAR = "SELECT s.id, s.nome, s.descricao, s.valor, s.servicoPai FROM sistema.servico s WHERE s.nome=?";
-    private static final String LISTAR = "SELECT s.id, s.nome, s.descricao, s.valor, s.servicoPai FROM sistema.servico s ORDER BY s.nome";
+    private static final String LISTAR = "SELECT id, nome, descricao, valor, duracao, categoria, funcionarios, camposadicionais FROM sistema.servico ORDER BY nome";
     private static final String DELETAR = "DELETE FROM sistema.servico WHERE id = ?";
     private static final String BUSCA_COMPLETA = "SELECT s.id, s.nome, s.descricao, s.valor, s.servicoPai FROM sistema.servico s WHERE s.id=? AND s.nome=? AND s.descricao=? AND s.valor=? AND S.servicoPai=?";
 
@@ -101,8 +103,14 @@ public class ServicoDAO implements IServicoDAO {
     @Override
     public ArrayList<Servico> listar() {
 
-        ArrayList<Servico> listaServico = new ArrayList<Servico>();
-
+        ArrayList<Servico> listaServico = new ArrayList<>();
+        ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
+        String[] funcionarios = null;
+        Array arrayFuncionarios = null;
+        ArrayList<Integer> listaCamposAdicionais = new ArrayList<>();
+        String[] camposAdicionais = null;
+        Array arrayCamposAdicionais = null;
+        
         try {
 
             //Conexao
@@ -111,12 +119,43 @@ public class ServicoDAO implements IServicoDAO {
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR);
             //executa
             ResultSet rs = pstmt.executeQuery();
-
             while (rs.next()) {
                 Servico novoServico = new Servico();
+                novoServico.setIdServico(rs.getInt("id"));
                 novoServico.setNome(rs.getString("nome"));
                 novoServico.setDescricao(rs.getString("descricao"));
                 novoServico.setValor(Double.parseDouble(rs.getString("valor")));
+                novoServico.setDuracao(Time.valueOf(rs.getString("duracao")));
+                try {
+                    arrayFuncionarios = conexao.createArrayOf("INTEGER", (Object[]) arrayFuncionarios.getArray());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                arrayFuncionarios = rs.getArray("funcionarios");
+                funcionarios = (String[])arrayFuncionarios.getArray();
+                for (int i=0; i< funcionarios.length; i++) {
+                     Funcionario novoFuncionario =  new Funcionario();
+                     novoFuncionario.setIdFuncionario(Integer.parseInt(funcionarios[i]));
+                     listaFuncionario.add(novoFuncionario);
+                }
+                novoServico.setFuncionarios(listaFuncionario);
+                
+                try {
+                    arrayCamposAdicionais = conexao.createArrayOf("INTEGER", (Object[]) arrayCamposAdicionais.getArray());
+                } catch (SQLException ex) {
+                    Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                arrayCamposAdicionais = rs.getArray("camposadicionais");
+                camposAdicionais = (String[])arrayCamposAdicionais.getArray();
+                for (int i=0; i< camposAdicionais.length; i++) {
+                     Integer campoAdicional = null;
+                     campoAdicional = Integer.parseInt(camposAdicionais[i]);
+                     listaCamposAdicionais.add(campoAdicional);
+                }
+                novoServico.setCamposadicionais(listaCamposAdicionais);
+
+                CategoriaServico objCategoria = new CategoriaServico();
+                objCategoria.setIdCategoriaServico(rs.getInt("categoria"));
 
                 //add na lista
                 listaServico.add(novoServico);

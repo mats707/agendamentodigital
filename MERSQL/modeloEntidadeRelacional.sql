@@ -6,7 +6,9 @@
 --# CategoriaServico    (id,nome,descricao,categoriaPai);
 --# Servico             (id,nome,descricao,valor,duracao,categoria,funcionarios,camposadicionais);
 --# CampoAdicional      (id,nome,descricao,tipo)
---# TipoCampoAdicional  (id,nome,)
+--# TipoCampoAdicional  (id,nome)
+--# StatusAgendamento	(id,nome)
+--# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,STATUS)
 --# SQL - Tabela
 
 drop schema sistema cascade;
@@ -81,6 +83,25 @@ create table Servico(
   constraint pkServico primary key (id),
   constraint unqNomeServico unique (nome),
   constraint fkCategoria foreign key (categoria) references CategoriaServico(id)
+);
+
+create table StatusAgendamento(
+  id integer,
+  nome varchar(50),
+  constraint pkStatusAgendamento primary key (id)
+);
+
+create table Agendamento(
+  id integer,
+  dataAgendamento date not null,
+  horarioAgendamento time not null,
+  cliente integer not null,
+  servico integer not null,
+  status integer not null,
+  constraint pkAgendamento primary key (id),
+  constraint fkCliente foreign key (cliente) references Cliente(id),
+  constraint fkServico foreign key (servico) references Servico(id),
+  constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id)
 );
 
 create table TipoCampoAdicional(

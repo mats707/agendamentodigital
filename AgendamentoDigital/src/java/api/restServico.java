@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.ServicoDAO;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -35,6 +36,20 @@ public class restServico {
      * Creates a new instance of restServico
      */
     public restServico() {
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Path("/Listar")
+    public String listar() throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        ServicoDAO objDao = new ServicoDAO();
+        
+        ArrayList<Servico> arr = objDao.listar();
+
+        return objgson.toJson(arr);
     }
 
     @GET

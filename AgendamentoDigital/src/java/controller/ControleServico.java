@@ -21,7 +21,6 @@ import javax.servlet.RequestDispatcher;
  */
 @WebServlet(name = "controleServico", urlPatterns = {
     "/CadastrarServico",
-    "/Categoria",
     "/ListarServico",
     "/BuscarServico",
     "/DeletarServico",
@@ -50,8 +49,6 @@ public class ControleServico extends HttpServlet {
                 acao = "Listar";
             } else if (uri.equals(request.getContextPath() + "/CadastrarServico")) {
                 acao = "Cadastrar";
-            } else if (uri.equals(request.getContextPath() + "/Categoria")) {
-                acao = "Categoria";
             } else if (uri.equals(request.getContextPath() + "/AlterarServico")) {
                 acao = "Alterar";
             } else if (uri.equals(request.getContextPath() + "/BuscarServico")) {
