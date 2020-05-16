@@ -1,0 +1,13 @@
+.start-page {
+    -ms-flex-align: center;
+    align-items: center;
+    //background: #e9ecef;
+    display: -ms-flexbox;
+    display: flex;
+    height: 100vh;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: linear-gradient( rgba(90, 239, 73, 0.25), rgba(78, 215, 60, 0.9)), url(../../util/imagens/hero-bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}

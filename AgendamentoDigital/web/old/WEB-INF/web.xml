@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <filter>
+        <filter-name>AcessoAdministrativo</filter-name>
+        <filter-class>AutorizacaoDeAcesso.AcessoFuncionarioAdministrador</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AcessoAdministrativo</filter-name>
+        <url-pattern>/cadastros/admin/*</url-pattern>
+        <url-pattern>/cadastros/comum/*</url-pattern>
+        <url-pattern>/paginas/admin/*</url-pattern>
+        <url-pattern>/paginas/comum/*</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AcessoComum</filter-name>
+        <filter-class>AutorizacaoDeAcesso.AcessoFuncionarioComum</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AcessoComum</filter-name>
+        <url-pattern>/cadastros/comum/*</url-pattern>
+        <url-pattern>/paginas/comum/*</url-pattern>
+    </filter-mapping>
+    
+    <filter>
+        <filter-name>AcessoLogado</filter-name>
+        <filter-class>AutorizacaoDeAcesso.AcessoLogado</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AcessoLogado</filter-name>
+        <url-pattern>/paginas/cliente/*</url-pattern>
+        <url-pattern>/cadastros/cliente/*</url-pattern>
+    </filter-mapping>
+    
+    <session-config>
+        <session-timeout>
+            3000
+        </session-timeout>
+    </session-config>
+    
+</web-app>

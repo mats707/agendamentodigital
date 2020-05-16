@@ -1,0 +1,167 @@
+<div class="calendar-wrapper">
+  <button id="btnPrev" type="button"> Anterior </button>
+	  <button id="btnNext" type="button"> Próximo </button>
+  <div id="divCal"></div>
+</div>
+
+<script type="text/javascript">
+                     var Cal = function(divId) {
+
+                  //guuardando o div id
+                  this.divId = divId;
+
+                  // Dias da semana, começando em Domingo
+                  this.DaysOfWeek = [
+                    'Dom',
+                    'Seg',
+                    'Ter',
+                    'Qua',
+                    'Qui',
+                    'Sex',
+                    'Sab'
+                  ];
+
+                  // Meses, começando em Janeiro
+                  this.Months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ];
+
+                  // Seleciona o mês e ano atual
+                  var d = new Date();
+
+                  this.currMonth = d.getMonth();
+                  this.currYear = d.getFullYear();
+                  this.currDay = d.getDate();
+
+                };
+                
+                // Vai para o próximo mês
+                Cal.prototype.nextMonth = function() {
+                  if ( this.currMonth == 11 ) {
+                    this.currMonth = 0;
+                    this.currYear = this.currYear + 1;
+                  }
+                  else {
+                    this.currMonth = this.currMonth + 1;
+                  }
+                  this.showcurr();
+                };
+
+                // Vai para o mês anterior
+                Cal.prototype.previousMonth = function() {
+                  if ( this.currMonth == 0 ) {
+                    this.currMonth = 11;
+                    this.currYear = this.currYear - 1;
+                  }
+                  else {
+                    this.currMonth = this.currMonth - 1;
+                  }
+                  this.showcurr();
+                };
+
+                // Mostra o mês atual
+                Cal.prototype.showcurr = function() {
+                  this.showMonth(this.currYear, this.currMonth);
+                };
+
+                // Mostra o mês (ano, mês)
+                Cal.prototype.showMonth = function(y, m) {
+
+                  var d = new Date()
+                  // Primeiro dia da semana no mês selecionado
+                  , firstDayOfMonth = new Date(y, m, 1).getDay()
+                  // Ultimo dia do mês selecionado
+                  , lastDateOfMonth =  new Date(y, m+1, 0).getDate()
+                  // Ultimo dia do mês anterior
+                  , lastDayOfLastMonth = m == 0 ? new Date(y-1, 11, 0).getDate() : new Date(y, m, 0).getDate();
+
+
+                  var html = '<table>';
+
+                  // Mostra o mês e o ano selecionados
+                  html += '<thead><tr>';
+                  html += '<td colspan="7">' + this.Months[m] + ' ' + y + '</td>';
+                  html += '</tr></thead>';
+
+
+                  // "Header" dos dias da semana
+                  html += '<tr class="days">';
+                  for(var i=0; i < this.DaysOfWeek.length;i++) {
+                    html += '<td>' + this.DaysOfWeek[i] + '</td>';
+                  }
+                  html += '</tr>';
+
+                  //Mostra os dias
+                  var i=1;
+                  do {
+
+                    var dow = new Date(y, m, i).getDay();
+
+                    // Se for Domingo, começa nova linha
+                    if ( dow == 0 ) {
+                      html += '<tr>';
+                    }
+                    // Se não for domingo o primeiro dia do mês
+                    // Vai aparecer os ultimos dias do mês anterior
+                    else if ( i == 1 ) {
+                      html += '<tr>';
+                      var k = lastDayOfLastMonth - firstDayOfMonth+1;
+                      for(var j=0; j < firstDayOfMonth; j++) {
+                        html += '<td class="not-current">' + k + '</td>';
+                        k++;
+                      }
+                    }
+
+                    // Mostra o dia atual no loop
+                    var chk = new Date();
+                    var chkY = chk.getFullYear();
+                    var chkM = chk.getMonth();
+                    if (chkY == this.currYear && chkM == this.currMonth && i == this.currDay) {
+                      html += '<td class="today">' + i + '</td>';
+                    } else {
+                      html += '<td class="normal">' + i + '</td>';
+                    }
+                    // Se for sábado,  a linha acaba
+                    //dow = days of week
+                    if ( dow == 6 ) {
+                      html += '</tr>';
+                    }
+                    // Se não for sábado o ultimo dia do mês selecionado
+                    // vai aparecer os próximos dias a partir do próximo mês
+                    else if ( i == lastDateOfMonth ) {
+                      var k=1;
+                      for(dow; dow < 6; dow++) {
+                        html += '<td class="not-current">' + k + '</td>';
+                        k++;
+                      }
+                    }
+
+                    i++;
+                  }while(i <= lastDateOfMonth);
+
+                  // fecha a tabela
+                  html += '</table>';
+
+                  // Escreve em html para a div
+                  document.getElementById(this.divId).innerHTML = html;
+                };
+
+                // Quando a pagina carregar
+                window.onload = function() {
+
+                  // começa o calendario
+                  var c = new Cal("divCal");			
+                  c.showcurr();
+
+                  // Ativa o click dos botões próximo e anterior
+                  getId('btnNext').onclick = function() {
+                    c.nextMonth();
+                  };
+                  getId('btnPrev').onclick = function() {
+                    c.previousMonth();
+                  };
+                }
+
+                // Get element by id
+                function getId(id) {
+                  return document.getElementById(id);
+                }                                 
+ </script> 
