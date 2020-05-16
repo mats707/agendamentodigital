@@ -36,7 +36,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="../sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -273,7 +273,7 @@
 
             })
         </script>
-        <script src="${site}/pages/admin/listarServico.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
 
         <script>
             var result = ${msg};

@@ -31,6 +31,8 @@ public class ApplicationConfig extends Application {
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(api.restCategoria.class);
         resources.add(api.restCategoriaServico.class);
+        resources.add(api.restFuncionario.class);
+        resources.add(api.restPessoa.class);
         resources.add(api.restServico.class);
         resources.add(api.restUsuario.class);
     }

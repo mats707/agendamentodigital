@@ -5,11 +5,21 @@
  */
 package command.servico;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dao.ServicoDAO;
+import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
+import modelos.CategoriaServico;
+import modelos.Funcionario;
 import modelos.Servico;
 
 /**
@@ -19,11 +29,69 @@ import modelos.Servico;
 public class CadastrarAction implements ICommand {
 
     @Override
-    public String executar(HttpServletRequest request, HttpServletResponse response) {
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.setAttribute("pagina", "pages/admin/cadastrarServico.jsp");
+        ServicoDAO servicoDAO = new ServicoDAO();
 
-        return "";
+        request.setAttribute("pagina", "pages/admin/servicos/cadastrar.jsp");
+
+        String nome = request.getParameter("nome");
+        String descricao = request.getParameter("descricao");
+        String categoriaFinal = request.getParameter("categoriaFinal");
+        String valor = request.getParameter("valor");
+        String tempo = request.getParameter("duracao");
+        String[] funcionariosString = request.getParameterValues("listaFuncionarios");
+
+//        String[] funcionariosString = null;
+//        if (funcionariosString != null) {
+//            funcionariosString = listFuncionarios("\\,");
+//        }
+        String sqlState = "0";
+        String funcaoMsg = "Carregando...";
+        String funcaoStatus = "info";
+
+        if (nome != null && descricao != null && categoriaFinal != null
+                && valor != null && tempo != null && funcionariosString != null) {
+
+            //Ajustes no formato dos campos
+            valor = valor.replace(",", ".");
+            tempo = "00:" + tempo + ":00";
+
+            ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
+
+            for (String funcionario : funcionariosString) {
+                Funcionario novoFuncionario = new Funcionario();
+                novoFuncionario.setIdFuncionario(Integer.parseInt(funcionario));
+
+                funcionarios.add(novoFuncionario);
+            }
+
+            CategoriaServico categoria = new CategoriaServico();
+            categoria.setIdCategoriaServico(Integer.parseInt(categoriaFinal));
+
+            Servico objServico = new Servico();
+            objServico.setNome(nome);
+            objServico.setDescricao(descricao);
+            objServico.setCategoria(categoria);
+            objServico.setValor(Double.parseDouble(valor));
+            objServico.setDuracao(Time.valueOf(tempo));
+            objServico.setFuncionarios(funcionarios);
+
+            System.out.println(objServico);
+
+            sqlState = servicoDAO.cadastrar(objServico);
+            if (sqlState == "0") {
+                funcaoMsg = "Cadastrado com sucesso!";
+                funcaoStatus = "success";
+            } else {
+                funcaoMsg = "Não foi possível cadastrar a categoria, tente novamente!";
+                funcaoStatus = "error";
+            }
+
+            request.setAttribute("funcaoMsg", funcaoMsg);
+            request.setAttribute("funcaoStatus", funcaoStatus);
+            return funcaoMsg;
+        }
+        return funcaoMsg;
     }
-
 }
