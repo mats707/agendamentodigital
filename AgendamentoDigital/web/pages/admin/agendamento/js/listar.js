@@ -1,13 +1,21 @@
 
+//Categorias
 var listaCategorias = ['0'];
 var listaCategoriasText = [];
 var listaCategoriasCadastradas = [];
 var idCategoriaPaiSelected = "0";
 var ObjListaCategorias;
+//Servicos
+var listaServico = ['0'];
+var listaServicoText = [];
+var listaServicoCadastradas = [];
+var idCategoriaPaiSelected = "0";
+var ObjListaServico;
+var nameproject = "/AgendamentoDigital";
+
 
 $(document).ready(function () {
 
-    var nameproject = "/AgendamentoDigital";
     carregarCategoriaServico();
 
     function carregarCategoriaServico() {
@@ -111,11 +119,11 @@ function exibeFilho(element) {
     //Adiciona a combobox que foi exibida
     listaCategorias.push(idCategoriaSelected);
     listaCategoriasText.push(idCategoriaSelectedText);
-    
+
     //Remove a categoria antiga
     var idAnterior = document.getElementById('categoriaFinal');
-    if(idAnterior != null)
-        document.getElementById('frmCadastrarServico').removeChild(idAnterior);
+    if (idAnterior != null)
+        document.getElementById('frmAgendarServico').removeChild(idAnterior);
 
     //Salva a categoria que sera inserida
     var inputCategoria = document.createElement('input');
@@ -126,7 +134,10 @@ function exibeFilho(element) {
     inputCategoria.value = listaCategorias[listaCategorias.length - 1];
     console.log("Valor da categoria que sera cadastrada = " + inputCategoria.value);
     //Adiciona nova categoria
-    document.getElementById('frmCadastrarServico').appendChild(inputCategoria);
+    document.getElementById('frmAgendarServico').appendChild(inputCategoria);
+
+    //Exibe Servico
+    carregarServicoSelecionado(listaCategorias[listaCategorias.length - 1]);
 
     //alert("listaCategorias: " + listaCategorias);
     //alert("idCategoriaPaiSelected: " + idCategoriaPaiSelected);
@@ -157,10 +168,6 @@ function exibeFilho(element) {
 document.getElementById("btnLimparInfo").addEventListener('click', function () {
     limparForm(document.getElementById('divInfoServico'));
     limparCategorias();
-});
-
-document.getElementById("btnLimparDetalhe").addEventListener('click', function () {
-    limparForm(document.getElementById('divDetalheServico'));
 });
 
 function limparForm(form) {
@@ -261,4 +268,77 @@ function voltarCategoria() {
     } else {
         document.getElementById("btnVoltarCategoria").style.display = displayNone;
     }
+    //Exibe Servico
+    carregarServicoSelecionado(listaCategorias[listaCategorias.length - 1]);
+}
+
+//SERVICOS
+//LISTA SERVICO POR CATEGORIA SELECIONADA
+function carregarServicoSelecionado(id) {
+
+    var idElement = id;
+    console.log("carregarServicoSelecionado");
+    console.log(id);
+
+    $.ajax({
+        url: nameproject + '/api/Servico/Listar/Categoria/' + idElement, //lugar onde a servlet está
+        type: "GET",
+        complete: function (e, xhr, result) {
+            if (e.readyState == 4 && e.status == 200) {
+                try { //Converte a resposta HTTP JSON em um objeto JavaScript
+                    var Obj = eval("(" + e.responseText + ")");
+                } catch (err) { //
+                    // Mostra Aviso
+                    alert("Algo de errado aconteceu!");
+                    alert(err);
+                }
+                if (Obj != null) {
+                    if (Obj.length > 0) {
+                        for (var i = 0; i < Obj.length; i++) {
+                            $("#listaServico").append("<option value='" + Obj[i].idServico + "'>" + Obj[i].nome + "</option>");
+                        }
+                        document.getElementById("groupListaServicos").style.display = "block";
+                    } else {
+                        document.getElementById("groupListaServicos").style.display = "none";
+                        document.getElementById("listaServico").innerHTML = "<option selected disabled>Selecione um servico</option>";
+                    }
+                }
+            }
+        }
+    });
+}
+
+function exibeServico() {
+    var servicoSelecionado = document.getElementById("listaServico").selectedIndex;
+    console.log(servicoSelecionado);
+
+    $.ajax({
+        url: nameproject + '/api/Servico/Buscar/' + servicoSelecionado, //lugar onde a servlet está
+        type: "GET",
+        complete: function (e, xhr, result) {
+            if (e.readyState == 4 && e.status == 200) {
+                try { //Converte a resposta HTTP JSON em um objeto JavaScript
+                    var Obj = eval("(" + e.responseText + ")");
+                } catch (err) { //
+                    // Mostra Aviso
+                    alert("Algo de errado aconteceu!");
+                    alert(err);
+                }
+                if (Obj != null) {
+                    document.getElementById("nome").value = Obj.nome;
+                    document.getElementById("descricao").value = Obj.descricao;
+                    document.getElementById("valor").value = Obj.valor.toFixed(2).toString().replace(".", ",");
+                    document.getElementById("duracao").value = Obj.duracao.seconds / 60; //Converte segundos para minutos
+                    for (var i = 0; i < Obj.funcionarios.length; i++) {
+                        $("#listaFuncionarios").append("<option value='" + Obj.funcionarios[i].idFuncionario + "'>" + Obj.funcionarios[i].nomePessoa + "</option>");
+                    }
+                    document.getElementById("groupListaFuncionarios").style.display = "block";
+                } else {
+                    document.getElementById("groupListaFuncionarios").style.display = "none";
+                    document.getElementById("listaFuncionarios").innerHTML = "<option selected disabled>Selecione um funcionario</option><option value='0'>Qualquer Funcionário</option>";
+                }
+            }
+        }
+    });
+
 }

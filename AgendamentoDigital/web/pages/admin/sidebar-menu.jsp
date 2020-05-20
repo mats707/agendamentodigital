@@ -218,9 +218,17 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/AgendamentoDigital/pages/admin/vizualizarAgenda.jsp" id="vizualizaragenda" class="nav-link">
+                            <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
                                 <i class="fas fa-user-tag nav-icon"></i>
-                                <p>Vizualizar Agenda</p>
+                                <p>Agendar Serviço</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/Visualizar Agenda" id="vizualizaragenda" class="nav-link">
+                                <i class="fas fa-user-tag nav-icon"></i>
+                                <p>Visualizar Agenda</p>
                             </a>
                         </li>
                     </ul>

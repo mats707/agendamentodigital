@@ -76,7 +76,7 @@ create table Servico(
   nome varchar(100) not null,
   descricao varchar(500),
   valor money,
-  duracao time, --select cast('11:00 PM' as time);
+  duracao interval,
   categoria integer,
   funcionarios integer[],
   camposadicionais integer[],
@@ -97,10 +97,12 @@ create table Agendamento(
   horarioAgendamento time not null,
   cliente integer not null,
   servico integer not null,
+  funcionario integer not null,
   status integer not null,
   constraint pkAgendamento primary key (id),
   constraint fkCliente foreign key (cliente) references Cliente(id),
   constraint fkServico foreign key (servico) references Servico(id),
+  constraint fkFuncionario foreign key (funcionario) references Funcionario(id),
   constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id)
 );
 

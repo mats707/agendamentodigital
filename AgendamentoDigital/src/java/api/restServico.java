@@ -7,6 +7,7 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dao.FuncionarioDAO;
 import dao.ServicoDAO;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import modelos.CategoriaServico;
+import modelos.Funcionario;
 import modelos.Servico;
 
 /**
@@ -37,7 +40,7 @@ public class restServico {
      */
     public restServico() {
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Path("/Listar")
@@ -45,27 +48,67 @@ public class restServico {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
-        ServicoDAO objDao = new ServicoDAO();
-        
-        ArrayList<Servico> arr = objDao.listar();
+        ServicoDAO objServicoDao = new ServicoDAO();
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+
+        ArrayList<Servico> arr = objServicoDao.listar();
+
+        for (Servico objServico : arr) {
+            for (Funcionario objFuncionario : objServico.getFuncionarios()) {
+                objFuncionarioDao.listarCompletoId(objFuncionario);
+            }
+        }
 
         return objgson.toJson(arr);
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("BuscarNome/{nome}")
-    public String buscarServicoNome(@PathParam("nome") String nome) throws SQLException, ClassNotFoundException {
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Path("/Buscar/{id}")
+    public String buscar(@PathParam("id") Integer id) throws SQLException, ClassNotFoundException {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
-        ServicoDAO objDao = new ServicoDAO();
+        ServicoDAO objServicoDao = new ServicoDAO();
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+
+        Servico objServico = new Servico();
+        objServico.setIdServico(id);
+
+        objServicoDao.buscar(objServico);
+
+        if (objServico.getIdServico() != null) {
+            for (Funcionario objFuncionario : objServico.getFuncionarios()) {
+                objFuncionarioDao.listarCompletoId(objFuncionario);
+            }
+        }
+
+        return objgson.toJson(objServico);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("Listar/Categoria/{id}")
+    public String listarServicoPorCategoria(@PathParam("id") Integer id) throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
         Servico servico = new Servico();
-        servico.setNome(nome);
+        CategoriaServico categoria = new CategoriaServico();
+        categoria.setIdCategoriaServico(id);
+        servico.setCategoria(categoria);
 
-        objDao.buscar(servico);
+        ServicoDAO objServicoDao = new ServicoDAO();
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
 
-        return objgson.toJson(servico);
+        ArrayList<Servico> arr = objServicoDao.listarPorCategoria(servico);
+
+        for (Servico objServico : arr) {
+            for (Funcionario objFuncionario : objServico.getFuncionarios()) {
+                objFuncionarioDao.listarCompletoId(objFuncionario);
+            }
+        }
+
+        return objgson.toJson(arr);
     }
 }

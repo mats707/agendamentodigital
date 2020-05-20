@@ -5,7 +5,7 @@
  */
 package controller;
 
-import command.servico.ICommand;
+import command.agenda.ICommand;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -20,7 +20,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Rafael Pereira
  */
 @WebServlet(name = "ControleAgenda", urlPatterns = {
-    "/VizualizarAgenda"})
+    "/AgendarServico",
+    "/VisualizarAgenda"})
 public class ControleAgenda extends HttpServlet {
 
     /**
@@ -39,13 +40,15 @@ public class ControleAgenda extends HttpServlet {
             String uri = request.getRequestURI();
             String acao = "";
 
-            if (uri.equals(request.getContextPath() + "/VizualizarAgenda")) {
-                acao = "Vizualizar";
+            if (uri.equals(request.getContextPath() + "/AgendarServico")) {
+                acao = "Agendar";
+            } else if (uri.equals(request.getContextPath() + "/VisualizarAgenda")) {
+                acao = "Visualizar";
             } else {
                 response.sendRedirect("404.jsp");
             }
 
-            String nomedaclasse = "command.servico." + acao + "Action";
+            String nomedaclasse = "command.agenda." + acao + "Action";
 
             //perceba que estamos usando um FACTORY
             Class classeAction = Class.forName(nomedaclasse);
@@ -53,12 +56,12 @@ public class ControleAgenda extends HttpServlet {
             //Aqui estamos chamando a Acao que queremos
             ICommand comando_acao = (ICommand) classeAction.newInstance();
 
-            String objServico = comando_acao.executar(request, response);
+            String objAgenda = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
             
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
-            request.setAttribute("msg", objServico);
+            request.setAttribute("msg", objAgenda);
             rd.forward(request, response);
 
         } catch (Exception e) {

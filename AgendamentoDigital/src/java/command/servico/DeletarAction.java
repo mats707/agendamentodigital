@@ -6,6 +6,7 @@
 package command.servico;
 
 import dao.ServicoDAO;
+import java.math.BigDecimal;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +39,7 @@ public class DeletarAction implements ICommand {
             servico.setIdServico(id);
             servico.setNome(deletedNome);
             servico.setDescricao(deletedDescricao);
-            servico.setValor(Double.parseDouble(deletedValor));
+            servico.setValor(BigDecimal.valueOf(Double.parseDouble(deletedValor)));
 
             ServicoDAO servicoDAO = new ServicoDAO();
             Servico servicoSolicitado = servicoDAO.buscaCompleta(servico);

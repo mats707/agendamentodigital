@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendamento Digital | Cadastrar Serviço</title>
+        <title>Agendamento Digital | Agendar Serviço</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -42,8 +42,17 @@
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
         <!-- Tempusdominus Bbootstrap 4 -->
         <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <!-- Daterange picker -->
+        <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
 
-        <link href="${site}/pages/admin/servicos/css/cadastrar.css" rel="stylesheet" type="text/css"/>
+        <script src="${site}/plugins/moment/moment.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/jquery/jquery.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="${site}./plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+        <link href="${site}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="${site}/plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css"/>
+
+        <link href="${site}/pages/admin/agendamento/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
@@ -58,12 +67,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-md-6">
-                                <h1 class="m-0 text-dark">Cadastrar Serviço</h1>
+                                <h1 class="m-0 text-dark">Agendar Serviço</h1>
                             </div><!-- /.col -->
                             <div class="col-md-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Serviço</li>
+                                    <li class="breadcrumb-item active">Agendar Serviço</li>
                                 </ol>
                             </div><!-- /.col -->
                         </div><!-- /.row -->
@@ -75,7 +84,7 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form id="frmCadastrarServico" action="${site}/CadastrarServico" method="post">
+                        <form id="frmAgendarServico" action="${site}/AgendarServico" method="post">
                             <div class="row">
                                 <div class="col-md-6">
 
@@ -88,33 +97,49 @@
                                             </div>
                                         </div>
                                         <div id="divInfoServico" class="card-body">
-
-                                            <!-- Date dd/mm/yyyy -->
-                                            <div class="form-group">
-                                                <label>Nome:</label>
-
-                                                <div class="input-group mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-tasks"></i></span>
-                                                    </div>
-                                                    <input id="nome" name="nome" type="text" class="form-control">
-                                                </div>
-                                                <!-- /.input group -->
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Descrição:</label>
-                                                <div class="input-group mb-3">
-                                                    <textarea id="descricao"  name="descricao" class="form-control" rows="1"></textarea>
-                                                </div>
-                                                <!-- /.input group -->
-                                            </div>
-
+                                            <!-- Escolher Categoria do Serviço -->
                                             <div id="groupListaCategorias" class="form-group">
                                                 <label>Categoria: </label>
                                                 <span id="spanListaCategorias">
 
                                                 </span>
                                             </div>
+                                            <!-- Escolher Serviço -->
+                                            <div id="groupListaServicos" class="form-group" style="display: none">
+                                                <label>Serviço </label>
+                                                <select id="listaServico" class="form-control select2 select2-danger" required data-dropdown-css-class="select2-danger" onchange="exibeServico();">
+                                                    <option selected disabled>Selecione um servico</option>
+                                                </select>
+                                            </div>
+                                            <div id="groupListaFuncionarios" class="form-group" style="display: none">
+                                                <label>Funcionário</label>
+                                                <select id="listaFuncionarios" name="listaFuncionarios" class="form-control select2" data-placeholder="Selecione um funcionário para o atendimento" style="width: 100%;">
+                                                    <option selected disabled>Selecione um funcionário</option>
+                                                    <option value='0'>Qualquer funcionário</option>
+                                                </select>
+                                            </div>
+                                            <!-- /.form-group -->
+                                            <div id="groupDataHora" class="form-group">
+                                                <p>Data do agendamento: <input type="date" id="dataAgendamento" min="${datahoje}" max="${datamaxima}"></p>
+
+                                                <!-- time Picker -->
+                                                <div class="bootstrap-timepicker">
+                                                    <div class="form-group">
+                                                        <label>Time picker:</label>
+
+                                                        <div class="input-group date" id="timepicker" data-target-input="nearest">
+                                                            <input type="text" class="form-control datetimepicker-input" data-target="#timepicker"/>
+                                                            <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
+                                                                <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- /.input group -->
+                                                    </div>
+                                                    <!-- /.form group -->
+                                                </div>
+                                            </div>
+
+                                            <!-- Date dd/mm/yyyy -->
                                             <div class="row">
                                                 <!-- /.col -->
                                                 <div class="col-4">
@@ -139,33 +164,39 @@
                                         </div>
                                         <div id="divDetalhesServico" class="card-body">
                                             <div class="form-group">
+                                                <label>Nome:</label>
+
+                                                <div class="input-group mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text"><i class="fas fa-tasks"></i></span>
+                                                    </div>
+                                                    <input id="nome" name="nome" type="text" class="form-control" readonly>
+                                                </div>
+                                                <!-- /.input group -->
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Descrição:</label>
+                                                <div class="input-group mb-3">
+                                                    <textarea id="descricao"  name="descricao" class="form-control" rows="1" readonly=""></textarea>
+                                                </div>
+                                                <!-- /.input group -->
+                                            </div>
+                                            <div class="form-group">
                                                 <label for="valor">Valor</label>
 
                                                 <div class="input-group mb-3">
                                                     <div class="input-group-prepend">
-                                                        <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                                        <span class="input-group-text"><a>R$</a></span>
                                                     </div>
-                                                    <input id="valor" name="valor" class="form-control" type="money" required placeholder="0,00" step="1" min="0">
+                                                    <input id="valor" name="valor" class="form-control" type="money" required placeholder="0,00" step="1" min="0" readonly>
                                                 </div>
                                                 <!-- /.input group -->
                                             </div>
                                             <div class="form-group">
                                                 <label for="duracao">Duração<span class="text-muted"> (em minutos)</span></label>
-                                                <input id="duracao" name="duracao" class="form-control" type="number" required placeholder="0" step="5" min="5" max="1440">
+                                                <input id="duracao" name="duracao" class="form-control" type="number" required placeholder="0" step="5" min="5" max="1440" readonly>
                                                 <!--<input id="duracao" type="range" min="5" max="1440" value="5" step="5" class="custom-range custom-range-danger" oninput="var str = document.getElementById('spanDuracao').innerHTML = this.value<31?this.value+' minutos':'infinity'">
                                                 <p><span id="spanDuracao"></span></p>-->
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Funcionários</label>
-                                                <select id="listaFuncionarios" name="listaFuncionarios" class="select2" multiple="multiple" data-placeholder="Selecione um ou mais funcionários" style="width: 100%;">
-                                                </select>
-                                            </div>
-                                            <!-- /.form-group -->
-                                            <div class="row">
-                                                <!-- /.col -->
-                                                <div class="col-4">
-                                                    <button id="btnLimparDetalhe" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
-                                                </div>
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
@@ -178,7 +209,7 @@
                             <!-- /.col -->
                             <div class="card card-success">
                                 <div class="card-body">
-                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
+                                    <button id="btnAvancar" type="button" class="btn btn-success btn-block" onclick="">Avançar</button>
                                 </div>
                             </div>
                             <!-- /.col -->
@@ -208,7 +239,7 @@
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
         <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
         <script>
-            includeHTMLNav("servicos", "cadastrarServico");
+                                                    includeHTMLNav("agendamento", "agendarServico");
         </script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
@@ -216,7 +247,7 @@
         <script src="${site}/plugins/jquery-ui/jquery-ui.min.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
-            $.widget.bridge('uibutton', $.ui.button)
+                                                    $.widget.bridge('uibutton', $.ui.button);
         </script>
         <!-- Bootstrap 4 -->
         <script src="${site}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -257,21 +288,25 @@
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
         <script>
-            $(function () {
-                //Initialize Select2 Elements
-                $('.select2').select2({
-                    language: "pt-BR",
-                    state: "pt-BR"
-                })
+                                                    $(function () {
+                                                        //Initialize Select2 Elements
+                                                        $('.select2').select2({
+                                                            language: "pt-BR",
+                                                            state: "pt-BR"
+                                                        });
 
-                $('[data-mask]').inputmask()
+                                                        $('[data-mask]').inputmask();
 
-                //Initialize MaskMoney
-                $('[type=money]').maskMoney({
-                    thousands: '.',
-                    decimal: ','
-                })
-            })
+                                                        //Initialize MaskMoney
+                                                        $('[type=money]').maskMoney({
+                                                            thousands: '.',
+                                                            decimal: ','
+                                                        });
+                                                        //Timepicker
+                                                        $('#timepicker').datetimepicker({
+                                                            format: 'LT'
+                                                        })
+                                                    });
         </script>
         <script type="text/javascript">
             const Toast = Swal.mixin({
@@ -286,10 +321,9 @@
             });
 
         </script>
-        <script src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
-        
+        <script src="${site}/pages/admin/agendamento/js/cadastrar.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/agendamento/js/listar.js" type="text/javascript"></script>
+
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
         <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
@@ -299,5 +333,8 @@
 
         <!-- Mask Money -->
         <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
+
+        <!-- daterangepicker -->
+        <script src="${site}/plugins/daterangepicker/daterangepicker.js"></script>
     </body>
 </html>

@@ -6,6 +6,7 @@
 package command.servico;
 
 import dao.ServicoDAO;
+import java.math.BigDecimal;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +38,7 @@ public class AlterarAction implements ICommand {
             servico.setIdServico(id);
             servico.setNome(editedNome);
             servico.setDescricao(editedDescricao);
-            servico.setValor(Double.parseDouble(editedValor));
+            servico.setValor(BigDecimal.valueOf(Double.parseDouble(editedValor)));
 
             ServicoDAO servicoDAO = new ServicoDAO();
 

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Rafael Pereira
  */
-public class VizualizarAction implements ICommand {
+public class VisualizarAction implements ICommand {
 
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 

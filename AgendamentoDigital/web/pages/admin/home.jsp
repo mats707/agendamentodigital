@@ -703,7 +703,7 @@
         <script src="${site}/dist/js/pages/dashboard.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="${site}/dist/js/demo.js"></script>
-        !-- Select2 -->
+        <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
         <script>
             $(function () {

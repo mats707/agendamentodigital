@@ -1,69 +1,60 @@
+
+var listaServico = ['0'];
+var listaServicoText = [];
+var listaServicoCadastradas = [];
+var idCategoriaPaiSelected = "0";
+var ObjListaServico;
+
 $(document).ready(function () {
 
     var nameproject = "/AgendamentoDigital";
+    carregarServico();
 
-    var tabServico = document.getElementById('tabServico');
-
-    for (var i = 1; i < tabServico.rows.length; i++)
-    {
-        tabServico.rows[i].onclick = function ()
-        {
-            var email = this.cells[0].innerHTML;
-            carregarServico(email);
-        };
-    }
-
-    // Função para carregar os dados da consulta nos respectivos campos
-    function carregarServico(email) {
-        if (email !== "" && email.length >= 2) {
-            $.ajax({
-                url: nameproject + '/api/Servico/BuscarEmail/' + email, //lugar onde a servlet está
-                type: "GET",
-                complete: function (e, xhr, result) {
-                    if (e.readyState == 4 && e.status == 200) {
-                        console.log(e.responseText);
-                        try { //Converte a resposta HTTP JSON em um objeto JavaScript
-                            var Obj = eval("(" + e.responseText + ")");
-                        } catch (err) { //
-                            // Mostra Aviso
-                            alert("Algo de errado aconteceu!");
-                            alert(err);
+    function carregarServico() {
+        $.ajax({
+            url: nameproject + '/api/Servico/Listar/', //lugar onde a servlet est�
+            type: "GET",
+            complete: function (e, xhr, result) {
+                if (e.readyState == 4 && e.status == 200) {
+                    try { //Converte a resposta HTTP JSON em um objeto JavaScript
+                        var Obj = eval("(" + e.responseText + ")");
+                    } catch (err) { //
+                        // Mostra Aviso
+                        alert("Algo de errado aconteceu!");
+                        alert(err);
+                    }
+                    if (Obj != null) {
+                        for (var i = 0; i < Obj.length; i++) {
+                            listaServicoCadastradas.push(Obj[i].categoria.idCategoriaServico);
                         }
-                        if (Obj != null) {
-                            $("#idServico").val(Obj.idServico);
-                            $("#editedEmail").val(Obj.email);
-                            $("#editedCelular").val(Obj.celular);
-                            $("#idServicoDeleted").val(Obj.idServico);
-                            $("#deletedEmail").val(Obj.email);
-                            $("#deletedCelular").val(Obj.celular);
-
-                            if ("FUNCIONARIOADMIN" == Obj.perfil) {
-                                document.getElementById("editedPerfil1_lbl").classList.remove("active");
-                                document.getElementById("editedPerfil2_lbl").classList.add("active");
-                                $('#editedPerfil1').attr('checked', true); // or 'checked'
-                                $('#editedPerfil2').attr('checked', false); // or 'checked'
-                                $("#deletedPerfil").val('Administrador');
-                                console.log("Administrador");
-                            } else {
-                                document.getElementById("editedPerfil1_lbl").classList.add("active");
-                                document.getElementById("editedPerfil2_lbl").classList.remove("active");
-                                $('#editedPerfil1').attr('checked', false); // or 'checked'
-                                $('#editedPerfil2').attr('checked', true); // or 'checked'
-                                $("#deletedPerfil").val('Comum');
-                                console.log("Funcionário");
-                            }
-                        }
+                        ObjListaServico = Obj;
                     }
                 }
-            });
-        }
+            }
+        });
     }
 });
 
-function lerJson(result) {
-    $("#target").html('<table id="tabServico" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">Email</th><th style="width: auto">Celular</th><th style="width: auto">Perfil</th><th style="width: auto">Edit</th><th style="width: auto">Delete</th></tr></thead>' + $.map(result, function (d) {
-        return '<tr><td>' + $.map(d, function (e) {
-            return e;
-        }).join('</td><td>') + '</td><td><a href="#" id="edituser" class="nav-link" data-toggle="modal" data-target="#editModal" ><i class="nav-icon fas fa-edit"></i></a></td><td><a href="#" id="deleteuser" class="nav-link" data-toggle="modal" data-target="#deleteModal" ><i class="nav-icon fas fa-trash-alt"></i></a></td></tr>'
-    }).join('\n') + '</table>');
+function listarServico(element) {
+    console.log("Listar Servico - element");
+    console.log(element);
+    console.log("Categoria Selecionada = " + $("#" + element.id + ":selected").val());
+    listaServicoCadastradas = Array.from(new Set(listaServicoCadastradas));
+    console.log("listaServicoCadastradas = " + listaServicoCadastradas);
+    //Servico PAI
+    ObjListaServico.forEach(function (obj) {
+        var idServico = obj.idServico;
+        var nome = obj.nome;
+        var categoria = obj.categoria.idCategoriaServico;
+        var idCategoriaSelected = $("#" + element.id + ":selected").val();
+        if (categoria == idCategoriaSelected) { //verifica quais servi�os para categoria selecionada (primeira)
+            $("#listaServico-0").append("<option value='" + idServico + "' data-categoria='" + categoria + "'>" + nome + "</option>");
+        }
+    });
 }
+
+document.getElementById("btnLimparInfo").addEventListener('click', function () {
+    limparForm(document.getElementById('divInfoServico'));
+    limparServico();
+});
+
