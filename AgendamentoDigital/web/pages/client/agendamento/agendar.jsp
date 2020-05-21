@@ -44,8 +44,8 @@
         <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
         <!-- Daterange picker -->
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
-
-        <link href="${site}/pages/admin/agendamento/css/cadastrar.css" rel="stylesheet" type="text/css"/>
+        
+        <link href="${site}/pages/client/agendamento/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
@@ -348,8 +348,8 @@
             });
 
         </script>
-        <script src="${site}/pages/admin/agendamento/js/cadastrar.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/agendamento/js/listar.js" type="text/javascript"></script>
+        <script src="${site}/pages/client/agendamento/js/cadastrar.js" type="text/javascript"></script>
+        <script src="${site}/pages/client/agendamento/js/listar.js" type="text/javascript"></script>
 
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->

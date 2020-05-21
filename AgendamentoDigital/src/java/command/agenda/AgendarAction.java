@@ -8,24 +8,37 @@ package command.agenda;
 import command.servico.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dao.AgendamentoDAO;
 import dao.ServicoDAO;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import jdk.nashorn.internal.objects.NativeString;
+import modelos.Agendamento;
 import modelos.CategoriaServico;
+import modelos.Cliente;
 import modelos.Funcionario;
+import modelos.PerfilDeAcesso;
 import modelos.Servico;
+import modelos.StatusAgendamento;
+import modelos.Usuario;
+import testes.ValidarCodigo;
 
 /**
  *
@@ -36,60 +49,89 @@ public class AgendarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ServicoDAO servicoDAO = new ServicoDAO();
-
+        //Configurações para o datetimepicker
         int day = Calendar.DAY_OF_MONTH;
         int month = Calendar.MONTH;
         int year = Calendar.YEAR;
         String datahoje = year + "-" + month + "-" + day;
-        String datamaxima = year + "-" + (month+1) + "-" + day;
+        String datamaxima = year + "-" + (month + 1) + "-" + day;
+        String allowTimes = "'09:00','11:00','12:00','20:00'";
+        String[] ArrayAllowTimes = allowTimes.split(",");
+        String maxTime = ArrayAllowTimes[ArrayAllowTimes.length - 1].substring(0, 5) + "1'"; //Soma 1 minuto no ultimo tempo permitido
+        String minTime = ArrayAllowTimes[0];
+        String maxMonth = "3";
+        //Pagina a ser exibida
+        request.setAttribute("pagina", "pages/client/agendamento/agendar.jsp");
 
-        request.setAttribute("pagina", "pages/admin/agendamento/agendar.jsp");
+        //Obtendo os parametros do REQUEST
+        String idServico = request.getParameter("listaServico");
+        String idFuncionario = request.getParameter("listaFuncionarios");
+        String idCliente = request.getParameter("listaClientes");
+        String datahora = request.getParameter("datahora");
 
-        String nome = request.getParameter("nome");
-        String descricao = request.getParameter("descricao");
-        String categoriaFinal = request.getParameter("categoriaFinal");
-        String valor = request.getParameter("valor");
-        String tempo = request.getParameter("duracao");
-        String[] funcionariosString = request.getParameterValues("listaFuncionarios");
+        DateFormat formatter = new SimpleDateFormat("kk:mm");
 
-//        String[] funcionariosString = null;
-//        if (funcionariosString != null) {
-//            funcionariosString = listFuncionarios("\\,");
-//        }
         String sqlState = "0";
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
 
-        if (nome != null && descricao != null && categoriaFinal != null
-                && valor != null && tempo != null && funcionariosString != null) {
+        if (idServico != null && idFuncionario != null && datahora != null) {
+
+            AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
 
             //Ajustes no formato dos campos
-            valor = valor.replace(",", ".");
-            tempo = "00:" + tempo + ":00";
+            String data = datahora.split(" ")[0];
+            String hora = datahora.split(" ")[1];
 
-            ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
+            //Instanciando Funcionario
+            Funcionario objFuncionario = new Funcionario();
+            objFuncionario.setIdFuncionario(Integer.parseInt(idFuncionario));
 
-            for (String funcionario : funcionariosString) {
-                Funcionario novoFuncionario = new Funcionario();
-                novoFuncionario.setIdFuncionario(Integer.parseInt(funcionario));
+            //Instanciando Servico
+            Servico objServico = new Servico();
+            objServico.setIdServico(Integer.parseInt(idServico));
 
-                funcionarios.add(novoFuncionario);
+            //Instanciando Cliente
+            Cliente objCliente = new Cliente();
+
+            //Verifica Usuario Cliente
+            Usuario usuarioAutenticado = (Usuario) request.getAttribute("usuarioAutenticado");
+            if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.CLIENTECOMUM)) {
+                objCliente = (Cliente) request.getAttribute("cliente");
+            } else {
+                objCliente.setIdCliente(Integer.parseInt(idCliente));
             }
 
-            CategoriaServico categoria = new CategoriaServico();
-            categoria.setIdCategoriaServico(Integer.parseInt(categoriaFinal));
+            //Instanciando StatusAgendamento
+            StatusAgendamento objStatus = StatusAgendamento.AGUARDANDOATENDIMENTO;
 
-            Servico objServico = new Servico();
-            objServico.setNome(nome);
-            objServico.setDescricao(descricao);
-            objServico.setCategoria(categoria);
-            objServico.setValor(BigDecimal.valueOf(Double.parseDouble(valor)));
-            objServico.setFuncionarios(funcionarios);
+            //Instanciando Agendamento
+            Agendamento objAgendamento = new Agendamento();
+            objAgendamento.setCliente(objCliente);
+            objAgendamento.setFuncionario(objFuncionario);
+            objAgendamento.setServico(objServico);
+            objAgendamento.setStatus(objStatus);
+            Date dataAgendamento = null;
+            Time horaAgendamento = null;
+            //Parse dataAgendamento
+            try {
+                dataAgendamento = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+            } catch (ParseException ex) {
+                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            objAgendamento.setDataAgendamento(dataAgendamento);
 
-            System.out.println(objServico);
+            //Parse horaAgendamento
+            try {
+                horaAgendamento = new java.sql.Time(formatter.parse(hora).getTime());
+            } catch (ParseException ex) {
+                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            objAgendamento.setHoraAgendamento(horaAgendamento);
 
-            sqlState = servicoDAO.cadastrar(objServico);
+            //Chamada da DAO para Cadastrar
+            sqlState = agendamentoDAO.cadastrar(objAgendamento);
+            //Verifica o retorno da DAO (banco de dados)
             if (sqlState == "0") {
                 funcaoMsg = "Cadastrado com sucesso!";
                 funcaoStatus = "success";
@@ -97,15 +139,18 @@ public class AgendarAction implements ICommand {
                 funcaoMsg = "Não foi possível cadastrar a categoria, tente novamente!";
                 funcaoStatus = "error";
             }
-
-            request.setAttribute("funcaoMsg", funcaoMsg);
-            request.setAttribute("funcaoStatus", funcaoStatus);
-            return funcaoMsg;
         }
+
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("datahoje", datahoje);
         request.setAttribute("datamaxima", datamaxima);
+        request.setAttribute("allowTimes", Arrays.toString(ArrayAllowTimes));
+        request.setAttribute("maxTime", maxTime);
+        request.setAttribute("minTime", minTime);
+        request.setAttribute("maxMonth", maxMonth);
         return funcaoMsg;
     }
 }

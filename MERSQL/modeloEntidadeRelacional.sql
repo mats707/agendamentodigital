@@ -8,7 +8,7 @@
 --# CampoAdicional      (id,nome,descricao,tipo)
 --# TipoCampoAdicional  (id,nome)
 --# StatusAgendamento	(id,nome)
---# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,STATUS)
+--# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,FUNCIONARIO,STATUS)
 --# SQL - Tabela
 
 drop schema sistema cascade;
@@ -130,6 +130,7 @@ create sequence sistema.sqn_servico;
 create sequence sistema.sqn_cliente;
 create sequence sistema.sqn_pessoa;
 create sequence sistema.sqn_funcionario;
+create sequence sistema.sqn_agendamento;
 create sequence sistema.sqn_categoriaservico;
 create sequence sistema.sqn_campoadicional;
 create sequence sistema.sqn_tipocampoadicional;
@@ -141,11 +142,17 @@ insert into PerfilAcesso values
   (2,'FUNCIONARIOCOMUM'),
   (3,'FUNCIONARIOADMIN');
 
+insert into StatusAgendamento values
+  (1,'AGUARDANDOATENDIMENTO'),
+  (2,'FINALIZADO'),
+  (3,'CANCELADO');
+
 insert into Usuario values
   (nextval('sqn_usuario'),'admin@admin.com','YWRtaW4=',11912341234,3),
   (nextval('sqn_usuario'),'felipe@funcionario.com','MTIzNDU2Nzg=',11123123123,2),
   (nextval('sqn_usuario'),'matheus@funcionario.com','MTIzNDU2Nzg=',11845784567,2),
-  (nextval('sqn_usuario'),'rafael@funcionario.com','MTIzNDU2Nzg=',11932145678,2);
+  (nextval('sqn_usuario'),'rafael@funcionario.com','MTIzNDU2Nzg=',11932145678,2),
+  (nextval('sqn_usuario'),'nathalia@cliente.com','MTIzNDU2Nzg=',11963970577,1);
 
 insert into CategoriaServico values
 	(0,'DEFAULT','Todas categorias serão filhas dessas categoria.',null),
@@ -172,14 +179,21 @@ insert into CategoriaServico values
 	(26,'slot','...',25);
 
 alter sequence sistema.sqn_categoriaservico restart with 27;
+
+insert into Servico values
+	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25,90','30','10','{1,2}');	
  
 insert into Pessoa values
   (nextval('sqn_pessoa'),'Felipe Jesus','01/04/1992',2),
   (nextval('sqn_pessoa'),'Matheus Nascimento','10/10/1998',3),
-  (nextval('sqn_pessoa'),'Rafael Pereira','01/04/1992',4);
+  (nextval('sqn_pessoa'),'Rafael Pereira','01/04/1992',4),
+  (nextval('sqn_pessoa'),'Nathalia Cardoso','05/04/2000',5);
   
 insert into Funcionario values
   (nextval('sqn_funcionario'),1),
   (nextval('sqn_funcionario'),2),
   (nextval('sqn_funcionario'),3);
+  
+insert into Cliente values
+  (nextval('sqn_cliente'),4);
 

@@ -12,8 +12,6 @@ $(document).ready(function () {
     window.onload = function () {
 
         (function () {
-            document.getElementById('sectionCadastrarCategoria').style.display = 'block';
-            document.getElementById('sectionListarCategoria').style.display = 'block';
 
             var counter = 0;
             var inputVal;
@@ -208,6 +206,8 @@ $(document).ready(function () {
                 }
             }
         });
+        document.getElementById('sectionCadastrarCategoria').style.display = 'block';
+        document.getElementById('sectionListarCategoria').style.display = 'block';
     }
     function listarCategorias() {
         console.log(ObjListaCategorias);
@@ -291,8 +291,7 @@ $(document).ready(function () {
                     </div>                                                                                                                                                        \n\
                     ');
                 }
-            }
-            else { //somente as categorias filhas
+            } else { //somente as categorias filhas
                 console.log("categoria filha");
                 console.log(idCategoria, nome);
                 console.log("Verifica se possui mais filhas");

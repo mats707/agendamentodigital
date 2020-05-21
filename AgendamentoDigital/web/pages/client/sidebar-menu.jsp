@@ -7,7 +7,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="${site}/pages/admin/home.jsp" class="nav-link">Home</a>
+            <a href="${site}/pages/client/home.jsp" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Contato</a>
@@ -142,7 +142,7 @@
                 <img src="${site}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">${usuarioAutenticado.email}</a>
+                <a href="#" class="d-block">${cliente.nome}</a>
             </div>
         </div>
 
@@ -152,62 +152,13 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="${site}/pages/admin/home.jsp" id="home" class="nav-link">
+                    <a href="${site}/pages/client/home.jsp" id="home" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
                         </p>
                     </a>
                 </li>
-                <li id="menuPaiusuarios" class="nav-item has-treeview">
-                    <a href="#" id="usuarios" class="nav-link">
-                        <i class="nav-icon far fa-user"></i>
-                        <p>
-                            Usuários
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="${site}/CadastrarUsuario" id="cadastrarUsuario" class="nav-link">
-                                <i class="fas fa-user-plus nav-icon"></i>
-                                <p>Cadastrar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="${site}/ListarUsuario" id="listarUsuario" class="nav-link">
-                                <i class="fas fa-user-tag nav-icon"></i>
-                                <p>Listar</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="menuPaiservicos" class="nav-item has-treeview">
-                    <a href="#" id="servicos" class="nav-link">
-                        <i class="nav-icon far fa-user"></i>
-                        <p>
-                            Serviços
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="${site}/CadastrarServico" id="cadastrarServico" class="nav-link">
-                                <i class="fas fa-user-plus nav-icon"></i>
-                                <p>Cadastrar</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="${site}/ListarServico" id="listarServico" class="nav-link">
-                                <i class="fas fa-user-tag nav-icon"></i>
-                                <p>Listar</p>
-                            </a>
-                        </li>
-                    </ul>
-
-
-                </li>
-
                 <li id="menuPaiagenda" class="nav-item has-treeview">
                     <a href="#" id="agenda" class="nav-link">
                         <i class="nav-icon far fa-calendar"></i>
@@ -227,19 +178,11 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
-                                <i class="fas fa-calendar-times nav-icon"></i>
+                                <i class="fas fa-calendar-alt nav-icon"></i>
                                 <p>Visualizar Agenda</p>
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="${site}/CadastrarCategoriaServico" id="categoria" class="nav-link">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>
-                            Categorias
-                        </p>
-                    </a>
                 </li>
             </ul>
         </nav>

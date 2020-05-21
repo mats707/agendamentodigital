@@ -30,11 +30,12 @@
     
     <filter>
         <filter-name>AcessoCliente</filter-name>
-        <filter-class>AutorizacaoDeAcesso.AcessoCliente</filter-class>
+        <filter-class>AutorizacaoDeAcesso.AcessoClienteComum</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AcessoCliente</filter-name>
         <url-pattern>/pages/client/*</url-pattern>
+        <url-pattern>/AgendarServico</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>AcessoLogado</filter-name>

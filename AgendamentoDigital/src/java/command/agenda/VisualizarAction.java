@@ -16,7 +16,7 @@ public class VisualizarAction implements ICommand {
 
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        request.setAttribute("pagina", "pages/admin/VizualizarAgenda.jsp");
+        request.setAttribute("pagina", "pages/client/listarAgendamento.jsp");
         return null;
 
     }

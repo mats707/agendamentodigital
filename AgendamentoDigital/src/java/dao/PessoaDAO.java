@@ -19,8 +19,9 @@ public class PessoaDAO implements IPessoaDAO {
 
     private static final String LISTAR = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa ORDER BY id;";
     private static final String BUSCAR = "SELECT * FROM sistema.pessoa WHERE nome ilike ?;";
-    private static final String INSERT =
-            "INSERT INTO sistema.pessoa (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
+    private static final String BUSCAR_USUARIO = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa WHERE usuario=? ORDER BY id;";
+    private static final String INSERT
+            = "INSERT INTO sistema.pessoa (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
             + "  VALUES (NEXTVAL('sqn_pessoa'),\n"
             + "		?,\n"
             + "		?,\n"
@@ -59,7 +60,7 @@ public class PessoaDAO implements IPessoaDAO {
                 novoPessoa.setIdPessoa(Integer.parseInt(rs.getString("id")));
                 novoPessoa.setNome(rs.getString("nome"));
                 novoPessoa.setDataNascimento(rs.getDate("dataNascimento"));
-                
+
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(Integer.parseInt(rs.getString("usuario")));
                 novoPessoa.setUsuario(usuario);
@@ -72,6 +73,49 @@ public class PessoaDAO implements IPessoaDAO {
         } catch (Exception ex) {
 
             return listaPessoa;
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @Override
+    public void buscar_usuario(Cliente cliente) {
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_USUARIO);
+            pstmt.setInt(1, cliente.getUsuario().getIdUsuario());
+            
+            //Resetando Usuario
+            Usuario usuarioAntigo = cliente.getUsuario();
+            usuarioAntigo.setIdUsuario(null);
+            cliente.setUsuario(usuarioAntigo);
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                cliente.setIdPessoa(Integer.parseInt(rs.getString("id")));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setDataNascimento(rs.getDate("dataNascimento"));
+
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("usuario")));
+                cliente.setUsuario(usuario);
+            }
+
+        } catch (Exception ex) {
 
         } finally {
 
