@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Agendamento Digital | Principal</title>
-        
+
         <c:set var="site" value="${'/AgendamentoDigital'}" scope="application"  />
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="${site}/plugins/fontawesome-free/css/all.min.css">
@@ -23,6 +23,8 @@
         <link rel="stylesheet" href="${site}/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
         <!-- summernote -->
         <link rel="stylesheet" href="${site}/plugins/summernote/summernote-bs4.css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     </head>
@@ -105,20 +107,20 @@
                                 </div>
                                 <!-- /.card -->
 
+
                                 <div class="card">
                                     <div class="card-header border-0">
-                                        <h3 class="card-title">Products</h3>
+                                        <h3 class="card-title">Agendamentos</h3>
                                         <div class="card-tools">
                                             <a href="#" class="btn btn-tool btn-sm">
-                                                <i class="fas fa-download"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-tool btn-sm">
-                                                <i class="fas fa-bars"></i>
+                                                <i class="fas fa-calendar"></i>
                                             </a>
                                         </div>
                                     </div>
                                     <div class="card-body p-0">
-                                        <table class="table table-striped table-valign-middle">
+
+                                        <div id="target" class="table table-striped table-valign-middle"></div>
+                                        <!--<table class="table table-striped table-valign-middle">
                                             <thead>
                                                 <tr>
                                                     <th>Product</th>
@@ -206,7 +208,7 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
-                                        </table>
+                                        </table>-->
                                     </div>
                                 </div>
                                 <!-- /.card -->
@@ -339,10 +341,21 @@
         <script src="${site}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- AdminLTE -->
         <script src="${site}/dist/js/adminlte.js"></script>
+        <!-- SweetAlert2 -->
+        <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
+
+        <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
 
         <!-- OPTIONAL SCRIPTS -->
         <script src="${site}/plugins/chart.js/Chart.min.js"></script>
         <script src="${site}/dist/js/demo.js"></script>
         <script src="${site}/dist/js/pages/dashboard3.js"></script>
+
+        <script src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
+
+        <script>
+            includeHTMLNav("home", "");
+        </script>
     </body>
 </html>

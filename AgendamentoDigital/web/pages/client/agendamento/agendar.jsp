@@ -106,7 +106,7 @@
                                             </div>
                                             <div id="groupListaFuncionarios" class="form-group" style="display: none">
                                                 <label>Funcionário</label>
-                                                <select id="listaFuncionarios" name="listaFuncionarios" class="form-control select2" data-placeholder="Selecione um funcionário para o atendimento" style="width: 100%;">
+                                                <select id="listaFuncionarios" name="listaFuncionarios" class="form-control select2" data-placeholder="Selecione um funcionário para o atendimento" style="width: 100%;" onchange="exibeDatePicker();">
                                                     <option selected disabled>Selecione um funcionário</option>
                                                     <option value='0'>Qualquer funcionário</option>
                                                 </select>

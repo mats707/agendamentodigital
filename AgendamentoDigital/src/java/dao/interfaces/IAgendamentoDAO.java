@@ -6,6 +6,7 @@
 package dao.interfaces;
 
 import java.util.ArrayList;
+import java.sql.Time;
 import modelos.Agendamento;
 
 /**
@@ -17,10 +18,6 @@ public interface IAgendamentoDAO {
     public String cadastrar(Agendamento agendamento);
 
     public ArrayList<Agendamento> listar();
-
-    public ArrayList<Agendamento> listarPorCategoria(Agendamento agendamento);
-
-    public void buscar(Agendamento agendamento);
     
     public Agendamento buscaCompleta(Agendamento agendamento);
 

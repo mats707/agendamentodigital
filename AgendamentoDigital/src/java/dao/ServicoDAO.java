@@ -38,6 +38,7 @@ public class ServicoDAO implements IServicoDAO {
             + "servicoPai = ? "
             + "WHERE id = ?";
     private static final String BUSCAR_ID = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico WHERE id=? ORDER BY nome";
+    private static final String BUSCAR_DADOS_BASICOS = "SELECT id, nome, descricao, valor, duracao::INTERVAL FROM sistema.servico WHERE id=? ORDER BY nome";
     private static final String LISTAR = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico ORDER BY nome";
     private static final String LISTAR_POR_CATEGORIA = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico WHERE categoria = ? ORDER BY nome";
     private static final String DELETAR = "DELETE FROM sistema.servico WHERE id = ?";
@@ -288,6 +289,7 @@ public class ServicoDAO implements IServicoDAO {
         }
     }
 
+
     @Override
     public void buscar(Servico servico) {
         ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
@@ -357,6 +359,44 @@ public class ServicoDAO implements IServicoDAO {
                 CategoriaServico objCategoria = new CategoriaServico();
                 objCategoria.setIdCategoriaServico(rs.getInt("categoria"));
                 servico.setCategoria(objCategoria);
+            }
+
+        } catch (Exception ex) {
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+
+    @Override
+    public void buscar_dados_basicos(Servico servico) {
+        try {
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_DADOS_BASICOS);
+            //Envia Parâmetros para a QUERY
+            pstmt.setInt(1, servico.getIdServico());
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+            servico.setIdServico(null);            
+            
+            while (rs.next()) {
+                servico.setIdServico(rs.getInt("id"));
+                servico.setNome(rs.getString("nome"));
+                servico.setDescricao(rs.getString("descricao"));
+                servico.setValor(parseBigDecimal(rs.getString("valor"), Locale.FRANCE));
+
+                // get the hours, minutes and seconds value and add it to the duration
+                String[] tempo = rs.getString("duracao").split(":");
+                Duration duracao = Duration.ofHours(Integer.parseInt(tempo[0]));
+                duracao = duracao.plusMinutes(Integer.parseInt(tempo[1]));
+                duracao = duracao.plusSeconds(Integer.parseInt(tempo[2]));
+                servico.setDuracao(duracao);
             }
 
         } catch (Exception ex) {

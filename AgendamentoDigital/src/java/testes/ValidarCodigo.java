@@ -44,19 +44,20 @@ public class ValidarCodigo {
         //CadastrarServico();
         //ListarServicoApi();
         //ListarServicoApiPorCategoria();
-        AgendarServico();
+        //AgendarServico();
+        ListarAgendamento();
     }
 
     public static void AgendarServico() {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-        
+
         String idCliente = "1";
         String listaServico = "1";
-        String listaFuncionarios = "2";
-        String datahora = "20-05-2020 22:05";
+        String listaFuncionarios = "1";
+        String datahora = "21-05-2020 20:00";
         String categoriaFinal = "10";
-        
+
         DateFormat formatter = new SimpleDateFormat("kk:mm");
 
         AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
@@ -118,8 +119,8 @@ public class ValidarCodigo {
             sqlState = agendamentoDAO.cadastrar(objAgendamento);
             if (sqlState == "0") {
                 System.out.println("Cadastrado com sucesso!");
-            } else {
-                System.out.println("Error - " + sqlState);
+            } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
+                System.out.println(sqlState);
                 System.out.println("Não foi possível cadastrar a categoria, tente novamente!");
             }
         }
@@ -198,4 +199,21 @@ public class ValidarCodigo {
 
         System.out.println(objgson.toJson(arr));
     }
+
+    public static void ListarAgendamento() {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+
+        ArrayList<Agendamento> arr = objAgendamentoDao.listar();
+
+        for (Agendamento objAgendamento : arr) {
+            objFuncionarioDao.listarCompletoId(objAgendamento.getFuncionario());
+        }
+
+        System.out.println(objgson.toJson(arr));
+    }
+
 }

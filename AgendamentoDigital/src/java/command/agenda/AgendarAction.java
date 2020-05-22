@@ -67,6 +67,9 @@ public class AgendarAction implements ICommand {
         String idServico = request.getParameter("listaServico");
         String idFuncionario = request.getParameter("listaFuncionarios");
         String idCliente = request.getParameter("listaClientes");
+        if (idCliente == null) {
+            idCliente = "0";
+        }
         String datahora = request.getParameter("datahora");
 
         DateFormat formatter = new SimpleDateFormat("kk:mm");
@@ -95,9 +98,11 @@ public class AgendarAction implements ICommand {
             Cliente objCliente = new Cliente();
 
             //Verifica Usuario Cliente
-            Usuario usuarioAutenticado = (Usuario) request.getAttribute("usuarioAutenticado");
+            //cria uma sessao para resgatar o usuario
+            HttpSession sessaoUsuario = request.getSession();
+            Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
             if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.CLIENTECOMUM)) {
-                objCliente = (Cliente) request.getAttribute("cliente");
+                objCliente = (Cliente) sessaoUsuario.getAttribute("cliente");
             } else {
                 objCliente.setIdCliente(Integer.parseInt(idCliente));
             }
@@ -135,8 +140,14 @@ public class AgendarAction implements ICommand {
             if (sqlState == "0") {
                 funcaoMsg = "Cadastrado com sucesso!";
                 funcaoStatus = "success";
+            } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
+                funcaoMsg = "Você já possui um agendamento nesse horário!";
+                funcaoStatus = "error";
+            } else if (sqlState.equalsIgnoreCase("unqAgendamentoFuncionario")) {
+                funcaoMsg = "O funcionário escolhido já possui hora marcada! Escolha outro por favor!";
+                funcaoStatus = "error";
             } else {
-                funcaoMsg = "Não foi possível cadastrar a categoria, tente novamente!";
+                funcaoMsg = "Não foi possível realizar o agendamento, tente novamente mais tarde!";
                 funcaoStatus = "error";
             }
         }
@@ -146,7 +157,6 @@ public class AgendarAction implements ICommand {
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("datahoje", datahoje);
-        request.setAttribute("datamaxima", datamaxima);
         request.setAttribute("allowTimes", Arrays.toString(ArrayAllowTimes));
         request.setAttribute("maxTime", maxTime);
         request.setAttribute("minTime", minTime);

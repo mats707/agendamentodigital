@@ -103,7 +103,9 @@ create table Agendamento(
   constraint fkCliente foreign key (cliente) references Cliente(id),
   constraint fkServico foreign key (servico) references Servico(id),
   constraint fkFuncionario foreign key (funcionario) references Funcionario(id),
-  constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id)
+  constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id),
+  constraint unqAgendamentoCliente unique (dataAgendamento,horarioAgendamento,cliente),
+  constraint unqAgendamentoFuncionario unique (dataAgendamento,horarioAgendamento,funcionario)
 );
 
 create table TipoCampoAdicional(
@@ -152,7 +154,8 @@ insert into Usuario values
   (nextval('sqn_usuario'),'felipe@funcionario.com','MTIzNDU2Nzg=',11123123123,2),
   (nextval('sqn_usuario'),'matheus@funcionario.com','MTIzNDU2Nzg=',11845784567,2),
   (nextval('sqn_usuario'),'rafael@funcionario.com','MTIzNDU2Nzg=',11932145678,2),
-  (nextval('sqn_usuario'),'nathalia@cliente.com','MTIzNDU2Nzg=',11963970577,1);
+  (nextval('sqn_usuario'),'nathalia@cliente.com','MTIzNDU2Nzg=',11963970577,1),
+  (nextval('sqn_usuario'),'brunolopes@cliente.com','MTIzNDU2Nzg=',11955445566,1);
 
 insert into CategoriaServico values
 	(0,'DEFAULT','Todas categorias serão filhas dessas categoria.',null),
@@ -187,7 +190,8 @@ insert into Pessoa values
   (nextval('sqn_pessoa'),'Felipe Jesus','01/04/1992',2),
   (nextval('sqn_pessoa'),'Matheus Nascimento','10/10/1998',3),
   (nextval('sqn_pessoa'),'Rafael Pereira','01/04/1992',4),
-  (nextval('sqn_pessoa'),'Nathalia Cardoso','05/04/2000',5);
+  (nextval('sqn_pessoa'),'Nathalia Cardoso','05/04/2000',5),
+  (nextval('sqn_pessoa'),'Bruno Lopes','01/01/1990',6);
   
 insert into Funcionario values
   (nextval('sqn_funcionario'),1),
@@ -195,5 +199,12 @@ insert into Funcionario values
   (nextval('sqn_funcionario'),3);
   
 insert into Cliente values
-  (nextval('sqn_cliente'),4);
+  (nextval('sqn_cliente'),4),
+  (nextval('sqn_cliente'),5);
 
+insert into Agendamento values
+  (nextval('sqn_agendamento'),'2020-05-21','20:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-05-22','09:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-05-22','11:00:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-05-22','12:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-05-23','20:00:00',1,1,2,1);

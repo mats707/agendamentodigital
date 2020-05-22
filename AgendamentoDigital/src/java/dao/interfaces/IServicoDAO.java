@@ -21,6 +21,8 @@ public interface IServicoDAO {
     public ArrayList<Servico> listarPorCategoria(Servico servico);
 
     public void buscar(Servico servico);
+    
+    public void buscar_dados_basicos(Servico servico);
 
     public Servico buscaCompleta(Servico servico);
 

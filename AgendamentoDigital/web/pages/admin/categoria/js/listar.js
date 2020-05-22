@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     carregarCategoriaServico();
     lerJson();
-    
+
     // Função para carregar os dados da consulta nos respectivos campos
     function carregarCategoriaServico() {
         $.ajax({
@@ -37,8 +37,8 @@ $(document).ready(function () {
         });
     }
 
-function lerJson() {
-    $("#listaCategorias").html('\
+    function lerJson() {
+        $("#listaCategorias").html('\
         <div class="card card-primary">                                                                                                              \n\
             <div class="card-header">                                                                                                                \n\
                 <h4 class="card-title">                                                                                                          \n\
@@ -269,7 +269,7 @@ function lerJson() {
             </div>                                                                                                                                   \n\
         </div>                                                                                                                                       \n\
 ');
-}
+    }
 
     function lerJson() {
         console.log(ObjListaCategorias);

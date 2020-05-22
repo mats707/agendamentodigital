@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendamento Digital | Listar Serviços</title>
+        <title>Agendamento Digital | Listar Usuários</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -36,7 +36,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="../sidebar-menu.jsp"/>
+            <jsp:include page="sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -45,12 +45,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Lista de Serviços</h1>
+                                <h1>Lista de Usuários</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Lista de Serviços</li>
+                                    <li class="breadcrumb-item active">Lista de Usuários</li>
                                 </ol>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Serviços Cadastrados</h3>
+                                        <h3 class="card-title">Usuários Cadastrados</h3>
 
                                         <div class="card-tools">
                                             <div class="input-group input-group-sm" style="width: 150px;">
@@ -109,10 +109,10 @@
         <!-- edit Modal-->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarServico" action="${site}/AlterarServico" method="post">
+                <form id="alterarUsuario" action="${site}/AlterarUsuario" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Alterar Serviço? </h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Alterar Usuário? </h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
@@ -120,29 +120,46 @@
                         <div class="row align-items-center justify-content-center">
                             <div class="register-box">
                                 <div class="card">
-                                    <input id="idServico" name="idServico" type="text" class="form-control" placeholder="idServico" hidden>
+                                    <input id="idUsuario" name="idUsuario" type="text" class="form-control" placeholder="idUsuario" hidden>
                                     <div class="input-group mb-3">
-                                        <input id="editedNome" name="editedNome" type="nome" class="form-control" placeholder="Nome">
+                                        <input id="editedEmail" name="editedEmail" type="email" class="form-control" placeholder="Email">
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-envelope"></span>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- phone mask -->
                                     <div class="input-group mb-3">
-                                        <input id="editedDescricao" name="editedDescricao" type="descricao" class="form-control" placeholder="Descrição">
-                                        <div class="input-group-append">
+                                        <input id="editedCelular" name="editedCelular" type="text" class="form-control" placeholder="Celular" data-inputmask='"mask": "(99) 99999-9999"' data-mask>
+                                        <div class="input-group-prepend">
                                             <div class="input-group-text">
-                                                <span class="fas fa-edit"></span>
+                                                <span class="fas fa-phone"></span>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- phone mask -->
+                                    <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+                                        <label id="editedPerfil1_lbl" class="btn bg-info">
+                                            <input type="radio" name="editedPerfil" id="editedPerfil1" autocomplete="off" checked value="COMUM"> Funcionário
+                                        </label>
+                                        <label id="editedPerfil2_lbl" class="btn bg-info">
+                                            <input type="radio" name="editedPerfil" id="editedPerfil2" autocomplete="off" value="ADMINISTRADOR"> Administrador
+                                        </label>
+                                    </div>
+
                                     <div class="input-group mb-3">
-                                        <input id="editedValor" name="editedValor" type="text" class="form-control" placeholder="Valor">
-                                        <div class="input-group-prepend">
+                                        <input id="editedPassword" name="editedPassword" type="password" class="form-control" placeholder="Password">
+                                        <div class="input-group-append">
                                             <div class="input-group-text">
-                                                <span class="fas fa-money"></span>
+                                                <span class="fas fa-lock"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input id="editedChkpassword" name="editedChkpassword" type="password" class="form-control" placeholder="Retype password">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-lock"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -161,30 +178,22 @@
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarServico" action="${site}/DeletarServico" method="post">
+                <form id="alterarUsuario" action="${site}/DeletarUsuario" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Excluir Serviço? </h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Excluir Usuário? </h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
                         <div class="row align-items-center justify-content-center">
-                            <p class="danger">Ao excluir o Serviço permanecerá cadastrado, porém estará INATIVO!</p>
+                            <p class="danger">Ao excluir o usuário permanecerá cadastrado, porém estará INATIVO!</p>
 
                             <div class="register-box">
                                 <div class="card">
-                                    <input id="idServicoDeleted" name="idServicoDeleted" type="text" class="form-control" placeholder="idServico" hidden>
+                                    <input id="idUsuarioDeleted" name="idUsuarioDeleted" type="text" class="form-control" placeholder="idUsuario" hidden>
                                     <div class="input-group mb-3">
-                                        <input id="deletedNome" name="deletedNome" type="nome" class="form-control" placeholder="Nome" readonly>
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-envelope"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <input id="deletedDescricao" name="deletedDescricao" type="descricao" class="form-control" placeholder="Descricao" readonly>
+                                        <input id="deletedEmail" name="deletedEmail" type="email" class="form-control" placeholder="Email" readonly>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-envelope"></span>
@@ -193,10 +202,18 @@
                                     </div>
                                     <!-- phone mask -->
                                     <div class="input-group mb-3">
-                                        <input id="deletedValor" name="deletedValor" type="text" class="form-control" placeholder="Valor" readonly>
+                                        <input id="deletedCelular" name="deletedCelular" type="text" class="form-control" placeholder="Celular" readonly data-inputmask='"mask": "(99) 99999-9999"' data-mask readonly>
                                         <div class="input-group-prepend">
                                             <div class="input-group-text">
                                                 <span class="fas fa-phone"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group mb-3">
+                                        <input id="deletedPerfil" name="deletedPerfil" type="text" class="form-control" placeholder="Perfil" readonly>
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fas fa-user"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -204,7 +221,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button  id="btnDeletar" type="submit" class="btn btn-danger btn-block">Desastivar Serviço</button>
+                            <button  id="btnDeletar" type="submit" class="btn btn-danger btn-block">Desastivar Usuário</button>
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
@@ -273,11 +290,11 @@
 
             })
         </script>
-        <script src="${site}/pages/client/servicos/js/listarServico.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/listarUsuario.js" type="text/javascript"></script>
 
         <script>
             var result = ${msg};
-            includeHTMLNav("servicos", "listarServico");
+            includeHTMLNav("usuarios", "listarUsuario");
             lerJson(result);
         </script>
 
