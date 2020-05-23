@@ -11,9 +11,15 @@ import dao.AgendamentoDAO;
 import dao.FuncionarioDAO;
 import dao.ServicoDAO;
 import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modelos.Agendamento;
+import modelos.Usuario;
+import modelos.Cliente;
+import modelos.PerfilDeAcesso;
 
 /**
  *
@@ -22,8 +28,19 @@ import modelos.Agendamento;
 public class VisualizarAction implements ICommand {
 
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        
+        //Instanciando Cliente
+        Cliente objCliente = new Cliente();
+        
+        //Verifica Usuario Cliente
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.CLIENTECOMUM)) {
+            objCliente = (Cliente) sessaoUsuario.getAttribute("cliente");
+        }
 
-        request.setAttribute("pagina", "pages/client/listarAgendamento.jsp");
+        request.setAttribute("pagina", "pages/client/home.jsp");
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -31,10 +48,10 @@ public class VisualizarAction implements ICommand {
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
         ServicoDAO objServicoDao = new ServicoDAO();
 
-        ArrayList<Agendamento> arr = objAgendamentoDao.listar();
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(objCliente));
 
         for (Agendamento objAgendamento : arr) {
-            objFuncionarioDao.listarCompletoId(objAgendamento.getFuncionario());
+            objFuncionarioDao.buscar(objAgendamento.getFuncionario());
             objServicoDao.buscar_dados_basicos(objAgendamento.getServico());
         }
 

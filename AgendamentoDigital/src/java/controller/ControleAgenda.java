@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControleAgenda", urlPatterns = {
     "/AgendarServico",
-    "/VisualizarAgenda"})
+    "/VisualizarAgenda",
+    "/Home"})
 public class ControleAgenda extends HttpServlet {
 
     /**
@@ -43,6 +44,8 @@ public class ControleAgenda extends HttpServlet {
             if (uri.equals(request.getContextPath() + "/AgendarServico")) {
                 acao = "Agendar";
             } else if (uri.equals(request.getContextPath() + "/VisualizarAgenda")) {
+                acao = "Visualizar";
+            } else if (uri.equals(request.getContextPath() + "/Home")) {
                 acao = "Visualizar";
             } else {
                 response.sendRedirect("404.jsp");

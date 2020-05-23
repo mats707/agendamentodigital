@@ -36,6 +36,7 @@
         <filter-name>AcessoCliente</filter-name>
         <url-pattern>/pages/client/*</url-pattern>
         <url-pattern>/AgendarServico</url-pattern>
+        <url-pattern>/Home</url-pattern>
     </filter-mapping>
     <filter>
         <filter-name>AcessoLogado</filter-name>
