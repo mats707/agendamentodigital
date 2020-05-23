@@ -119,7 +119,7 @@
                                     </div>
                                     <div class="card-body p-0">
 
-                                        <div id="target" class="table table-striped table-valign-middle"></div>
+                                        <div id="target" class="table table-striped table-valign-middle" data-cliente="${cliente.idCliente}"></div>
                                         <!--<table class="table table-striped table-valign-middle">
                                             <thead>
                                                 <tr>

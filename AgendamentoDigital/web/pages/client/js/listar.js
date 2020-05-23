@@ -6,8 +6,9 @@ $(document).ready(function () {
     carregarAgenda();
 
     function carregarAgenda() {
+        idCliente = document.getElementById('target').getAttribute('data-cliente');
         $.ajax({
-            url: nameproject + '/api/Agendamento/Listar/', //lugar onde a servlet está
+            url: nameproject + '/api/Agendamento/Listar/Cliente/' + idCliente, //lugar onde a servlet está
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -39,6 +40,7 @@ $(document).ready(function () {
                     var cellDuracao = row.insertCell(3);//Duracao
                     var cellValor = row.insertCell(4);//Valor
                     var cellFuncionario = row.insertCell(5);//Funcionario
+                    console.log(ObjAgendamento[i].dataAgendamento);
                     cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                     cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
                     cellServico.innerHTML = ObjAgendamento[i].servico.nome;

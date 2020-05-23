@@ -24,6 +24,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelos.Funcionario;
 import modelos.Agendamento;
+import modelos.Cliente;
+import modelos.StatusAgendamento;
 
 /**
  * REST Web Service
@@ -91,29 +93,24 @@ public class restAgendamento {
 //
 //        return objgson.toJson(objAgendamento);
 //    }
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Path("Listar/Categoria/{id}")
-//    public String listarAgendamentoPorCategoria(@PathParam("id") Integer id) throws SQLException, ClassNotFoundException {
-//
-//        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-//
-//        Agendamento servico = new Agendamento();
-//        CategoriaAgendamento categoria = new CategoriaAgendamento();
-//        categoria.setIdCategoriaAgendamento(id);
-//        servico.setCategoria(categoria);
-//
-//        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
-//        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
-//
-//        ArrayList<Agendamento> arr = objAgendamentoDao.listarPorCategoria(servico);
-//
-//        for (Agendamento objAgendamento : arr) {
-//            for (Funcionario objFuncionario : objAgendamento.getFuncionarios()) {
-//                objFuncionarioDao.listarCompletoId(objFuncionario);
-//            }
-//        }
-//
-//        return objgson.toJson(arr);
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("Listar/Cliente/{idCliente}")
+    public String listarCliente(@PathParam("idCliente") Integer idCliente) throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+        ServicoDAO objServicoDao = new ServicoDAO();
+
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(new Cliente(idCliente)));
+
+        for (Agendamento objAgendamento : arr) {
+            objFuncionarioDao.buscar(objAgendamento.getFuncionario());
+            objServicoDao.buscar_dados_basicos(objAgendamento.getServico());
+        }
+
+        return objgson.toJson(arr);
+    }
 }
