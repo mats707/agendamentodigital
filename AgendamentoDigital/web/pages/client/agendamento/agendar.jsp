@@ -44,7 +44,7 @@
         <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
         <!-- Daterange picker -->
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
-        
+
         <link href="${site}/pages/client/agendamento/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
@@ -210,19 +210,10 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <footer class="main-footer">
-                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-                All rights reserved.
-                <div class="float-right d-none d-sm-inline-block">
-                    <b>Version</b> 3.0.1-pre
-                </div>
-            </footer>
 
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
+            <!-- Footer -->
+            <jsp:include page="../footer.jsp"/>
+
         </div>
         <!-- ./wrapper -->
 

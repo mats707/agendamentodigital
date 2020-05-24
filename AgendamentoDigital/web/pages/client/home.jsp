@@ -66,30 +66,27 @@
                 <!-- Main content -->
                 <div class="content">
                     <div class="container-fluid">
-                        <div class="row">
-                            <div class="card">
-                                <div class="card-header border-0">
-                                    <h3 class="card-title">Agendamentos</h3>
-                                    <div class="card-tools">
-                                        <a href="#" class="btn btn-tool btn-sm">
-                                            <i class="fas fa-calendar"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="card-body p-0">
-                                    <div id="target" class="table table-striped table-valign-middle" data-cliente="${cliente.idCliente}"></div>
+                        <div class="card">
+                            <div class="card-header border-0">
+                                <h3 class="card-title">Agendamentos</h3>
+                                <div class="card-tools">
+                                    <a href="#" class="btn btn-tool btn-sm">
+                                        <i class="fas fa-calendar"></i>
+                                    </a>
                                 </div>
                             </div>
-                            <!-- /.card -->
+                            <div class="card-body p-0">
+                                <div id="target" class="table table-responsive table-valign-middle"></div>
+                            </div>
                         </div>
-                        <!-- /.row -->
+                        <!-- /.card -->
                     </div>
                     <!-- /.container-fluid -->
                 </div>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <!-- Navbar & Menu-->
+            <!-- Footer -->
             <jsp:include page="footer.jsp"/>
         </div>
         <!-- ./wrapper -->
