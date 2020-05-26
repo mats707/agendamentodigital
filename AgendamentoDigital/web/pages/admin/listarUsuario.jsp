@@ -285,6 +285,12 @@
             var result = ${msg};
             includeHTMLNav("usuarios", "listarUsuario");
             lerJson(result);
+            var callSweet = "${funcaoMsgOperation}";
+            if(callSweet != ""){
+                sweet(callSweet,"${funcaoStatusOperation}",6000);
+            } else {
+                sweet("${funcaoMsg}","${funcaoStatus}",3000);
+            }
         </script>
 
         <!-- PAGE PLUGINS -->
@@ -293,26 +299,4 @@
         <script src="${site}/plugins/raphael/raphael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-        <script type="text/javascript">
-            if ('${funcaoMsg}' != '') {
-                console.log("Entrei: ${funcaoMsg}");
-                window.onload = function () {
-                    $(function () {
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'center',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        Toast.fire({
-                            type: '${funcaoStatus}',
-                            title: ' ${funcaoMsg}'
-                        });
-                    });
-                };
-            }
-
-        </script>
-
 </html>

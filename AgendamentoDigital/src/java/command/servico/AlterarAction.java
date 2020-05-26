@@ -43,12 +43,11 @@ public class AlterarAction implements ICommand {
 //            funcionariosString = listFuncionarios("\\,");
 //        }
         String sqlState = "0";
-        String funcaoMsg = "Carregando...";
-        String funcaoStatus = "info";
+        String funcaoMsgOperation = "";
+        String funcaoStatusOperation = "";
 
         if (idServico != null && nome != null && descricao != null && categoriaFinal != null
                 && valor != null && duracao != null && funcionariosString != null) {
-
             //Ajustes no formato dos campos
             valor = valor.replace(",", ".");
             Duration tempo = Duration.ofHours(Integer.parseInt("00"));
@@ -78,18 +77,18 @@ public class AlterarAction implements ICommand {
 
             sqlState = servicoDAO.alterar(objServico);
             if (sqlState == "0") {
-                funcaoMsg = "Alterado com sucesso!";
-                funcaoStatus = "success";
+                funcaoMsgOperation = "Alterado com sucesso!";
+                funcaoStatusOperation = "success";
             } else {
-                funcaoMsg = "Não foi possível alterar o serviço, tente novamente!";
-                funcaoStatus = "error";
+                funcaoMsgOperation = "Não foi possível alterar o serviço, tente novamente!";
+                funcaoStatusOperation = "error";
             }
 
-            request.setAttribute("funcaoMsg", funcaoMsg);
-            request.setAttribute("funcaoStatus", funcaoStatus);
-            return funcaoMsg;
+            request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
+            request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
+            return funcaoMsgOperation;
         }
-        return funcaoMsg;
+        return funcaoMsgOperation;
 
     }
 

@@ -60,6 +60,19 @@ $(document).ready(function () {
     }
 });
 
+function sweet(title, type, timer) {
+    const Toast = swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: timer
+    });
+    Toast.fire({
+        type: type,
+        title: ' ' + title
+    });
+}
+
 function lerJson(result) {
     $("#target").html('<table id="tabUser" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">Email</th><th style="width: auto">Celular</th><th style="width: auto">Perfil</th><th style="width: auto">Edit</th><th style="width: auto">Delete</th></tr></thead>' + $.map(result, function (d) {
         return '<tr><td>' + $.map(d, function (e) {

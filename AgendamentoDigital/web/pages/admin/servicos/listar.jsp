@@ -334,9 +334,9 @@
             var result = ${msg};
             includeHTMLNav("servicos", "listarServico");
             lerTabela(result);
-            var callSweet = "${funcaoMsgDeleted}";
+            var callSweet = "${funcaoMsgOperation}";
             if(callSweet != ""){
-                sweet(callSweet,"${funcaoStatusDeleted}",6000);
+                sweet(callSweet,"${funcaoStatusOperation}",6000);
             } else {
                 sweet("${funcaoMsg}","${funcaoStatus}",3000);
             }

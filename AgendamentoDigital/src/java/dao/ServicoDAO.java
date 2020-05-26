@@ -541,7 +541,6 @@ public class ServicoDAO implements IServicoDAO {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(DELETAR);
             pstmt.setInt(1, servico.getIdServico());
-            System.out.println(pstmt);
             pstmt.execute();
 
             return sqlReturnCode;

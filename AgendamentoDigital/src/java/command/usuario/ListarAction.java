@@ -33,6 +33,12 @@ public class ListarAction implements ICommand {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         
+        String funcaoMsg = "Carregando Usuários";
+        String funcaoStatus = "info";
+
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
+        
         return objgson.toJson(arr);
 
     }

@@ -275,7 +275,9 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public boolean excluir(Usuario usuario) {
+    public String deletar(Usuario usuario) {
+
+        String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
@@ -284,12 +286,15 @@ public class UsuarioDAO implements IUsuarioDAO {
             pstmt.setInt(1, usuario.getIdUsuario());
             pstmt.execute();
 
-            return true;
+            return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
-
-            return false;
-
+            sqlReturnCode = sqlErro.getSQLState();
+            if (sqlReturnCode.equalsIgnoreCase("23503")) { //Significa que violou uma unique constraint
+                return sqlErro.getMessage().split("\n")[0];
+            } else {
+                return sqlReturnCode;
+            }
         } finally {
             if (conexao != null) {
                 try {

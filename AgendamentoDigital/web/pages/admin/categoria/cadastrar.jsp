@@ -158,7 +158,6 @@
     <!-- ./wrapper -->
 
     <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
-    <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
     <!-- jQuery -->
     <script src="${site}/plugins/jquery/jquery.min.js"></script>
 
@@ -233,20 +232,5 @@
     <script src="${site}/plugins/raphael/raphael.min.js"></script>
     <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
     <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-    <script type="text/javascript">
-        console.log("Entrei: ${funcaoMsg}");
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'center',
-            showConfirmButton: false,
-            timer: 3000
-        });
-        Toast.fire({
-            type: '${funcaoStatus}',
-            title: ' ${funcaoMsg}'
-        });
-
-    </script>
 </body>
 </html>

@@ -31,8 +31,8 @@ public class DeletarAction implements ICommand {
         String deletedDescricao = request.getParameter("deletedDescricao");
 
         String sqlState = "0";
-        String funcaoMsgDeleted = "";
-        String funcaoStatusDeleted = "";
+        String funcaoMsgOperation = "";
+        String funcaoStatusOperation = "";
 
         if (id != null && deletedNome != null && deletedDescricao != null) {
             Servico servico = new Servico();
@@ -48,26 +48,26 @@ public class DeletarAction implements ICommand {
                 sqlState = servicoDAO.deletar(servicoSolicitado);
                 //Verifica o retorno da DAO (banco de dados)
                 if (sqlState == "0") {
-                    funcaoMsgDeleted = "Deletado com sucesso!";
-                    funcaoStatusDeleted = "success";
+                    funcaoMsgOperation = "Deletado com sucesso!";
+                    funcaoStatusOperation = "success";
                 } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"servico\" violates foreign key constraint \"fkservico\" on table \"agendamento\"")) {
-                    funcaoMsgDeleted = "Você possui um agendamento com esse serviço! Delete o agendamento primeiro!";
-                    funcaoStatusDeleted = "error";
+                    funcaoMsgOperation = "Você possui um agendamento com esse serviço! Delete o agendamento primeiro!";
+                    funcaoStatusOperation = "error";
                 } else {
-                    funcaoMsgDeleted = "Não foi possível deletar o serviço, tente novamente mais tarde!";
-                    funcaoStatusDeleted = "error";
+                    funcaoMsgOperation = "Não foi possível deletar o serviço, tente novamente mais tarde!";
+                    funcaoStatusOperation = "error";
                 }
             } else {
-                funcaoMsgDeleted = "Serviço inválido!";
-                funcaoStatusDeleted = "error";
+                funcaoMsgOperation = "Serviço inválido!";
+                funcaoStatusOperation = "error";
             }
         } else {
-            funcaoMsgDeleted = "Serviço inválido!";
-            funcaoStatusDeleted = "error";
+            funcaoMsgOperation = "Serviço inválido!";
+            funcaoStatusOperation = "error";
         }
-        request.setAttribute("funcaoMsgDeleted", funcaoMsgDeleted);
-        request.setAttribute("funcaoStatusDeleted", funcaoStatusDeleted);
-        return funcaoMsgDeleted;
+        request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
+        request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
+        return funcaoMsgOperation;
 
     }
 
