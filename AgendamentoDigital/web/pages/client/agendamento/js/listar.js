@@ -330,7 +330,7 @@ function exibeServico() {
                     document.getElementById("nome").value = Obj.nome;
                     document.getElementById("descricao").value = Obj.descricao;
                     document.getElementById("valor").value = Obj.valor.toFixed(2).toString().replace(".", ",");
-                    document.getElementById("duracao").value = Obj.duracao.seconds; //Os segundos são minutos
+                    document.getElementById("duracao").value = Obj.duracao.seconds / 60; //Converte os segundos para minutos
                     for (var i = 0; i < Obj.funcionarios.length; i++) {
                         $("#listaFuncionarios").append("<option value='" + Obj.funcionarios[i].idFuncionario + "'>" + Obj.funcionarios[i].nomePessoa + "</option>");
                     }

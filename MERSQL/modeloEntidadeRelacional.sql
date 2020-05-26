@@ -184,7 +184,7 @@ insert into CategoriaServico values
 alter sequence sistema.sqn_categoriaservico restart with 27;
 
 insert into Servico values
-	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25,90','30','10','{1,2}');	
+	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25.90'::NUMERIC::MONEY,'PT30M'::INTERVAL,'10','{"1","2"}');	
  
 insert into Pessoa values
   (nextval('sqn_pessoa'),'Felipe Jesus','01/04/1992',2),

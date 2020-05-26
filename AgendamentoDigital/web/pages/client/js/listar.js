@@ -6,7 +6,6 @@ $(document).ready(function () {
 });
 
 function lerTabela(result) {
-    sweet();
     ObjAgendamento = result;
     document.getElementById("target").innerHTML = '<table id="tabAgendamento" class="table table-hover"><thead class="thead-dark"><tr><th>Servi\xE7o</th><th>Data</th><th>Horario</th><th>Duracao</th><th>Valor</th><th>Funcionario</th></tr></thead></table>';
     var table = document.getElementById("tabAgendamento");

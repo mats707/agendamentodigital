@@ -27,10 +27,23 @@
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
         <!-- summernote -->
         <link rel="stylesheet" href="${site}/plugins/summernote/summernote-bs4.css">
-        <!-- SweetAlert2 -->
-        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="${site}/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="${site}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <!-- Bootstrap4 Duallistbox -->
+        <link rel="stylesheet" href="${site}/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="${site}/dist/css/adminlte.min.css">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+        <link href="${site}/pages/admin/servicos/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
@@ -77,7 +90,9 @@
                                         </div>
                                     </div>
                                     <!-- /.card-header -->
-                                    <div id="target" class="card-body p-0"></div>
+                                    <div class="card-body p-0">
+                                        <div id="target" class="table table-responsive table-valign-middle"></div>
+                                    </div>
                                     <!-- /.card-body -->
                                 </div>
                                 <!-- /.card -->
@@ -100,8 +115,7 @@
         <!-- edit Modal-->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarServico" action="${site}/AlterarServico" method="post">
-                    <div class="modal-content">
+                <form id="frmCadastrarServico" action="${site}/AlterarServico" method="POST"><div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Alterar Serviço? </h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -110,49 +124,107 @@
                         </div>
                         <div class="row align-items-center justify-content-center">
                             <div class="register-box">
-                                <div class="card">
-                                    <input id="idServico" name="idServico" type="text" class="form-control" placeholder="idServico" hidden>
-                                    <div class="input-group mb-3">
-                                        <input id="editedNome" name="editedNome" type="nome" class="form-control" placeholder="Nome">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-envelope"></span>
-                                            </div>
+
+                                <div class="card card-danger">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Informações do Serviço</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                         </div>
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <input id="editedDescricao" name="editedDescricao" type="descricao" class="form-control" placeholder="Descrição">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-edit"></span>
+                                    <div id="divInfoServico" class="card-body">
+                                        <input id="idServico" name="idServico" type="text" class="form-control" placeholder="idServico" hidden>
+
+                                        <!-- Date dd/mm/yyyy -->
+                                        <div class="form-group">
+                                            <label>Nome:</label>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-tasks"></i></span>
+                                                </div>
+                                                <input id="editedNome" name="editedNome" type="text" class="form-control">
                                             </div>
+                                            <!-- /.input group -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Descrição:</label>
+                                            <div class="input-group mb-3">
+                                                <textarea id="editedDescricao"  name="editedDescricao" class="form-control" rows="1"></textarea>
+                                            </div>
+                                            <!-- /.input group -->
+                                        </div>
+
+                                        <div id="groupListaCategorias" class="form-group">
+                                            <label>Categoria: </label>
+                                            <span id="spanListaCategorias">
+
+                                            </span>
+                                        </div>
+                                        <div class="row">
+                                            <button id="btnLimparInfo" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
                                         </div>
                                     </div>
-                                    <!-- phone mask -->
-                                    <div class="input-group mb-3">
-                                        <input id="editedValor" name="editedValor" type="text" class="form-control" placeholder="Valor">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-money"></span>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <!-- /.card-body -->
                                 </div>
+                                <!-- /.card -->
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Detalhes</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="divDetalhesServico" class="card-body">
+                                        <div class="form-group">
+                                            <label for="editedValor">Valor</label>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"><i class="fas fa-coins"></i></span>
+                                                </div>
+                                                <input id="editedValor" name="editedValor" class="form-control" type="money" required placeholder="0,00" step="1" min="0">
+                                            </div>
+                                            <!-- /.input group -->
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="editedDuracao">Duração<span class="text-muted"> (em minutos)</span></label>
+                                            <input id="editedDuracao" name="editedDuracao" class="form-control" type="number" required placeholder="0" step="5" min="5" max="1440">
+                                            <!--<input id="duracao" type="range" min="5" max="1440" value="5" step="5" class="custom-range custom-range-danger" oninput="var str = document.getElementById('spanDuracao').innerHTML = this.value<31?this.value+' minutos':'infinity'">
+                                            <p><span id="spanDuracao"></span></p>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Funcionários</label>
+                                            <select id="listaFuncionarios" name="listaFuncionarios" class="select2" multiple="multiple" data-placeholder="Selecione um ou mais funcionários" style="width: 100%;">
+                                            </select>
+                                        </div>
+                                        <!-- /.form-group -->
+                                        <div class="row">
+                                            <button id="btnLimparDetalhe" type="button" class="btn btn-danger btn-block">Limpar Campos</button>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
                             </div>
                         </div>
+                        <!-- /.col -->
                         <div class="modal-footer">
                             <button id="btnAlterar" type="submit" class="btn btn-success btn-block" data-msg="${funcaoMsg}">Alterar</button>
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Voltar</button>
                         </div>
                     </div>
-                </form>
+                </form>            
             </div>
         </div>
 
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarServico" action="${site}/DeletarServico" method="post">
+                <form id="deletarServico" action="${site}/DeletarServico" method="get">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Excluir Serviço? </h5>
@@ -182,15 +254,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- phone mask -->
-                                    <div class="input-group mb-3">
-                                        <input id="deletedValor" name="deletedValor" type="text" class="form-control" placeholder="Valor" readonly>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-phone"></span>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +267,6 @@
         </div>
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
-        <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
 
@@ -265,11 +327,19 @@
             })
         </script>
         <script src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
 
         <script>
             var result = ${msg};
             includeHTMLNav("servicos", "listarServico");
-            lerJson(result);
+            lerTabela(result);
+            var callSweet = "${funcaoMsgDeleted}";
+            if(callSweet != ""){
+                sweet(callSweet,"${funcaoStatusDeleted}",6000);
+            } else {
+                sweet("${funcaoMsg}","${funcaoStatus}",3000);
+            }
         </script>
 
         <!-- PAGE PLUGINS -->
@@ -278,26 +348,5 @@
         <script src="${site}/plugins/raphael/raphael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-        <script type="text/javascript">
-            if ('${funcaoMsg}' != '') {
-                console.log("Entrei: ${funcaoMsg}");
-                window.onload = function () {
-                    $(function () {
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'center',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        Toast.fire({
-                            type: '${funcaoStatus}',
-                            title: ' ${funcaoMsg}'
-                        });
-                    });
-                };
-            }
-
-        </script>
 
 </html>

@@ -169,7 +169,7 @@
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarUsuario" action="${site}/DeletarUsuario" method="post">
+                <form id="deletarUsuario" action="${site}/DeletarUsuario" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Excluir Usuário? </h5>
@@ -221,7 +221,6 @@
         </div>
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
-        <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
 
@@ -282,7 +281,6 @@
             })
         </script>
         <script src="${site}/pages/admin/listarUsuario.js" type="text/javascript"></script>
-
         <script>
             var result = ${msg};
             includeHTMLNav("usuarios", "listarUsuario");

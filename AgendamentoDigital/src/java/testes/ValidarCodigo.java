@@ -8,6 +8,7 @@ package testes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.AgendamentoDAO;
+import dao.CategoriaServicoDAO;
 import dao.ServicoDAO;
 import dao.FuncionarioDAO;
 import java.math.BigDecimal;
@@ -42,10 +43,13 @@ public class ValidarCodigo {
     public static void main(String[] args) {
 
         //CadastrarServico();
-        //ListarServicoApi();
+        //AlterarServico();
+        //DeletarServico();
+        ListarServico();
+        //ListarServicoApiPorId();
         //ListarServicoApiPorCategoria();
         //AgendarServico();
-        ListarAgendamento();
+        //ListarAgendamento();
     }
 
     public static void AgendarServico() {
@@ -175,6 +179,156 @@ public class ValidarCodigo {
             sqlState = servicoDAO.cadastrar(objServico);
         }
         System.out.println(sqlState);
+    }
+
+    public static void AlterarServico() {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+        ServicoDAO servicoDAO = new ServicoDAO();
+
+        String idServico = "1";
+        String nome = "Corte de Cabelo Masculino";
+        String descricao = "Descrição Teste";
+        String categoriaFinal = "10";
+        Double valor = Double.parseDouble("19,90".replace(',', '.'));
+        String duracao = "30";
+        String listFuncionarios = "1,2";
+
+        String[] funcionariosString = null;
+        funcionariosString = listFuncionarios.split("\\,");
+
+        System.out.println(funcionariosString);
+
+        String sqlState = "0";
+
+        if (idServico != null && nome != null && descricao != null && categoriaFinal != null
+                && valor != null && duracao != null && funcionariosString != null) {
+
+            //Ajustes no formato dos campos
+            Duration tempo = Duration.ofHours(Integer.parseInt("00"));
+            tempo = tempo.plusMinutes(Integer.parseInt(duracao));
+            tempo = tempo.plusSeconds(Integer.parseInt("00"));
+
+            System.out.println(tempo);
+
+            ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
+
+            for (String funcionario : funcionariosString) {
+                Funcionario novoFuncionario = new Funcionario();
+                novoFuncionario.setIdFuncionario(Integer.parseInt(funcionario));
+
+                funcionarios.add(novoFuncionario);
+            }
+
+            CategoriaServico categoria = new CategoriaServico();
+            categoria.setIdCategoriaServico(Integer.parseInt(categoriaFinal));
+
+            Servico objServico = new Servico();
+            objServico.setIdServico(Integer.parseInt(idServico));
+            objServico.setNome(nome);
+            objServico.setDescricao(descricao);
+            objServico.setCategoria(categoria);
+            objServico.setValor(BigDecimal.valueOf(valor));
+            objServico.setDuracao(tempo);
+            objServico.setFuncionarios(funcionarios);
+
+            System.out.println(objServico.getDuracao().toString());
+
+            System.out.println(objgson.toJson(objServico));
+
+            sqlState = servicoDAO.alterar(objServico);
+        }
+        System.out.println(sqlState);
+    }
+
+    public static void DeletarServico() {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        Integer id = Integer.parseInt("1");
+        String deletedNome = "Corte de Cabelo Masculino";
+        String deletedDescricao = "Os melhores cortes de cabelo masculino";
+
+        String sqlState = "0";
+        String funcaoMsgDeleted = "";
+        String funcaoStatusDeleted = "";
+
+        if (id != null && deletedNome != null && deletedDescricao != null) {
+            Servico servico = new Servico();
+            servico.setIdServico(id);
+            servico.setNome(deletedNome);
+            servico.setDescricao(deletedDescricao);
+
+            ServicoDAO servicoDAO = new ServicoDAO();
+            Servico servicoSolicitado = servicoDAO.buscaCompleta(servico);
+
+            System.out.println(objgson.toJson(servicoSolicitado));
+            //Chamada da DAO para Cadastrar
+            sqlState = servicoDAO.deletar(servicoSolicitado);
+            System.out.println(sqlState);
+            //Verifica o retorno da DAO (banco de dados)
+            if (sqlState == "0") {
+                funcaoMsgDeleted = "Deletado com sucesso!";
+                funcaoStatusDeleted = "success";
+            } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"servico\" violates foreign key constraint \"fkservico\" on table \"agendamento\"")) {
+                funcaoMsgDeleted = "Você possui um agendamento com esse serviço! Delete o agendamento primeiro!";
+                funcaoStatusDeleted = "error";
+            } else {
+                funcaoMsgDeleted = "Não foi possível deletar o serviço, tente novamente mais tarde!";
+                funcaoStatusDeleted = "error";
+            }
+        } else {
+            funcaoMsgDeleted = "Serviço inválido!";
+            funcaoStatusDeleted = "error";
+        }
+        System.out.println(funcaoMsgDeleted);
+    }
+
+    public static void ListarServicoApiPorId() {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        ServicoDAO objServicoDao = new ServicoDAO();
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+        CategoriaServicoDAO objCategoriaServicoDAO = new CategoriaServicoDAO();
+
+        Servico objServico = new Servico();
+        objServico.setIdServico(1);
+
+        objServicoDao.buscar(objServico);
+
+        if (objServico.getIdServico() != null) {
+            for (Funcionario objFuncionario : objServico.getFuncionarios()) {
+                objFuncionarioDao.listarCompletoId(objFuncionario);
+            }
+            objCategoriaServicoDAO.buscarId(objServico.getCategoria());
+        }
+
+        System.out.println(objgson.toJson(objServico));
+    }
+
+    public static void ListarServico() {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        ServicoDAO objServicoDao = new ServicoDAO();
+
+        ArrayList<Servico> arr = new ArrayList<Servico>();
+        arr = objServicoDao.listar();
+
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+        CategoriaServicoDAO objCategoriaServicoDAO = new CategoriaServicoDAO();
+
+        for (Servico objServico : arr) {
+            if (objServico.getIdServico() != null) {
+                for (Funcionario objFuncionario : objServico.getFuncionarios()) {
+                    objFuncionarioDao.listarCompletoId(objFuncionario);
+                }
+                objCategoriaServicoDAO.buscarId(objServico.getCategoria());
+            }
+        }
+
+        System.out.println(objgson.toJson(arr));
     }
 
     public static void ListarServicoApiPorCategoria() {

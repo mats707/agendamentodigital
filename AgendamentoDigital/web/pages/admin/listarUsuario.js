@@ -8,12 +8,12 @@ $(document).ready(function () {
     {
         tabUser.rows[i].onclick = function ()
         {
-            var email = this.cells[0].innerHTML;
+            var email = this.cells[1].innerHTML;
             carregarUsuario(email);
         };
     }
 
-    // Função para carregar os dados da consulta nos respectivos campos
+    // Funcao para carregar os dados da consulta nos respectivos campos
     function carregarUsuario(email) {
         if (email !== "" && email.length >= 2) {
             $.ajax({
@@ -50,7 +50,7 @@ $(document).ready(function () {
                                 $('#editedPerfil1').attr('checked', false); // or 'checked'
                                 $('#editedPerfil2').attr('checked', true); // or 'checked'
                                 $("#deletedPerfil").val('Comum');
-                                console.log("Funcionário");
+                                console.log("Funcionario");
                             }
                         }
                     }

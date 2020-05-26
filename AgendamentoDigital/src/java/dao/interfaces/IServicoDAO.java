@@ -26,8 +26,8 @@ public interface IServicoDAO {
 
     public Servico buscaCompleta(Servico servico);
 
-    public String alterarServico(Servico servico);
+    public String alterar(Servico servico);
 
-    public boolean excluir(Servico servico);
+    public String deletar(Servico servico);
 
 }

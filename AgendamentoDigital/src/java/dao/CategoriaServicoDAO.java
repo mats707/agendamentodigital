@@ -26,6 +26,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             + "categoriapai = ? "
             + "WHERE id = ?";
     private static final String BUSCAR = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.nome ilike ?";
+    private static final String BUSCAR_ID = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id = ?";
     private static final String BUSCAR_CATEGORIA = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id = ? AND s.categoriapai = ?";
     private static final String BUSCAR_NOME = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE UPPER(s.nome) = UPPER(?) AND s.categoriapai = ?";
     private static final String LISTAR = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id != 0 ORDER BY s.categoriapai, s.nome";
@@ -105,6 +106,49 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
 
         } catch (Exception ex) {
             return categoriaExistente;
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @Override
+    public void buscarId(CategoriaServico categoriaServico) {
+        
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_ID);
+
+            pstmt.setInt(1, categoriaServico.getIdCategoriaServico());
+            System.out.println(pstmt);
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                CategoriaServico categoriaServicoPai = new CategoriaServico();
+
+                categoriaServico.setIdCategoriaServico(Integer.parseInt(rs.getString("id")));
+                categoriaServico.setNome(rs.getString("nome"));
+                categoriaServico.setDescricao(rs.getString("descricao"));
+
+                categoriaServicoPai.setIdCategoriaServico(Integer.parseInt(rs.getString("categoriapai")));
+                categoriaServico.setCategoriaPai(categoriaServicoPai);
+                System.out.println(categoriaServico.getCategoriaPai());
+                if(!categoriaServico.getCategoriaPai().getIdCategoriaServico().equals(0)){
+                    buscarId(categoriaServico.getCategoriaPai());
+                }
+            }
+
+        } catch (Exception ex) {
         } finally {
 
             try {

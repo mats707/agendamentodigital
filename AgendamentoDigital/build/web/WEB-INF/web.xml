@@ -17,6 +17,7 @@
         <url-pattern>/BuscarServico</url-pattern>
         <url-pattern>/ExcluirServico</url-pattern>
         <url-pattern>/AlterarServico</url-pattern>
+        <url-pattern>/CadastrarCategoriaServico</url-pattern>
     </filter-mapping>
     
     <filter>
@@ -36,6 +37,7 @@
         <filter-name>AcessoCliente</filter-name>
         <url-pattern>/pages/client/*</url-pattern>
         <url-pattern>/AgendarServico</url-pattern>
+        <url-pattern>/VisualizarAgenda</url-pattern>
         <url-pattern>/Home</url-pattern>
     </filter-mapping>
     <filter>

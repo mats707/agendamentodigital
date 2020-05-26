@@ -81,14 +81,12 @@ public class CadastrarAction implements ICommand {
             objServico.setDuracao(tempo);
             objServico.setFuncionarios(funcionarios);
 
-            System.out.println(objServico);
-
             sqlState = servicoDAO.cadastrar(objServico);
             if (sqlState == "0") {
                 funcaoMsg = "Cadastrado com sucesso!";
                 funcaoStatus = "success";
             } else {
-                funcaoMsg = "Não foi possível cadastrar a categoria, tente novamente!";
+                funcaoMsg = "Não foi possível cadastrar o serviço, tente novamente!";
                 funcaoStatus = "error";
             }
 

@@ -1,5 +1,7 @@
 package dao;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dao.interfaces.IServicoDAO;
 import java.math.BigDecimal;
 import java.sql.Array;
@@ -29,6 +31,14 @@ public class ServicoDAO implements IServicoDAO {
 
     private static final String CADASTRAR = "INSERT INTO sistema.servico (id, nome, descricao, valor, duracao, categoria, funcionarios, camposadicionais) \n"
             + "VALUES (nextval('sistema.sqn_servico'),?,?,?::NUMERIC::MONEY ,?::INTERVAL,?,?,NULL);";
+    private static final String ALTERAR = "UPDATE sistema.servico "
+            + "SET nome = ?, "
+            + "descricao = ?, "
+            + "valor = ?::NUMERIC::MONEY, "
+            + "duracao = ?::INTERVAL, "
+            + "categoria = ?, "
+            + "funcionarios = ? "
+            + "WHERE id = ?";
     private static final String CADASTRA_NOVO_SERVICO = "INSERT INTO sistema.servico (id, nome, descricao, valor, servicopai)\n"
             + "VALUES (nextval('sistema.sqn_servico'),?,?,?,?);";
     private static final String ALTERA_SERVICO = "UPDATE sistema.servico "
@@ -42,7 +52,7 @@ public class ServicoDAO implements IServicoDAO {
     private static final String LISTAR = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico ORDER BY nome";
     private static final String LISTAR_POR_CATEGORIA = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico WHERE categoria = ? ORDER BY nome";
     private static final String DELETAR = "DELETE FROM sistema.servico WHERE id = ?";
-    private static final String BUSCA_COMPLETA = "SELECT s.id, s.nome, s.descricao, s.valor, s.servicoPai FROM sistema.servico s WHERE s.id=? AND s.nome=? AND s.descricao=? AND s.valor=? AND S.servicoPai=?";
+    private static final String BUSCA_COMPLETA = "SELECT s.id, s.nome, s.descricao FROM sistema.servico s WHERE s.id=? AND s.nome=? AND s.descricao=?";
 
     private Connection conexao;
 
@@ -100,9 +110,8 @@ public class ServicoDAO implements IServicoDAO {
         } catch (SQLException sqlErro) {
 
             sqlReturnCode = sqlErro.getSQLState();
-            System.out.println(sqlErro);
-            System.out.println(sqlReturnCode);
-            return pstmt.toString();
+
+            return sqlReturnCode;
 
         } finally {
             if (conexao != null) {
@@ -118,13 +127,13 @@ public class ServicoDAO implements IServicoDAO {
     @Override
     public ArrayList<Servico> listar() {
         ArrayList<Servico> listaServico = new ArrayList<>();
-        ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
         Integer[] funcionarios = null;
         Array arrayFuncionarios = null;
         ArrayList<Integer> listaCamposAdicionais = new ArrayList<>();
         Integer[] camposAdicionais = null;
         Array arrayCamposAdicionais = null;
 
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         try {
 
             //Conexao
@@ -147,6 +156,7 @@ public class ServicoDAO implements IServicoDAO {
                 duracao = duracao.plusSeconds(Integer.parseInt(tempo[2]));
                 novoServico.setDuracao(duracao);
 
+                ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
                 try {
                     if (rs.getArray("funcionarios") != null) {
                         arrayFuncionarios = conexao.createArrayOf("INTEGER", (Object[]) rs.getArray("funcionarios").getArray());
@@ -155,6 +165,7 @@ public class ServicoDAO implements IServicoDAO {
                     Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 arrayFuncionarios = rs.getArray("funcionarios");
+                System.out.println(arrayFuncionarios);
                 funcionarios = (Integer[]) arrayFuncionarios.getArray();
                 for (int i = 0; i < funcionarios.length; i++) {
                     Funcionario novoFuncionario = new Funcionario();
@@ -185,6 +196,8 @@ public class ServicoDAO implements IServicoDAO {
 
                 //add na lista
                 listaServico.add(novoServico);
+
+                System.out.println(objgson.toJson(novoServico));
             }
             return listaServico;
 
@@ -289,13 +302,12 @@ public class ServicoDAO implements IServicoDAO {
         }
     }
 
-
     @Override
     public void buscar(Servico servico) {
         ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
         Integer[] funcionarios = null;
         Array arrayFuncionarios = null;
-        
+
         ArrayList<Integer> listaCamposAdicionais = new ArrayList<>();
         Integer[] camposAdicionais = null;
         Array arrayCamposAdicionais = null;
@@ -309,8 +321,8 @@ public class ServicoDAO implements IServicoDAO {
             pstmt.setInt(1, servico.getIdServico());
             //executa
             ResultSet rs = pstmt.executeQuery();
-            servico.setIdServico(null);            
-            
+            servico.setIdServico(null);
+
             while (rs.next()) {
                 servico.setIdServico(rs.getInt("id"));
                 servico.setNome(rs.getString("nome"));
@@ -371,7 +383,6 @@ public class ServicoDAO implements IServicoDAO {
         }
     }
 
-
     @Override
     public void buscar_dados_basicos(Servico servico) {
         try {
@@ -383,8 +394,8 @@ public class ServicoDAO implements IServicoDAO {
             pstmt.setInt(1, servico.getIdServico());
             //executa
             ResultSet rs = pstmt.executeQuery();
-            servico.setIdServico(null);            
-            
+            servico.setIdServico(null);
+
             while (rs.next()) {
                 servico.setIdServico(rs.getInt("id"));
                 servico.setNome(rs.getString("nome"));
@@ -431,12 +442,10 @@ public class ServicoDAO implements IServicoDAO {
             pstmt.setInt(1, servico.getIdServico());
             pstmt.setString(2, servico.getNome());
             pstmt.setString(3, servico.getDescricao());
-            pstmt.setBigDecimal(4, servico.getValor());
 
             servico.setIdServico(null);
             servico.setNome(null);
             servico.setDescricao(null);
-            servico.setValor(null);
 
             //executa
             ResultSet rs = pstmt.executeQuery();
@@ -445,7 +454,6 @@ public class ServicoDAO implements IServicoDAO {
                 servico.setIdServico(Integer.parseInt(rs.getString("id")));
                 servico.setNome(rs.getString("nome"));
                 servico.setDescricao(rs.getString("descricao"));
-                servico.setValor(parseBigDecimal(rs.getString("valor"), Locale.FRANCE));
             }
 
             return servico;
@@ -466,23 +474,42 @@ public class ServicoDAO implements IServicoDAO {
     }
 
     @Override
-    public String alterarServico(Servico servico) {
+    public String alterar(Servico servico) {
+
+        conexao = ConectaBanco.getConexao();
+
+        //'{"1","2"}'
+        ArrayList<String> funcionarios = new ArrayList<String>();
+        //conexao.createArrayOf("VARCHAR", new Object[]{"1", "2", "3"});
+
+        for (Funcionario funcionario : servico.getFuncionarios()) {
+            funcionarios.add(String.valueOf(funcionario.getIdFuncionario()));
+        }
+        Array arrayFuncionarios = null;
 
         String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
-            conexao = ConectaBanco.getConexao();
-            pstmt = conexao.prepareStatement(ALTERA_SERVICO, Statement.RETURN_GENERATED_KEYS);
+            pstmt = conexao.prepareStatement(ALTERAR, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, servico.getNome());
             pstmt.setString(2, servico.getDescricao());
             pstmt.setBigDecimal(3, servico.getValor());
-            pstmt.setInt(4, servico.getIdServico());
+            pstmt.setString(4, servico.getDuracao().toString());
+            pstmt.setInt(5, servico.getCategoria().getIdCategoriaServico());
+            try {
+                arrayFuncionarios = conexao.createArrayOf("INTEGER", funcionarios.toArray());
+            } catch (SQLException ex) {
+                Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pstmt.setArray(6, arrayFuncionarios);
+            pstmt.setInt(7, servico.getIdServico());
+
             pstmt.execute();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                servico.setIdServico(rs.getInt("id"));
+                servico.setIdServico(Integer.parseInt(rs.getString("id")));
             }
 
             return sqlReturnCode;
@@ -505,21 +532,30 @@ public class ServicoDAO implements IServicoDAO {
     }
 
     @Override
-    public boolean excluir(Servico servico) {
+    public String deletar(Servico servico) {
+
+        String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(DELETAR);
             pstmt.setInt(1, servico.getIdServico());
+            System.out.println(pstmt);
             pstmt.execute();
 
-            return true;
+            return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
 
-            return false;
-
+            sqlReturnCode = sqlErro.getSQLState();
+            System.out.println(sqlErro.toString());
+            System.out.println(sqlErro.getMessage());
+            if (sqlReturnCode.equalsIgnoreCase("23503")) { //Significa que violou uma unique constraint
+                return sqlErro.getMessage().split("\n")[0];
+            } else {
+                return sqlReturnCode;
+            }
         } finally {
             if (conexao != null) {
                 try {

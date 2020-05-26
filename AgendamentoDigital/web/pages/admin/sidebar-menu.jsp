@@ -182,9 +182,17 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="${site}/CadastrarCategoriaServico" id="categorias" class="nav-link">
+                        <i class="nav-icon fas fa-tasks"></i>
+                        <p>
+                            Categorias
+                        </p>
+                    </a>
+                </li>
                 <li id="menuPaiservicos" class="nav-item has-treeview">
                     <a href="#" id="servicos" class="nav-link">
-                        <i class="nav-icon far fa-user"></i>
+                        <i class="nav-icon fas fa-store"></i>
                         <p>
                             Serviços
                             <i class="fas fa-angle-left right"></i>
@@ -193,13 +201,13 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/CadastrarServico" id="cadastrarServico" class="nav-link">
-                                <i class="fas fa-user-plus nav-icon"></i>
+                                <i class="fas fa-store-alt nav-icon"></i>
                                 <p>Cadastrar</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="${site}/ListarServico" id="listarServico" class="nav-link">
-                                <i class="fas fa-user-tag nav-icon"></i>
+                                <i class="fas fa-folder-open nav-icon"></i>
                                 <p>Listar</p>
                             </a>
                         </li>
@@ -208,7 +216,7 @@
 
                 </li>
 
-                <li id="menuPaiagenda" class="nav-item has-treeview">
+                <!--<li id="menuPaiagenda" class="nav-item has-treeview">
                     <a href="#" id="agenda" class="nav-link">
                         <i class="nav-icon far fa-calendar"></i>
                         <p>
@@ -232,15 +240,7 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="${site}/CadastrarCategoriaServico" id="categoria" class="nav-link">
-                        <i class="nav-icon fas fa-tasks"></i>
-                        <p>
-                            Categorias
-                        </p>
-                    </a>
-                </li>
+                </li>-->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

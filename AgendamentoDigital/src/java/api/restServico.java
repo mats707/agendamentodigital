@@ -7,6 +7,7 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dao.CategoriaServicoDAO;
 import dao.FuncionarioDAO;
 import dao.ServicoDAO;
 import java.sql.SQLException;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.MediaType;
 import modelos.CategoriaServico;
 import modelos.Funcionario;
 import modelos.Servico;
+import modelos.CategoriaServico;
 
 /**
  * REST Web Service
@@ -50,6 +52,7 @@ public class restServico {
 
         ServicoDAO objServicoDao = new ServicoDAO();
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+        CategoriaServicoDAO objCategoriaServicoDAO = new CategoriaServicoDAO();
 
         ArrayList<Servico> arr = objServicoDao.listar();
 
@@ -57,6 +60,7 @@ public class restServico {
             for (Funcionario objFuncionario : objServico.getFuncionarios()) {
                 objFuncionarioDao.listarCompletoId(objFuncionario);
             }
+            objCategoriaServicoDAO.buscarId(objServico.getCategoria());
         }
 
         return objgson.toJson(arr);
@@ -71,6 +75,7 @@ public class restServico {
 
         ServicoDAO objServicoDao = new ServicoDAO();
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+        CategoriaServicoDAO objCategoriaServicoDAO = new CategoriaServicoDAO();
 
         Servico objServico = new Servico();
         objServico.setIdServico(id);
@@ -81,6 +86,7 @@ public class restServico {
             for (Funcionario objFuncionario : objServico.getFuncionarios()) {
                 objFuncionarioDao.listarCompletoId(objFuncionario);
             }
+            objCategoriaServicoDAO.buscarId(objServico.getCategoria());
         }
 
         return objgson.toJson(objServico);
