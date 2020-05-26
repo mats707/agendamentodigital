@@ -278,6 +278,15 @@ function carregarServicoSelecionado(id) {
     var idElement = id;
     console.log("carregarServicoSelecionado");
     console.log(idElement);
+    document.getElementById("groupListaServicos").style.display = "none";
+    document.getElementById("listaServico").innerHTML = "<option selected disabled>Selecione um servico</option>";
+    document.getElementById("groupDataHora").style.display = "none";
+    document.getElementById("groupListaFuncionarios").style.display = "none";
+    document.getElementById("listaFuncionarios").innerHTML = "<option selected disabled>Selecione um funcionario</option><option value='0'>Qualquer Funcionario</option>";
+    document.getElementById("nome").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("duracao").value = "";
 
     $.ajax({
         url: nameproject + '/api/Servico/Listar/Categoria/' + idElement, //lugar onde a servlet está
@@ -303,6 +312,7 @@ function carregarServicoSelecionado(id) {
                     } else {
                         document.getElementById("groupListaServicos").style.display = "none";
                         document.getElementById("listaServico").innerHTML = "<option selected disabled>Selecione um servico</option>";
+                        document.getElementById("groupDataHora").style.display = "none";
                     }
                 }
             }
@@ -313,7 +323,13 @@ function carregarServicoSelecionado(id) {
 function exibeServico() {
     var servicoSelecionado = document.getElementById("listaServico").value;
     console.log(servicoSelecionado);
-
+    document.getElementById("groupListaFuncionarios").style.display = "none";
+    document.getElementById("groupDataHora").style.display = "none";
+    document.getElementById("listaFuncionarios").innerHTML = "<option selected disabled>Selecione um funcionario</option><option value='0'>Qualquer Funcionario</option>";
+    document.getElementById("nome").value = "";
+    document.getElementById("descricao").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("duracao").value = "";
     $.ajax({
         url: nameproject + '/api/Servico/Buscar/' + servicoSelecionado, //lugar onde a servlet está
         type: "GET",
