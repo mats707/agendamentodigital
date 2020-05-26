@@ -23,7 +23,7 @@ function lerTabela(result) {
                 cellServico.innerHTML = ObjAgendamento[i].servico.nome;
                 cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                 cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
-                cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds;
+                cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds/60;
                 cellValor.innerHTML = ObjAgendamento[i].servico.valor;
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
             }
