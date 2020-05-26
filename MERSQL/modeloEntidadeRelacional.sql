@@ -203,8 +203,8 @@ insert into Cliente values
   (nextval('sqn_cliente'),5);
 
 insert into Agendamento values
-  (nextval('sqn_agendamento'),'2020-05-21','20:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-05-22','09:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-05-22','11:00:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-05-22','12:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-05-23','20:00:00',1,1,2,1);
+  (nextval('sqn_agendamento'),'2020-05-21','20:00:00',1,16,1,1),
+  (nextval('sqn_agendamento'),'2020-05-22','09:00:00',1,16,1,1),
+  (nextval('sqn_agendamento'),'2020-05-22','11:00:00',1,16,2,1),
+  (nextval('sqn_agendamento'),'2020-05-22','12:00:00',1,16,1,1),
+  (nextval('sqn_agendamento'),'2020-05-23','20:00:00',1,16,2,1);

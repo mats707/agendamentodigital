@@ -44,9 +44,7 @@ $(document).ready(function () {
                             inputCategoria.name = inputCategoria.id;
                             inputCategoria.value = Obj.categoria.idCategoriaServico;
                             document.getElementById('frmCadastrarServico').appendChild(inputCategoria);
-                            document.getElementById("spanListaCategorias").innerHTML += "<a id='categoria-" + Obj.categoria.idCategoriaServico + "' href='#'>";
-                            document.getElementById("spanListaCategorias").innerHTML += categorias;
-                            document.getElementById("spanListaCategorias").innerHTML += "</a>";
+                            document.getElementById("spanListaCategorias").innerHTML = "<a>" + categorias + "</a>";
                             document.getElementById("listaCategorias-0").style.display = 'none';
                             var btnVoltar = document.getElementById('btnVoltarCategoria');
                             if (btnVoltar == null) {

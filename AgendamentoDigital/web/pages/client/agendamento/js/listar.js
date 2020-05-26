@@ -277,7 +277,7 @@ function carregarServicoSelecionado(id) {
 
     var idElement = id;
     console.log("carregarServicoSelecionado");
-    console.log(id);
+    console.log(idElement);
 
     $.ajax({
         url: nameproject + '/api/Servico/Listar/Categoria/' + idElement, //lugar onde a servlet está
@@ -311,7 +311,7 @@ function carregarServicoSelecionado(id) {
 }
 
 function exibeServico() {
-    var servicoSelecionado = document.getElementById("listaServico").selectedIndex;
+    var servicoSelecionado = document.getElementById("listaServico").value;
     console.log(servicoSelecionado);
 
     $.ajax({
