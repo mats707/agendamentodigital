@@ -1,6 +1,7 @@
 package modelos;
 
-import java.sql.Time;
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.ArrayList;
 
 /**
@@ -16,9 +17,9 @@ public class Servico {
 
     private String descricao;
 
-    private Double valor;
+    private BigDecimal valor;
 
-    private Time duracao;
+    private Duration duracao;
 
     private CategoriaServico categoria;
     
@@ -50,19 +51,19 @@ public class Servico {
         this.descricao = descricao;
     }
 
-    public Double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 
-    public void setValor(Double valor) {
+    public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
 
-    public Time getDuracao() {
+    public Duration getDuracao() {
         return duracao;
     }
 
-    public void setDuracao(Time duracao) {
+    public void setDuracao(Duration duracao) {
         this.duracao = duracao;
     }
 
@@ -90,7 +91,7 @@ public class Servico {
         this.camposadicionais = camposadicionais;
     }
 
-    public Servico(Integer idServico, String nome, String descricao, Double valor, Time duracao, CategoriaServico categoria, ArrayList<Funcionario> funcionarios, ArrayList<Integer> camposadicionais) {
+    public Servico(Integer idServico, String nome, String descricao, BigDecimal valor, Duration duracao, CategoriaServico categoria, ArrayList<Funcionario> funcionarios, ArrayList<Integer> camposadicionais) {
         this.idServico = idServico;
         this.nome = nome;
         this.descricao = descricao;

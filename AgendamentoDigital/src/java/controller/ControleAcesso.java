@@ -1,5 +1,7 @@
 package controller;
 
+import dao.ClienteDAO;
+import dao.PessoaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Usuario;
 import dao.UsuarioDAO;
+import modelos.Cliente;
 import modelos.PerfilDeAcesso;
 import util.geraHash;
 
@@ -29,16 +32,23 @@ public class ControleAcesso extends HttpServlet {
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
                 Usuario usuarioAutenticado = usuarioDAO.autenticaUsuario(usuario);
 
+                Cliente cliente = new Cliente();
+                ClienteDAO clienteDAO = new ClienteDAO();
+
                 //se o usuario existe no banco de dados
-                if (usuarioAutenticado != null
-                        && usuario.logar(usuarioAutenticado)) {
+                if (usuarioAutenticado != null && usuario.logar(usuarioAutenticado)) {
+
+                    cliente.setUsuario(usuarioAutenticado);
+                    clienteDAO.listarCompletoId(cliente);
+
                     //cria uma sessao para o usuario
                     HttpSession sessaoUsuario = request.getSession();
                     sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
-                    //redireciona para a pagina principal
+                    sessaoUsuario.setAttribute("cliente", cliente);
 
+                    //redireciona para a pagina principal
                     response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
-                    
+
                 } else {
                     RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
                     request.setAttribute("msg", "Email ou Senha Incorreto!");
@@ -47,7 +57,8 @@ public class ControleAcesso extends HttpServlet {
             } else if (acao.equals("Sair")) {
                 HttpSession sessaoUsuario = request.getSession();
                 sessaoUsuario.removeAttribute("usuarioAutenticado");
-                response.sendRedirect("logout.jsp");
+                sessaoUsuario.removeAttribute("cliente");
+                response.sendRedirect("index.jsp");
 
             } else if (acao.equals("Validar")) {
 
@@ -92,7 +103,7 @@ public class ControleAcesso extends HttpServlet {
             case FUNCIONARIOCOMUM:
                 return ("pages/user/index3.jsp");
             case CLIENTECOMUM:
-                return ("pages/client/index2.jsp");
+                return ("Home");
             default:
                 return ("");
         }

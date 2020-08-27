@@ -14,14 +14,18 @@ import modelos.Cliente;
  */
 public interface IClienteDAO {
 
-    public boolean cadastrarCliente(Cliente cliente);
-
-    public boolean cadastrarPessoa(Cliente cliente);
-    
-    public Cliente buscarId(Cliente cliente);
-
     public ArrayList<Cliente> listar();
-    
-    public ArrayList<Cliente> listarNome(Cliente cliente);
-    
+
+    public ArrayList<Cliente> listarCompleto();
+
+    public void listarCompletoId(Cliente cliente);
+
+    public void buscar(Cliente cliente);
+
+    public boolean alterar(Cliente cliente);
+
+    public boolean excluir(Cliente cliente);
+
+    public boolean cadastrar(Cliente cliente);
+
 }

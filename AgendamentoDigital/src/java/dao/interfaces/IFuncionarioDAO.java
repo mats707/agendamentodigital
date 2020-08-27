@@ -15,15 +15,17 @@ import modelos.Funcionario;
 public interface IFuncionarioDAO {
 
     public ArrayList<Funcionario> listar();
-    
+
     public ArrayList<Funcionario> listarCompleto();
+
+    public void listarCompletoId(Funcionario funcionario);
 
     public void buscar(Funcionario funcionario);
 
     public boolean alterar(Funcionario funcionario);
 
     public boolean excluir(Funcionario funcionario);
-    
+
     public boolean cadastrar(Funcionario funcionario);
 
 }

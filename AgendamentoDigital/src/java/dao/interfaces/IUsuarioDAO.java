@@ -26,7 +26,7 @@ public interface IUsuarioDAO {
    
     public String alterarUsuario(Usuario usuario);
 
-    public boolean excluir(Usuario usuario);
+    public String deletar(Usuario usuario);
     
 
 }

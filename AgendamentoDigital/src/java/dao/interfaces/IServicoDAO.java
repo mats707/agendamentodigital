@@ -15,16 +15,19 @@ import modelos.Servico;
 public interface IServicoDAO {
 
     public String cadastrar(Servico servico);
-    
+
     public ArrayList<Servico> listar();
-    
+
+    public ArrayList<Servico> listarPorCategoria(Servico servico);
+
     public void buscar(Servico servico);
     
-    public Servico buscaCompleta(Servico servico);
-   
-    public String alterarServico(Servico servico);
+    public void buscar_dados_basicos(Servico servico);
 
-    public boolean excluir(Servico servico);
-    
+    public Servico buscaCompleta(Servico servico);
+
+    public String alterar(Servico servico);
+
+    public String deletar(Servico servico);
 
 }

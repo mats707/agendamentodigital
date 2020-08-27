@@ -17,6 +17,8 @@ public interface ICategoriaServicoDAO {
     public String cadastraCategoria(CategoriaServico categoriaServico);
     
     public CategoriaServico buscarNome(CategoriaServico categoriaServico);
+    
+    public void buscarId(CategoriaServico categoriaServico);
 
     public String cadastraSubCategoria(CategoriaServico categoriaServico);
     

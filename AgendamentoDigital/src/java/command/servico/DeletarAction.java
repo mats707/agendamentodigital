@@ -6,6 +6,7 @@
 package command.servico;
 
 import dao.ServicoDAO;
+import java.math.BigDecimal;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,40 +29,45 @@ public class DeletarAction implements ICommand {
         Integer id = Integer.parseInt(request.getParameter("idServicoDeleted"));
         String deletedNome = request.getParameter("deletedNome");
         String deletedDescricao = request.getParameter("deletedDescricao");
-        String deletedValor = request.getParameter("deletedValor");
 
-        String funcaoMsg = "";
-        String funcaoStatus = "";
+        String sqlState = "0";
+        String funcaoMsgOperation = "";
+        String funcaoStatusOperation = "";
 
-        if (id != null && deletedNome != null && deletedDescricao != null && deletedValor != null) {
+        if (id != null && deletedNome != null && deletedDescricao != null) {
             Servico servico = new Servico();
             servico.setIdServico(id);
             servico.setNome(deletedNome);
             servico.setDescricao(deletedDescricao);
-            servico.setValor(Double.parseDouble(deletedValor));
 
             ServicoDAO servicoDAO = new ServicoDAO();
             Servico servicoSolicitado = servicoDAO.buscaCompleta(servico);
 
             if (servicoSolicitado == servico) {
-                if (servicoDAO.excluir(servicoSolicitado)) {
-                    funcaoMsg = "Deletado com sucesso!";
-                    funcaoStatus = "success";
+                //Chamada da DAO para Deletar
+                sqlState = servicoDAO.deletar(servicoSolicitado);
+                //Verifica o retorno da DAO (banco de dados)
+                if (sqlState == "0") {
+                    funcaoMsgOperation = "Deletado com sucesso!";
+                    funcaoStatusOperation = "success";
+                } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"servico\" violates foreign key constraint \"fkservico\" on table \"agendamento\"")) {
+                    funcaoMsgOperation = "Você possui um agendamento com esse serviço! Delete o agendamento primeiro!";
+                    funcaoStatusOperation = "error";
                 } else {
-                    funcaoMsg = "Não foi possível deletar o serviço, tente novamente mais tarde!";
-                    funcaoStatus = "error";
+                    funcaoMsgOperation = "Não foi possível deletar o serviço, tente novamente mais tarde!";
+                    funcaoStatusOperation = "error";
                 }
             } else {
-                funcaoMsg = "Serviço inválido!";
-                funcaoStatus = "error";
+                funcaoMsgOperation = "Serviço inválido!";
+                funcaoStatusOperation = "error";
             }
         } else {
-            funcaoMsg = "Serviço inválido!";
-            funcaoStatus = "error";
+            funcaoMsgOperation = "Serviço inválido!";
+            funcaoStatusOperation = "error";
         }
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
-        return funcaoMsg;
+        request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
+        request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
+        return funcaoMsgOperation;
 
     }
 

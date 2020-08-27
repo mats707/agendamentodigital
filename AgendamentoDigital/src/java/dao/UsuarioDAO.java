@@ -23,7 +23,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "celular = ?,\n"
             + "perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?))\n"
             + "WHERE id = ?";
-    private static final String AUTENTICA_USUARIO = "SELECT u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=? AND u.senha=?";
     private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
@@ -87,6 +87,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             rsUsuario = pstmt.executeQuery();
             if (rsUsuario.next()) {
                 usuarioAutenticado = new Usuario();
+                usuarioAutenticado.setIdUsuario(rsUsuario.getInt("id"));
                 usuarioAutenticado.setEmail(rsUsuario.getString("email"));
                 usuarioAutenticado.setSenha(rsUsuario.getString("senha"));
                 usuarioAutenticado.setCelular(rsUsuario.getLong("celular"));
@@ -274,7 +275,9 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public boolean excluir(Usuario usuario) {
+    public String deletar(Usuario usuario) {
+
+        String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
@@ -283,12 +286,15 @@ public class UsuarioDAO implements IUsuarioDAO {
             pstmt.setInt(1, usuario.getIdUsuario());
             pstmt.execute();
 
-            return true;
+            return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
-
-            return false;
-
+            sqlReturnCode = sqlErro.getSQLState();
+            if (sqlReturnCode.equalsIgnoreCase("23503")) { //Significa que violou uma unique constraint
+                return sqlErro.getMessage().split("\n")[0];
+            } else {
+                return sqlReturnCode;
+            }
         } finally {
             if (conexao != null) {
                 try {

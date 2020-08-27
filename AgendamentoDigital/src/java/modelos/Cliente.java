@@ -22,4 +22,8 @@ public class Cliente extends Pessoa {
     public Cliente() {
     }
 
+    public Cliente(Integer idCliente) {
+        this.idCliente = idCliente;
+    }
+    
 }

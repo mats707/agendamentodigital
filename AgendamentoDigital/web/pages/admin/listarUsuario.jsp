@@ -90,19 +90,10 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <footer class="main-footer">
-                <div class="float-right d-none d-sm-block">
-                    <b>Version</b> 3.0.1-pre
-                </div>
-                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-                reserved.
-            </footer>
 
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
+            <!-- Footer -->
+            <jsp:include page="footer.jsp"/>
+
         </div>
         <!-- ./wrapper -->
 
@@ -178,7 +169,7 @@
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarUsuario" action="${site}/DeletarUsuario" method="post">
+                <form id="deletarUsuario" action="${site}/DeletarUsuario" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Excluir Usuário? </h5>
@@ -230,7 +221,6 @@
         </div>
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
-        <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
 
@@ -291,11 +281,16 @@
             })
         </script>
         <script src="${site}/pages/admin/listarUsuario.js" type="text/javascript"></script>
-
         <script>
             var result = ${msg};
             includeHTMLNav("usuarios", "listarUsuario");
             lerJson(result);
+            var callSweet = "${funcaoMsgOperation}";
+            if(callSweet != ""){
+                sweet(callSweet,"${funcaoStatusOperation}",6000);
+            } else {
+                sweet("${funcaoMsg}","${funcaoStatus}",3000);
+            }
         </script>
 
         <!-- PAGE PLUGINS -->
@@ -304,26 +299,4 @@
         <script src="${site}/plugins/raphael/raphael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-        <script type="text/javascript">
-            if ('${funcaoMsg}' != '') {
-                console.log("Entrei: ${funcaoMsg}");
-                window.onload = function () {
-                    $(function () {
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'center',
-                            showConfirmButton: false,
-                            timer: 3000
-                        });
-                        Toast.fire({
-                            type: '${funcaoStatus}',
-                            title: ' ${funcaoMsg}'
-                        });
-                    });
-                };
-            }
-
-        </script>
-
 </html>

@@ -97,7 +97,7 @@ function exibeFilho(element) {
     var idCategoriaSelectedText = $("#" + idCategoriaPaiSelected + " :selected").text();
 
     //Usar cadastrar categoria para realizar a listagem de categoria
-    document.getElementById("spanListaCategorias").innerHTML += "<a id='categoria-" + idCategoriaSelected + "' data-categoriaPai='" + idCategoriaPaiSelected + "' onclick='exibeFilho(this);' href='#'>";
+    document.getElementById("spanListaCategorias").innerHTML += "<a id='categoria-" + idCategoriaSelected + "' data-categoriaPai='" + idCategoriaPaiSelected + "' href='#'>";
     document.getElementById("spanListaCategorias").innerHTML += idCategoriaSelectedText;
     document.getElementById("spanListaCategorias").innerHTML += "</a>";
     document.getElementById(idCategoriaPaiSelected).style.display = displayNone;
@@ -259,6 +259,9 @@ function voltarCategoria() {
         console.log("listaCategoriasText");
         console.log(listaCategoriasText);
     } else {
+        var spanLista = '';
+        document.getElementById("spanListaCategorias").innerHTML = spanLista;
+        document.getElementById("listaCategorias-0").style.display = displayBlock;
         document.getElementById("btnVoltarCategoria").style.display = displayNone;
     }
 }

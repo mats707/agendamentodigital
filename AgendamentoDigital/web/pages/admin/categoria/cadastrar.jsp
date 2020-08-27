@@ -150,24 +150,14 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <div class="float-right d-none d-sm-block">
-                <b>Version</b> 3.0.1-pre
-            </div>
-            <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
-            reserved.
-        </footer>
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
+        <!-- Footer -->
+        <jsp:include page="../footer.jsp"/>
+
     </div>
     <!-- ./wrapper -->
 
     <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
-    <script src="${site}/dist/js/pages/sweetalert2Edit.js" type="text/javascript"></script>
     <!-- jQuery -->
     <script src="${site}/plugins/jquery/jquery.min.js"></script>
 
@@ -220,7 +210,7 @@
                 language: "pt-BR",
                 state: "pt-BR"
             })
-            
+
             //Initialize Select2 Elements
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
@@ -234,6 +224,12 @@
 
     <script>
         includeHTMLNav("categorias", "");
+        var callSweet = "${funcaoMsgOperation}";
+        if (callSweet != "") {
+            sweet(callSweet, "${funcaoStatusOperation}", 6000);
+        } else {
+            sweet("${funcaoMsg}", "${funcaoStatus}", 3000);
+        }
     </script>
 
     <!-- PAGE PLUGINS -->
@@ -242,20 +238,5 @@
     <script src="${site}/plugins/raphael/raphael.min.js"></script>
     <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
     <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-    <script type="text/javascript">
-        console.log("Entrei: ${funcaoMsg}");
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'center',
-            showConfirmButton: false,
-            timer: 3000
-        });
-        Toast.fire({
-            type: '${funcaoStatus}',
-            title: ' ${funcaoMsg}'
-        });
-
-    </script>
 </body>
 </html>

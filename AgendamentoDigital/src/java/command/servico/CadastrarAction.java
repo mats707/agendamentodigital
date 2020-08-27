@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.ServicoDAO;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import jdk.nashorn.internal.objects.NativeString;
 import modelos.CategoriaServico;
 import modelos.Funcionario;
 import modelos.Servico;
+import java.time.Duration;
 
 /**
  *
@@ -39,7 +41,7 @@ public class CadastrarAction implements ICommand {
         String descricao = request.getParameter("descricao");
         String categoriaFinal = request.getParameter("categoriaFinal");
         String valor = request.getParameter("valor");
-        String tempo = request.getParameter("duracao");
+        String duracao = request.getParameter("duracao");
         String[] funcionariosString = request.getParameterValues("listaFuncionarios");
 
 //        String[] funcionariosString = null;
@@ -51,11 +53,13 @@ public class CadastrarAction implements ICommand {
         String funcaoStatus = "info";
 
         if (nome != null && descricao != null && categoriaFinal != null
-                && valor != null && tempo != null && funcionariosString != null) {
+                && valor != null && duracao != null && funcionariosString != null) {
 
             //Ajustes no formato dos campos
             valor = valor.replace(",", ".");
-            tempo = "00:" + tempo + ":00";
+            Duration tempo = Duration.ofHours(Integer.parseInt("00"));
+            tempo = tempo.plusMinutes(Integer.parseInt(duracao));
+            tempo = tempo.plusSeconds(Integer.parseInt("00"));
 
             ArrayList<Funcionario> funcionarios = new ArrayList<Funcionario>();
 
@@ -73,18 +77,16 @@ public class CadastrarAction implements ICommand {
             objServico.setNome(nome);
             objServico.setDescricao(descricao);
             objServico.setCategoria(categoria);
-            objServico.setValor(Double.parseDouble(valor));
-            objServico.setDuracao(Time.valueOf(tempo));
+            objServico.setValor(BigDecimal.valueOf(Double.parseDouble(valor)));
+            objServico.setDuracao(tempo);
             objServico.setFuncionarios(funcionarios);
-
-            System.out.println(objServico);
 
             sqlState = servicoDAO.cadastrar(objServico);
             if (sqlState == "0") {
                 funcaoMsg = "Cadastrado com sucesso!";
                 funcaoStatus = "success";
             } else {
-                funcaoMsg = "Não foi possível cadastrar a categoria, tente novamente!";
+                funcaoMsg = "Não foi possível cadastrar o serviço, tente novamente!";
                 funcaoStatus = "error";
             }
 

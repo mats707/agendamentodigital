@@ -32,8 +32,8 @@ public class AlterarAction implements ICommand {
         String editedCelular = request.getParameter("editedCelular");
         String editedPerfil = request.getParameter("editedPerfil");
 
-        String funcaoMsg;
-        String funcaoStatus;
+        String funcaoMsgOperation = "";
+        String funcaoStatusOperation = "";
 
         if (id != null && editedEmail != null && editedPassword != null
                 && editedChkpassword != null && editedCelular != null && editedPerfil != null) {
@@ -56,26 +56,26 @@ public class AlterarAction implements ICommand {
                 String sqlState = usuarioDAO.alterarUsuario(usuario);
 
                 if (sqlState == "0") {
-                    funcaoMsg = "Alterado com sucesso!";
-                    funcaoStatus = "success";
+                    funcaoMsgOperation = "Alterado com sucesso!";
+                    funcaoStatusOperation = "success";
                 } else if ("23505".equals(sqlState)) {
-                    funcaoMsg = "Tente outro Email ou Celular!";
-                    funcaoStatus = "error";
+                    funcaoMsgOperation = "Tente outro Email ou Celular!";
+                    funcaoStatusOperation = "error";
                 } else {
-                    funcaoMsg = "Não foi possível alterar o usuário, tente novamente!";
-                    funcaoStatus = "error";
+                    funcaoMsgOperation = "Não foi possível alterar o usuário, tente novamente!";
+                    funcaoStatusOperation = "error";
                 }
             } else {
-                funcaoMsg = "Senhas diferente!";
-                funcaoStatus = "warning";
+                funcaoMsgOperation = "Senhas diferente!";
+                funcaoStatusOperation = "warning";
             }
         } else {
-            funcaoMsg = "Usuário inválido!";
-            funcaoStatus = "error";
+            funcaoMsgOperation = "Usuário inválido!";
+            funcaoStatusOperation = "error";
         }
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
-        return funcaoMsg;
+        request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
+        request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
+        return funcaoMsgOperation;
 
     }
 

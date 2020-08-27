@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelos.Funcionario;
-import modelos.Funcionario;
 import modelos.PerfilDeAcesso;
 import modelos.Pessoa;
 import modelos.Usuario;
@@ -21,6 +20,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
     private static final String LISTAR = "SELECT id, pessoa FROM sistema.funcionario ORDER BY id;";
     private static final String LISTAR_PESSOA = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id ORDER BY f.id;";
+    private static final String BUSCAR_COMPLETO_ID = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE f.id = ? ORDER BY f.id;";
+    private static final String BUSCAR_ID = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id WHERE f.id = ? ORDER BY f.id;";
     private static final String BUSCAR = "SELECT * FROM sistema.funcionario WHERE nome ilike ?;";
     private static final String INSERT =
             "INSERT INTO sistema.funcionario (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
@@ -136,21 +137,69 @@ public class FuncionarioDAO implements IFuncionarioDAO {
     }
 
     @Override
+    public void listarCompletoId(Funcionario funcionario) {
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_COMPLETO_ID);
+            
+            //Passa ID como parametro
+            pstmt.setInt(1, funcionario.getIdFuncionario());
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                funcionario.setIdFuncionario(Integer.parseInt(rs.getString("idFunc")));
+                funcionario.setIdPessoa(Integer.parseInt(rs.getString("idPessoa")));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setDataNascimento(rs.getDate("dataNascimento"));
+                
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("idUsuario")));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
+                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                
+                funcionario.setUsuario(usuario);
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @Override
     public void buscar(Funcionario funcionario) {
 
         try {
             //Conexao
             conexao = ConectaBanco.getConexao();
             //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR);
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_ID);
 
-            pstmt.setString(1, funcionario.getNome());
+            pstmt.setInt(1, funcionario.getIdFuncionario());
             //executa
             ResultSet rs = pstmt.executeQuery();
 
             // como a query ira retornar somente um registro, faremos o NEXT
             while (rs.next()) {
-                funcionario.setIdFuncionario(rs.getInt("id"));
+                funcionario.setIdFuncionario(Integer.parseInt(rs.getString("idFunc")));
+                funcionario.setIdPessoa(Integer.parseInt(rs.getString("idPessoa")));
+                funcionario.setNome(rs.getString("nome"));
+                funcionario.setDataNascimento(rs.getDate("dataNascimento"));
             }
         } catch (Exception e) {
 

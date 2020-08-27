@@ -30,8 +30,9 @@ public class DeletarAction implements ICommand {
         String deletedCelular = request.getParameter("deletedCelular");
         String deletedPerfil = request.getParameter("deletedPerfil");
 
-        String funcaoMsg = "";
-        String funcaoStatus = "";
+        String sqlState = "0";
+        String funcaoMsgOperation = "";
+        String funcaoStatusOperation = "";
 
         if (id != null && deletedEmail != null && deletedCelular != null && deletedPerfil != null) {
             Usuario usuario = new Usuario();
@@ -50,24 +51,30 @@ public class DeletarAction implements ICommand {
             Usuario usuarioSolicitado = usuarioDAO.buscaCompleta(usuario);
 
             if (usuarioSolicitado == usuario) {
-                if (usuarioDAO.excluir(usuarioSolicitado)) {
-                    funcaoMsg = "Deletado com sucesso!";
-                    funcaoStatus = "success";
+                //Chamada da DAO para Deletar
+                sqlState = usuarioDAO.deletar(usuarioSolicitado);
+                //Verifica o retorno da DAO (banco de dados)
+                if (sqlState == "0") {
+                    funcaoMsgOperation = "Deletado com sucesso!";
+                    funcaoStatusOperation = "success";
+                } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"usuario\" violates foreign key constraint \"fkusuario\" on table \"pessoa\"")) {
+                    funcaoMsgOperation = "Há uma pessoa com esse usuário! Necessário excluir a pessoa primeiro!";
+                    funcaoStatusOperation = "error";
                 } else {
-                    funcaoMsg = "Não foi possível deletar o usuário, tente novamente mais tarde!";
-                    funcaoStatus = "error";
+                    funcaoMsgOperation = "Não foi possível deletar o usuário, tente novamente mais tarde!";
+                    funcaoStatusOperation = "error";
                 }
             } else {
-                funcaoMsg = "Usuário inválido!";
-                funcaoStatus = "error";
+                funcaoMsgOperation = "Usuário inválido!";
+                funcaoStatusOperation = "error";
             }
         } else {
-            funcaoMsg = "Usuário inválido!";
-            funcaoStatus = "error";
+            funcaoMsgOperation = "Usuário inválido!";
+            funcaoStatusOperation = "error";
         }
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
-        return funcaoMsg;
+        request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
+        request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
+        return funcaoMsgOperation;
 
     }
 

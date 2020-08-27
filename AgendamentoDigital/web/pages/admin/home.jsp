@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -649,20 +649,10 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <footer class="main-footer">
-                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-                All rights reserved.
-                <div class="float-right d-none d-sm-inline-block">
-                    <b>Version</b> 3.0.1-pre
-                </div>
-            </footer>
 
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
-        </div>
+            <!-- Footer -->
+            <jsp:include page="footer.jsp"/>
+
         <!-- ./wrapper -->
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
@@ -703,7 +693,7 @@
         <script src="${site}/dist/js/pages/dashboard.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="${site}/dist/js/demo.js"></script>
-        !-- Select2 -->
+        <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
         <script>
             $(function () {

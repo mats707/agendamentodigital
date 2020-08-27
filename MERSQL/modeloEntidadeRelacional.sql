@@ -8,7 +8,7 @@
 --# CampoAdicional      (id,nome,descricao,tipo)
 --# TipoCampoAdicional  (id,nome)
 --# StatusAgendamento	(id,nome)
---# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,STATUS)
+--# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,FUNCIONARIO,STATUS)
 --# SQL - Tabela
 
 drop schema sistema cascade;
@@ -76,7 +76,7 @@ create table Servico(
   nome varchar(100) not null,
   descricao varchar(500),
   valor money,
-  duracao time, --select cast('11:00 PM' as time);
+  duracao interval,
   categoria integer,
   funcionarios integer[],
   camposadicionais integer[],
@@ -97,11 +97,15 @@ create table Agendamento(
   horarioAgendamento time not null,
   cliente integer not null,
   servico integer not null,
+  funcionario integer not null,
   status integer not null,
   constraint pkAgendamento primary key (id),
   constraint fkCliente foreign key (cliente) references Cliente(id),
   constraint fkServico foreign key (servico) references Servico(id),
-  constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id)
+  constraint fkFuncionario foreign key (funcionario) references Funcionario(id),
+  constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id),
+  constraint unqAgendamentoCliente unique (dataAgendamento,horarioAgendamento,cliente),
+  constraint unqAgendamentoFuncionario unique (dataAgendamento,horarioAgendamento,funcionario)
 );
 
 create table TipoCampoAdicional(
@@ -128,6 +132,7 @@ create sequence sistema.sqn_servico;
 create sequence sistema.sqn_cliente;
 create sequence sistema.sqn_pessoa;
 create sequence sistema.sqn_funcionario;
+create sequence sistema.sqn_agendamento;
 create sequence sistema.sqn_categoriaservico;
 create sequence sistema.sqn_campoadicional;
 create sequence sistema.sqn_tipocampoadicional;
@@ -139,11 +144,18 @@ insert into PerfilAcesso values
   (2,'FUNCIONARIOCOMUM'),
   (3,'FUNCIONARIOADMIN');
 
+insert into StatusAgendamento values
+  (1,'AGUARDANDOATENDIMENTO'),
+  (2,'FINALIZADO'),
+  (3,'CANCELADO');
+
 insert into Usuario values
   (nextval('sqn_usuario'),'admin@admin.com','YWRtaW4=',11912341234,3),
   (nextval('sqn_usuario'),'felipe@funcionario.com','MTIzNDU2Nzg=',11123123123,2),
   (nextval('sqn_usuario'),'matheus@funcionario.com','MTIzNDU2Nzg=',11845784567,2),
-  (nextval('sqn_usuario'),'rafael@funcionario.com','MTIzNDU2Nzg=',11932145678,2);
+  (nextval('sqn_usuario'),'rafael@funcionario.com','MTIzNDU2Nzg=',11932145678,2),
+  (nextval('sqn_usuario'),'nathalia@cliente.com','MTIzNDU2Nzg=',11963970577,1),
+  (nextval('sqn_usuario'),'brunolopes@cliente.com','MTIzNDU2Nzg=',11955445566,1);
 
 insert into CategoriaServico values
 	(0,'DEFAULT','Todas categorias serão filhas dessas categoria.',null),
@@ -170,14 +182,29 @@ insert into CategoriaServico values
 	(26,'slot','...',25);
 
 alter sequence sistema.sqn_categoriaservico restart with 27;
+
+insert into Servico values
+	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25.90'::NUMERIC::MONEY,'PT30M'::INTERVAL,'10','{"1","2"}');	
  
 insert into Pessoa values
   (nextval('sqn_pessoa'),'Felipe Jesus','01/04/1992',2),
   (nextval('sqn_pessoa'),'Matheus Nascimento','10/10/1998',3),
-  (nextval('sqn_pessoa'),'Rafael Pereira','01/04/1992',4);
+  (nextval('sqn_pessoa'),'Rafael Pereira','01/04/1992',4),
+  (nextval('sqn_pessoa'),'Nathalia Cardoso','05/04/2000',5),
+  (nextval('sqn_pessoa'),'Bruno Lopes','01/01/1990',6);
   
 insert into Funcionario values
   (nextval('sqn_funcionario'),1),
   (nextval('sqn_funcionario'),2),
   (nextval('sqn_funcionario'),3);
+  
+insert into Cliente values
+  (nextval('sqn_cliente'),4),
+  (nextval('sqn_cliente'),5);
 
+insert into Agendamento values
+  (nextval('sqn_agendamento'),'2020-05-21','20:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-05-22','09:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-05-22','11:00:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-05-22','12:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-05-23','20:00:00',1,1,2,1);
