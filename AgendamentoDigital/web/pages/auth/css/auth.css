@@ -1,0 +1,12 @@
+.sing-up-now {
+    font-size: 0.875em;
+    color: #1d1d1d;
+    top: -14px;
+    position: relative;
+}
+
+.btn-sing-up-now {
+    color: #3350b9;
+    text-decoration: none;
+    cursor: pointer;
+}
