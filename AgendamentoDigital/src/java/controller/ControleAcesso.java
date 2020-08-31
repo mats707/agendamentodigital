@@ -50,7 +50,7 @@ public class ControleAcesso extends HttpServlet {
                     response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
 
                 } else {
-                    RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
+                    RequestDispatcher rd = request.getRequestDispatcher("/auth/login_teste.jsp");
                     request.setAttribute("msg", "Email ou Senha Incorreto!");
                     rd.forward(request, response);
                 }
@@ -70,7 +70,7 @@ public class ControleAcesso extends HttpServlet {
                 if (usuarioAutenticado != null) {
                     response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
                 } else {
-                    RequestDispatcher rd = request.getRequestDispatcher("/login.jsp");
+                    RequestDispatcher rd = request.getRequestDispatcher("/auth/login_teste.jsp");
                     rd.forward(request, response);
                 }
 
