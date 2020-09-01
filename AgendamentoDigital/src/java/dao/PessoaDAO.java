@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -20,18 +22,7 @@ public class PessoaDAO implements IPessoaDAO {
     private static final String LISTAR = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa ORDER BY id;";
     private static final String BUSCAR = "SELECT * FROM sistema.pessoa WHERE nome ilike ?;";
     private static final String BUSCAR_USUARIO = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa WHERE usuario=? ORDER BY id;";
-    private static final String INSERT
-            = "INSERT INTO sistema.pessoa (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
-            + "  VALUES (NEXTVAL('sqn_pessoa'),\n"
-            + "		?,\n"
-            + "		?,\n"
-            + "		(SELECT id FROM endereco WHERE id = ?),\n"
-            + "		(SELECT id FROM sexo WHERE id = ?),\n"
-            + "		(SELECT id FROM estadoCivil WHERE id = ?),\n"
-            + "		?,\n"
-            + "		(SELECT id FROM profissao WHERE id = ?),\n"
-            + "		(SELECT id FROM escolaridade WHERE id = ?)\n"
-            + "  );";
+    private static final String CADASTRAR = "INSERT INTO sistema.pessoa (id, nome, dataNascimento, usuario) VALUES (NEXTVAL('sqn_pessoa'),?,?,(SELECT id FROM usuario WHERE id = ?));";
     private static final String DELETE = "DELETE FROM pessoa WHERE id=?;";
     private static final String UPDATE = "UPDATE pessoa SET nome=? WHERE id=?;";
 
@@ -219,15 +210,22 @@ public class PessoaDAO implements IPessoaDAO {
     }
 
     @Override
-    public boolean cadastrar(Pessoa pessoa) {
+    public String cadastrar(Pessoa pessoa) {
+        
+        String sqlReturnCode = "0";
+        
+        String patternDataNascimento = "dd/MM/yyyy";
+        DateFormat df = new SimpleDateFormat(patternDataNascimento);
 
         try {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement pstmt = conexao.prepareStatement(CADASTRAR, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, pessoa.getNome());
+            pstmt.setString(2, df.format(pessoa.getDataNascimento()));
+            pstmt.setInt(1, pessoa.getUsuario().getIdUsuario());
 
             pstmt.execute();
 
@@ -236,20 +234,22 @@ public class PessoaDAO implements IPessoaDAO {
                 pessoa.setIdPessoa(rs.getInt("id"));
             }
 
-            return true;
+            return sqlReturnCode;
 
-        } catch (Exception ex) {
+        } catch (SQLException sqlErro) {
 
-            return false;
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
 
         } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
-
         }
 
     }

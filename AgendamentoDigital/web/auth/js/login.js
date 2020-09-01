@@ -18,13 +18,14 @@ $().ready(function () {
 });
 function rotateCard(type) {
     var card = $('#containerLogin');
-    if (type.id == "btnLogin") {
+    console.log(type.getAttribute('data-action'));
+    if (type.getAttribute('data-action') == "Login") {
         if (card.hasClass('hover') == true) {
             card.removeClass('hover');
             $("#btnLogin").addClass("btn-primary");
             $("#btnRegister").removeClass("btn-primary");
         }
-    } else if (type.id == "btnRegister") {
+    } else if (type.getAttribute('data-action') == "Register") {
         if (card.hasClass('hover') == false) {
             card.addClass('hover');
             $("#btnRegister").addClass("btn-primary");
