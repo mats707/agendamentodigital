@@ -8,7 +8,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Agendamento Digital | Página Inicial</title>
-        <c:set var="site" value="${'/AgendamentoDigital'}" scope="application"  />
+        <c:set var="site" value="${pageContext.request.contextPath}" scope="application"  />
 
         <!-- Font Awesome -->
         <link rel="stylesheet" href="./plugins/fontawesome-free/css/all.min.css">

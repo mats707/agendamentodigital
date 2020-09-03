@@ -1,9 +1,7 @@
 package controller;
 
 import dao.ClienteDAO;
-import dao.PessoaDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,59 +22,61 @@ public class ControleAcesso extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try {
+            RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
             String acao = request.getParameter("acao");
-            if (acao.equals("Entrar")) {
-                Usuario usuario = new Usuario();
-                usuario.setEmail(request.getParameter("inputEmail"));
-                usuario.setSenha(geraHash.codificaBase64(request.getParameter("inputPassword")));
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                Usuario usuarioAutenticado = usuarioDAO.autenticaUsuario(usuario);
+            switch (acao) {
+                case "Entrar": {
+                    Usuario usuario = new Usuario();
+                    usuario.setEmail(request.getParameter("inputEmail"));
+                    usuario.setSenha(geraHash.codificaBase64(request.getParameter("inputPassword")));
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+                    Usuario usuarioAutenticado = usuarioDAO.autenticaUsuario(usuario);
+                    Cliente cliente = new Cliente();
+                    ClienteDAO clienteDAO = new ClienteDAO();
+                    //se o usuario existe no banco de dados
+                    if (usuarioAutenticado != null && usuario.logar(usuarioAutenticado)) {
 
-                Cliente cliente = new Cliente();
-                ClienteDAO clienteDAO = new ClienteDAO();
+                        cliente.setUsuario(usuarioAutenticado);
+                        clienteDAO.listarCompletoId(cliente);
 
-                //se o usuario existe no banco de dados
-                if (usuarioAutenticado != null && usuario.logar(usuarioAutenticado)) {
+                        //cria uma sessao para o usuario
+                        HttpSession sessaoUsuario = request.getSession();
+                        sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
+                        sessaoUsuario.setAttribute("cliente", cliente);
 
-                    cliente.setUsuario(usuarioAutenticado);
-                    clienteDAO.listarCompletoId(cliente);
+                        //redireciona para a pagina principal
+                        response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
 
-                    //cria uma sessao para o usuario
+                    } else {
+                        request.setAttribute("msg", "Email ou Senha Incorreto!");
+                        rd.forward(request, response);
+                    }
+                    break;
+                }
+                case "Sair": {
                     HttpSession sessaoUsuario = request.getSession();
-                    sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
-                    sessaoUsuario.setAttribute("cliente", cliente);
-
-                    //redireciona para a pagina principal
-                    response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
-
-                } else {
-                    RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
-                    request.setAttribute("msg", "Email ou Senha Incorreto!");
-                    rd.forward(request, response);
+                    sessaoUsuario.removeAttribute("usuarioAutenticado");
+                    sessaoUsuario.removeAttribute("cliente");
+                    response.sendRedirect("index.jsp");
+                    break;
                 }
-            } else if (acao.equals("Sair")) {
-                HttpSession sessaoUsuario = request.getSession();
-                sessaoUsuario.removeAttribute("usuarioAutenticado");
-                sessaoUsuario.removeAttribute("cliente");
-                response.sendRedirect("index.jsp");
-
-            } else if (acao.equals("Validar")) {
-
-                //cria uma sessao para resgatar o usuario
-                HttpSession sessaoUsuario = request.getSession();
-                Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
-
-                //se o usuario existe no banco de dados
-                if (usuarioAutenticado != null) {
-                    response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
-                } else {
-                    RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
-                    rd.forward(request, response);
+                case "Validar": {
+                    //cria uma sessao para resgatar o usuario
+                    HttpSession sessaoUsuario = request.getSession();
+                    Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+                    //se o usuario existe no banco de dados
+                    if (usuarioAutenticado != null) {
+                        response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
+                    } else {
+                        rd.forward(request, response);
+                    }
+                    break;
                 }
-
+                default:
+                    break;
             }
-        } catch (Exception erro) {
-            RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
+        } catch (IOException | ServletException erro) {
+            RequestDispatcher rd = request.getRequestDispatcher("/erro.jsp");
             request.setAttribute("erro", erro);
             rd.forward(request, response);
         }

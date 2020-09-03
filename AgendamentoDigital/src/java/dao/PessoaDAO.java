@@ -22,7 +22,7 @@ public class PessoaDAO implements IPessoaDAO {
     private static final String LISTAR = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa ORDER BY id;";
     private static final String BUSCAR = "SELECT * FROM sistema.pessoa WHERE nome ilike ?;";
     private static final String BUSCAR_USUARIO = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa WHERE usuario=? ORDER BY id;";
-    private static final String CADASTRAR = "INSERT INTO sistema.pessoa (id, nome, dataNascimento, usuario) VALUES (NEXTVAL('sqn_pessoa'),?,?,(SELECT id FROM usuario WHERE id = ?));";
+    private static final String CADASTRAR = "INSERT INTO sistema.pessoa (id, nome, dataNascimento, usuario) VALUES (NEXTVAL('sistema.sqn_pessoa'),?,?::DATE,(SELECT id FROM sistema.usuario WHERE id = ?));";
     private static final String DELETE = "DELETE FROM pessoa WHERE id=?;";
     private static final String UPDATE = "UPDATE pessoa SET nome=? WHERE id=?;";
 
@@ -214,7 +214,7 @@ public class PessoaDAO implements IPessoaDAO {
         
         String sqlReturnCode = "0";
         
-        String patternDataNascimento = "dd/MM/yyyy";
+        String patternDataNascimento = "yyyy-MM-dd";
         DateFormat df = new SimpleDateFormat(patternDataNascimento);
 
         try {
@@ -225,7 +225,7 @@ public class PessoaDAO implements IPessoaDAO {
 
             pstmt.setString(1, pessoa.getNome());
             pstmt.setString(2, df.format(pessoa.getDataNascimento()));
-            pstmt.setInt(1, pessoa.getUsuario().getIdUsuario());
+            pstmt.setInt(3, pessoa.getUsuario().getIdUsuario());
 
             pstmt.execute();
 

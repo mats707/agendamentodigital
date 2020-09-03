@@ -137,7 +137,12 @@
                                                 </div>
                                             </div>
                                             <div class="input-group mb-3">
-                                                <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento">
+                                                <div class="input-group-append">
+                                                    <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento">
+                                                    <div class="input-group-text">
+                                                        <span class="fas fa-calendar"></span>
+                                                    </div>   
+                                                </div>
                                             </div>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-append">

@@ -28,7 +28,7 @@ public class CadastrarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "pages/admin/cadastrarCliente.jsp");
+        request.setAttribute("pagina", "auth/login.jsp");
 
         String nome = request.getParameter("inputName");
         String dataNascimento = request.getParameter("inputDataNasc");
@@ -41,7 +41,7 @@ public class CadastrarAction implements ICommand {
             Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, password, celular).constroi();
 
             if (geraHash.codificaBase64(chkpassword).equals(cliente.getUsuario().getSenha())) {
-
+                
                 //Realiza o cadastro do usuário com passagem por referência - Na função será atribuído ao objeto o ID que foi gerado após o cadastro
                 UsuarioDAO usuarioDao = new UsuarioDAO();
                 String sqlStateUsuario = usuarioDao.cadastraNovoUsuario(cliente.getUsuario());
@@ -74,6 +74,9 @@ public class CadastrarAction implements ICommand {
                             return "Cliente inválido! Entre em contato com o suporte.";
                         }
                     } else {
+                        
+                        usuarioDao.deletar(cliente.getUsuario());
+                        
                         request.setAttribute("colorMsg", "danger");
                         return "Cliente inválido! Entre em contato com o suporte.";
                     }
