@@ -44,31 +44,12 @@
         <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
         <!-- Daterange picker -->
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
+        <!-- Datapicker css -->
+        <link href="${site}/plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css"/>
 
         <link href="${site}/pages/client/agendamento/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
-
-        <div class="container">
-            <div class="row">
-                <div class='col-sm-6'>
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker1'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker1').datetimepicker();
-                    });
-                </script>
-            </div>
-        </div>
-
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
@@ -111,6 +92,20 @@
                                             </div>
                                         </div>
                                         <div id="divInfoServico" class="card-body">
+                                            <!-- DateTime Picker -->
+                                            <div class="bootstrap-datetime">
+                                                <div class="form-group">
+                                                    <label for="datepicker">Selecione o dia e o horário do agendamento:</label>
+                                                    <div id="datepicker" class="input-group date">
+                                                        <input type="text"/>
+                                                        <div class="input-group-append" data-target="#datahora">
+                                                            <div class="input-group-text"><i class="far fa-calendar"></i></div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.input group -->
+                                                </div>
+                                                <!-- /.form group -->
+                                            </div>
                                             <!-- Escolher Categoria do Serviço -->
                                             <div id="groupListaCategorias" class="form-group">
                                                 <label>Categoria: </label>
@@ -139,23 +134,6 @@
                                                     <div class="form-group">
                                                         <label for="datahora">Selecione o dia e o horário do agendamento:</label>
                                                         <div class="input-group date">
-                                                            <div style="overflow:hidden;">
-                                                                <div class="form-group">
-                                                                    <div class="row">
-                                                                        <div class="col-md-8">
-                                                                            <input id="datetimepicker12"/>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <script type="text/javascript">
-                                                                    $(function () {
-                                                                        $('#datetimepicker12').datetimepicker({
-                                                                            inline: true,
-                                                                            sideBySide: true
-                                                                        });
-                                                                    });
-                                                                </script>
-                                                            </div>
                                                             <input type="text" id="datahora" name="datahora" class="form-control datetimepicker-input"/>
                                                             <div class="input-group-append" data-target="#datahora">
                                                                 <div class="input-group-text"><i class="far fa-clock"></i></div>
@@ -257,7 +235,7 @@
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
         <script type="text/javascript">
-                                                                    includeHTMLNav("agendamento", "agendarServico");
+                                                    includeHTMLNav("agendamento", "agendarServico");
         </script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
@@ -265,7 +243,7 @@
         <script src="${site}/plugins/jquery-ui/jquery-ui.min.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script type="text/javascript">
-                                                                    $.widget.bridge('uibutton', $.ui.button);
+                                                    $.widget.bridge('uibutton', $.ui.button);
         </script>
         <!-- Bootstrap 4 -->
         <script src="${site}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -305,35 +283,43 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
-        <!-- datetimepicker -->
-        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.js" type="text/javascript"></script>
-        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
-        <link href="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" type="text/css"/>
         <script type="text/javascript">
-                                                                    $(function () {
-                                                                        //Initialize Select2 Elements
-                                                                        $('.select2').select2({
-                                                                            language: "pt-BR",
-                                                                            state: "pt-BR"
-                                                                        });
+                                                    $(function () {
+                                                        //Initialize Select2 Elements
+                                                        $('.select2').select2({
+                                                            language: "pt-BR",
+                                                            state: "pt-BR"
+                                                        });
 
-                                                                        $('[data-mask]').inputmask();
+                                                        $('[data-mask]').inputmask();
 
-                                                                        //Initialize MaskMoney
-                                                                        $('[type=money]').maskMoney({
-                                                                            thousands: '.',
-                                                                            decimal: ','
-                                                                        });
-                                                                    });
+                                                        //Initialize MaskMoney
+                                                        $('[type=money]').maskMoney({
+                                                            thousands: '.',
+                                                            decimal: ','
+                                                        });
+
+                                                        $('#datepicker').datepicker({
+                                                            format: "dd/mm/yyyy",
+                                                            maxViewMode: 2,
+                                                            todayBtn: "linked",
+                                                            language: "pt-BR",
+                                                            autoclose: true,
+                                                            todayHighlight: true
+                                                        });
+                                                    });
         </script>
 
 
-        <script>
+        <!-- datetimepicker -->
+        <!--<script>
+        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.js" type="text/javascript"></script>
+        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
+        <link href="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" type="text/css"/>
             jQuery(document).ready(function () {
                 'use strict';
-                $.datetimepicker.setLocale('pt-BR');
 
-                jQuery('#datahora').datetimepicker({
+                jQuery('#datepicker').datetimepicker({
                     value: ${datahoje}
                     , format: 'd-m-Y H:i'
                     , step: 30
@@ -357,13 +343,13 @@
                             minTime: ${minTime} //configurado para pegar o primeiro horario disponivel, allowtime.
                         });
                 };
-                jQuery('#datahora').datetimepicker({
+                jQuery('#datepicker').datetimepicker({
                     onChangeDateTime: logic,
                     onShow: logic
                 });
 
             });
-        </script>
+        </script>-->
         <script type="text/javascript">
             const Toast = Swal.mixin({
                 toast: true,
@@ -388,9 +374,11 @@
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
 
         <!-- Mask Money -->
-        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>        
 
-        <!-- daterangepicker -->
-        <script src="${site}/plugins/daterangepicker/daterangepicker.js"></script>
+        <!-- Datetime Picker -->
+        <script src="${site}/plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.pt-BR.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/popper/popper.min.js" type="text/javascript"></script>
     </body>
 </html>
