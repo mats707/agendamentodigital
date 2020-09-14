@@ -102,6 +102,10 @@ public class Servico {
         this.camposadicionais = camposadicionais;
     }
 
+    public Servico(Integer idServico) {
+        this.idServico = idServico;
+    }
+
     public Servico() {
     }
 

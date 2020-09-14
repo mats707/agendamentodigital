@@ -1,4 +1,5 @@
 --# PerfilAcesso        (id,nome);
+--# Empresa             (id,nome,horaInicialTrabalho,horaFinalTrabalho,intervaloAgendamentoGeralServico);
 --# Usuario             (id,email,senha,celular,habilitado,perfil);
 --# Pessoa              (id,nome,dataNascimento,USUARIO);
 --# Cliente             (id,PESSOA);
@@ -9,6 +10,7 @@
 --# TipoCampoAdicional  (id,nome)
 --# StatusAgendamento	(id,nome)
 --# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,FUNCIONARIO,STATUS)
+
 --# SQL - Tabela
 
 drop schema sistema cascade;
@@ -19,6 +21,15 @@ create table PerfilAcesso(
   id integer,
   nome varchar(50),
   constraint pkPerfilAcesso primary key (id)
+);
+
+create table Empresa(
+  id integer,
+  nome varchar(100) not null,
+  horaInicialTrabalho time not null,
+  horaFinalTrabalho time not null,
+  intervaloAgendamentoGeralServico time not null,
+  constraint pkEmpresa primary key (id)
 );
 
 create table Usuario(
@@ -127,6 +138,7 @@ create table CampoAdicional(
 );
 
 --###########
+create sequence sistema.sqn_empresa;
 create sequence sistema.sqn_usuario;
 create sequence sistema.sqn_servico;
 create sequence sistema.sqn_cliente;
@@ -143,6 +155,9 @@ insert into PerfilAcesso values
   (1,'CLIENTECOMUM'),
   (2,'FUNCIONARIOCOMUM'),
   (3,'FUNCIONARIOADMIN');
+
+insert into Empresa (id, nome, horaInicialTrabalho, horaFinalTrabalho, intervaloAgendamentoGeralServico) values 
+  (nextval('sqn_empresa'),'Mafera Soft. Testes','08:00:00','17:00:00','00:30:00');
 
 insert into StatusAgendamento values
   (1,'AGUARDANDOATENDIMENTO'),
@@ -184,7 +199,8 @@ insert into CategoriaServico values
 alter sequence sistema.sqn_categoriaservico restart with 27;
 
 insert into Servico values
-	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25.90'::NUMERIC::MONEY,'PT30M'::INTERVAL,'10','{"1","2"}');	
+	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25.90'::NUMERIC::MONEY,'PT30M'::INTERVAL,'10','{"1","2"}'),
+	(nextval('sqn_servico'),'Teste','Desenvolvimento','2500.90'::NUMERIC::MONEY,'PT240M'::INTERVAL,'22','{"2"}');
  
 insert into Pessoa values
   (nextval('sqn_pessoa'),'Felipe Jesus','01/04/1992',2),
@@ -202,9 +218,10 @@ insert into Cliente values
   (nextval('sqn_cliente'),4),
   (nextval('sqn_cliente'),5);
 
-insert into Agendamento values
-  (nextval('sqn_agendamento'),'2020-05-21','20:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-05-22','09:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-05-22','11:00:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-05-22','12:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-05-23','20:00:00',1,1,2,1);
+insert into Agendamento (id,dataAgendamento,horarioAgendamento,cliente,servico,funcionario,status) values
+  (nextval('sqn_agendamento'),'2020-09-14','16:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-15','09:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-15','11:30:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-15','12:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-16','08:30:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-15','12:00:00',2,2,2,1);

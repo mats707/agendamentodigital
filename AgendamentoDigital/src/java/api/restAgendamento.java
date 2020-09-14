@@ -10,9 +10,18 @@ import com.google.gson.GsonBuilder;
 import dao.FuncionarioDAO;
 import dao.AgendamentoDAO;
 import dao.ServicoDAO;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -25,7 +34,9 @@ import javax.ws.rs.core.MediaType;
 import modelos.Funcionario;
 import modelos.Agendamento;
 import modelos.Cliente;
+import modelos.Servico;
 import modelos.StatusAgendamento;
+import testes.ValidarCodigo;
 
 /**
  * REST Web Service
@@ -63,6 +74,33 @@ public class restAgendamento {
         }
 
         return objgson.toJson(arr);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Path("/HorariosDisponiveis/Servico/{idServico}/Funcionario/{idFuncionario}/{dataEntrada}")
+    public String listar(@PathParam("idServico") Integer idServico, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada) throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        Date dataAgendamento = null;
+        //Parse dataAgendamento
+        try {
+            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
+        } catch (ParseException ex) {
+            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Agendamento agendamento = new Agendamento();
+        agendamento.setFuncionario(new Funcionario(idFuncionario));
+        agendamento.setServico(new Servico(idServico));
+        agendamento.setDataAgendamento(dataAgendamento);
+
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+
+        ArrayList<Map<String, String>> horariosOcupados = objAgendamentoDao.listarHorariosOcupados(agendamento);
+
+        return objgson.toJson(horariosOcupados);
     }
 
 //    @GET
