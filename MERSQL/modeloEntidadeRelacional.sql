@@ -110,6 +110,8 @@ create table Agendamento(
   servico integer not null,
   funcionario integer not null,
   status integer not null,
+  dataHoraInclusao timestamp not null,
+  dataHoraAlteracao timestamp not null,
   constraint pkAgendamento primary key (id),
   constraint fkCliente foreign key (cliente) references Cliente(id),
   constraint fkServico foreign key (servico) references Servico(id),
@@ -118,6 +120,9 @@ create table Agendamento(
   constraint unqAgendamentoCliente unique (dataAgendamento,horarioAgendamento,cliente),
   constraint unqAgendamentoFuncionario unique (dataAgendamento,horarioAgendamento,funcionario)
 );
+
+alter table Agendamento alter dataHoraInclusao set default now();
+alter table Agendamento alter dataHoraAlteracao set default now();
 
 create table TipoCampoAdicional(
   id integer,
@@ -219,9 +224,10 @@ insert into Cliente values
   (nextval('sqn_cliente'),5);
 
 insert into Agendamento (id,dataAgendamento,horarioAgendamento,cliente,servico,funcionario,status) values
-  (nextval('sqn_agendamento'),'2020-09-14','16:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-09-15','09:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-09-15','11:30:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-09-15','12:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-09-16','08:30:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-09-15','12:00:00',2,2,2,1);
+  (nextval('sqn_agendamento'),'2020-09-21','16:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-22','09:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-22','11:30:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-22','12:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-23','08:30:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-22','08:00:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-22','12:00:00',2,2,2,1);

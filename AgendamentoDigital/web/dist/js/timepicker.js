@@ -2,9 +2,6 @@ function timepicker() {
 
 //    servico = 1 and funcionario = 1 and dataagendamento = '2020-09-12';
 
-    var cmbListaServico = document.getElementById("listaServico");
-    var indexListaServico = cmbListaServico.options[cmbListaServico.selectedIndex].value;
-
     var cmbListaFuncionarios = document.getElementById("listaFuncionarios");
     var indexListaFuncionarios = cmbListaFuncionarios.options[cmbListaFuncionarios.selectedIndex].value;
 
@@ -14,13 +11,12 @@ function timepicker() {
     var monthValueInputDate = valueInputDate.substring(3, 5);
     var yearValueInputDate = valueInputDate.substring(6, 10);
 
-    console.log("indexListaServico: " + indexListaServico);
     console.log("indexListaFuncionarios: " + indexListaFuncionarios);
     console.log("valueInputDate: " + valueInputDate);
 
     valueInputDate = formatDate(yearValueInputDate, monthValueInputDate, dayValueInputDate);
 
-    carregarHorarios(indexListaServico, indexListaFuncionarios, valueInputDate);
+    carregarHorarios(indexListaFuncionarios, valueInputDate);
 }
 
 function isNumber(x) {
@@ -46,10 +42,10 @@ function formatDate(year, month, date) {
 }
 
 // Funcao para carregar os dados da consulta nos respectivos campos
-function carregarHorarios(indexListaServico, indexListaFuncionarios, valueInputDate) {
-    if (isNumber(indexListaServico) && isNumber(indexListaFuncionarios) && valueInputDate != null) {
+function carregarHorarios(indexListaFuncionarios, valueInputDate) {
+    if (isNumber(indexListaFuncionarios) && valueInputDate != null) {
 
-        var urlApi = nameproject + '/api/Agendamento/HorariosDisponiveis/Servico/' + indexListaServico + '/Funcionario/' + indexListaFuncionarios + '/' + valueInputDate; //lugar onde a servlet est√°
+        var urlApi = nameproject + '/api/Agendamento/HorariosDisponiveis/Funcionario/' + indexListaFuncionarios + '/' + valueInputDate; //lugar onde a servlet est√°
         var arrHorarioDisponivel = [];
 
         console.log(urlApi);
@@ -73,7 +69,7 @@ function carregarHorarios(indexListaServico, indexListaFuncionarios, valueInputD
                         arrHorarioDisponivel = validarHorarios(Obj);
 //                        document.getElementById("duracao").value = Obj.duracao.seconds / 60; //Converte os segundos para minutos
                         for (var i = 0; i < arrHorarioDisponivel.length; i++) {
-                            $("#listaHorarios").append("<option value='" + arrHorarioDisponivel[i].minutos + "'>" + arrHorarioDisponivel[i].hora + "</option>");
+                            $("#listaHorarios").append("<option value='" + arrHorarioDisponivel[i].hora + "'>" + arrHorarioDisponivel[i].hora + "</option>");
                         }
                         document.getElementById("groupListaHorarios").style.display = "block";
                     } else {
@@ -89,7 +85,20 @@ function validarHorarios(arrHorariosOcupados) {
 
     //INICIO
     //arrHorariosOcupados = ["09:00", "12:00"]; //Hor·rios ocupados por agendamento
-    //arrHorariosOcupados = [{"duracaoServico": "240", "hora": "12:00"}]; //Hor·rios ocupados por agendamento
+    arrHorariosOcupados = [
+        {
+            "duracaoServico": "30",
+            "hora": "08:00"
+        },
+        {
+            "duracaoServico": "30",
+            "hora": "11:30"
+        },
+        {
+            "duracaoServico": "240",
+            "hora": "12:00"
+        }
+    ]; //Hor·rios ocupados por agendamento
     var horaInicial = 8; //Trocar para var JSP em horas
     var horaFinal = 17; //Trocar para var JSP em horas
     var intervaloAgendamento = 30; //Trocar para var JSP em minutos
@@ -104,17 +113,41 @@ function validarHorarios(arrHorariosOcupados) {
 
     var arrHorasMinutos = [];
 
-    for (m = horaInicialMin; m < horaFinalMin; m = m + intervaloAgendamento) {
+    var horaMaximaServico = horaFinalMin - intervaloAgendamento;
+
+    //Montagem do array de horas disponÌveis, passando em minutos e no formato HH:MM
+    for (m = horaInicialMin; m < horaMaximaServico; m = m + intervaloAgendamento) {
         var horaExibicao = Math.floor(m / 60);
         var minutosExibicao = m % 60;
         arrHorasMinutos.push({minutos: parseInt(m), hora: ('00' + horaExibicao).toString().substr(-2) + ':' + ('00' + minutosExibicao).toString().substr(-2)});
     }
+
+    //Remove do array montado acima os horarios ocupados por esse funcionario e as horas entre o intervalo de duraÁ„o
     for (i = 0; i < arrHorariosOcupados.length; i++) {
-        console.log(arrHorariosOcupados[i].hora);
+        var horaOcupada = arrHorariosOcupados[i].hora;
+        var duracaoServicoOcupado = arrHorariosOcupados[i].duracaoServico;
         arrHorasMinutos = $.grep(arrHorasMinutos, function (e) {
-            return e.hora != arrHorariosOcupados[i].hora;
+            return e.hora != horaOcupada;
         });
+
+        //Remove do array montado acima os horarios que est„o entre o horario ocupado e sua duracao
+        var horas = parseInt(horaOcupada.split(":")[0]);
+        var minutos = parseInt(horaOcupada.split(":")[1]);
+        var horaOcupadaEmMinutos = (horas * 60) + minutos;
+        var duracaoServicoOcupado = parseInt(duracaoServicoOcupado) + horaOcupadaEmMinutos;
+
+        for (j = horaOcupadaEmMinutos; j < duracaoServicoOcupado; j = j + intervaloAgendamento) {
+            var i_hora = Math.floor(j / 60);
+            var i_minutos = j % 60;
+            var i_ocupado = ('00' + i_hora).toString().substr(-2) + ':' + ('00' + i_minutos).toString().substr(-2);
+
+            arrHorasMinutos = $.grep(arrHorasMinutos, function (e) {
+                return e.hora != i_ocupado;
+            });
+        }
+
     }
+
     return arrHorasMinutos;
 
 }

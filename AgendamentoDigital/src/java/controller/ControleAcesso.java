@@ -103,9 +103,7 @@ public class ControleAcesso extends HttpServlet {
             case FUNCIONARIOCOMUM:
                 return ("pages/user/index3.jsp");
             case CLIENTECOMUM:
-                return ("pages/client/agendamento/agendar_teste.jsp");
-//            case CLIENTECOMUM:
-//                return ("Home");
+                return ("Home");
             default:
                 return ("");
         }

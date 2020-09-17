@@ -70,7 +70,8 @@ public class AgendarAction implements ICommand {
         if (idCliente == null) {
             idCliente = "0";
         }
-        String datahora = request.getParameter("datahora");
+        String data = request.getParameter("inputDate");
+        String hora = request.getParameter("listaHorarios");
 
         DateFormat formatter = new SimpleDateFormat("kk:mm");
 
@@ -78,13 +79,9 @@ public class AgendarAction implements ICommand {
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
 
-        if (idServico != null && idFuncionario != null && datahora != null) {
+        if (idServico != null && idFuncionario != null && data != null && hora != null) {
 
             AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-
-            //Ajustes no formato dos campos
-            String data = datahora.split(" ")[0];
-            String hora = datahora.split(" ")[1];
 
             //Instanciando Funcionario
             Funcionario objFuncionario = new Funcionario();
@@ -120,7 +117,7 @@ public class AgendarAction implements ICommand {
             Time horaAgendamento = null;
             //Parse dataAgendamento
             try {
-                dataAgendamento = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+                dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(data);
             } catch (ParseException ex) {
                 Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
             }

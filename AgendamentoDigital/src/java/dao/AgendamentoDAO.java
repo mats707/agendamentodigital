@@ -44,7 +44,6 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "status = ? "
             + "WHERE id = ? AND cliente=?";
     private static final String BUSCAR_ID = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE id=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
-    private static final String BUSCAR_HORARIOS_DISPONIVEIS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE id=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_HORARIOS_OCUPADOS = "SELECT \n"
             + "to_char(a.horarioagendamento, 'HH:MI') as horarioagendamento \n"
@@ -52,7 +51,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "FROM sistema.agendamento a \n"
             + "LEFT JOIN sistema.servico s \n"
             + "ON s.id = a.servico \n"
-            + "WHERE a.servico = ? AND a.funcionario = ? AND a.dataagendamento = ?::DATE";
+            + "WHERE a.funcionario = ? AND a.dataagendamento = ?::DATE";
     private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? ORDER BY dataAgendamento, horarioAgendamento";
     private static final String LISTAR_FUNCIONARIO = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE funcionario=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_STATUS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE status=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
@@ -172,9 +171,8 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             conexao = ConectaBanco.getConexao();
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR_HORARIOS_OCUPADOS);
-            pstmt.setInt(1, agendamento.getServico().getIdServico());
-            pstmt.setInt(2, agendamento.getFuncionario().getIdFuncionario());
-            pstmt.setDate(3, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+            pstmt.setInt(1, agendamento.getFuncionario().getIdFuncionario());
+            pstmt.setDate(2, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
 
             //executa
             ResultSet rs = pstmt.executeQuery();

@@ -78,8 +78,8 @@ public class restAgendamento {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Path("/HorariosDisponiveis/Servico/{idServico}/Funcionario/{idFuncionario}/{dataEntrada}")
-    public String listar(@PathParam("idServico") Integer idServico, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada) throws SQLException, ClassNotFoundException {
+    @Path("/HorariosDisponiveis/Funcionario/{idFuncionario}/{dataEntrada}")
+    public String listar(@PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada) throws SQLException, ClassNotFoundException {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -93,7 +93,6 @@ public class restAgendamento {
 
         Agendamento agendamento = new Agendamento();
         agendamento.setFuncionario(new Funcionario(idFuncionario));
-        agendamento.setServico(new Servico(idServico));
         agendamento.setDataAgendamento(dataAgendamento);
 
         AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
