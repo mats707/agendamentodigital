@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -46,7 +47,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
     private static final String BUSCAR_ID = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE id=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_HORARIOS_OCUPADOS = "SELECT \n"
-            + "to_char(a.horarioagendamento, 'HH:MI') as horarioagendamento \n"
+            + "to_char(a.horarioagendamento, 'HH24:MI') as horarioagendamento \n"
             + ",EXTRACT(EPOCH FROM s.duracao)/60 as duracao_minutos \n"
             + "FROM sistema.agendamento a \n"
             + "LEFT JOIN sistema.servico s \n"
@@ -161,8 +162,8 @@ public class AgendamentoDAO implements IAgendamentoDAO {
     }
 
     @Override
-    public  ArrayList<Map<String, String>> listarHorariosOcupados(Agendamento agendamento) {
-        
+    public ArrayList<Map<String, String>> listarHorariosOcupados(Agendamento agendamento) {
+
         ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
 
         try {
@@ -176,11 +177,20 @@ public class AgendamentoDAO implements IAgendamentoDAO {
 
             //executa
             ResultSet rs = pstmt.executeQuery();
-            System.out.println(pstmt.toString());
+
+            DateFormat formatter = new SimpleDateFormat("kk:mm");
+            Time horaAgendamento = null;
+            
             while (rs.next()) {
                 Map<String, String> arrHorariosOcupados = new HashMap<String, String>();
-                arrHorariosOcupados.put("duracaoServico",rs.getString("duracao_minutos"));
-                arrHorariosOcupados.put("hora",rs.getString("horarioAgendamento"));
+                arrHorariosOcupados.put("duracaoServico", rs.getString("duracao_minutos"));
+                //Parse horaAgendamento
+                try {
+                    horaAgendamento = new java.sql.Time(formatter.parse(rs.getString("horarioAgendamento")).getTime());
+                } catch (ParseException ex) {
+                    Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                arrHorariosOcupados.put("hora",horaAgendamento.toString().substring(0,5));
                 arrayHorariosOcupados.add(arrHorariosOcupados);
             }
             return arrayHorariosOcupados;

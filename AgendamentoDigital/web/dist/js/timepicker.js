@@ -73,7 +73,7 @@ function carregarHorarios(indexListaFuncionarios, valueInputDate) {
                         }
                         document.getElementById("groupListaHorarios").style.display = "block";
                     } else {
-                        document.getElementById("listaHorarios").innerHTML = "<option selected disabled>Selecione um horario</option>";
+                        document.getElementById("listaHorarios").innerHTML = "<option selected disabled>Selecione um horário</option>";
                     }
                 }
             }
@@ -85,20 +85,20 @@ function validarHorarios(arrHorariosOcupados) {
 
     //INICIO
     //arrHorariosOcupados = ["09:00", "12:00"]; //Horários ocupados por agendamento
-    arrHorariosOcupados = [
-        {
-            "duracaoServico": "30",
-            "hora": "08:00"
-        },
-        {
-            "duracaoServico": "30",
-            "hora": "11:30"
-        },
-        {
-            "duracaoServico": "240",
-            "hora": "12:00"
-        }
-    ]; //Horários ocupados por agendamento
+//    arrHorariosOcupados = [
+//        {
+//            "duracaoServico": "30",
+//            "hora": "08:00"
+//        },
+//        {
+//            "duracaoServico": "30",
+//            "hora": "11:30"
+//        },
+//        {
+//            "duracaoServico": "240",
+//            "hora": "12:00"
+//        }
+//    ]; //Horários ocupados por agendamento
     var horaInicial = 8; //Trocar para var JSP em horas
     var horaFinal = 17; //Trocar para var JSP em horas
     var intervaloAgendamento = 30; //Trocar para var JSP em minutos
