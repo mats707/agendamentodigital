@@ -5,9 +5,12 @@
         <group>
             <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restRelatorioServico.java</file>
             <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/RelatoriosDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/relatorios/MaisTrabalhadoAction.java</file>
             <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/relatorios/MaisAgendadoAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/relatorios/MaisTrabalhadoPeriodoAction.java</file>
             <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleRelatorios.java</file>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/Usuario.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/interfaces/IRelatoriosDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/RelatorioServico.java</file>
             <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/relatorios/MaisAgendadoPeriodoAction.java</file>
         </group>
     </open-files>
