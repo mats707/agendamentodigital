@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControleRelatorios", urlPatterns = {"/ControleRelatorios",
      "/RelatoriosServico",
      "/MaisAgendados",   
-     "/Relatorios/Servicos/MaisAgendado"})
+     "/Relatorios/Servicos/MaisAgendado",
+     "/Relatorios/Servicos/MaisAgendado/Periodo"
+})
 public class ControleRelatorios extends HttpServlet {
 
     /**
@@ -43,8 +45,8 @@ public class ControleRelatorios extends HttpServlet {
 
             if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisAgendado")) {
                 acao = "MaisAgendado";
-            } else if (uri.equals(request.getContextPath() + "/MaisAgendados")) {
-                acao = "MaisAgendado";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisAgendado/Periodo")) {
+                acao = "MaisAgendadoPeriodo";
             } else {
                 response.sendRedirect("404.jsp");
             }

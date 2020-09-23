@@ -14,7 +14,9 @@ import modelos.RelatorioServico;
  * @author Rafael Pereira
  */
 public interface IRelatoriosDAO {
-    
+
     public ArrayList<RelatorioServico> listarMaisAgendado();
-    
+
+    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodo(int mes,int ano);
+
 }

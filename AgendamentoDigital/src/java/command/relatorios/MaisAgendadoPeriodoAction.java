@@ -19,20 +19,26 @@ import modelos.RelatorioServico;
  *
  * @author Rafael Pereira
  */
-public class MaisAgendadoAction implements ICommand{
+public class MaisAgendadoPeriodoAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-        
-        request.setAttribute("pagina", "/pages/admin/relatorios/maisAgendado.jsp");
-        
+
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
-        
+
+        request.setAttribute("pagina", "/pages/admin/relatorios/maisAgendado.jsp");
+
+        String mes_String = request.getParameter("mes");
+        String ano_String = request.getParameter("ano");
+
+        int mes = Integer.parseInt(mes_String);
+        int ano = Integer.parseInt(ano_String);
+
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisAgendado();
-        
-      JsonArray arrJson = new JsonArray();
+        arr = objRelatorioDAO.listarMaisAgendadoPeriodo(mes, ano);
+
+        JsonArray arrJson = new JsonArray();
 
         for (RelatorioServico objRelatorio : arr) {
             JsonObject json = (JsonObject) objgson.toJsonTree(objRelatorio);
@@ -41,11 +47,10 @@ public class MaisAgendadoAction implements ICommand{
             json.remove("idFuncionario");
             arrJson.add(json);
         }
-        
+
         String json = arrJson.toString();
-        
+
         return json;
-        
     }
-    
+
 }
