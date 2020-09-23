@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendamento Digital | Relatorio de serviço mais agendado</title>
+        <title>Agendamento Digital | ${pgAba}</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -52,19 +52,19 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Relatorios de Serviços</h1>
+                                <h1>${pgTitulo}</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Relatorio de Serviços</li>
+                                    <li class="breadcrumb-item active">${pgTitulo}</li>
                                 </ol>
                             </div>
                         </div>
                     </div>
                     <!-- /.container-fluid -->
                 </section>
-                <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/MaisAgendado/Periodo" method="post">
+                <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
                     <div>
                         <select name="mes" id="mes">
                             <option value="1">Janeiro</option>
@@ -95,7 +95,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Serviços mais utilizados</h3>
+                                        <h3 class="card-title"${pgRelatorio}</h3>
                                         <div class="card-tools">
                                             <div class="input-group input-group-sm" style="width: 150px;">
                                                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
@@ -190,7 +190,7 @@
         })
     </script>
 
-    <script src="${site}/pages/admin/relatorios/maisAgendado.js" type="text/javascript"></script>
+    <script src="${site}/pages/admin/relatorios/${pgjs}.js" type="text/javascript"></script>
 
     <script>
         var result = ${msg};

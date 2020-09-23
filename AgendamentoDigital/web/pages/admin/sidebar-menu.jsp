@@ -229,9 +229,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}/MaisAgendado" id="relatorioCliente" class="nav-link">
+                            <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
                                 <i class="fas fa-folder-open nav-icon"></i>
-                                <p>Em breve...</p>
+                                <p>Funcionarios mais trabalhados</p>
                             </a>
                         </li>
                     </ul>

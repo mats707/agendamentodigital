@@ -16,11 +16,11 @@ public class RelatorioServico {
     int idAgendamento;
     String nomeServico;
     Date dataAgendamento;
-    int count;
     int idCliente;
     String nomeCliente;
     int idFuncionario;
     String nomeFuncionario;
+    int count;
 
     public RelatorioServico() {
     }

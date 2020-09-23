@@ -19,20 +19,21 @@ import modelos.RelatorioServico;
  *
  * @author Rafael Pereira
  */
-public class MaisAgendadoPeriodoAction implements ICommand {
+public class MaisTrabalhadoPeriodoAction implements ICommand{
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
-        RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
-
         request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
-        request.setAttribute("pgjs","maisAgendado");
-        request.setAttribute("pgAba","Relatorio de serviço mais agendado");
-        request.setAttribute("pgTitulo","Relatorios de Serviços");
-        request.setAttribute("pgRelatorio","Serviços mais utilizados");
+        request.setAttribute("pgjs", "maisTrabalhado");
+        request.setAttribute("command", "MaisTrabalhado");
+        request.setAttribute("pgAba", "Relatorio de funcionarios mais trabalhados");
+        request.setAttribute("pgTitulo", "Relatorios de Funcionarios");
+        request.setAttribute("pgRelatorio", "Funcionarios que mais prestaram serviços");
 
+        RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
+        
         String mes_String = request.getParameter("mes");
         String ano_String = request.getParameter("ano");
 
@@ -40,7 +41,7 @@ public class MaisAgendadoPeriodoAction implements ICommand {
         int ano = Integer.parseInt(ano_String);
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisAgendadoPeriodo(mes, ano);
+        arr = objRelatorioDAO.listarMaisTrabalhadoPeriodo(mes,ano);
 
         JsonArray arrJson = new JsonArray();
 
@@ -49,6 +50,7 @@ public class MaisAgendadoPeriodoAction implements ICommand {
             json.remove("idAgendamento");
             json.remove("idCliente");
             json.remove("idFuncionario");
+            json.remove("idServico");
             arrJson.add(json);
         }
 
@@ -56,5 +58,5 @@ public class MaisAgendadoPeriodoAction implements ICommand {
 
         return json;
     }
-
+    
 }

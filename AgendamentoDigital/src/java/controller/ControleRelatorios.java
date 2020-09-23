@@ -23,7 +23,10 @@ import javax.servlet.http.HttpServletResponse;
      "/RelatoriosServico",
      "/MaisAgendados",   
      "/Relatorios/Servicos/MaisAgendado",
-     "/Relatorios/Servicos/MaisAgendado/Periodo"
+     "/Relatorios/Servicos/MaisAgendado/Periodo",
+     "/Relatorios/Servicos/MaisTrabalhado",
+     "/Relatorios/Servicos/MaisTrabalhado/Periodo"
+     
 })
 public class ControleRelatorios extends HttpServlet {
 
@@ -47,6 +50,10 @@ public class ControleRelatorios extends HttpServlet {
                 acao = "MaisAgendado";
             } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisAgendado/Periodo")) {
                 acao = "MaisAgendadoPeriodo";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisTrabalhado/Periodo")) {
+                acao = "MaisTrabalhadoPeriodo";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisTrabalhado")) {
+                acao = "MaisTrabalhado";
             } else {
                 response.sendRedirect("404.jsp");
             }

@@ -25,7 +25,12 @@ public class MaisAgendadoAction implements ICommand{
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         
-        request.setAttribute("pagina", "/pages/admin/relatorios/maisAgendado.jsp");
+        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+        request.setAttribute("pgjs","maisAgendado");
+        request.setAttribute("command","MaisAgendado");
+        request.setAttribute("pgAba","Relatorio de serviço mais agendado");
+        request.setAttribute("pgTitulo","Relatorios de Serviços");
+        request.setAttribute("pgRelatorio","Serviços mais utilizados");
         
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
         
