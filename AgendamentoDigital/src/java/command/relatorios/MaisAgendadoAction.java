@@ -30,7 +30,7 @@ public class MaisAgendadoAction implements ICommand{
         request.setAttribute("command","MaisAgendado");
         request.setAttribute("pgAba","Relatorio de serviço mais agendado");
         request.setAttribute("pgTitulo","Relatorios de Serviços");
-        request.setAttribute("pgRelatorio","Serviços mais utilizados");
+        request.setAttribute("pgRelatorio","Serviços mais utilizados total");
         
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
         

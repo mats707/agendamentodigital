@@ -67,6 +67,7 @@
                 <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
                     <div>
                         <select name="mes" id="mes">
+                            <option selected disabled>-- Selecione o mes --</option>
                             <option value="1">Janeiro</option>
                             <option value="2">Fevereiro</option>
                             <option value="3">Março</option>
@@ -81,6 +82,7 @@
                             <option value="12">Dezembro</option>
                         </select>
                         <select name="ano" id="ano">
+                            <option selected disabled>-- Selecione o ano --</option>
                             <option value="2020">2020</option>
                         </select>
                     </div>
@@ -95,7 +97,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title"${pgRelatorio}</h3>
+                                        <h3 class="card-title">${pgRelatorio}</h3>
                                         <div class="card-tools">
                                             <div class="input-group input-group-sm" style="width: 150px;">
                                                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">

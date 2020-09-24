@@ -25,13 +25,6 @@ public class MaisTrabalhadoPeriodoAction implements ICommand{
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
-        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
-        request.setAttribute("pgjs", "maisTrabalhado");
-        request.setAttribute("command", "MaisTrabalhado");
-        request.setAttribute("pgAba", "Relatorio de funcionarios mais trabalhados");
-        request.setAttribute("pgTitulo", "Relatorios de Funcionarios");
-        request.setAttribute("pgRelatorio", "Funcionarios que mais prestaram serviços");
-
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
         
         String mes_String = request.getParameter("mes");
@@ -39,6 +32,13 @@ public class MaisTrabalhadoPeriodoAction implements ICommand{
 
         int mes = Integer.parseInt(mes_String);
         int ano = Integer.parseInt(ano_String);
+        
+        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+        request.setAttribute("pgjs", "maisTrabalhado");
+        request.setAttribute("command", "MaisTrabalhado");
+        request.setAttribute("pgAba", "Relatorio de funcionarios mais trabalhados");
+        request.setAttribute("pgTitulo", "Relatorios de Funcionarios");
+        request.setAttribute("pgRelatorio", "Funcionarios que mais prestaram serviços no periodo de " + mes + "/" + ano);
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
         arr = objRelatorioDAO.listarMaisTrabalhadoPeriodo(mes,ano);

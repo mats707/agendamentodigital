@@ -30,7 +30,7 @@ public class MaisTrabalhadoAction implements ICommand {
         request.setAttribute("command", "MaisTrabalhado");
         request.setAttribute("pgAba", "Relatorio de funcionarios mais trabalhados");
         request.setAttribute("pgTitulo", "Relatorios de Funcionarios");
-        request.setAttribute("pgRelatorio", "Funcionarios que mais prestaram serviços");
+        request.setAttribute("pgRelatorio", "Funcionarios que mais prestaram serviços total");
 
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 

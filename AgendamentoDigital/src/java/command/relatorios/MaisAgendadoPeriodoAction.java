@@ -27,34 +27,36 @@ public class MaisAgendadoPeriodoAction implements ICommand {
 
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
-        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
-        request.setAttribute("pgjs","maisAgendado");
-        request.setAttribute("pgAba","Relatorio de serviço mais agendado");
-        request.setAttribute("pgTitulo","Relatorios de Serviços");
-        request.setAttribute("pgRelatorio","Serviços mais utilizados");
-
         String mes_String = request.getParameter("mes");
         String ano_String = request.getParameter("ano");
 
-        int mes = Integer.parseInt(mes_String);
-        int ano = Integer.parseInt(ano_String);
+            int mes = Integer.parseInt(mes_String);
+            int ano = Integer.parseInt(ano_String);
 
-        ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisAgendadoPeriodo(mes, ano);
+            request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+            request.setAttribute("pgjs", "maisAgendado");
+            request.setAttribute("command", "MaisAgendado");
+            request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
+            request.setAttribute("pgTitulo", "Relatorios de Serviços");
+            request.setAttribute("pgRelatorio", "Serviços mais utilizados no periodo de " + mes + "/" + ano);
 
-        JsonArray arrJson = new JsonArray();
+            ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
+            arr = objRelatorioDAO.listarMaisAgendadoPeriodo(mes, ano);
 
-        for (RelatorioServico objRelatorio : arr) {
-            JsonObject json = (JsonObject) objgson.toJsonTree(objRelatorio);
-            json.remove("idAgendamento");
-            json.remove("idCliente");
-            json.remove("idFuncionario");
-            arrJson.add(json);
-        }
+            JsonArray arrJson = new JsonArray();
 
+            for (RelatorioServico objRelatorio : arr) {
+                JsonObject json = (JsonObject) objgson.toJsonTree(objRelatorio);
+                json.remove("idAgendamento");
+                json.remove("idCliente");
+                json.remove("idFuncionario");
+                arrJson.add(json);
+            }
+
+ 
         String json = arrJson.toString();
-
         return json;
+
     }
 
 }
