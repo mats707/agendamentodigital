@@ -37,9 +37,10 @@ public class ClienteBuilder {
     //##########################################################################
     //# Usuário
     //##########################################################################
-    public ClienteBuilder comUsuario(String email, String senha) {
+    public ClienteBuilder comUsuario(String email, String senha, String celular) {
         usuario.setEmail(email);
         usuario.setSenha(geraHash.codificaBase64(senha));
+        usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
         usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
         return this;
     }
@@ -64,7 +65,7 @@ public class ClienteBuilder {
                 cliente.setDataNascimento(date);
 
             } catch (ParseException ex) {
-                
+
                 SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
 
                 java.util.Date date = sdf1.parse(data);

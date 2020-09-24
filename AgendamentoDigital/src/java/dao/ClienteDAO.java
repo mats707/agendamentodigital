@@ -22,18 +22,7 @@ public class ClienteDAO implements IClienteDAO {
     private static final String LISTAR_PESSOA = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON u.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id ORDER BY u.id;";
     private static final String BUSCAR_USUARIO = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON c.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE u.id = ? ORDER BY u.id;";
     private static final String BUSCAR = "SELECT * FROM sistema.cliente WHERE nome ilike ?;";
-    private static final String INSERT =
-            "INSERT INTO sistema.cliente (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
-            + "  VALUES (NEXTVAL('sqn_cliente'),\n"
-            + "		?,\n"
-            + "		?,\n"
-            + "		(SELECT id FROM endereco WHERE id = ?),\n"
-            + "		(SELECT id FROM sexo WHERE id = ?),\n"
-            + "		(SELECT id FROM estadoCivil WHERE id = ?),\n"
-            + "		?,\n"
-            + "		(SELECT id FROM profissao WHERE id = ?),\n"
-            + "		(SELECT id FROM escolaridade WHERE id = ?)\n"
-            + "  );";
+    private static final String CADASTRAR = "INSERT INTO sistema.cliente (id, pessoa) VALUES (NEXTVAL('sistema.sqn_cliente'),(SELECT id FROM sistema.pessoa WHERE id = ?));";
     private static final String DELETE = "DELETE FROM cliente WHERE id=?;";
     private static final String UPDATE = "UPDATE cliente SET nome=? WHERE id=?;";
 
@@ -106,13 +95,13 @@ public class ClienteDAO implements IClienteDAO {
                 novoCliente.setIdPessoa(Integer.parseInt(rs.getString("idPessoa")));
                 novoCliente.setNome(rs.getString("nome"));
                 novoCliente.setDataNascimento(rs.getDate("dataNascimento"));
-                
+
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(Integer.parseInt(rs.getString("idUsuario")));
                 usuario.setEmail(rs.getString("email"));
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
-                
+
                 novoCliente.setUsuario(usuario);
 
                 //add na lista
@@ -145,7 +134,7 @@ public class ClienteDAO implements IClienteDAO {
 
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_USUARIO);
-            
+
             //Passa ID como parametro
             pstmt.setInt(1, cliente.getUsuario().getIdUsuario());
 
@@ -157,13 +146,13 @@ public class ClienteDAO implements IClienteDAO {
                 cliente.setIdPessoa(Integer.parseInt(rs.getString("idPessoa")));
                 cliente.setNome(rs.getString("nome"));
                 cliente.setDataNascimento(rs.getDate("dataNascimento"));
-                
+
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(Integer.parseInt(rs.getString("idUsuario")));
                 usuario.setEmail(rs.getString("email"));
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
-                
+
                 cliente.setUsuario(usuario);
             }
 
@@ -271,16 +260,16 @@ public class ClienteDAO implements IClienteDAO {
     }
 
     @Override
-    public boolean cadastrar(Cliente cliente) {
+    public String cadastrar(Cliente cliente) {
+
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt = null;
 
         try {
-
             conexao = ConectaBanco.getConexao();
-
-            PreparedStatement pstmt = conexao.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-
-            pstmt.setString(1, cliente.getNome());
-
+            pstmt = conexao.prepareStatement(CADASTRAR, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, cliente.getIdPessoa());
             pstmt.execute();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
@@ -288,21 +277,22 @@ public class ClienteDAO implements IClienteDAO {
                 cliente.setIdCliente(rs.getInt("id"));
             }
 
-            return true;
+            return sqlReturnCode;
 
-        } catch (Exception ex) {
+        } catch (SQLException sqlErro) {
 
-            return false;
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
 
         } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
-
         }
-
     }
 };

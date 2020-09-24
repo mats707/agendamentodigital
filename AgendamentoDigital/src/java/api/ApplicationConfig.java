@@ -35,6 +35,7 @@ public class ApplicationConfig extends Application {
         resources.add(api.restEmpresa.class);
         resources.add(api.restFuncionario.class);
         resources.add(api.restPessoa.class);
+        resources.add(api.restRelatorioServico.class);
         resources.add(api.restServico.class);
         resources.add(api.restUsuario.class);
     }

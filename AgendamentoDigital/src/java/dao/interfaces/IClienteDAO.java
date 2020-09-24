@@ -26,6 +26,6 @@ public interface IClienteDAO {
 
     public boolean excluir(Cliente cliente);
 
-    public boolean cadastrar(Cliente cliente);
+    public String cadastrar(Cliente cliente);
 
 }
