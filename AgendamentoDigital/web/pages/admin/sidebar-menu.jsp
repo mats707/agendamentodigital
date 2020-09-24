@@ -212,35 +212,55 @@
                             </a>
                         </li>
                     </ul>
-
-
-                </li>
-
-                <!--<li id="menuPaiagenda" class="nav-item has-treeview">
-                    <a href="#" id="agenda" class="nav-link">
-                        <i class="nav-icon far fa-calendar"></i>
+                </li>  
+                <li id="menuPaiservicos" class="nav-item has-treeview">
+                    <a href="#" id="servicos" class="nav-link">
+                        <i class="nav-icon fas fa-store"></i>
                         <p>
-                            Agenda
+                            Relatorios de Serviços
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
-                                <i class="fas fa-calendar-plus nav-icon"></i>
-                                <p>Agendar Serviço</p>
+                            <a href="${site}/Relatorios/Servicos/MaisAgendado" id="relatorioServicoMaisAgendado" class="nav-link">
+                                <i class="fas fa-store-alt nav-icon"></i>
+                                <p>Serviços mais agendados</p>
                             </a>
                         </li>
-                    </ul>
-                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
-                                <i class="fas fa-calendar-times nav-icon"></i>
-                                <p>Visualizar Agenda</p>
+                            <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
+                                <i class="fas fa-folder-open nav-icon"></i>
+                                <p>Funcionarios mais trabalhados</p>
                             </a>
                         </li>
                     </ul>
-                </li>-->
+
+                    <!--<li id="menuPaiagenda" class="nav-item has-treeview">
+                        <a href="#" id="agenda" class="nav-link">
+                            <i class="nav-icon far fa-calendar"></i>
+                            <p>
+                                Agenda
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
+                                    <i class="fas fa-calendar-plus nav-icon"></i>
+                                    <p>Agendar Serviço</p>
+                                </a>
+                            </li>
+                        </ul>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
+                                    <i class="fas fa-calendar-times nav-icon"></i>
+                                    <p>Visualizar Agenda</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>-->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
