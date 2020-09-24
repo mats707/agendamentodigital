@@ -7,6 +7,7 @@ package dao.interfaces;
 
 import java.util.ArrayList;
 import java.sql.Time;
+import java.util.Map;
 import modelos.Agendamento;
 
 /**
@@ -18,6 +19,8 @@ public interface IAgendamentoDAO {
     public String cadastrar(Agendamento agendamento);
 
     public ArrayList<Agendamento> listar();
+    
+    public  ArrayList<Map<String, String>> listarHorariosOcupados(Agendamento agendamento);
     
     public ArrayList<Agendamento> listarCliente(Agendamento agendamento);
     
