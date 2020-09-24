@@ -18,6 +18,10 @@ public class Funcionario extends Pessoa {
         super(idPessoa, nome, dataNascimento, usuario);
         this.idFuncionario = idFuncionario;
     }
+
+    public Funcionario(Integer idFuncionario) {
+        this.idFuncionario = idFuncionario;
+    }
     
     public Funcionario() {
     }

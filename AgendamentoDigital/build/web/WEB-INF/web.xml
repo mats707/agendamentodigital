@@ -35,7 +35,7 @@
     </filter>
     <filter-mapping>
         <filter-name>AcessoCliente</filter-name>
-        <url-pattern>/pages/client/*</url-pattern>
+        <!--<url-pattern>/pages/client/*</url-pattern>-->
         <url-pattern>/AgendarServico</url-pattern>
         <url-pattern>/VisualizarAgenda</url-pattern>
         <url-pattern>/Home</url-pattern>

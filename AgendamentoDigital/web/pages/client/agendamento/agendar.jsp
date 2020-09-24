@@ -44,6 +44,12 @@
         <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
         <!-- Daterange picker -->
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
+        <!-- Datapicker css -->
+        <link href="${site}/plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css"/>
+        <!-- Timepicker css -->
+        <link href="${site}/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Datetime css -->
+        <link href="${site}/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
 
         <link href="${site}/pages/client/agendamento/css/cadastrar.css" rel="stylesheet" type="text/css"/>
     </head>
@@ -106,25 +112,55 @@
                                             </div>
                                             <div id="groupListaFuncionarios" class="form-group" style="display: none">
                                                 <label>Funcionário</label>
-                                                <select id="listaFuncionarios" name="listaFuncionarios" class="form-control select2" data-placeholder="Selecione um funcionário para o atendimento" style="width: 100%;" onchange="exibeDatePicker();">
+                                                <select id="listaFuncionarios" name="listaFuncionarios" class="form-control select2" data-placeholder="Selecione um funcionário para o atendimento" style="width: 100%;" onchange="timepicker();">
                                                     <option selected disabled>Selecione um funcionário</option>
                                                     <option value='0'>Qualquer funcionário</option>
                                                 </select>
                                             </div>
                                             <!-- /.form-group -->
                                             <div id="groupDataHora" class="form-group" style="display: none">
-                                                <!-- DateTime Picker -->
-                                                <div class="bootstrap-timepicker">
+                                                <div class="bootstrap-datetime">
                                                     <div class="form-group">
-                                                        <label for="datahora">Selecione o dia e o horário do agendamento:</label>
-                                                        <div class="input-group date">
-                                                            <input type="text" id="datahora" name="datahora" class="form-control datetimepicker-input"/>
+                                                        <label for="datepicker">Selecione o dia do agendamento:</label>
+                                                        <!-- Date Picker -->
+                                                        <div id="datepicker" class="input-group date">
+                                                            <input id="inputDate" name="inputDate" readonly type="text" class="form-control" onchange="timepicker();"/>
+                                                            <div class="input-group-append input-group-addon">
+                                                                <span class="input-group-text">
+                                                                    <i class="far fa-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- /.form group -->
+                                                    <!-- Time Picker -->
+                                                    <div id="groupListaHorarios" class="form-group col-lg-6">
+                                                        <label>Horários</label>
+                                                        <select id="listaHorarios" name="listaHorarios" class="form-control select2" data-placeholder="Selecione um horário para o atendimento" style="width: 100%;">
+                                                            <option selected disabled>Selecione um horário</option>
+                                                        </select>
+                                                    </div>
+                                                    <!-- 
+                                                    <div class="form-group">
+                                                        <label for="timepicker">Selecione o horário do agendamento:</label>
+                                                        <div id="timepicker" class="input-group date">
+                                                            <input id="inputTime" readonly type="text" class="form-control"/>
+                                                            <div class="input-group-append input-group-addon">
+                                                                <span class="input-group-text">
+                                                                    <i class="far fa-clock"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="timepicker" class="input-group bootstrap-timepicker timepicker">
+                                                            <input id="timepicker" type="text" class="form-control input-small">
                                                             <div class="input-group-append" data-target="#datahora">
                                                                 <div class="input-group-text"><i class="far fa-clock"></i></div>
                                                             </div>
                                                         </div>
+                                                    -->
                                                         <!-- /.input group -->
-                                                    </div>
+<!--                                                    </div>-->
                                                     <!-- /.form group -->
                                                 </div>
                                             </div>
@@ -266,11 +302,16 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <!-- Toastr -->
-        <script src="${site}/plugins/toastr/toastr.min.js"></script>
-        <!-- datetimepicker -->
-        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.js" type="text/javascript"></script>
-        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
-        <link href="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" type="text/css"/>
+        <script src="${site}/plugins/toastr/toastr.min.js"></script> 
+        <!-- Date Picker -->
+        <script src="${site}/plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.pt-BR.min.js" type="text/javascript"></script>
+        <script src="${site}/plugins/popper/popper.min.js" type="text/javascript"></script>
+        <!-- DateTime Picker -->
+        <script src="${site}/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+        <!-- Time Picker -->
+        <script src="${site}/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+        <script src="${site}/dist/js/timepicker.js" type="text/javascript"></script>
         <script type="text/javascript">
                                                     $(function () {
                                                         //Initialize Select2 Elements
@@ -286,16 +327,59 @@
                                                             thousands: '.',
                                                             decimal: ','
                                                         });
+
+                                                        var meses = 2;
+                                                        var dataAtual = new Date();
+                                                        var dataMaxima = new Date(new Date().setMonth(dataAtual.getMonth() + meses));
+                                                        console.log(dataAtual);
+                                                        console.log(dataMaxima);
+
+                                                        //Initialize DatePicker
+                                                        $('#datepicker').datepicker({
+                                                            format: "dd/mm/yyyy"
+                                                            , showMeridian: true
+                                                            , autoclose: false //Whether or not to close the datepicker immediately when a date is selected.
+                                                            , clearBtn: true //If true, displays a “Clear” button at the bottom of the datepicker to clear the input value. If “autoclose” is also set to true, this button will also close the datepicker.
+                                                            , datesDisabled: ['18/09/2020', '25/09/2020'] //Array of date strings or a single date string formatted in the given date format
+                                                            , daysOfWeekDisabled: [0] //Days of the week that should be disabled. Values are 0 (Sunday) to 6 (Saturday). Multiple values should be comma-separated. Example: disable weekends: '06' or '0,6' or [0,6].
+                                                            , disableTouchKeyboard: true //If true, no keyboard will show on mobile devices
+                                                            , maxViewMode: 1 //Set a maximum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”.
+                                                            , minViewMode: 0 //Set a minimum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”. 
+                                                            , orientation: "auto" //A space-separated string consisting of one or two of “left” or “right”, “top” or “bottom”, and “auto” (may be omitted); for example, “top left”, “bottom” (horizontal orientation will default to “auto”), “right” (vertical orientation will default to “auto”), “auto top”. Allows for fixed placement of the picker popup.
+                                                            , todayBtn: "linked"
+                                                            , language: "pt-BR"
+                                                            , todayHighlight: true
+                                                            , startDate: dataAtual //today
+                                                            , endDate: dataMaxima //Até o máximo de meses permitido
+                                                            , leftArrow: '<i class="fas fa-long-arrow-left"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
+                                                            , rightArrow: '<i class="fas fa-long-arrow-right"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
+                                                            , multidate: false //Enable multidate picking. Each date in month view acts as a toggle button, keeping track of which dates the user has selected in order. If a number is given, the picker will limit how many dates can be selected to that number, dropping the oldest dates from the list when the number is exceeded. true equates to no limit. The input’s value (if present) is set to a string generated by joining the dates, formatted, with multidateSeparator.
+                                                        });
+
+                                                        //Initilizar DateTimePicker
+                                                        $('#timepicker').datetimepicker({
+                                                            format: 'LT'
+                                                            , locale: ''
+                                                            , stepping: 30
+                                                            , sideBySide: false
+                                                            , icons: {
+                                                                up: "fas fa-chevron-up",
+                                                                down: "fas fa-chevron-down"
+                                                            }
+                                                        });
                                                     });
         </script>
 
 
-        <script>
+        <!-- datetimepicker -->
+        <!--<script>
+        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.js" type="text/javascript"></script>
+        <script src="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.full.min.js" type="text/javascript"></script>
+        <link href="${site}/plugins/jquery-datetimepicker/jquery.datetimepicker.min.css" rel="stylesheet" type="text/css"/>
             jQuery(document).ready(function () {
                 'use strict';
-                $.datetimepicker.setLocale('pt-BR');
 
-                jQuery('#datahora').datetimepicker({
+                jQuery('#datepicker').datetimepicker({
                     value: ${datahoje}
                     , format: 'd-m-Y H:i'
                     , step: 30
@@ -319,13 +403,13 @@
                             minTime: ${minTime} //configurado para pegar o primeiro horario disponivel, allowtime.
                         });
                 };
-                jQuery('#datahora').datetimepicker({
+                jQuery('#datepicker').datetimepicker({
                     onChangeDateTime: logic,
                     onShow: logic
                 });
 
             });
-        </script>
+        </script>-->
         <script type="text/javascript">
             const Toast = Swal.mixin({
                 toast: true,
@@ -350,9 +434,6 @@
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
 
         <!-- Mask Money -->
-        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
-
-        <!-- daterangepicker -->
-        <script src="${site}/plugins/daterangepicker/daterangepicker.js"></script>
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>       
     </body>
 </html>
