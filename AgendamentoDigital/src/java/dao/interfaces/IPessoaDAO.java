@@ -25,6 +25,6 @@ public interface IPessoaDAO {
 
     public boolean excluir(Pessoa pessoa);
 
-    public boolean cadastrar(Pessoa pessoa);
+    public String cadastrar(Pessoa pessoa);
 
 }
