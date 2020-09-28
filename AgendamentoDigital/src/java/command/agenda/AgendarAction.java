@@ -51,6 +51,8 @@ import testes.ValidarCodigo;
  */
 public class AgendarAction implements ICommand {
 
+    AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -85,8 +87,6 @@ public class AgendarAction implements ICommand {
         String funcaoStatus = "info";
 
         if (idServico != null && idFuncionario != null && data != null && hora != null) {
-
-            AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
 
             //Instanciando Funcionario
             Funcionario objFuncionario = new Funcionario();
@@ -136,81 +136,14 @@ public class AgendarAction implements ICommand {
             }
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
-            //Retorna horário ocupados pelo funcionário no dia solicitado
-            ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
-            arrayHorariosOcupados = agendamentoDAO.listarHorariosOcupados(objAgendamento);
+            String validoParaAgendar = validoParaAgendar(objAgendamento);
 
-            Empresa objEmpresa = new Empresa();
-            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
-            objEmpresaDAO.buscar(objEmpresa);
-
-            Integer horaInicialAgendamento = objEmpresa.getHoraInicialTrabalho().getHours() * 60;
-            Integer horaFinalAgendamento = objEmpresa.getHoraFinalTrabalho().getHours() * 60;
-            Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
-            Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
-            Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
-
-            ServicoDAO objServicoDAO = new ServicoDAO();
-            objServicoDAO.buscar(objServico);
-
-            Long duracaoServicoLong = objServico.getDuracao().toMinutes();
-            Integer duracaoServico = Integer.parseInt(duracaoServicoLong.toString());
-
-            if (duracaoServico >= intervaloAgendamento) {
-                intervaloAgendamento = duracaoServico;
-            }
-
-            ArrayList<Map<String, String>> arrHorasMinutos = new ArrayList<>();
-
-            Integer horaMaximaServico = horaFinalAgendamento - intervaloAgendamento;
-
-            //Montagem do array de horas disponíveis, passando em minutos e no formato HH:MM
-            for (Integer m = horaInicialAgendamento; m < horaMaximaServico; m = m + intervaloAgendamento) {
-                Map<String, String> hashHorasDisponiveis = new HashMap<String, String>();
-                hashHorasDisponiveis.put("minutos", m.toString());
-                arrHorasMinutos.add(hashHorasDisponiveis);
-            }
-
-            ArrayList<Map<String, String>> arrHorasOcupadas = new ArrayList<>();
-
-            //Remove do array montado acima os horarios ocupados por esse funcionario e as horas entre o intervalo de duração
-            for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
-                Map<String, String> mapHorarioOcupado = arrayHorariosOcupados.get(i);
-                String horaOcupada = mapHorarioOcupado.get("hora");
-                String duracaoServicoOcupado = mapHorarioOcupado.get("duracaoServico");
-
-                //Remove do array montado acima os horarios que estão entre o horario ocupado e sua duracao
-                Integer horas = Integer.parseInt(horaOcupada.split(":")[0]);
-                Integer minutos = Integer.parseInt(horaOcupada.split(":")[1]);
-                Integer horaOcupadaEmMinutos = (horas * 60) + minutos;
-                Integer duracaoHoraOcupadaEmMinutos = Integer.parseInt(duracaoServicoOcupado) + horaOcupadaEmMinutos;
-
-                for (Integer j = horaOcupadaEmMinutos; j < duracaoHoraOcupadaEmMinutos; j = j + intervaloAgendamento) {
-                    Map<String, String> hashHorasOcupadas = new HashMap<String, String>();
-                    hashHorasOcupadas.put("minutos", j.toString());
-                    arrHorasOcupadas.add(hashHorasOcupadas);
-                }
-
-            }
-
-            Boolean validoParaAgendar = true;
-
-            for (int i = 0; i < arrHorasOcupadas.size(); i++) {
-                Map<String, String> horaOcupada = arrHorasOcupadas.get(i);
-                Integer horaSelecionada = objAgendamento.getHoraAgendamento().getHours() * 60;
-                Integer minutoSelecionado = objAgendamento.getHoraAgendamento().getMinutes();
-                Integer minutoTotalSelecionado = horaSelecionada + minutoSelecionado;
-                if (minutoTotalSelecionado == Integer.parseInt(horaOcupada.get("minutos"))) {
-                    validoParaAgendar = false;
-                }
-            }
-
-            if (validoParaAgendar) {
+            if (validoParaAgendar == "VALIDO") {
                 //Chamada da DAO para Cadastrar
                 sqlState = agendamentoDAO.cadastrar(objAgendamento);
                 //Verifica o retorno da DAO (banco de dados)
                 if (sqlState == "0") {
-                    funcaoMsg = "Cadastrado com sucesso!";
+                    funcaoMsg = "Agendado com sucesso!";
                     funcaoStatus = "success";
                 } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
                     // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
@@ -224,8 +157,14 @@ public class AgendarAction implements ICommand {
                     funcaoMsg = "Não foi possível realizar o agendamento, tente novamente mais tarde!";
                     funcaoStatus = "error";
                 }
+            } else if (validoParaAgendar != "FUNCIONARIO_OCUPADO") {
+                funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário! Escolha outro horário, por favor!";
+                funcaoStatus = "error";
+            } else if (validoParaAgendar != "CLIENTE_OCUPADO") {
+                funcaoMsg = "Você possui um agendamento durante o horário escolhido! Escolha outro horário ou cancele o agendamento em conflito...";
+                funcaoStatus = "error";
             } else {
-                funcaoMsg = "Esse horário não está disponível para agendamento! Escolha outro horário, por favor!";
+                funcaoMsg = "Erro de validação do horário, em caso de dúvidas contate o suporte!";
                 funcaoStatus = "error";
             }
         } else {
@@ -243,5 +182,95 @@ public class AgendarAction implements ICommand {
         request.setAttribute("minTime", minTime);
         request.setAttribute("maxMonth", maxMonth);
         return funcaoMsg;
+    }
+
+    private String validoParaAgendar(Agendamento objAgendamento) {
+
+        String statusValidacao = "";
+
+        //Retorna horário ocupados pelo funcionário no dia solicitado
+        ArrayList<Map<String, String>> arrayHorariosOcupadosFuncionario = new ArrayList<>();
+        arrayHorariosOcupadosFuncionario = agendamentoDAO.listarHorariosOcupadosFuncionario(objAgendamento);
+
+        //Retorna horário ocupados pelo cliente no dia solicitado
+        ArrayList<Map<String, String>> arrayHorariosOcupadosCliente = new ArrayList<>();
+        arrayHorariosOcupadosCliente = agendamentoDAO.listarHorariosOcupadosCliente(objAgendamento);
+
+        //Obtém os valores padrão de agendamento definido pela empresa
+        Empresa objEmpresa = new Empresa();
+        EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+        objEmpresaDAO.buscar(objEmpresa);
+        Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
+        Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
+        Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
+        
+        ServicoDAO objServicoDAO = new ServicoDAO();
+        objServicoDAO.buscar(objAgendamento.getServico());
+
+        Long duracaoServicoLong = objAgendamento.getServico().getDuracao().toMinutes();
+        Integer duracaoServico = Integer.parseInt(duracaoServicoLong.toString());
+
+        //Mantém o maior intervalo de agendamento como referência
+        if (duracaoServico >= intervaloAgendamento) {
+            intervaloAgendamento = duracaoServico;
+        }
+
+        //Calcula as horas ocupadas do funcionário e do cliente, respectivamente, atualizando conforme a duração de cada serviço já agendado
+        ArrayList<Map<String, String>> arrayHorariosOcupadosFuncionario_new = calcularHorasOcupadas(arrayHorariosOcupadosFuncionario, intervaloAgendamento);
+
+        ArrayList<Map<String, String>> arrayHorariosOcupadosCliente_new = calcularHorasOcupadas(arrayHorariosOcupadosCliente, intervaloAgendamento);
+
+        //Verifica se o funcionário é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
+        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupadosFuncionario_new, "FUNCIONARIO_OCUPADO");
+
+        //Verifica se o cliente é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
+        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupadosCliente_new, "CLIENTE_OCUPADO");
+
+        return statusValidacao;
+
+    }
+
+    private ArrayList<Map<String, String>> calcularHorasOcupadas(ArrayList<Map<String, String>> arrayHorariosOcupados, Integer intervaloAgendamento) {
+
+        ArrayList<Map<String, String>> arrayHorariosOcupados_new = new ArrayList<>();
+
+        //Remove do array montado acima os horarios ocupados por esse funcionario e as horas entre o intervalo de duração
+        for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
+            Map<String, String> mapHorarioOcupado = arrayHorariosOcupados.get(i);
+            String horaOcupada = mapHorarioOcupado.get("hora");
+            String duracaoServicoOcupado = mapHorarioOcupado.get("duracaoServico");
+
+            //Remove do array montado acima os horarios que estão entre o horario ocupado e sua duracao
+            Integer horas = Integer.parseInt(horaOcupada.split(":")[0]);
+            Integer minutos = Integer.parseInt(horaOcupada.split(":")[1]);
+            Integer horaOcupadaEmMinutos = (horas * 60) + minutos;
+            Integer duracaoHoraOcupadaEmMinutos = Integer.parseInt(duracaoServicoOcupado) + horaOcupadaEmMinutos;
+
+            for (Integer j = horaOcupadaEmMinutos; j < duracaoHoraOcupadaEmMinutos; j = j + intervaloAgendamento) {
+                Map<String, String> hashHorasOcupadas = new HashMap<String, String>();
+                hashHorasOcupadas.put("minutos", j.toString());
+                Integer horas_ocupado = j / 60;
+                Integer minutos_ocupado = (j % 60);
+                hashHorasOcupadas.put("horas", horas_ocupado.toString() + ":" + minutos_ocupado);
+                arrayHorariosOcupados_new.add(hashHorasOcupadas);
+            }
+        }
+
+        return arrayHorariosOcupados_new;
+    }
+
+    private String validarHorasOcupadas(Agendamento objAgendamento, ArrayList<Map<String, String>> arrayHorariosOcupados, String msgRetorno) {
+
+        for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
+            Map<String, String> horaOcupada = arrayHorariosOcupados.get(i);
+            Integer horaSelecionada = objAgendamento.getHoraAgendamento().getHours() * 60;
+            Integer minutoSelecionado = objAgendamento.getHoraAgendamento().getMinutes();
+            Integer minutoTotalSelecionado = horaSelecionada + minutoSelecionado;
+            if (minutoTotalSelecionado == Integer.parseInt(horaOcupada.get("minutos"))) {
+                return msgRetorno;
+            }
+        }
+        
+        return "VALIDO";
     }
 }

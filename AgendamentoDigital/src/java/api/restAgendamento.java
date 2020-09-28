@@ -49,6 +49,8 @@ import testes.ValidarCodigo;
 @Path("/Agendamento")
 public class restAgendamento {
 
+    AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+
     @Context
     private UriInfo context;
 
@@ -81,8 +83,8 @@ public class restAgendamento {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Path("/Testes")
-    public String testes() throws SQLException, ClassNotFoundException {
+    @Path("/Testes/Servico/{idServico}/Cliente/{idCliente}/Funcionario/{idFuncionario}/{dataEntrada}/{horaEntrada}")
+    public String testes(@PathParam("idServico") Integer idServico, @PathParam("idCliente") Integer idCliente, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada, @PathParam("horaEntrada") String horaEntrada) throws SQLException, ClassNotFoundException {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -98,15 +100,15 @@ public class restAgendamento {
         }
 
         Agendamento objAgendamento = new Agendamento();
-        objAgendamento.setCliente(new Cliente(1));
-        objAgendamento.setFuncionario(new Funcionario(2));
-        objAgendamento.setServico(new Servico(1));
+        objAgendamento.setCliente(new Cliente(idCliente));
+        objAgendamento.setFuncionario(new Funcionario(idFuncionario));
+        objAgendamento.setServico(new Servico(idServico));
         objAgendamento.setStatus(StatusAgendamento.AGUARDANDOATENDIMENTO);
         Date dataAgendamento = null;
         Time horaAgendamento = null;
         //Parse dataAgendamento
         try {
-            dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse("22/09/2020");
+            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
         } catch (ParseException ex) {
             Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -115,22 +117,33 @@ public class restAgendamento {
         DateFormat formatter = new SimpleDateFormat("kk:mm");
         //Parse horaAgendamento
         try {
-            horaAgendamento = new java.sql.Time(formatter.parse("10:30").getTime());
+            horaAgendamento = new java.sql.Time(formatter.parse(horaEntrada).getTime());
         } catch (ParseException ex) {
             Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
         }
         objAgendamento.setHoraAgendamento(horaAgendamento);
 
-        //Retorna horário ocupados pelo funcionário no dia solicitado
-        ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
-        arrayHorariosOcupados = objAgendamentoDao.listarHorariosOcupados(objAgendamento);
+        String validoParaAgendar = validoParaAgendar(objAgendamento);
 
+        return objgson.toJson(validoParaAgendar);
+    }
+
+    private String validoParaAgendar(Agendamento objAgendamento) {
+
+        String statusValidacao = "";
+
+        //Retorna horário ocupados pelo funcionário no dia solicitado
+        ArrayList<Map<String, String>> arrayHorariosOcupadosFuncionario = new ArrayList<>();
+        arrayHorariosOcupadosFuncionario = agendamentoDAO.listarHorariosOcupadosFuncionario(objAgendamento);
+
+        //Retorna horário ocupados pelo cliente no dia solicitado
+        ArrayList<Map<String, String>> arrayHorariosOcupadosCliente = new ArrayList<>();
+        arrayHorariosOcupadosCliente = agendamentoDAO.listarHorariosOcupadosCliente(objAgendamento);
+
+        //Obtém os valores padrão de agendamento definido pela empresa
         Empresa objEmpresa = new Empresa();
         EmpresaDAO objEmpresaDAO = new EmpresaDAO();
         objEmpresaDAO.buscar(objEmpresa);
-
-//        Integer horaInicialAgendamento = objEmpresa.getHoraInicialTrabalho().getHours() * 60;
-//        Integer horaFinalAgendamento = objEmpresa.getHoraFinalTrabalho().getHours() * 60;
         Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
         Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
         Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
@@ -141,11 +154,29 @@ public class restAgendamento {
         Long duracaoServicoLong = objAgendamento.getServico().getDuracao().toMinutes();
         Integer duracaoServico = Integer.parseInt(duracaoServicoLong.toString());
 
+        //Mantém o maior intervalo de agendamento como referência
         if (duracaoServico >= intervaloAgendamento) {
             intervaloAgendamento = duracaoServico;
         }
 
-        ArrayList<Map<String, String>> arrHorasOcupadas = new ArrayList<>();
+        //Calcula as horas ocupadas do funcionário e do cliente, respectivamente, atualizando conforme a duração de cada serviço já agendado
+        ArrayList<Map<String, String>> arrayHorariosOcupadosFuncionario_new = calcularHorasOcupadas(arrayHorariosOcupadosFuncionario, intervaloAgendamento);
+
+        ArrayList<Map<String, String>> arrayHorariosOcupadosCliente_new = calcularHorasOcupadas(arrayHorariosOcupadosCliente, intervaloAgendamento);
+
+        //Verifica se o funcionário é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
+        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupadosFuncionario_new, "FUNCIONARIO_OCUPADO");
+
+        //Verifica se o cliente é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
+        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupadosCliente_new, "CLIENTE_OCUPADO");
+
+        return statusValidacao;
+
+    }
+
+    private ArrayList<Map<String, String>> calcularHorasOcupadas(ArrayList<Map<String, String>> arrayHorariosOcupados, Integer intervaloAgendamento) {
+
+        ArrayList<Map<String, String>> arrayHorariosOcupados_new = new ArrayList<>();
 
         //Remove do array montado acima os horarios ocupados por esse funcionario e as horas entre o intervalo de duração
         for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
@@ -162,30 +193,35 @@ public class restAgendamento {
             for (Integer j = horaOcupadaEmMinutos; j < duracaoHoraOcupadaEmMinutos; j = j + intervaloAgendamento) {
                 Map<String, String> hashHorasOcupadas = new HashMap<String, String>();
                 hashHorasOcupadas.put("minutos", j.toString());
-                arrHorasOcupadas.add(hashHorasOcupadas);
+                Integer horas_ocupado = j / 60;
+                Integer minutos_ocupado = (j % 60);
+                hashHorasOcupadas.put("horas", horas_ocupado.toString() + ":" + minutos_ocupado);
+                arrayHorariosOcupados_new.add(hashHorasOcupadas);
             }
-
         }
 
-        Boolean validoParaAgendar = true;
+        return arrayHorariosOcupados_new;
+    }
 
-        for (int i = 0; i < arrHorasOcupadas.size(); i++) {
-            Map<String, String> horaOcupada = arrHorasOcupadas.get(i);
+    private String validarHorasOcupadas(Agendamento objAgendamento, ArrayList<Map<String, String>> arrayHorariosOcupados, String msgRetorno) {
+
+        for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
+            Map<String, String> horaOcupada = arrayHorariosOcupados.get(i);
             Integer horaSelecionada = objAgendamento.getHoraAgendamento().getHours() * 60;
             Integer minutoSelecionado = objAgendamento.getHoraAgendamento().getMinutes();
             Integer minutoTotalSelecionado = horaSelecionada + minutoSelecionado;
             if (minutoTotalSelecionado == Integer.parseInt(horaOcupada.get("minutos"))) {
-                validoParaAgendar = false;
+                return msgRetorno;
             }
         }
 
-        return objgson.toJson(validoParaAgendar);
+        return "VALIDO";
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Path("/HorariosDisponiveis/Funcionario/{idFuncionario}/{dataEntrada}")
-    public String listar(@PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada) throws SQLException, ClassNotFoundException {
+    @Path("/HorariosOcupados/Funcionario/{idFuncionario}/{dataEntrada}")
+    public String listarHorariosOcupadosFuncionario(@PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada) throws SQLException, ClassNotFoundException {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -203,7 +239,33 @@ public class restAgendamento {
 
         AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
 
-        ArrayList<Map<String, String>> horariosOcupados = objAgendamentoDao.listarHorariosOcupados(agendamento);
+        ArrayList<Map<String, String>> horariosOcupados = objAgendamentoDao.listarHorariosOcupadosFuncionario(agendamento);
+
+        return objgson.toJson(horariosOcupados);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Path("/HorariosOcupados/Cliente/{idCliente}/{dataEntrada}")
+    public String listarHorariosOcupadosCliente(@PathParam("idCliente") Integer idCliente, @PathParam("dataEntrada") String dataEntrada) throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        Date dataAgendamento = null;
+        //Parse dataAgendamento
+        try {
+            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
+        } catch (ParseException ex) {
+            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Agendamento agendamento = new Agendamento();
+        agendamento.setCliente(new Cliente(idCliente));
+        agendamento.setDataAgendamento(dataAgendamento);
+
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+
+        ArrayList<Map<String, String>> horariosOcupados = objAgendamentoDao.listarHorariosOcupadosCliente(agendamento);
 
         return objgson.toJson(horariosOcupados);
     }

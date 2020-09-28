@@ -5,12 +5,9 @@
         <group>
             <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/AgendarAction.java</file>
             <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restAgendamento.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/EmpresaDAO.java</file>
             <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/AgendamentoDAO.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restEmpresa.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/Cliente.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/Agendamento.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restServico.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/interfaces/IAgendamentoDAO.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleAgenda.java</file>
         </group>
     </open-files>
 </project-private>

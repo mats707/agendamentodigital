@@ -224,10 +224,10 @@ insert into Cliente values
   (nextval('sqn_cliente'),5);
 
 insert into Agendamento (id,dataAgendamento,horarioAgendamento,cliente,servico,funcionario,status) values
-  (nextval('sqn_agendamento'),'2020-09-21','16:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-09-22','09:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-09-22','11:30:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-09-22','12:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-09-23','08:30:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-09-22','08:00:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-09-22','12:00:00',2,2,2,1);
+  (nextval('sqn_agendamento'),'2020-09-28','16:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-30','09:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-30','11:30:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-30','12:00:00',1,1,1,1),
+  (nextval('sqn_agendamento'),'2020-09-29','08:30:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-30','08:00:00',1,1,2,1),
+  (nextval('sqn_agendamento'),'2020-09-30','12:00:00',2,2,2,1);

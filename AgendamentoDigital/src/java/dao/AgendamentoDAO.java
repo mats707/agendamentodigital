@@ -46,13 +46,96 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "WHERE id = ? AND cliente=?";
     private static final String BUSCAR_ID = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE id=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id ORDER BY dataAgendamento, horarioAgendamento, cliente";
-    private static final String LISTAR_HORARIOS_OCUPADOS = "SELECT \n"
-            + "to_char(a.horarioagendamento, 'HH24:MI') as horarioagendamento \n"
-            + ",EXTRACT(EPOCH FROM s.duracao)/60 as duracao_minutos \n"
-            + "FROM sistema.agendamento a \n"
-            + "LEFT JOIN sistema.servico s \n"
-            + "ON s.id = a.servico \n"
-            + "WHERE a.funcionario = ? AND a.dataagendamento = ?::DATE";
+    private static final String LISTAR_HORARIOS_OCUPADOS = ""
+            + "select\n"
+            + "	 tab_func.horarioAgendamento\n"
+            + "	,tab_func.horarioFinalAgendamento\n"
+            + "	,tab_func.cliente\n"
+            + "	,tab_func.funcionario\n"
+            + "from\n"
+            + "(\n"
+            + "	select\n"
+            + "		 age.id as agendamento\n"
+            + "		,age.dataAgendamento\n"
+            + "		,age.horarioAgendamento\n"
+            + "		,age.horarioAgendamento + ser.duracao as horarioFinalAgendamento\n"
+            + "		,age.servico as servico\n"
+            + "		,age.funcionario\n"
+            + "		,age.cliente\n"
+            + "	from sistema.agendamento age\n"
+            + "	inner join sistema.servico ser\n"
+            + "	on age.servico = ser.id\n"
+            + "	where\n"
+            + "		age.dataAgendamento = :dataSolicitada::DATE\n"
+            + "		and age.funcionario = :funcionarioSolicitado\n"
+            + ") as tab_func\n"
+            + "inner join\n"
+            + "(\n"
+            + "	select\n"
+            + "		t_servico.id,\n"
+            + "		t1.horarioSolicitado,\n"
+            + "		t1.horarioSolicitado + t_servico.duracao as horarioFinalSolicitado\n"
+            + "	from (\n"
+            + "		select\n"
+            + "			:servicoSolicitado as servico\n"
+            + "			,:horarioSolicitado::TIME as horarioSolicitado\n"
+            + "	) t1\n"
+            + "	inner join sistema.servico t_servico\n"
+            + "	on t_servico.id = t1.servico\n"
+            + ") as tab_param\n"
+            + "on (tab_param.horarioSolicitado >= tab_func.horarioAgendamento::time\n"
+            + "AND tab_param.horarioSolicitado < tab_func.horarioFinalAgendamento::time)\n"
+            + "OR (tab_param.horarioFinalSolicitado > tab_func.horarioAgendamento::time\n"
+            + "AND tab_param.horarioFinalSolicitado < tab_func.horarioFinalAgendamento::time)\n"
+            + "OR  (tab_func.horarioAgendamento::time >= tab_param.horarioSolicitado\n"
+            + "AND tab_func.horarioAgendamento::time < tab_param.horarioFinalSolicitado)\n"
+            + "OR  (tab_func.horarioFinalAgendamento::time > tab_param.horarioSolicitado\n"
+            + "AND tab_func.horarioFinalAgendamento::time < tab_param.horarioFinalSolicitado)\n"
+            + "UNION\n"
+            + "select\n"
+            + "	tab_cli.horarioAgendamento\n"
+            + "	,tab_cli.horarioFinalAgendamento\n"
+            + "	,tab_cli.cliente\n"
+            + "	,tab_cli.funcionario\n"
+            + "from\n"
+            + "(\n"
+            + "	select\n"
+            + "		 age.id as agendamento\n"
+            + "		,age.dataAgendamento\n"
+            + "		,age.horarioAgendamento\n"
+            + "		,age.horarioAgendamento + ser.duracao as horarioFinalAgendamento\n"
+            + "		,age.servico as servico\n"
+            + "		,age.funcionario\n"
+            + "		,age.cliente\n"
+            + "	from sistema.agendamento age\n"
+            + "	inner join sistema.servico ser\n"
+            + "	on age.servico = ser.id\n"
+            + "	where\n"
+            + "		age.dataAgendamento = :dataSolicitada::DATE\n"
+            + "		and age.cliente = :clienteSolicitado\n"
+            + ") as tab_cli\n"
+            + "inner join\n"
+            + "(\n"
+            + "	select\n"
+            + "		t_servico.id,\n"
+            + "		t1.horarioSolicitado,\n"
+            + "		t1.horarioSolicitado + t_servico.duracao as horarioFinalSolicitado\n"
+            + "	from (\n"
+            + "		select\n"
+            + "			:servicoSolicitado as servico\n"
+            + "			,:horarioSolicitado::TIME as horarioSolicitado\n"
+            + "	) t1\n"
+            + "	inner join sistema.servico t_servico\n"
+            + "	on t_servico.id = t1.servico\n"
+            + ") as tab_param\n"
+            + "on (tab_param.horarioSolicitado >= tab_cli.horarioAgendamento::time\n"
+            + "AND tab_param.horarioSolicitado < tab_cli.horarioFinalAgendamento::time)\n"
+            + "OR (tab_param.horarioFinalSolicitado > tab_cli.horarioAgendamento::time\n"
+            + "AND tab_param.horarioFinalSolicitado < tab_cli.horarioFinalAgendamento::time)\n"
+            + "OR  (tab_cli.horarioAgendamento::time >= tab_param.horarioSolicitado\n"
+            + "AND tab_cli.horarioAgendamento::time < tab_param.horarioFinalSolicitado)\n"
+            + "OR  (tab_cli.horarioFinalAgendamento::time > tab_param.horarioSolicitado\n"
+            + "AND tab_cli.horarioFinalAgendamento::time < tab_param.horarioFinalSolicitado);";
     private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? ORDER BY dataAgendamento, horarioAgendamento";
     private static final String LISTAR_FUNCIONARIO = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE funcionario=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_STATUS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE status=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
@@ -180,7 +263,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
 
             DateFormat formatter = new SimpleDateFormat("kk:mm");
             Time horaAgendamento = null;
-            
+
             while (rs.next()) {
                 Map<String, String> arrHorariosOcupados = new HashMap<String, String>();
                 arrHorariosOcupados.put("duracaoServico", rs.getString("duracao_minutos"));
@@ -190,7 +273,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
                 } catch (ParseException ex) {
                     Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                arrHorariosOcupados.put("hora",horaAgendamento.toString().substring(0,5));
+                arrHorariosOcupados.put("hora", horaAgendamento.toString().substring(0, 5));
                 arrayHorariosOcupados.add(arrHorariosOcupados);
             }
             return arrayHorariosOcupados;
