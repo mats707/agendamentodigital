@@ -43,6 +43,8 @@ import modelos.PerfilDeAcesso;
 import modelos.Servico;
 import modelos.StatusAgendamento;
 import modelos.Usuario;
+import api.restAgendamento;
+import java.sql.SQLException;
 import testes.ValidarCodigo;
 
 /**
@@ -52,9 +54,10 @@ import testes.ValidarCodigo;
 public class AgendarAction implements ICommand {
 
     AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+    restAgendamento objRestAgendamento = new restAgendamento();
 
     @Override
-    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
 
         //Configurações para o datetimepicker
         int day = Calendar.DAY_OF_MONTH;
@@ -136,9 +139,9 @@ public class AgendarAction implements ICommand {
             }
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
-            String validoParaAgendar = validoParaAgendar(objAgendamento);
+            String validoParaAgendar = objRestAgendamento.verificarHorarioOcupado(objAgendamento);
 
-            if (validoParaAgendar == "VALIDO") {
+            if (validoParaAgendar == "valido") {
                 //Chamada da DAO para Cadastrar
                 sqlState = agendamentoDAO.cadastrar(objAgendamento);
                 //Verifica o retorno da DAO (banco de dados)
@@ -157,10 +160,10 @@ public class AgendarAction implements ICommand {
                     funcaoMsg = "Não foi possível realizar o agendamento, tente novamente mais tarde!";
                     funcaoStatus = "error";
                 }
-            } else if (validoParaAgendar != "FUNCIONARIO_OCUPADO") {
+            } else if (validoParaAgendar == "funcionario_ocupado") {
                 funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário! Escolha outro horário, por favor!";
                 funcaoStatus = "error";
-            } else if (validoParaAgendar != "CLIENTE_OCUPADO") {
+            } else if (validoParaAgendar == "cliente_ocupado") {
                 funcaoMsg = "Você possui um agendamento durante o horário escolhido! Escolha outro horário ou cancele o agendamento em conflito...";
                 funcaoStatus = "error";
             } else {
@@ -189,12 +192,8 @@ public class AgendarAction implements ICommand {
         String statusValidacao = "";
 
         //Retorna horário ocupados pelo funcionário no dia solicitado
-        ArrayList<Map<String, String>> arrayHorariosOcupadosFuncionario = new ArrayList<>();
-        arrayHorariosOcupadosFuncionario = agendamentoDAO.listarHorariosOcupadosFuncionario(objAgendamento);
-
-        //Retorna horário ocupados pelo cliente no dia solicitado
-        ArrayList<Map<String, String>> arrayHorariosOcupadosCliente = new ArrayList<>();
-        arrayHorariosOcupadosCliente = agendamentoDAO.listarHorariosOcupadosCliente(objAgendamento);
+        ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
+        arrayHorariosOcupados = agendamentoDAO.listarHorariosOcupados(objAgendamento);
 
         //Obtém os valores padrão de agendamento definido pela empresa
         Empresa objEmpresa = new Empresa();
@@ -216,15 +215,10 @@ public class AgendarAction implements ICommand {
         }
 
         //Calcula as horas ocupadas do funcionário e do cliente, respectivamente, atualizando conforme a duração de cada serviço já agendado
-        ArrayList<Map<String, String>> arrayHorariosOcupadosFuncionario_new = calcularHorasOcupadas(arrayHorariosOcupadosFuncionario, intervaloAgendamento);
-
-        ArrayList<Map<String, String>> arrayHorariosOcupadosCliente_new = calcularHorasOcupadas(arrayHorariosOcupadosCliente, intervaloAgendamento);
+        ArrayList<Map<String, String>> arrayHorariosOcupados_new = calcularHorasOcupadas(arrayHorariosOcupados, intervaloAgendamento);
 
         //Verifica se o funcionário é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
-        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupadosFuncionario_new, "FUNCIONARIO_OCUPADO");
-
-        //Verifica se o cliente é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
-        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupadosCliente_new, "CLIENTE_OCUPADO");
+        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupados_new, "FUNCIONARIO_OCUPADO");
 
         return statusValidacao;
 

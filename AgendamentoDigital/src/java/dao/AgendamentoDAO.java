@@ -66,8 +66,8 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "	inner join sistema.servico ser\n"
             + "	on age.servico = ser.id\n"
             + "	where\n"
-            + "		age.dataAgendamento = :dataSolicitada::DATE\n"
-            + "		and age.funcionario = :funcionarioSolicitado\n"
+            + "		age.dataAgendamento = ?::DATE\n"
+            + "		and age.funcionario = ?\n"
             + ") as tab_func\n"
             + "inner join\n"
             + "(\n"
@@ -77,8 +77,8 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "		t1.horarioSolicitado + t_servico.duracao as horarioFinalSolicitado\n"
             + "	from (\n"
             + "		select\n"
-            + "			:servicoSolicitado as servico\n"
-            + "			,:horarioSolicitado::TIME as horarioSolicitado\n"
+            + "			? as servico\n"
+            + "			,?::TIME as horarioSolicitado\n"
             + "	) t1\n"
             + "	inner join sistema.servico t_servico\n"
             + "	on t_servico.id = t1.servico\n"
@@ -111,8 +111,8 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "	inner join sistema.servico ser\n"
             + "	on age.servico = ser.id\n"
             + "	where\n"
-            + "		age.dataAgendamento = :dataSolicitada::DATE\n"
-            + "		and age.cliente = :clienteSolicitado\n"
+            + "		age.dataAgendamento = ?::DATE\n"
+            + "		and age.cliente = ?\n"
             + ") as tab_cli\n"
             + "inner join\n"
             + "(\n"
@@ -122,8 +122,8 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "		t1.horarioSolicitado + t_servico.duracao as horarioFinalSolicitado\n"
             + "	from (\n"
             + "		select\n"
-            + "			:servicoSolicitado as servico\n"
-            + "			,:horarioSolicitado::TIME as horarioSolicitado\n"
+            + "			? as servico\n"
+            + "			,?::TIME as horarioSolicitado\n"
             + "	) t1\n"
             + "	inner join sistema.servico t_servico\n"
             + "	on t_servico.id = t1.servico\n"
@@ -255,25 +255,39 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             conexao = ConectaBanco.getConexao();
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR_HORARIOS_OCUPADOS);
-            pstmt.setInt(1, agendamento.getFuncionario().getIdFuncionario());
-            pstmt.setDate(2, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+            pstmt.setDate(1, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+            pstmt.setInt(2, agendamento.getFuncionario().getIdFuncionario());
+            pstmt.setInt(3, agendamento.getServico().getIdServico());
+            pstmt.setTime(4, new java.sql.Time(agendamento.getHoraAgendamento().getTime()));
+            pstmt.setDate(5, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+            pstmt.setInt(6, agendamento.getCliente().getIdCliente());
+            pstmt.setInt(7, agendamento.getServico().getIdServico());
+            pstmt.setTime(8, new java.sql.Time(agendamento.getHoraAgendamento().getTime()));
 
             //executa
             ResultSet rs = pstmt.executeQuery();
 
             DateFormat formatter = new SimpleDateFormat("kk:mm");
-            Time horaAgendamento = null;
+            Time horarioAgendamento = null;
+            Time horarioFinalAgendamento = null;            
 
             while (rs.next()) {
                 Map<String, String> arrHorariosOcupados = new HashMap<String, String>();
-                arrHorariosOcupados.put("duracaoServico", rs.getString("duracao_minutos"));
+                arrHorariosOcupados.put("cliente", rs.getString("cliente"));
+                arrHorariosOcupados.put("funcionario", rs.getString("funcionario"));
                 //Parse horaAgendamento
                 try {
-                    horaAgendamento = new java.sql.Time(formatter.parse(rs.getString("horarioAgendamento")).getTime());
+                    horarioAgendamento = new java.sql.Time(formatter.parse(rs.getString("horarioAgendamento")).getTime());
                 } catch (ParseException ex) {
                     Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                arrHorariosOcupados.put("hora", horaAgendamento.toString().substring(0, 5));
+                try {
+                    horarioFinalAgendamento = new java.sql.Time(formatter.parse(rs.getString("horarioFinalAgendamento")).getTime());
+                } catch (ParseException ex) {
+                    Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                arrHorariosOcupados.put("horarioAgendamento", horarioAgendamento.toString().substring(0, 5));
+                arrHorariosOcupados.put("horarioFinalAgendamento", horarioFinalAgendamento.toString().substring(0, 5));
                 arrayHorariosOcupados.add(arrHorariosOcupados);
             }
             return arrayHorariosOcupados;
