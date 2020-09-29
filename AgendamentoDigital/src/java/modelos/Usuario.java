@@ -85,4 +85,9 @@ public class Usuario implements ILogavel {
         }
     }
 
+    public Usuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    
 }

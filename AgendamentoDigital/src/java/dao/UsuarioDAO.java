@@ -27,6 +27,8 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "ON u.perfil = p.id WHERE u.email=? AND u.senha=?";
     private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
+    private static final String BUSCAR_ID = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+            + "ON u.perfil = p.id WHERE u.id=?";
     private static final String LISTAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id ORDER BY u.email;";
     private static final String DELETAR = "DELETE FROM sistema.usuario WHERE id = ?";
@@ -160,6 +162,43 @@ public class UsuarioDAO implements IUsuarioDAO {
             PreparedStatement pstmt = conexao.prepareStatement(BUSCAR);
 
             pstmt.setString(1, usuario.getEmail());
+
+            usuario.setEmail(null);
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
+                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+    
+    public void buscarId(Usuario usuario) {
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_ID);
+
+            pstmt.setInt(1, usuario.getIdUsuario());
 
             usuario.setEmail(null);
 
