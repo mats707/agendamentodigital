@@ -149,10 +149,10 @@ public class AgendarAction implements ICommand {
             if (sqlState == "0") {
                 StatusEmail = notificarAgendamento(objAgendamento);
                 if (StatusEmail == "email_enviado") {
-                    funcaoMsg = "Cadastrado com sucesso! Um email foi enviado";
+                    funcaoMsg = "Agendamento Realizado!\\nUm e-mail foi enviado como lembrete.";
                     funcaoStatus = "success";
                 } else {
-                    funcaoMsg = "Cadastrado com sucesso! Infelizmente houve uma falha ao enviar o e-mail";
+                    funcaoMsg = "Agendamento Realizado!\\nInfelizmente houve uma falha ao enviar o e-mail de confirmação.";
                     funcaoStatus = "info";
                 }
             } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
@@ -168,8 +168,8 @@ public class AgendarAction implements ICommand {
                 funcaoStatus = "error";
             }
         } else {
-            funcaoMsg = "Esse horário não está disponível para agendamento! Escolha outro horário, por favor!";
-            funcaoStatus = "error";
+            funcaoMsg = "Carregando...\\nAguarde um momento!";
+            funcaoStatus = "info";
         }
 
         request.setAttribute("funcaoMsg", funcaoMsg);
