@@ -5,6 +5,7 @@
  */
 package command.agenda;
 
+import api.restEmail;
 import command.servico.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,6 +19,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -55,6 +57,7 @@ public class AgendarAction implements ICommand {
 
     AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
     restAgendamento objRestAgendamento = new restAgendamento();
+    restEmail objRestEmail = new restEmail();
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
@@ -88,6 +91,7 @@ public class AgendarAction implements ICommand {
         String sqlState = "0";
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
+        String StatusEmail = null;
 
         if (idServico != null && idFuncionario != null && data != null && hora != null) {
 
@@ -139,6 +143,9 @@ public class AgendarAction implements ICommand {
             }
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
+            ServicoDAO objServicoDAO = new ServicoDAO();
+            objServicoDAO.buscar(objAgendamento.getServico());
+
             String validoParaAgendar = objRestAgendamento.validoParaAgendar(objAgendamento);
 
             if (validoParaAgendar == "valido") {
@@ -146,32 +153,37 @@ public class AgendarAction implements ICommand {
                 sqlState = agendamentoDAO.cadastrar(objAgendamento);
                 //Verifica o retorno da DAO (banco de dados)
                 if (sqlState == "0") {
-                    funcaoMsg = "Agendado com sucesso!";
-                    funcaoStatus = "success";
+                    StatusEmail = notificarAgendamento(objAgendamento);
+                    if (StatusEmail == "email_enviado") {
+                        funcaoMsg = "Agendado com sucesso!\\nUm e-mail foi enviado como lembrete.";
+                        funcaoStatus = "success";
+                    } else {
+                        funcaoMsg = "Agendamento Realizado!\\nInfelizmente houve uma falha ao enviar o e-mail de confirmação.";
+                        funcaoStatus = "info";
+                    }
                 } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
                     // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
                     funcaoMsg = "Você já possui um agendamento nesse horário!";
                     funcaoStatus = "error";
                 } else if (sqlState.equalsIgnoreCase("unqAgendamentoFuncionario")) {
                     // Independente do serviço o funcionário não poderá ter mais de um agendamento no mesmo horário
-                    funcaoMsg = "O funcionário escolhido já possui hora marcada! Escolha outro horário, por favor!";
+                    funcaoMsg = "O funcionário escolhido já possui hora marcada!\\nEscolha outro horário, por favor!";
                     funcaoStatus = "error";
                 } else {
                     funcaoMsg = "Não foi possível realizar o agendamento, tente novamente mais tarde!";
-                    funcaoStatus = "error";
                 }
             } else if (validoParaAgendar == "funcionario_ocupado") {
-                funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário! Escolha outro horário, por favor!";
+                funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário!\\nEscolha outro horário, por favor!";
                 funcaoStatus = "error";
             } else if (validoParaAgendar == "cliente_ocupado") {
-                funcaoMsg = "Você possui um agendamento durante o horário escolhido! Escolha outro horário ou cancele o agendamento em conflito...";
+                funcaoMsg = "Você possui um agendamento durante o horário escolhido!\\nEscolha outro horário ou cancele o agendamento em conflito...";
                 funcaoStatus = "error";
             } else {
-                funcaoMsg = "Erro de validação do horário, em caso de dúvidas contate o suporte!";
+                funcaoMsg = "Erro de validação do horário,\\nem caso de dúvidas contate o suporte!";
                 funcaoStatus = "error";
             }
         } else {
-            funcaoMsg = "Carregando...";
+            funcaoMsg = "Carregando...\\nAguarde um momento!";
             funcaoStatus = "info";
         }
 
@@ -185,5 +197,26 @@ public class AgendarAction implements ICommand {
         request.setAttribute("minTime", minTime);
         request.setAttribute("maxMonth", maxMonth);
         return funcaoMsg;
+    }
+
+    private String notificarAgendamento(Agendamento objAgendamento) throws ParseException {
+        String retorno = "";
+        String dataAgendamentoString = new SimpleDateFormat("dd-MM-yyyy").format(objAgendamento.getDataAgendamento());
+        String horaInicialString = new SimpleDateFormat("kk:mm").format(objAgendamento.getHoraAgendamento());
+        DateFormat formatter = new SimpleDateFormat("kk:mm");
+        Time horaInicial = objAgendamento.getHoraAgendamento();
+        Duration duracao = objAgendamento.getServico().getDuracao();
+        Long horaFinal = null;
+        try{
+        horaFinal = horaInicial.getTime() + duracao.toMillis();
+        }
+        catch (Exception ex)
+        {
+            return ex.getMessage();
+        }
+
+        String horaFinalString = new SimpleDateFormat("kk:mm").format(horaFinal);
+        retorno = objRestEmail.emailDispacherAgendar(objAgendamento.getCliente().getIdCliente(), objAgendamento.getFuncionario().getIdFuncionario(), dataAgendamentoString, horaInicialString, horaFinalString);
+        return retorno;
     }
 }
