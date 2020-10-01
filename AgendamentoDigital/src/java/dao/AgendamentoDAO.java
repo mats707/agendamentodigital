@@ -289,6 +289,20 @@ public class AgendamentoDAO implements IAgendamentoDAO {
                 arrHorariosOcupados.put("horarioAgendamento", horarioAgendamento.toString().substring(0, 5));
                 arrHorariosOcupados.put("horarioFinalAgendamento", horarioFinalAgendamento.toString().substring(0, 5));
                 arrayHorariosOcupados.add(arrHorariosOcupados);
+//                [
+//                    {
+//                        "cliente": "X",
+//                        "funcionario": "X",
+//                        "horarioAgendamento": "kk:mm" ,
+//                        "horarioFinalAgendamento": "kk:mm"
+//                    },
+//                    {
+//                        "cliente": "X",
+//                        "funcionario": "X",
+//                        "horarioAgendamento": "kk:mm" ,
+//                        "horarioFinalAgendamento": "kk:mm"
+//                    }
+//                ]                
             }
             return arrayHorariosOcupados;
 

@@ -120,7 +120,7 @@ public class restAgendamento {
         return validoParaAgendar;
     }
 
-    private String validoParaAgendar(Agendamento objAgendamento) {
+    public String validoParaAgendar(Agendamento objAgendamento) {
 
         String statusValidacao = "";
 
@@ -148,7 +148,7 @@ public class restAgendamento {
         }
 
         //Calcula as horas ocupadas do funcionário e do cliente, respectivamente, atualizando conforme a duração de cada serviço já agendado
-//        ArrayList<Map<String, String>> arrayHorariosOcupados_new = calcularHorasOcupadas(arrayHorariosOcupados, intervaloAgendamento);
+        //ArrayList<Map<String, String>> arrayHorariosOcupados_new = calcularHorasOcupadas(arrayHorariosOcupados, intervaloAgendamento);
         //Verifica se o funcionário e cliente é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
         statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupados);
 
@@ -323,19 +323,5 @@ public class restAgendamento {
         }
 
         return objgson.toJson(arr);
-    }
-
-    public String verificarHorarioOcupado(Agendamento objAgendamento) throws SQLException, ClassNotFoundException {
-        String retorno = "";
-        
-        Integer servico = objAgendamento.getServico().getIdServico();
-        Integer cliente = objAgendamento.getCliente().getIdCliente();
-        Integer funcionario = objAgendamento.getFuncionario().getIdFuncionario();
-        String dataEntrada = new SimpleDateFormat("yyyy-MM-dd").format(objAgendamento.getDataAgendamento());
-        String horaEntrada = new SimpleDateFormat("kk:mm").format(objAgendamento.getHoraAgendamento());
-        
-        retorno = verificarHorarioOcupado(servico, cliente, funcionario, dataEntrada, horaEntrada);
-        
-        return retorno;
     }
 }
