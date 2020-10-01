@@ -1,3 +1,5 @@
+var arrHorasMinutos = [];
+
 function timepicker() {
 
 //    servico = 1 and funcionario = 1 and dataagendamento = '2020-09-12';
@@ -15,8 +17,9 @@ function timepicker() {
     console.log("valueInputDate: " + valueInputDate);
 
     valueInputDate = formatDate(yearValueInputDate, monthValueInputDate, dayValueInputDate);
-
-    carregarHorarios(indexListaFuncionarios, valueInputDate);
+    
+    arrHorasMinutos = [];
+    carregarHorarios(indexListaFuncionarios, valueInputDate, "Funcionario");
 }
 
 function isNumber(x) {
@@ -42,10 +45,10 @@ function formatDate(year, month, date) {
 }
 
 // Funcao para carregar os dados da consulta nos respectivos campos
-function carregarHorarios(indexListaFuncionarios, valueInputDate) {
+function carregarHorarios(indexListaFuncionarios, valueInputDate, pessoa) {
     if (isNumber(indexListaFuncionarios) && valueInputDate != null) {
 
-        var urlApi = nameproject + '/api/Agendamento/HorariosDisponiveis/Funcionario/' + indexListaFuncionarios + '/' + valueInputDate; //lugar onde a servlet está
+        var urlApi = nameproject + '/api/Agendamento/HorariosOcupados/' + pessoa + '/' + indexListaFuncionarios + '/' + valueInputDate; //lugar onde a servlet está
         var arrHorarioDisponivel = [];
 
         console.log(urlApi);
@@ -110,8 +113,6 @@ function validarHorarios(arrHorariosOcupados) {
     if (duracaoServico >= intervaloAgendamento) {
         intervaloAgendamento = duracaoServico;
     }
-
-    var arrHorasMinutos = [];
 
     var horaMaximaServico = horaFinalMin - intervaloAgendamento;
 
