@@ -8,6 +8,7 @@ package api;
 import dao.ClienteDAO;
 import dao.FuncionarioDAO;
 import dao.PessoaDAO;
+import dao.ServicoDAO;
 import dao.UsuarioDAO;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -16,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -42,8 +44,9 @@ import javax.ws.rs.PathParam;
 import modelos.Cliente;
 import modelos.Funcionario;
 import modelos.Pessoa;
+import modelos.Servico;
 import modelos.Usuario;
-import testes.ValidarCodigo;
+import util.Email;
 
 /**
  * REST Web Service
@@ -53,197 +56,129 @@ import testes.ValidarCodigo;
 @Path("/Email")
 public class restEmail {
 
+    Email utilEmail = new Email();
+
     @Context
     private UriInfo context;
 
     /**
      * Creates a new instance of restEmail
+    //http://localhost:8080/AgendamentoDigital/api/Email/Notificar/1/2/2/10-10-2020/12:00
      */
     public restEmail() {
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Enviar")
-    public String emailDispacher() {
-        Properties props = new Properties();
-        /**
-         * Parâmetros de conexão com servidor Gmail
-         */
-
-        props.put("mail.smtp.host", "smtp.gmail.com");
-
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.debug", "true");
-        props.put("mail.smtp.debug", "true");
-        props.put("mail.mime.charset", "ISO-8859-1");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.socketFactory.port", "587");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(
-                        "contato.mafera@gmail.com",
-                        "wjgezlbbjfnvsces");
-            }
-        });
-        /**
-         * Ativa Debug para sessão
-         */
-        session.setDebug(true);
-
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("contato.mafera@gmail.com"));
-
-            //Remetente
-            Address[] toUser = InternetAddress //Destinatário(s)
-                    .parse("rafael-ps12@hotmail.com, sjfelipe93@gmail.com, math.tcl@gmail.com");
-
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Enviando email com JavaMail");//Assunto
-            message.setText("Enviei este email utilizando JavaMail com minha conta GMail!");
-            /**
-             * Método para enviar a mensagem criada
-             */
-            Transport.send(message);
-
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-
-    }
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Notificar/{idCliente}/{idFuncionario}/{data}/{horaIni}/{horaFim}")
+    @Path("/Notificar/{idCliente}/{idServico}/{idFuncionario}/{data}/{horaIni}")
     public String emailDispacherAgendar(@PathParam("idCliente") Integer idCliente,
+            @PathParam("idServico") Integer idServico,
             @PathParam("idFuncionario") Integer idFuncionario,
             @PathParam("data") String data,
-            @PathParam("horaIni") String horaIni,
-            @PathParam("horaFim") String horaFim) {
+            @PathParam("horaIni") String horaIni) {
+
+        String horaFim = "";
 
         //Construindo Objetos utilizados nesse metodo
-        Properties props = new Properties();
         ClienteDAO objClienteDAO = new ClienteDAO();
+        ServicoDAO objServicoDAO = new ServicoDAO();
         FuncionarioDAO objFuncionarioDAO = new FuncionarioDAO();
         PessoaDAO objPessoaDAO = new PessoaDAO();
         UsuarioDAO objUsuarioDAO = new UsuarioDAO();
 
         Cliente objCliente = new Cliente();
         Funcionario objFuncionario = new Funcionario();
+        Servico objServico = new Servico();
 
         //Construção de horario e Data
         Date dataAgendamento = null;
-        DateFormat formatter = new SimpleDateFormat("kk:mm");
-        Time horaDeInicio = null;
-        Time horaDeTermino = null;
         String dataAgendamentoString = null;
         try {
             dataAgendamento = new SimpleDateFormat("dd-MM-yyyy").parse(data);
-
         } catch (ParseException ex) {
-            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(restEmail.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             dataAgendamentoString = new SimpleDateFormat("dd/MM/yyyy").format(dataAgendamento);
-
         } catch (Exception ex) {
-            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(restEmail.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        //Parâmetros de conexão com servidor Gmail
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.debug", "true");
-        props.put("mail.smtp.debug", "true");
-        props.put("mail.mime.charset", "ISO-8859-1");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.socketFactory.port", "587");
-        props.put("mail.smtp.socketFactory.fallback", "false");
-        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        ArrayList<String> emailsDestinatarios = new ArrayList<>();
 
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("contato.mafera@gmail.com", "wjgezlbbjfnvsces");
-            }
-        });
+        //Construção de cliente
+        objCliente.setIdCliente(idCliente);
+        objClienteDAO.buscar(objCliente);
+        objPessoaDAO.buscar(objCliente);
+        objUsuarioDAO.buscarId(objCliente.getUsuario());
+        //Recebe e-mail de cliente
+        String emailCliente = objCliente.getUsuario().getEmail();
+        emailsDestinatarios.add(emailCliente);
 
-        //Ativa Debug para sessão
-        session.setDebug(true);
+        // Construção de funcionario
+        objFuncionario.setIdFuncionario(idFuncionario);
+        objFuncionarioDAO.buscar(objFuncionario);
+        objPessoaDAO.buscar(objFuncionario);
+        objUsuarioDAO.buscarId(objFuncionario.getUsuario());
+        //Recebe e-mail de funcionario
+        String emailFuncionario = objFuncionario.getUsuario().getEmail();
+        emailsDestinatarios.add(emailFuncionario);
 
+        //Construção de Serviço
+        objServico.setIdServico(idServico);
+        objServicoDAO.buscar(objServico);
+
+        //Define hora final
+        Time horaInicial;
+        Duration duracao;
+        Long horaFinal = null;
         try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("contato.mafera@gmail.com"));
-
-            //Construção de cliente
-            objCliente.setIdCliente(idCliente);
-            objClienteDAO.buscar(objCliente);
-
-            objPessoaDAO.buscar(objCliente);
-
-            objUsuarioDAO.buscarId(objCliente.getUsuario());
-
-            String emailCliente = objCliente.getUsuario().getEmail();
-
-            // Construção de funcionario
-            objFuncionario.setIdFuncionario(idFuncionario);
-            objFuncionarioDAO.buscar(objFuncionario);
-
-            objPessoaDAO.buscar(objFuncionario);
-
-            objUsuarioDAO.buscarId(objFuncionario.getUsuario());
-
-            String emailFuncionario = objFuncionario.getUsuario().getEmail();
-
-            //Construindo a String para enviar o e-mail
-            String emailAEnviar = emailCliente + "," + emailFuncionario + ",rafael-ps12@hotmail.com";
-            //Remetente
-            Address[] toUser = InternetAddress //Destinatário(s)
-                    .parse(emailAEnviar);
-
-            message.setRecipients(Message.RecipientType.TO, toUser);
-            message.setSubject("Confirmação de agendamento");//Assunto
-            message.setText("Olá,\n"
-                    + "Recebemos seu agendamento, e estamos lhe avisando que está confirmado "
-                    + "Sr(a) " + objCliente.getNome() + " fará o serviço com nosso funcionario(a) " + objFuncionario.getNome()
-                    + " no dia " + dataAgendamentoString + " no horario de " + horaIni + " a " + horaFim
-                    + "\nEsperamos você");
-            /**
-             * Método para enviar a mensagem criada
-             */
-            Transport.send(message);
-            return "email_enviado";
-
-        } catch (MessagingException e) {
-            return "email_erro: " + e;
-            //throw new RuntimeException(e);
-
+            horaInicial = new java.sql.Time(new SimpleDateFormat("kk:mm").parse(horaIni).getTime());
+            duracao = objServico.getDuracao();
+            horaFinal = horaInicial.getTime() + duracao.toMillis();
+        } catch (Exception ex) {
+            return ex.getMessage();
         }
+        horaFim = new SimpleDateFormat("kk:mm").format(horaFinal);
 
+        //Construindo a String para enviar o e-mail
+        String listaEmailDestinatarios = montarEmailsDestinatarios(emailsDestinatarios);
+
+        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios + ",math.tcl@gmail.com");
+        utilEmail.setAssunto("Confirmação de agendamento - " + objServico.getNome());
+        utilEmail.setCabecalho("Serviço: " + objServico.getNome());
+        utilEmail.setCorpo("Olá,\n"
+                + "Recebemos seu agendamento, e estamos lhe avisando que está confirmado "
+                + "Sr(a) " + objCliente.getNome() + " fará o serviço com nosso funcionario(a) " + objFuncionario.getNome()
+                + " no dia " + dataAgendamentoString + " no horario de " + horaIni + " a " + horaFim
+                + "\nEsperamos você");
+        utilEmail.setRodape("Email enviado por Mafera! Volte sempre.");
+
+        return utilEmail.emailDispacher();
+
+    }
+
+    private String montarEmailsDestinatarios(ArrayList<String> emailsDestinatarios) {
+        String emails = "";
+        emails = emailsDestinatarios.toString().replace("[", "").replace("]", "");
+        return emails;
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Teste")
+    @Path("/TesteEmail")
     public String teste() throws ParseException {
-        
-        DateFormat formatter = new SimpleDateFormat("kk:mm");
-        Time horaInicial = new java.sql.Time(formatter.parse("15:25").getTime());
-        Duration duracao = Duration.ofMinutes(75);
-        Long horaFinal = null;
-        horaFinal = horaInicial.getTime()+ duracao.toMillis();
 
-        String horaFinalString = new SimpleDateFormat("kk:mm").format(horaFinal);
+        String emailCli = "rafael-ps12@hotmail.com";
+        String emailFunc = "sjfelipe93@gmail.com";
+        String emailTeste = "math.tcl@gmail.com";
 
-        return horaFinalString;
+        ArrayList<String> EmailAddressString = new ArrayList<>();
+        EmailAddressString.add(emailCli);
+        EmailAddressString.add(emailFunc);
+        EmailAddressString.add(emailTeste);
+
+        return EmailAddressString.toString();
     }
 
 }

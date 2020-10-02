@@ -306,7 +306,7 @@ public class restAgendamento {
 //    }
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("Listar/Cliente/{idCliente}")
+    @Path("/Listar/Cliente/{idCliente}")
     public String listarCliente(@PathParam("idCliente") Integer idCliente) throws SQLException, ClassNotFoundException {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();

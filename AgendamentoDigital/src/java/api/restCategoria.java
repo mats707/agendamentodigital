@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.core.MediaType;
 
 /**
  * REST Web Service
@@ -35,7 +36,7 @@ public class restCategoria {
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public String getJson() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
@@ -46,7 +47,7 @@ public class restCategoria {
      * @param content representation for the resource
      */
     @PUT
-    @Consumes(javax.ws.rs.core.MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public void putJson(String content) {
     }
 }

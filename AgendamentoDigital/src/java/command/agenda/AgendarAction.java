@@ -55,9 +55,9 @@ import testes.ValidarCodigo;
  */
 public class AgendarAction implements ICommand {
 
-    AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
-    restAgendamento objRestAgendamento = new restAgendamento();
-    restEmail objRestEmail = new restEmail();
+    private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+    private restAgendamento objRestAgendamento = new restAgendamento();
+    private restEmail objRestEmail = new restEmail();
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
@@ -199,24 +199,9 @@ public class AgendarAction implements ICommand {
         return funcaoMsg;
     }
 
-    private String notificarAgendamento(Agendamento objAgendamento) throws ParseException {
-        String retorno = "";
+    private String notificarAgendamento(Agendamento objAgendamento) {
         String dataAgendamentoString = new SimpleDateFormat("dd-MM-yyyy").format(objAgendamento.getDataAgendamento());
         String horaInicialString = new SimpleDateFormat("kk:mm").format(objAgendamento.getHoraAgendamento());
-        DateFormat formatter = new SimpleDateFormat("kk:mm");
-        Time horaInicial = objAgendamento.getHoraAgendamento();
-        Duration duracao = objAgendamento.getServico().getDuracao();
-        Long horaFinal = null;
-        try{
-        horaFinal = horaInicial.getTime() + duracao.toMillis();
-        }
-        catch (Exception ex)
-        {
-            return ex.getMessage();
-        }
-
-        String horaFinalString = new SimpleDateFormat("kk:mm").format(horaFinal);
-        retorno = objRestEmail.emailDispacherAgendar(objAgendamento.getCliente().getIdCliente(), objAgendamento.getFuncionario().getIdFuncionario(), dataAgendamentoString, horaInicialString, horaFinalString);
-        return retorno;
+        return objRestEmail.emailDispacherAgendar(objAgendamento.getCliente().getIdCliente(), objAgendamento.getServico().getIdServico(), objAgendamento.getFuncionario().getIdFuncionario(), dataAgendamentoString, horaInicialString);
     }
 }
