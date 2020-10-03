@@ -1,6 +1,7 @@
 package modelos;
 
 import modelos.interfaces.ILogavel;
+import util.geraHash;
 
 /**
  *
@@ -8,13 +9,13 @@ import modelos.interfaces.ILogavel;
  *
  */
 public class Usuario implements ILogavel {
-    
+
     private Integer idUsuario;
 
     private String email;
 
     private String senha;
-    
+
     private Long celular;
 
     private PerfilDeAcesso perfil;
@@ -74,7 +75,7 @@ public class Usuario implements ILogavel {
     public boolean logar(Usuario usuarioDAO) {
         //Verifica se o email encontrado na DAO é igual ao usuário instanciado
         if (usuarioDAO.getEmail().equals(this.email)
-                && usuarioDAO.getSenha().equals(this.senha)) {
+                && geraHash.checkPassword(this.senha, usuarioDAO.getSenha())) {
 
             return true;
 
@@ -89,5 +90,4 @@ public class Usuario implements ILogavel {
         this.idUsuario = idUsuario;
     }
 
-    
 }

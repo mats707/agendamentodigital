@@ -3,9 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/AgendarAction.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restEmail.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/Main.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/Usuario.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/UsuarioDAO.java</file>
             <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/Email.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/Util.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/BCrypt.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleAcesso.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/geraHash.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/CadastrarAction.java</file>
         </group>
     </open-files>
 </project-private>

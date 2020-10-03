@@ -24,7 +24,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?))\n"
             + "WHERE id = ?";
     private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
-            + "ON u.perfil = p.id WHERE u.email=? AND u.senha=?";
+            + "ON u.perfil = p.id WHERE u.email=?";
     private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
     private static final String BUSCAR_ID = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
@@ -85,7 +85,6 @@ public class UsuarioDAO implements IUsuarioDAO {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(AUTENTICA_USUARIO);
             pstmt.setString(1, usuario.getEmail());
-            pstmt.setString(2, usuario.getSenha());
             rsUsuario = pstmt.executeQuery();
             if (rsUsuario.next()) {
                 usuarioAutenticado = new Usuario();

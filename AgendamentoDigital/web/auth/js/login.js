@@ -1,11 +1,56 @@
+$(document).ready(function () {
+
+    $('.mask-email').mask("A", {
+        translation: {
+            "A": {pattern: /[\w@\-.+]/, recursive: true}
+        }
+    });
+
+});
+
+$.fn.selectRange = function (start, end) {
+    return this.each(function () {
+        if (this.setSelectionRange) {
+            this.focus();
+            this.setSelectionRange(start, end);
+        } else if (this.createTextRange) {
+            var range = this.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    });
+};
+
+$("#inputEmail").on("click", function () {
+    var inputEmail = document.getElementById("inputEmail");
+    $('input[name=inputEmail]').selectRange(0, inputEmail.value.length);
+});
+
+$(document).on('focusin', '.mask', function () {
+    var $this = $(this);
+    var mask = $this.data('mask');
+    makeMask(mask, $this);
+});
+
+var makeMask = function (mask, $this) {
+    if (mask === 'telefone') {
+        $this.inputmask({"mask": "+55 (99) [9] 9999-9999"});
+    }
+    if (mask === 'email') {
+        $this.inputmask({"alias": "email"});
+    }
+}
+
 $("#inputPassword").on("focusout", function () {
-    if ($(this).val() != $("#inputPassword2").val()) {
-        $("#inputPassword2").removeClass("valid").addClass("invalid");
+    if ($(this).val() != $("#inputChkPassword").val()) {
+        $("#inputChkPassword").removeClass("valid").addClass("invalid");
     } else {
-        $("#inputPassword2").removeClass("invalid").addClass("valid");
+        $("#inputChkPassword").removeClass("invalid").addClass("valid");
     }
 });
-$("#inputPassword2").on("keyup", function () {
+$("#inputChkPassword").on("keyup", function () {
     if ($("#inputPassword").val() != $(this).val()) {
         $(this).removeClass("valid").addClass("invalid");
     } else {
@@ -18,7 +63,6 @@ $().ready(function () {
 });
 function rotateCard(type) {
     var card = $('#containerLogin');
-    console.log(type.getAttribute('data-action'));
     if (type.getAttribute('data-action') == "Login") {
         if (card.hasClass('hover') == true) {
             card.removeClass('hover');
@@ -31,7 +75,5 @@ function rotateCard(type) {
             $("#btnRegister").addClass("btn-primary");
             $("#btnLogin").removeClass("btn-primary");
         }
-    } else {
-        console.log("ERROR: Tipo inválido!");
     }
 }

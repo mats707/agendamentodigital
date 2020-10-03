@@ -28,7 +28,7 @@ public class ControleAcesso extends HttpServlet {
                 case "Entrar": {
                     Usuario usuario = new Usuario();
                     usuario.setEmail(request.getParameter("inputEmail"));
-                    usuario.setSenha(geraHash.codificaBase64(request.getParameter("inputPassword")));
+                    usuario.setSenha(request.getParameter("inputPassword"));
                     UsuarioDAO usuarioDAO = new UsuarioDAO();
                     Usuario usuarioAutenticado = usuarioDAO.autenticaUsuario(usuario);
                     Cliente cliente = new Cliente();
