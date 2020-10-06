@@ -189,8 +189,6 @@ public class AgendarAction implements ICommand {
 
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("datahoje", datahoje);
         request.setAttribute("allowTimes", Arrays.toString(ArrayAllowTimes));
         request.setAttribute("maxTime", maxTime);

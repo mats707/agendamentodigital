@@ -66,8 +66,8 @@ public class CadastrarAction implements ICommand {
                 return "Senhas diferente!";
             }
         } else {
-            request.setAttribute("colorMsg", "");
-            return "";
+            request.setAttribute("colorMsg", "danger");
+            return "Dados inválidos!";
         }
 
     }

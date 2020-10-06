@@ -93,9 +93,10 @@
                                             </div>
                                         </form>
 
-                                        <p class="login-invalid">
+
+                                        <p class="text-${colorMsg} mb-3">
                                             <c:if test="${msg!=null}">
-                                                <font color="red">${msg}</font>
+                                                ${msg}
                                             </c:if>
                                         </p>
 
@@ -186,9 +187,9 @@
                                             </div>
                                         </form>
 
-                                        <p class="login-invalid">
+                                        <p class="text-${colorMsg} mb-3">
                                             <c:if test="${msg!=null}">
-                                                <font color="red">${msg}</font>
+                                                ${msg}
                                             </c:if>
                                         </p>
                                     </div>
@@ -226,9 +227,9 @@
         <script src="${site}/plugins/moment/moment.min.js"></script>
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <script>
-            $(function () {
-                $('[data-mask]').inputmask();
-            })
+                                        $(function () {
+                                            $('[data-mask]').inputmask();
+                                        })
         </script>
     </body>
 </html>

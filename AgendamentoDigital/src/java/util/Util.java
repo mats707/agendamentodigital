@@ -15,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 public class Util {
 
     public static boolean isInteger(String str) {
+        str = str.replaceAll("([+()\\-a-z ]+)", "");
         return str != null && str.matches("[0-9]*");
     }
 

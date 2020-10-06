@@ -14,7 +14,7 @@ import org.apache.commons.codec.binary.Base64;
 public class geraHash {
 
     /**
-     * Codifica string na base 64 (Encoder)
+     * Codifica string
      */
     public static String hashPassword(String pass) {
         String passCrypt = "";

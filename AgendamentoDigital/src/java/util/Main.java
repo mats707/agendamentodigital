@@ -19,7 +19,7 @@ public class Main {
         System.out.println("[" + senha + "] = [" + senha_hashed + "]");
 
         senha_hashed = "$2a$12$Tkpv4hAeB2gLeI.JVn0Kx.eaN/DRw9P4L79JvNrbCSS9fQy.dgnd.";
-        String senha_hashed_dao = "admin";
+        String senha_hashed_dao = "admi";
  
         if (geraHash.checkPassword(senha_hashed_dao, senha_hashed)) {
             System.out.println("Matched");

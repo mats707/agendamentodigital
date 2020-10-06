@@ -25,7 +25,8 @@ import javax.servlet.RequestDispatcher;
     "/BuscarCliente",
     "/DeletarCliente",
     "/IniciarEdicaoCliente",
-    "/AlterarCliente"})
+    "/AlterarCliente",
+    "/HomeCliente"})
 public class ControleCliente extends HttpServlet {
 
     /**
@@ -56,6 +57,8 @@ public class ControleCliente extends HttpServlet {
                 acao = "Alterar";
             } else if (uri.equals(request.getContextPath() + "/BuscarCliente")) {
                 acao = "Buscar";
+            } else if (uri.equals(request.getContextPath() + "/HomeCliente")) {
+                acao = "Home";
             } else {
                 response.sendRedirect("404.jsp");
             }

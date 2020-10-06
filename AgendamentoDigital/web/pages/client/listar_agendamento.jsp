@@ -108,19 +108,9 @@
         <script charset="ISO-8859-1" src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
 
         <script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: 1000
-            });
-            Toast.fire({
-                type: '${funcaoStatus}',
-                title: ' ${funcaoMsg}'
-            });
+            var result = ${msg};
             includeHTMLNav("home", "");
-            var idCliente = '${cliente.idCliente}';
-            carregarMaisAgendado(idCliente);
+            lerTabela(result);
         </script>
     </body>
 </html>
