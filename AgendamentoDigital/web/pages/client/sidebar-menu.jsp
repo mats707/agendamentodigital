@@ -10,24 +10,15 @@
             <a href="${site}/Home" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
+            <a href="${site}/MinhaConta" class="nav-link">Minha Conta</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
             <a href="#" class="nav-link">Contato</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a class="nav-link" href="${site}/ControleAcesso?acao=Sair">Sair</a>
         </li>
     </ul>
-
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-        <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </div>
-    </form>
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">

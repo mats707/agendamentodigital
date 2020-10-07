@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <filter>
-        <filter-name>AcessoAdministrativo</filter-name>
+        <filter-name>AcessoFuncionarioAdministrador</filter-name>
         <filter-class>AutorizacaoDeAcesso.AcessoFuncionarioAdministrador</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>AcessoAdministrativo</filter-name>
+        <filter-name>AcessoFuncionarioAdministrador</filter-name>
         <url-pattern>/pages/admin/*</url-pattern>
         <url-pattern>/CadastrarUsuario</url-pattern>
         <url-pattern>/ListarUsuario</url-pattern>
@@ -21,21 +21,21 @@
     </filter-mapping>
     
     <filter>
-        <filter-name>AcessoComum</filter-name>
+        <filter-name>AcessoFuncionarioComum</filter-name>
         <filter-class>AutorizacaoDeAcesso.AcessoFuncionarioComum</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>AcessoComum</filter-name>
+        <filter-name>AcessoFuncionarioComum</filter-name>
         <url-pattern>/pages/user/*</url-pattern>
     </filter-mapping>
     
     <filter>
-        <filter-name>AcessoCliente</filter-name>
+        <filter-name>AcessoClienteComum</filter-name>
         <filter-class>AutorizacaoDeAcesso.AcessoClienteComum</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>AcessoCliente</filter-name>
-        <!--<url-pattern>/pages/client/*</url-pattern>-->
+        <filter-name>AcessoClienteComum</filter-name>
+        <url-pattern>/pages/client/*</url-pattern>
         <url-pattern>/AgendarServico</url-pattern>
         <url-pattern>/VisualizarAgenda</url-pattern>
         <url-pattern>/Home</url-pattern>

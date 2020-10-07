@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.annotation.MultipartConfig;
 
 /**
  *
@@ -26,7 +27,9 @@ import javax.servlet.RequestDispatcher;
     "/DeletarCliente",
     "/IniciarEdicaoCliente",
     "/AlterarCliente",
-    "/HomeCliente"})
+    "/HomeCliente",
+    "/MinhaConta",
+    "/MinhaConta/AlterarFotoPerfil"})
 public class ControleCliente extends HttpServlet {
 
     /**
@@ -41,6 +44,7 @@ public class ControleCliente extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
         try {
             String uri = request.getRequestURI();
             String acao = "";
@@ -59,6 +63,10 @@ public class ControleCliente extends HttpServlet {
                 acao = "Buscar";
             } else if (uri.equals(request.getContextPath() + "/HomeCliente")) {
                 acao = "Home";
+            } else if (uri.equals(request.getContextPath() + "/MinhaConta")) {
+                acao = "MinhaConta";
+            } else if (uri.equals(request.getContextPath() + "/MinhaConta/AlterarFotoPerfil")) {
+                acao = "MinhaConta.AlterarFotoPerfil";
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -74,7 +82,7 @@ public class ControleCliente extends HttpServlet {
             String objCliente = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
             request.setAttribute("msg", objCliente);
             rd.forward(request, response);

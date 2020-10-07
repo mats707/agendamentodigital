@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelos.Usuario;
 import dao.UsuarioDAO;
-import modelos.Cliente;
-import modelos.PerfilDeAcesso;
-import util.geraHash;
+import modelos.*;
 
 @WebServlet(name = "ControleAcesso", urlPatterns = {"/ControleAcesso"})
 public class ControleAcesso extends HttpServlet {
