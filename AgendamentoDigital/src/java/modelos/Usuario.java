@@ -1,5 +1,6 @@
 package modelos;
 
+import java.io.InputStream;
 import modelos.interfaces.ILogavel;
 import util.geraHash;
 
@@ -19,6 +20,8 @@ public class Usuario implements ILogavel {
     private Long celular;
 
     private PerfilDeAcesso perfil;
+
+    private InputStream fotoPerfil;
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -58,6 +61,14 @@ public class Usuario implements ILogavel {
 
     public void setCelular(Long celular) {
         this.celular = celular;
+    }
+
+    public InputStream getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(InputStream fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
     }
 
     public Usuario(Integer idUsuario, String email, String senha, Long celular, PerfilDeAcesso perfil) {

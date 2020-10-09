@@ -99,3 +99,14 @@ select {
     width: 150px;
     height: 5px;
 }
+
+.list-group-item {
+    background-color: #e9ecef;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #006c19;
+    background-color: #bdffc3;
+    border-color: #28a745;
+}

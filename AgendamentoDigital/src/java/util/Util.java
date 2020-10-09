@@ -5,6 +5,11 @@
  */
 package util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
@@ -36,6 +41,22 @@ public class Util {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public static boolean isValidName(String nome) {
+        return nome != null && nome.matches("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$");
+    }
+
+    public static Date getValidDate(String strDate, String formatDate) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat(formatDate);
+            df.setLenient(false);
+            df.parse(strDate);
+            return df.parse(strDate);
+        } catch (ParseException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            return (Date) null;
         }
     }
 

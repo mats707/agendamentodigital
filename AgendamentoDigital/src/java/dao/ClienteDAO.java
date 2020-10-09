@@ -24,7 +24,6 @@ public class ClienteDAO implements IClienteDAO {
     private static final String BUSCAR = "SELECT id, pessoa FROM sistema.cliente WHERE id= ?;";
     private static final String CADASTRAR = "INSERT INTO sistema.cliente (id, pessoa) VALUES (NEXTVAL('sistema.sqn_cliente'),(SELECT id FROM sistema.pessoa WHERE id = ?));";
     private static final String DELETE = "DELETE FROM cliente WHERE id=?;";
-    private static final String UPDATE = "UPDATE cliente SET nome=? WHERE id=?;";
 
     private Connection conexao;
 
@@ -197,36 +196,6 @@ public class ClienteDAO implements IClienteDAO {
                 Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    @Override
-    public boolean alterar(Cliente cliente) {
-
-        try {
-
-            conexao = ConectaBanco.getConexao();
-
-            PreparedStatement pstmt = conexao.prepareStatement(UPDATE);
-
-            pstmt.setString(1, cliente.getNome());
-            pstmt.setInt(2, cliente.getIdCliente());
-
-            pstmt.execute();
-            return true;
-
-        } catch (Exception ex) {
-
-            return false;
-
-        } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
     }
 
     @Override

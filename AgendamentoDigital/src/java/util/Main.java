@@ -13,13 +13,18 @@ public class Main {
 
     public static void main(String[] args) {
 
+        
+        //cadastro
         String senha = "admin";
 
         String senha_hashed = geraHash.hashPassword(senha);
         System.out.println("[" + senha + "] = [" + senha_hashed + "]");
 
-        senha_hashed = "$2a$12$Tkpv4hAeB2gLeI.JVn0Kx.eaN/DRw9P4L79JvNrbCSS9fQy.dgnd.";
-        String senha_hashed_dao = "admi";
+        senha_hashed = "$2a$12$nzsvpa//0fmHrQQPFk8bR.wqRds.L6og3jCwXfYRRv3x41Cv2YFZS";
+        
+        
+        //login
+        String senha_hashed_dao = "admin";
  
         if (geraHash.checkPassword(senha_hashed_dao, senha_hashed)) {
             System.out.println("Matched");

@@ -17,16 +17,19 @@ public interface IUsuarioDAO {
     public String cadastraNovoUsuario(Usuario usuario);
 
     public Usuario autenticaUsuario(Usuario usuario);
-    
+
     public ArrayList<Usuario> listar();
-    
+
     public void buscar(Usuario usuario);
-    
+
     public Usuario buscaCompleta(Usuario usuario);
-   
+
     public String alterarUsuario(Usuario usuario);
 
-    public String deletar(Usuario usuario);
+    public String alterarCelular(Usuario usuario);
     
+    public String alterarFotoPerfil(Usuario usuario);
+
+    public String deletar(Usuario usuario);
 
 }

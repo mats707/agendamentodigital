@@ -8,6 +8,7 @@ package controller;
 import command.cliente.ICommand;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +30,7 @@ import javax.servlet.annotation.MultipartConfig;
     "/AlterarCliente",
     "/HomeCliente",
     "/MinhaConta",
-    "/MinhaConta/AlterarFotoPerfil"})
+    "/MinhaConta/"})
 public class ControleCliente extends HttpServlet {
 
     /**
@@ -44,10 +45,17 @@ public class ControleCliente extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         try {
             String uri = request.getRequestURI();
             String acao = "";
+            String acao_secundaria = request.getParameter("acao");
+
+            Object paginaAttr = request.getAttribute("pagina");
+
+            if (paginaAttr != null) {
+                acao_secundaria = null;
+            }
 
             if (uri.equals(request.getContextPath() + "/DeletarCliente")) {
                 acao = "Deletar";
@@ -65,8 +73,7 @@ public class ControleCliente extends HttpServlet {
                 acao = "Home";
             } else if (uri.equals(request.getContextPath() + "/MinhaConta")) {
                 acao = "MinhaConta";
-            } else if (uri.equals(request.getContextPath() + "/MinhaConta/AlterarFotoPerfil")) {
-                acao = "MinhaConta.AlterarFotoPerfil";
+                acao = validarAcaoSecundaria(acao, acao_secundaria);
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -132,5 +139,20 @@ public class ControleCliente extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String validarAcaoSecundaria(String acao, String acao_secundaria) {
+        if (null == acao_secundaria) {
+            return acao;
+        } else {
+            switch (acao_secundaria) {
+                case "AlterarCliente":
+                    return "Alterar";
+                case "AlterarFotoPerfil":
+                    return "AlterarFotoPerfil";
+                default:
+                    return acao;
+            }
+        }
+    }
 
 }

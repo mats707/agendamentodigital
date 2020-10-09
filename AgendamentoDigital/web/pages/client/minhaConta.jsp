@@ -10,7 +10,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Agendamento Digital | Principal</title>
 
-        <c:set var="site" value="${'/AgendamentoDigital'}" scope="application"  />
+        <c:set var="site" value="${pageContext.request.contextPath}" scope="application"  />
         <!-- Font Awesome Icons -->
         <link rel="stylesheet" href="${site}/plugins/fontawesome-free/css/all.min.css">
         <!-- IonIcons -->
@@ -83,33 +83,34 @@
                                             <p class="lead">Foto de Perfil</p>
 
                                             <div class="col-sm-4 text-center">
-                                                <form role="form" action="${site}/ControleClienteMinhaConta" method="post" enctype="multipart/form-data">
+                                                <form action="${site}/ControleClienteMinhaConta" method="post" enctype="multipart/form-data">
                                                     <div class="kv-avatar">
                                                         <div class="file-loading">
-                                                            <input id="avatar-2" name="avatar-2" type="file" required>
+                                                            <input id="fotoPerfil" name="fotoPerfil" type="file" required>
+                                                            <input name="acao" type="text" value="AlterarFotoPerfil" hidden>
                                                         </div>
                                                     </div>
                                                     <div class="kv-avatar-hint">
                                                         <small>Select file < 1500 KB</small>
                                                     </div>
                                                     <div class="text-right">
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                                        <button id="btnAlterarFotoPerfil" type="submit" class="btn btn-primary btn-block">Alterar Foto</button>
                                                     </div>
                                                 </form>
                                             </div>
                                         </div>
 
                                         <div class="col-md-5 col-sm-5 col-xs-12  padding">
+                                            <p class="lead">Alterar Meus Dados</p>
                                             <div id="meusDados" class="list-group">
                                                 <a id="itemNome" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Nome: ${objCliente.nome}</a>
                                                 <a id="itemDataNascimento" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">
                                                     Data de Nascimento: <fmt:formatDate pattern = "dd/MM/yyyy" value="${objCliente.dataNascimento}"/></a>
                                                 <a id="itemCelular" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Celular: ${objCliente.usuario.celular}</a>
                                             </div>
-                                            <p class="lead">Alterar Meus Dados</p>
-                                            <form action="${site}/AlterarCliente" method="post">
+                                            <form class="mt-2" action="${site}/MinhaConta" method="post">
                                                 <div id="groupNome" class="input-group mb-3" style="display: none">
-                                                    <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" disabled>
+                                                    <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" readonly value="${objCliente.nome}">
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <span class="fas fa-user"></span>
@@ -117,11 +118,11 @@
                                                     </div>
                                                 </div>
                                                 <div id="groupDataNascimento" class="input-group mb-3" style="display: none">
-                                                    <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" disabled>
+                                                    <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" readonly value="<fmt:formatDate pattern = "yyyy-MM-dd" value="${objCliente.dataNascimento}"/>">
                                                 </div>
                                                 <!-- phone mask -->
                                                 <div id="groupCelular" class="input-group mb-3" style="display: none">
-                                                    <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' disabled>
+                                                    <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' readonly value="${objCliente.usuario.celular}">
                                                     <div class="input-group-append">
                                                         <div class="input-group-text">
                                                             <span class="fas fa-phone"></span>
@@ -129,8 +130,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row-fluid">
-                                                    <button class="btn btn-default limpar">Limpar</button>
-                                                    <button type="submit" class="btn btn-primary enviar">Alterar Dados</button>
+                                                    <button id="btnAlterarDados" name="acao" value="AlterarCliente" type="submit" class="btn btn-success btn-block" style="display: none">Alterar Dados</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -175,20 +175,24 @@
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/js/fileinput.min.js" type="text/javascript"></script>
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/themes/fa/theme.js" type="text/javascript"></script>
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/js/locales/pt-BR.js" type="text/javascript"></script>
-
         <script charset="ISO-8859-1" src="${site}/pages/client/js/minhaConta.js" type="text/javascript"></script>
         <script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: 1000
-            });
-            Toast.fire({
-                type: '${funcaoStatus}',
-                title: ' ${funcaoMsg}'
-            });
-            includeHTMLNav("home", "");
+                                                    const Toast = Swal.mixin({
+                                                        toast: true,
+                                                        position: 'center',
+                                                        showConfirmButton: false,
+                                                        timer: 1000
+                                                    });
+
+                                                    sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
+                                                    console.log("${funcaoMsg}");
+                                                    includeHTMLNav("home", "");
         </script>
+
+        <!-- Mask js -->
+        <script src="${site}/dist/js/myMask.js" type="text/javascript"></script>
+        <!-- InputMask -->
+        <script src="${site}/plugins/moment/moment.min.js"></script>
+        <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
     </body>
 </html>

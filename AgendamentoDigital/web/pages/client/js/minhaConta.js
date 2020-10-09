@@ -1,14 +1,16 @@
-var alturaFormulario = document.getElementById("panel").offsetHeight;
 var nameproject = getContextPath();
+$(document).ready(function () {
+    var alturaFormulario = document.getElementById("panel").offsetHeight;
+    document.getElementById("colImg").style.height = alturaFormulario + "px";
+});
 
-document.getElementById("colImg").style.height = alturaFormulario + "px";
 
 var btnCust = '';
 //var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
 //        'onclick="alert(\'Call your custom code here.\')">' +
 //        '<i class="fas fa-tags"></i>' +
 //        '</button>';
-$("#avatar-2").fileinput({
+$("#fotoPerfil").fileinput({
     overwriteInitial: true,
     maxFileSize: 1500,
     showClose: false,
@@ -32,21 +34,68 @@ function editarDados(element) {
 
     switch (itemId) {
         case "itemNome":
-            console.log("Libera Nome");
-            document.getElementById("inputName").disabled = false;
-            document.getElementById("groupNome").style.display = 'flex';
+            if (document.getElementById("inputName").readOnly === true) {
+                document.getElementById("inputName").readOnly = false;
+                document.getElementById("groupNome").style.display = 'flex';
+                document.getElementById(itemId).classList.add("active");
+            } else {
+                document.getElementById("inputName").readOnly = true;
+                document.getElementById("groupNome").style.display = 'none';
+                document.getElementById(itemId).classList.remove("active");
+            }
             break;
         case "itemDataNascimento":
-            console.log("Libera Nome");
-            document.getElementById("inputDataNasc").disabled = false;
-            document.getElementById("groupDataNascimento").style.display = 'flex';
+            if (document.getElementById("inputDataNasc").readOnly === true) {
+                document.getElementById("inputDataNasc").readOnly = false;
+                document.getElementById("groupDataNascimento").style.display = 'flex';
+                document.getElementById(itemId).classList.add("active");
+            } else {
+                document.getElementById("inputDataNasc").readOnly = true;
+                document.getElementById("groupDataNascimento").style.display = 'none';
+                document.getElementById(itemId).classList.remove("active");
+            }
             break;
         case "itemCelular":
-            console.log("Libera Nome");
-            document.getElementById("inputCelular").disabled = false;
-            document.getElementById("groupCelular").style.display = 'flex';
+            if (document.getElementById("inputCelular").readOnly === true) {
+                document.getElementById("inputCelular").readOnly = false;
+                document.getElementById("groupCelular").style.display = 'flex';
+                document.getElementById(itemId).classList.add("active");
+            } else {
+                document.getElementById("inputCelular").readOnly = true;
+                document.getElementById("groupCelular").style.display = 'none';
+                document.getElementById(itemId).classList.remove("active");
+            }
             break;
         default:
             console.log("Inválido");
     }
+
+    if (document.getElementById("inputName").readOnly === true &&
+            document.getElementById("inputDataNasc").readOnly === true &&
+            document.getElementById("inputCelular").readOnly === true) {
+        document.getElementById("btnAlterarDados").style.display = 'none';
+    } else {
+        document.getElementById("btnAlterarDados").style.display = 'block';
+    }
+}
+function sweet(title, type, timer) {
+    if (title == "") {
+        title = "Carregando...";
+    }
+    if (type == "") {
+        type = "info";
+    }
+    if (timer == null) {
+        timer = 1500;
+    }
+    const Toast = swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: timer
+    });
+    Toast.fire({
+        type: type,
+        title: '  ' + title
+    });
 }

@@ -26,12 +26,7 @@ public class MinhaContaAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String funcaoMsg = "Carregando...";
-        String funcaoStatus = "info";
-
         request.setAttribute("pagina", "pages/client/minhaConta.jsp");
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
 
         Cliente objCliente = new Cliente();
 
@@ -45,13 +40,11 @@ public class MinhaContaAction implements ICommand {
         pessoaDAO.buscar(objCliente);
         
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        usuarioDAO.buscarId(objCliente.getUsuario());
-
-        Gson objgson = new GsonBuilder().setDateFormat("dd/MM/yyyy").setPrettyPrinting().create();        
+        usuarioDAO.buscarId(objCliente.getUsuario());     
         
         request.setAttribute("objCliente", objCliente);
 
-        return funcaoMsg;
+        return "";
 
     }
 

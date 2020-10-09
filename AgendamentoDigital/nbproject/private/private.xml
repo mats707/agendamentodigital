@@ -4,11 +4,18 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleClienteMinhaConta.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/Main.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restAgendamento.java</file>
             <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleCliente.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/cliente/MinhaContaAction.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/cliente/MinhaConta/AlterarFotoPerfilAction.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/Cliente.java</file>
-            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleAcesso.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/UsuarioDAO.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/cliente/AlterarAction.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/VisualizarAction.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/util/TimeDeserializer.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/AgendarAction.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/modelos/Usuario.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/interfaces/IUsuarioDAO.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restEmpresa.java</file>
+            <file>file:/D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/cliente/AlterarFotoPerfilAction.java</file>
         </group>
     </open-files>
 </project-private>
