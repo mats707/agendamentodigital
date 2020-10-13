@@ -47,7 +47,6 @@ import modelos.StatusAgendamento;
 import modelos.Usuario;
 import api.restAgendamento;
 import java.sql.SQLException;
-import testes.ValidarCodigo;
 
 /**
  *
@@ -131,7 +130,7 @@ public class AgendarAction implements ICommand {
             try {
                 dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(data);
             } catch (ParseException ex) {
-                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
             }
             objAgendamento.setDataAgendamento(dataAgendamento);
 
@@ -139,7 +138,7 @@ public class AgendarAction implements ICommand {
             try {
                 horaAgendamento = new java.sql.Time(formatter.parse(hora).getTime());
             } catch (ParseException ex) {
-                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
             }
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
@@ -187,8 +186,6 @@ public class AgendarAction implements ICommand {
             funcaoStatus = "info";
         }
 
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("datahoje", datahoje);

@@ -24,8 +24,8 @@ public class PessoaDAO implements IPessoaDAO {
     //private static final String BUSCAR_NOME = "SELECT * FROM sistema.pessoa WHERE id ilike ?;";
     private static final String BUSCAR_USUARIO = "SELECT id, nome, dataNascimento, usuario FROM sistema.pessoa WHERE usuario=? ORDER BY id;";
     private static final String CADASTRAR = "INSERT INTO sistema.pessoa (id, nome, dataNascimento, usuario) VALUES (NEXTVAL('sistema.sqn_pessoa'),?,?::DATE,(SELECT id FROM sistema.usuario WHERE id = ?));";
-    private static final String DELETE = "DELETE FROM pessoa WHERE id=?;";
-    private static final String UPDATE = "UPDATE pessoa SET nome=? WHERE id=?;";
+    private static final String DELETE = "DELETE FROM sistema.pessoa WHERE id=?;";
+    private static final String UPDATE = "UPDATE sistema.pessoa SET nome=?, datanascimento=?::DATE WHERE id=?;";
 
     private Connection conexao;
 
@@ -185,7 +185,12 @@ public class PessoaDAO implements IPessoaDAO {
     }
 
     @Override
-    public boolean alterar(Cliente cliente) {
+    public String alterar(Pessoa pessoa) {
+        
+        String sqlReturnCode = "0";
+        
+        String patternDataNascimento = "yyyy-MM-dd";
+        DateFormat df = new SimpleDateFormat(patternDataNascimento);
 
         try {
 
@@ -193,22 +198,27 @@ public class PessoaDAO implements IPessoaDAO {
 
             PreparedStatement pstmt = conexao.prepareStatement(UPDATE);
 
-            pstmt.setString(1, cliente.getNome());
-            pstmt.setInt(2, cliente.getIdPessoa());
+            pstmt.setString(1, pessoa.getNome());
+            pstmt.setString(2, df.format(pessoa.getDataNascimento()));
+            pstmt.setInt(3, pessoa.getIdPessoa());
 
             pstmt.execute();
-            return true;
 
-        } catch (Exception ex) {
+            return sqlReturnCode;
 
-            return false;
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
 
         } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
 

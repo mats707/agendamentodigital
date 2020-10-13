@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.PerfilDeAcesso;
 import modelos.Usuario;
+import util.Util;
 import util.geraHash;
 
 /**
@@ -27,14 +28,14 @@ public class IniciarEdicaoAction implements ICommand {
 
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
-        String chksenha = request.getParameter("chksenha");
+        String chkPassword = request.getParameter("chksenha");
         String celular = request.getParameter("celular");
         String perfil = request.getParameter("perfil");
 
-        if (email != null && senha != null && chksenha != null && celular != null && perfil != null) {
+        if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && perfil != null) {
             Usuario usuario = new Usuario();
             usuario.setEmail(email);
-            usuario.setSenha(geraHash.codificaBase64(senha));
+            usuario.setSenha(geraHash.hashPassword(senha));
             usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
             if (perfil.equalsIgnoreCase("administrador")) {
                 usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
@@ -44,7 +45,7 @@ public class IniciarEdicaoAction implements ICommand {
                 usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
             }
 
-            if (geraHash.codificaBase64(chksenha).equals(usuario.getSenha())) {
+            if (geraHash.checkPassword(chkPassword,usuario.getSenha())) {
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
 
                 String sqlState = usuarioDAO.cadastraNovoUsuario(usuario);

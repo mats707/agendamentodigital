@@ -39,7 +39,6 @@ import modelos.Cliente;
 import modelos.Empresa;
 import modelos.Servico;
 import modelos.StatusAgendamento;
-import testes.ValidarCodigo;
 
 /**
  * REST Web Service
@@ -100,9 +99,9 @@ public class restAgendamento {
             try {
                 dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(dataEntrada);
             } catch (ParseException ex2) {
-                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex2);
+                Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex2);
             }
-            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex1);
+            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex1);
         }
         objAgendamento.setDataAgendamento(dataAgendamento);
 
@@ -111,7 +110,7 @@ public class restAgendamento {
         try {
             horaAgendamento = new java.sql.Time(formatter.parse(horaEntrada).getTime());
         } catch (ParseException ex) {
-            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
         objAgendamento.setHoraAgendamento(horaAgendamento);
 
@@ -236,7 +235,7 @@ public class restAgendamento {
         try {
             dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
         } catch (ParseException ex) {
-            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Agendamento agendamento = new Agendamento();
@@ -262,7 +261,7 @@ public class restAgendamento {
         try {
             dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
         } catch (ParseException ex) {
-            Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         Agendamento agendamento = new Agendamento();

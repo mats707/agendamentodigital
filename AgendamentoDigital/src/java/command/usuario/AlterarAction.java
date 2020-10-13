@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.PerfilDeAcesso;
 import modelos.Usuario;
+import util.Util;
 import util.geraHash;
 
 /**
@@ -28,19 +29,18 @@ public class AlterarAction implements ICommand {
         Integer id = Integer.parseInt(request.getParameter("idUsuario"));
         String editedEmail = request.getParameter("editedEmail");
         String editedPassword = request.getParameter("editedPassword");
-        String editedChkpassword = request.getParameter("editedChkpassword");
+        String editedChkPassword = request.getParameter("editedChkpassword");
         String editedCelular = request.getParameter("editedCelular");
         String editedPerfil = request.getParameter("editedPerfil");
 
         String funcaoMsgOperation = "";
         String funcaoStatusOperation = "";
 
-        if (id != null && editedEmail != null && editedPassword != null
-                && editedChkpassword != null && editedCelular != null && editedPerfil != null) {
+        if (id != null && Util.isInteger(editedCelular) && Util.isValidEmailAddress(editedEmail) && editedPerfil != null) {
             Usuario usuario = new Usuario();
             usuario.setIdUsuario(id);
             usuario.setEmail(editedEmail);
-            usuario.setSenha(geraHash.codificaBase64(editedPassword));
+            usuario.setSenha(geraHash.hashPassword(editedPassword));
             usuario.setCelular(Long.parseLong(editedCelular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
             if (editedPerfil.equalsIgnoreCase("administrador")) {
                 usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
@@ -50,7 +50,7 @@ public class AlterarAction implements ICommand {
                 usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
             }
 
-            if (geraHash.codificaBase64(editedChkpassword).equals(usuario.getSenha())) {
+            if (geraHash.checkPassword(editedChkPassword,usuario.getSenha())) {
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
 
                 String sqlState = usuarioDAO.alterarUsuario(usuario);

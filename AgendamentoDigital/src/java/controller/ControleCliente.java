@@ -8,12 +8,14 @@ package controller;
 import command.cliente.ICommand;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.annotation.MultipartConfig;
 
 /**
  *
@@ -25,7 +27,10 @@ import javax.servlet.RequestDispatcher;
     "/BuscarCliente",
     "/DeletarCliente",
     "/IniciarEdicaoCliente",
-    "/AlterarCliente"})
+    "/AlterarCliente",
+    "/HomeCliente",
+    "/MinhaConta",
+    "/MinhaConta/"})
 public class ControleCliente extends HttpServlet {
 
     /**
@@ -40,9 +45,17 @@ public class ControleCliente extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         try {
             String uri = request.getRequestURI();
             String acao = "";
+            String acao_secundaria = request.getParameter("acao");
+
+            Object paginaAttr = request.getAttribute("pagina");
+
+            if (paginaAttr != null) {
+                acao_secundaria = null;
+            }
 
             if (uri.equals(request.getContextPath() + "/DeletarCliente")) {
                 acao = "Deletar";
@@ -56,6 +69,11 @@ public class ControleCliente extends HttpServlet {
                 acao = "Alterar";
             } else if (uri.equals(request.getContextPath() + "/BuscarCliente")) {
                 acao = "Buscar";
+            } else if (uri.equals(request.getContextPath() + "/HomeCliente")) {
+                acao = "Home";
+            } else if (uri.equals(request.getContextPath() + "/MinhaConta")) {
+                acao = "MinhaConta";
+                acao = validarAcaoSecundaria(acao, acao_secundaria);
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -71,7 +89,7 @@ public class ControleCliente extends HttpServlet {
             String objCliente = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
             request.setAttribute("msg", objCliente);
             rd.forward(request, response);
@@ -121,5 +139,20 @@ public class ControleCliente extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String validarAcaoSecundaria(String acao, String acao_secundaria) {
+        if (null == acao_secundaria) {
+            return acao;
+        } else {
+            switch (acao_secundaria) {
+                case "AlterarCliente":
+                    return "Alterar";
+                case "AlterarFotoPerfil":
+                    return "AlterarFotoPerfil";
+                default:
+                    return acao;
+            }
+        }
+    }
 
 }

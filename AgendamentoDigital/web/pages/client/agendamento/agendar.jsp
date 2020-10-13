@@ -423,8 +423,7 @@
             });
 
         </script>
-        <script src="${site}/pages/client/agendamento/js/cadastrar.js" type="text/javascript"></script>
-        <script src="${site}/pages/client/agendamento/js/listar.js" type="text/javascript"></script>
+        <script src="${site}/pages/client/agendamento/js/agendamento.js" type="text/javascript"></script>
 
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->

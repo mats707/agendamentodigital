@@ -6,16 +6,30 @@
 package util;
 
 import org.apache.commons.codec.binary.Base64;
-  
+
 /**
  *
  * @author mathm
  */
 public class geraHash {
-      /**
-     * Codifica string na base 64 (Encoder)
+
+    /**
+     * Codifica string
      */
-    public static String codificaBase64(String msg) {
-        return new String( new Base64().encode(msg.getBytes()));
+    public static String hashPassword(String pass) {
+        String passCrypt = "";
+        if (pass != "") {
+            passCrypt = BCrypt.hashpw(pass, BCrypt.gensalt(12));
+        }
+        return passCrypt;
     }
+
+    public static boolean checkPassword(String chkPass, String hashPass) {
+        if (hashPass != "") {
+            return BCrypt.checkpw(chkPass, hashPass);
+        } else {
+            return false;
+        }
+    }
+
 }

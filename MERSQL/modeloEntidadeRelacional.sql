@@ -1,6 +1,6 @@
 --# PerfilAcesso        (id,nome);
 --# Empresa             (id,nome,horaInicialTrabalho,horaFinalTrabalho,intervaloAgendamentoGeralServico);
---# Usuario             (id,email,senha,celular,habilitado,perfil);
+--# Usuario             (id,email,senha,celular,fotoPerfil,habilitado,perfil);
 --# Pessoa              (id,nome,dataNascimento,USUARIO);
 --# Cliente             (id,PESSOA);
 --# Funcionario         (id,PESSOA);
@@ -36,6 +36,7 @@ create table Usuario(
   id integer,
   email varchar(100) not null,
   senha varchar(500) not null,
+  fotoPerfil bytea,
   celular bigint not null,
   perfil integer not null,
   habilitado boolean default TRUE NOT NULL,
@@ -169,13 +170,13 @@ insert into StatusAgendamento values
   (2,'FINALIZADO'),
   (3,'CANCELADO');
 
-insert into Usuario values
-  (nextval('sqn_usuario'),'admin@admin.com','YWRtaW4=',11912341234,3),
-  (nextval('sqn_usuario'),'felipe@funcionario.com','MTIzNDU2Nzg=',11123123123,2),
-  (nextval('sqn_usuario'),'matheus@funcionario.com','MTIzNDU2Nzg=',11845784567,2),
-  (nextval('sqn_usuario'),'rafael@funcionario.com','MTIzNDU2Nzg=',11932145678,2),
-  (nextval('sqn_usuario'),'nathalia@cliente.com','MTIzNDU2Nzg=',11963970577,1),
-  (nextval('sqn_usuario'),'brunolopes@cliente.com','MTIzNDU2Nzg=',11955445566,1);
+insert into Usuario (id, email, senha, celular, perfil) values
+  (nextval('sqn_usuario'),'admin@admin.com','$2a$12$Tkpv4hAeB2gLeI.JVn0Kx.eaN/DRw9P4L79JvNrbCSS9fQy.dgnd.',11912341234,3),
+  (nextval('sqn_usuario'),'felipe@funcionario.com','$2a$12$cvkQ9ciPRuvLvaYiXG9DtejyWNS6GMYtWoVpHFtllmfIUIIPAcr36',11123123123,2),
+  (nextval('sqn_usuario'),'matheus@funcionario.com','$2a$12$cvkQ9ciPRuvLvaYiXG9DtejyWNS6GMYtWoVpHFtllmfIUIIPAcr36',11845784567,2),
+  (nextval('sqn_usuario'),'rafael@funcionario.com','$2a$12$cvkQ9ciPRuvLvaYiXG9DtejyWNS6GMYtWoVpHFtllmfIUIIPAcr36',11932145678,2),
+  (nextval('sqn_usuario'),'nathalia@cliente.com','$2a$12$cvkQ9ciPRuvLvaYiXG9DtejyWNS6GMYtWoVpHFtllmfIUIIPAcr36',11963970577,1),
+  (nextval('sqn_usuario'),'brunolopes@cliente.com','$2a$12$cvkQ9ciPRuvLvaYiXG9DtejyWNS6GMYtWoVpHFtllmfIUIIPAcr36',11955445566,1);
 
 insert into CategoriaServico values
 	(0,'DEFAULT','Todas categorias serão filhas dessas categoria.',null),

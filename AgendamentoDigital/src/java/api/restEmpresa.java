@@ -7,9 +7,15 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 import dao.FuncionarioDAO;
 import dao.EmpresaDAO;
 import dao.ServicoDAO;
+import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -20,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,7 +43,7 @@ import modelos.Funcionario;
 import modelos.Empresa;
 import modelos.Cliente;
 import modelos.Servico;
-import testes.ValidarCodigo;
+import util.TimeDeserializer;
 
 /**
  * REST Web Service
@@ -60,35 +67,20 @@ public class restEmpresa {
     @Path("/Listar")
     public String listar() throws SQLException, ClassNotFoundException {
 
-        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+        try {
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson objgson = gsonBuilder.setPrettyPrinting().create();
 
-        Empresa objEmpresa = new Empresa();
-        EmpresaDAO objEmpresaDAO = new EmpresaDAO();
-        objEmpresaDAO.buscar(objEmpresa);
+            Empresa objEmpresa = new Empresa();
+            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
 
-        Integer horaInicialAgendamento = objEmpresa.getHoraInicialTrabalho().getHours() * 60;
-        Integer horaFinalAgendamento = objEmpresa.getHoraFinalTrabalho().getHours() * 60;
-        Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
-        Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
-        Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
+            objEmpresaDAO.buscar(objEmpresa);
 
-        ArrayList<Map<String, String>> arrHorasMinutos = new ArrayList<>();
-
-        Integer horaMaximaServico = horaFinalAgendamento - intervaloAgendamento;
-
-        //Montagem do array de horas disponíveis, passando em minutos e no formato HH:MM
-        for (Integer m = horaInicialAgendamento; m < horaMaximaServico; m = m + intervaloAgendamento) {
-            Map<String, String> hashHorariosOcupados = new HashMap<String, String>();
-            hashHorariosOcupados.put("minutos", m.toString());
-            arrHorasMinutos.add(hashHorariosOcupados);
+            String json = objgson.toJson(objEmpresa);
+            return json;
+        } catch (JsonParseException ex) {
+            return ex.getMessage();
         }
-
-        String msg = "horaInicialAgendamento: " + horaInicialAgendamento + "\n"
-                + "horaFinalAgendamento: " + horaFinalAgendamento + "\n"
-                + "intervaloAgendamento: " + intervaloAgendamento;
-
-//        return msg;
-        return objgson.toJson(arrHorasMinutos);
     }
 
 }

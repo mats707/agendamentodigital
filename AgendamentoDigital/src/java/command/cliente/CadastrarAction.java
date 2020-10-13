@@ -17,6 +17,7 @@ import builder.cliente.ClienteBuilder;
 import dao.PessoaDAO;
 import dao.UsuarioDAO;
 import modelos.Pessoa;
+import util.Util;
 import util.geraHash;
 
 /**
@@ -25,23 +26,30 @@ import util.geraHash;
  */
 public class CadastrarAction implements ICommand {
 
+    String nome = "";
+    String dataNascimento = "";
+    String celular = "";
+    String email = "";
+    String password = "";
+    String chkpassword = "";
+
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
         request.setAttribute("pagina", "auth/login.jsp");
 
-        String nome = request.getParameter("inputName");
-        String dataNascimento = request.getParameter("inputDataNasc");
-        String celular = request.getParameter("inputCelular");
-        String email = request.getParameter("inputEmail");
-        String password = request.getParameter("inputPassword");
-        String chkpassword = request.getParameter("inputChkPassword");
+        nome = request.getParameter("inputName");
+        dataNascimento = request.getParameter("inputDataNasc");
+        celular = request.getParameter("inputCelular");
+        email = request.getParameter("inputEmail");
+        password = request.getParameter("inputPassword");
+        chkpassword = request.getParameter("inputChkPassword");
 
-        if (email != null && password != null && chkpassword != null && celular != null) {
+        if (Util.isInteger(celular) && Util.isValidEmailAddress(email)) {
             Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, password, celular).constroi();
 
-            if (geraHash.codificaBase64(chkpassword).equals(cliente.getUsuario().getSenha())) {
-                
+            if (geraHash.checkPassword(chkpassword,cliente.getUsuario().getSenha())) {
+
                 //Realiza o cadastro do usuário com passagem por referência - Na função será atribuído ao objeto o ID que foi gerado após o cadastro
                 UsuarioDAO usuarioDao = new UsuarioDAO();
                 String sqlStateUsuario = usuarioDao.cadastraNovoUsuario(cliente.getUsuario());
@@ -74,9 +82,9 @@ public class CadastrarAction implements ICommand {
                             return "Cliente inválido! Entre em contato com o suporte.";
                         }
                     } else {
-                        
+
                         usuarioDao.deletar(cliente.getUsuario());
-                        
+
                         request.setAttribute("colorMsg", "danger");
                         return "Cliente inválido! Entre em contato com o suporte.";
                     }
@@ -98,5 +106,4 @@ public class CadastrarAction implements ICommand {
         }
 
     }
-
 }

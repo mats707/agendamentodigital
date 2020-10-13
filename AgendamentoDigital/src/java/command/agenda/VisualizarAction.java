@@ -40,7 +40,7 @@ public class VisualizarAction implements ICommand {
             objCliente = (Cliente) sessaoUsuario.getAttribute("cliente");
         }
 
-        request.setAttribute("pagina", "pages/client/home.jsp");
+        request.setAttribute("pagina", "pages/client/listar_agendamento.jsp");
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
