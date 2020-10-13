@@ -21,10 +21,10 @@ public interface IPessoaDAO {
 
     public void buscar(Pessoa pessoa);
 
-    public boolean alterar(Cliente cliente);
+    public String alterar(Pessoa Pessoa);
 
     public boolean excluir(Pessoa pessoa);
 
-    public String cadastrar(Pessoa pessoa);
+    public String cadastrar(Pessoa Pessoa);
 
 }

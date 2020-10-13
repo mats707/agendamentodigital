@@ -21,10 +21,9 @@ public class ClienteDAO implements IClienteDAO {
     private static final String LISTAR = "SELECT id, pessoa FROM sistema.cliente ORDER BY id;";
     private static final String LISTAR_PESSOA = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON u.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id ORDER BY u.id;";
     private static final String BUSCAR_USUARIO = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON c.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE u.id = ? ORDER BY u.id;";
-    private static final String BUSCAR = "SELECT * FROM sistema.cliente WHERE nome ilike ?;";
+    private static final String BUSCAR = "SELECT id, pessoa FROM sistema.cliente WHERE id= ?;";
     private static final String CADASTRAR = "INSERT INTO sistema.cliente (id, pessoa) VALUES (NEXTVAL('sistema.sqn_cliente'),(SELECT id FROM sistema.pessoa WHERE id = ?));";
     private static final String DELETE = "DELETE FROM cliente WHERE id=?;";
-    private static final String UPDATE = "UPDATE cliente SET nome=? WHERE id=?;";
 
     private Connection conexao;
 
@@ -178,13 +177,13 @@ public class ClienteDAO implements IClienteDAO {
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(BUSCAR);
 
-            pstmt.setString(1, cliente.getNome());
+            pstmt.setInt(1, cliente.getIdCliente());
             //executa
             ResultSet rs = pstmt.executeQuery();
 
             // como a query ira retornar somente um registro, faremos o NEXT
             while (rs.next()) {
-                cliente.setIdCliente(rs.getInt("id"));
+                cliente.setIdPessoa(rs.getInt("pessoa"));
             }
         } catch (Exception e) {
 
@@ -197,36 +196,6 @@ public class ClienteDAO implements IClienteDAO {
                 Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-    }
-
-    @Override
-    public boolean alterar(Cliente cliente) {
-
-        try {
-
-            conexao = ConectaBanco.getConexao();
-
-            PreparedStatement pstmt = conexao.prepareStatement(UPDATE);
-
-            pstmt.setString(1, cliente.getNome());
-            pstmt.setInt(2, cliente.getIdCliente());
-
-            pstmt.execute();
-            return true;
-
-        } catch (Exception ex) {
-
-            return false;
-
-        } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(ClienteDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
     }
 
     @Override

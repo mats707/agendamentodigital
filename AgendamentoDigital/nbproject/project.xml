@@ -11,7 +11,6 @@
             <web-module-libraries>
                 <library dirs="200">
                     <file>${file.reference.gson-2.6.2.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.xstream-1.4.11.1.jar}</file>
@@ -23,7 +22,6 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.commons-codec-20041127.091804.jar-1}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${file.reference.junit-3.8.1.jar}</file>
@@ -35,10 +33,13 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.xstream-1.4.11.1.jar-1}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.PostgreSQLDriver.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${file.reference.portlet-2.0.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

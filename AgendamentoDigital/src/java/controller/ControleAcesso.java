@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelos.Usuario;
 import dao.UsuarioDAO;
-import modelos.Cliente;
-import modelos.PerfilDeAcesso;
-import util.geraHash;
+import modelos.*;
 
 @WebServlet(name = "ControleAcesso", urlPatterns = {"/ControleAcesso"})
 public class ControleAcesso extends HttpServlet {
@@ -28,7 +25,7 @@ public class ControleAcesso extends HttpServlet {
                 case "Entrar": {
                     Usuario usuario = new Usuario();
                     usuario.setEmail(request.getParameter("inputEmail"));
-                    usuario.setSenha(geraHash.codificaBase64(request.getParameter("inputPassword")));
+                    usuario.setSenha(request.getParameter("inputPassword"));
                     UsuarioDAO usuarioDAO = new UsuarioDAO();
                     Usuario usuarioAutenticado = usuarioDAO.autenticaUsuario(usuario);
                     Cliente cliente = new Cliente();
@@ -103,7 +100,7 @@ public class ControleAcesso extends HttpServlet {
             case FUNCIONARIOCOMUM:
                 return ("pages/user/index3.jsp");
             case CLIENTECOMUM:
-                return ("Home");
+                return ("HomeCliente");
             default:
                 return ("");
         }

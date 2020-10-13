@@ -5,6 +5,7 @@
  */
 package command.agenda;
 
+import api.restEmail;
 import command.servico.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,6 +19,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -43,7 +45,8 @@ import modelos.PerfilDeAcesso;
 import modelos.Servico;
 import modelos.StatusAgendamento;
 import modelos.Usuario;
-import testes.ValidarCodigo;
+import api.restAgendamento;
+import java.sql.SQLException;
 
 /**
  *
@@ -51,8 +54,12 @@ import testes.ValidarCodigo;
  */
 public class AgendarAction implements ICommand {
 
+    private AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+    private restAgendamento objRestAgendamento = new restAgendamento();
+    private restEmail objRestEmail = new restEmail();
+
     @Override
-    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
 
         //Configurações para o datetimepicker
         int day = Calendar.DAY_OF_MONTH;
@@ -83,10 +90,9 @@ public class AgendarAction implements ICommand {
         String sqlState = "0";
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
+        String StatusEmail = null;
 
         if (idServico != null && idFuncionario != null && data != null && hora != null) {
-
-            AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
 
             //Instanciando Funcionario
             Funcionario objFuncionario = new Funcionario();
@@ -124,7 +130,7 @@ public class AgendarAction implements ICommand {
             try {
                 dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(data);
             } catch (ParseException ex) {
-                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
             }
             objAgendamento.setDataAgendamento(dataAgendamento);
 
@@ -132,109 +138,54 @@ public class AgendarAction implements ICommand {
             try {
                 horaAgendamento = new java.sql.Time(formatter.parse(hora).getTime());
             } catch (ParseException ex) {
-                Logger.getLogger(ValidarCodigo.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
             }
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
-            //Retorna horário ocupados pelo funcionário no dia solicitado
-            ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
-            arrayHorariosOcupados = agendamentoDAO.listarHorariosOcupados(objAgendamento);
-
-            Empresa objEmpresa = new Empresa();
-            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
-            objEmpresaDAO.buscar(objEmpresa);
-
-            Integer horaInicialAgendamento = objEmpresa.getHoraInicialTrabalho().getHours() * 60;
-            Integer horaFinalAgendamento = objEmpresa.getHoraFinalTrabalho().getHours() * 60;
-            Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
-            Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
-            Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
-
             ServicoDAO objServicoDAO = new ServicoDAO();
-            objServicoDAO.buscar(objServico);
+            objServicoDAO.buscar(objAgendamento.getServico());
 
-            Long duracaoServicoLong = objServico.getDuracao().toMinutes();
-            Integer duracaoServico = Integer.parseInt(duracaoServicoLong.toString());
+            String validoParaAgendar = objRestAgendamento.validoParaAgendar(objAgendamento);
 
-            if (duracaoServico >= intervaloAgendamento) {
-                intervaloAgendamento = duracaoServico;
-            }
-
-            ArrayList<Map<String, String>> arrHorasMinutos = new ArrayList<>();
-
-            Integer horaMaximaServico = horaFinalAgendamento - intervaloAgendamento;
-
-            //Montagem do array de horas disponíveis, passando em minutos e no formato HH:MM
-            for (Integer m = horaInicialAgendamento; m < horaMaximaServico; m = m + intervaloAgendamento) {
-                Map<String, String> hashHorasDisponiveis = new HashMap<String, String>();
-                hashHorasDisponiveis.put("minutos", m.toString());
-                arrHorasMinutos.add(hashHorasDisponiveis);
-            }
-
-            ArrayList<Map<String, String>> arrHorasOcupadas = new ArrayList<>();
-
-            //Remove do array montado acima os horarios ocupados por esse funcionario e as horas entre o intervalo de duração
-            for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
-                Map<String, String> mapHorarioOcupado = arrayHorariosOcupados.get(i);
-                String horaOcupada = mapHorarioOcupado.get("hora");
-                String duracaoServicoOcupado = mapHorarioOcupado.get("duracaoServico");
-
-                //Remove do array montado acima os horarios que estão entre o horario ocupado e sua duracao
-                Integer horas = Integer.parseInt(horaOcupada.split(":")[0]);
-                Integer minutos = Integer.parseInt(horaOcupada.split(":")[1]);
-                Integer horaOcupadaEmMinutos = (horas * 60) + minutos;
-                Integer duracaoHoraOcupadaEmMinutos = Integer.parseInt(duracaoServicoOcupado) + horaOcupadaEmMinutos;
-
-                for (Integer j = horaOcupadaEmMinutos; j < duracaoHoraOcupadaEmMinutos; j = j + intervaloAgendamento) {
-                    Map<String, String> hashHorasOcupadas = new HashMap<String, String>();
-                    hashHorasOcupadas.put("minutos", j.toString());
-                    arrHorasOcupadas.add(hashHorasOcupadas);
-                }
-
-            }
-
-            Boolean validoParaAgendar = true;
-
-            for (int i = 0; i < arrHorasOcupadas.size(); i++) {
-                Map<String, String> horaOcupada = arrHorasOcupadas.get(i);
-                Integer horaSelecionada = objAgendamento.getHoraAgendamento().getHours() * 60;
-                Integer minutoSelecionado = objAgendamento.getHoraAgendamento().getMinutes();
-                Integer minutoTotalSelecionado = horaSelecionada + minutoSelecionado;
-                if (minutoTotalSelecionado == Integer.parseInt(horaOcupada.get("minutos"))) {
-                    validoParaAgendar = false;
-                }
-            }
-
-            if (validoParaAgendar) {
+            if (validoParaAgendar == "valido") {
                 //Chamada da DAO para Cadastrar
                 sqlState = agendamentoDAO.cadastrar(objAgendamento);
                 //Verifica o retorno da DAO (banco de dados)
                 if (sqlState == "0") {
-                    funcaoMsg = "Cadastrado com sucesso!";
-                    funcaoStatus = "success";
+                    StatusEmail = notificarAgendamento(objAgendamento);
+                    if (StatusEmail == "email_enviado") {
+                        funcaoMsg = "Agendado com sucesso!\\nUm e-mail foi enviado como lembrete.";
+                        funcaoStatus = "success";
+                    } else {
+                        funcaoMsg = "Agendamento Realizado!\\nInfelizmente houve uma falha ao enviar o e-mail de confirmação.";
+                        funcaoStatus = "info";
+                    }
                 } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
                     // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
                     funcaoMsg = "Você já possui um agendamento nesse horário!";
                     funcaoStatus = "error";
                 } else if (sqlState.equalsIgnoreCase("unqAgendamentoFuncionario")) {
                     // Independente do serviço o funcionário não poderá ter mais de um agendamento no mesmo horário
-                    funcaoMsg = "O funcionário escolhido já possui hora marcada! Escolha outro horário, por favor!";
+                    funcaoMsg = "O funcionário escolhido já possui hora marcada!\\nEscolha outro horário, por favor!";
                     funcaoStatus = "error";
                 } else {
                     funcaoMsg = "Não foi possível realizar o agendamento, tente novamente mais tarde!";
-                    funcaoStatus = "error";
                 }
+            } else if (validoParaAgendar == "funcionario_ocupado") {
+                funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário!\\nEscolha outro horário, por favor!";
+                funcaoStatus = "error";
+            } else if (validoParaAgendar == "cliente_ocupado") {
+                funcaoMsg = "Você possui um agendamento durante o horário escolhido!\\nEscolha outro horário ou cancele o agendamento em conflito...";
+                funcaoStatus = "error";
             } else {
-                funcaoMsg = "Esse horário não está disponível para agendamento! Escolha outro horário, por favor!";
+                funcaoMsg = "Erro de validação do horário,\\nem caso de dúvidas contate o suporte!";
                 funcaoStatus = "error";
             }
         } else {
-            funcaoMsg = "Carregando...";
+            funcaoMsg = "Carregando...\\nAguarde um momento!";
             funcaoStatus = "info";
         }
 
-        request.setAttribute("funcaoMsg", funcaoMsg);
-        request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         request.setAttribute("datahoje", datahoje);
@@ -243,5 +194,11 @@ public class AgendarAction implements ICommand {
         request.setAttribute("minTime", minTime);
         request.setAttribute("maxMonth", maxMonth);
         return funcaoMsg;
+    }
+
+    private String notificarAgendamento(Agendamento objAgendamento) {
+        String dataAgendamentoString = new SimpleDateFormat("dd-MM-yyyy").format(objAgendamento.getDataAgendamento());
+        String horaInicialString = new SimpleDateFormat("kk:mm").format(objAgendamento.getHoraAgendamento());
+        return objRestEmail.emailDispacherAgendar(objAgendamento.getCliente().getIdCliente(), objAgendamento.getServico().getIdServico(), objAgendamento.getFuncionario().getIdFuncionario(), dataAgendamentoString, horaInicialString);
     }
 }

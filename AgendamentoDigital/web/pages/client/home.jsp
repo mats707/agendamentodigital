@@ -105,12 +105,22 @@
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
 
-        <script src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
 
         <script>
-            var result = ${msg};
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'center',
+                showConfirmButton: false,
+                timer: 1000
+            });
+            Toast.fire({
+                type: '${funcaoStatus}',
+                title: ' ${funcaoMsg}'
+            });
             includeHTMLNav("home", "");
-            lerTabela(result);
+            var idCliente = '${cliente.idCliente}';
+            carregarMaisAgendado(idCliente);
         </script>
     </body>
 </html>

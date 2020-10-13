@@ -233,7 +233,7 @@
             })
         </script>
         <script src="cadastrarUsuario.js" type="text/javascript"></script>
-        
+
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
         <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>

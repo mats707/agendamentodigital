@@ -39,7 +39,7 @@ public class ClienteBuilder {
     //##########################################################################
     public ClienteBuilder comUsuario(String email, String senha, String celular) {
         usuario.setEmail(email);
-        usuario.setSenha(geraHash.codificaBase64(senha));
+        usuario.setSenha(geraHash.hashPassword(senha));
         usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
         usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
         return this;

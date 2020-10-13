@@ -62,7 +62,7 @@
                                         <form action="${site}/ControleAcesso" method="post">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-append">
-                                                    <input id="inputEmail" name="inputEmail" type="email" class="form-control" placeholder="Email">
+                                                    <input id="inputEmail" name="inputEmail" type="email" class="form-control mask-email" placeholder="Email">
                                                     <div class="input-group-text">
                                                         <span class="fas fa-envelope"></span>
                                                     </div>
@@ -93,9 +93,10 @@
                                             </div>
                                         </form>
 
-                                        <p class="login-invalid">
+
+                                        <p class="text-${colorMsg} mb-3">
                                             <c:if test="${msg!=null}">
-                                                <font color="red">${msg}</font>
+                                                ${msg}
                                             </c:if>
                                         </p>
 
@@ -144,9 +145,10 @@
                                                     </div>   
                                                 </div>
                                             </div>
+                                            <!-- phone mask -->
                                             <div class="input-group mb-3">
                                                 <div class="input-group-append">
-                                                    <input id="inputCelular" name="inputCelular" type="text" class="form-control" placeholder="Celular">
+                                                    <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone'>
                                                     <div class="input-group-text">
                                                         <span class="fas fa-phone"></span>
                                                     </div>
@@ -154,7 +156,7 @@
                                             </div>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-append">
-                                                    <input id="inputEmail" name="inputEmail" type="email" class="form-control" placeholder="Email">
+                                                    <input id="inputEmail" name="inputEmail" type="text" class="form-control mask" placeholder="Email" data-mask='email'>
                                                     <div class="input-group-text">
                                                         <span class="fas fa-envelope"></span>
                                                     </div>
@@ -185,9 +187,9 @@
                                             </div>
                                         </form>
 
-                                        <p class="login-invalid">
+                                        <p class="text-${colorMsg} mb-3">
                                             <c:if test="${msg!=null}">
-                                                <font color="red">${msg}</font>
+                                                ${msg}
                                             </c:if>
                                         </p>
                                     </div>
@@ -220,6 +222,17 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.js"></script>
+        <!-- Login js -->
         <script src="${site}/auth/js/login.js" type="text/javascript"></script>
+        <!-- Mask js -->
+        <script src="${site}/dist/js/myMask.js" type="text/javascript"></script>
+        <!-- InputMask -->
+        <script src="${site}/plugins/moment/moment.min.js"></script>
+        <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+        <script>
+                                        $(function () {
+                                            $('[data-mask]').inputmask();
+                                        })
+        </script>
     </body>
 </html>

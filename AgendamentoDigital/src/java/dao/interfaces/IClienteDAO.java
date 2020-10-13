@@ -22,8 +22,6 @@ public interface IClienteDAO {
 
     public void buscar(Cliente cliente);
 
-    public boolean alterar(Cliente cliente);
-
     public boolean excluir(Cliente cliente);
 
     public String cadastrar(Cliente cliente);

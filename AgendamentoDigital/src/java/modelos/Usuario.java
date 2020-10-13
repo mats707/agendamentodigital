@@ -1,6 +1,8 @@
 package modelos;
 
+import java.io.InputStream;
 import modelos.interfaces.ILogavel;
+import util.geraHash;
 
 /**
  *
@@ -8,16 +10,18 @@ import modelos.interfaces.ILogavel;
  *
  */
 public class Usuario implements ILogavel {
-    
+
     private Integer idUsuario;
 
     private String email;
 
     private String senha;
-    
+
     private Long celular;
 
     private PerfilDeAcesso perfil;
+
+    private InputStream fotoPerfil;
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -59,6 +63,14 @@ public class Usuario implements ILogavel {
         this.celular = celular;
     }
 
+    public InputStream getFotoPerfil() {
+        return fotoPerfil;
+    }
+
+    public void setFotoPerfil(InputStream fotoPerfil) {
+        this.fotoPerfil = fotoPerfil;
+    }
+
     public Usuario(Integer idUsuario, String email, String senha, Long celular, PerfilDeAcesso perfil) {
         this.idUsuario = idUsuario;
         this.email = email;
@@ -74,7 +86,7 @@ public class Usuario implements ILogavel {
     public boolean logar(Usuario usuarioDAO) {
         //Verifica se o email encontrado na DAO é igual ao usuário instanciado
         if (usuarioDAO.getEmail().equals(this.email)
-                && usuarioDAO.getSenha().equals(this.senha)) {
+                && geraHash.checkPassword(this.senha, usuarioDAO.getSenha())) {
 
             return true;
 
@@ -83,6 +95,10 @@ public class Usuario implements ILogavel {
             return false;
 
         }
+    }
+
+    public Usuario(Integer idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
 }

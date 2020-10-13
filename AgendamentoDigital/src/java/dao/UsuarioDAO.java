@@ -1,6 +1,10 @@
 package dao;
 
 import dao.interfaces.IUsuarioDAO;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,15 +27,21 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "celular = ?,\n"
             + "perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?))\n"
             + "WHERE id = ?";
+    private static final String ALTERAR_CELULAR = "UPDATE sistema.usuario SET celular = ? WHERE id = ?";
+    private static final String ALTERAR_FOTO_PERFIL = "UPDATE sistema.usuario SET fotoPerfil = ? WHERE id = ?";
     private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
-            + "ON u.perfil = p.id WHERE u.email=? AND u.senha=?";
+            + "ON u.perfil = p.id WHERE u.email=?";
     private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
+    private static final String BUSCAR_ID = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+            + "ON u.perfil = p.id WHERE u.id=?";
+    private static final String BUSCAR_FOTO_PERFIL = "SELECT u.fotoPerfil FROM sistema.usuario u WHERE u.id=?";
     private static final String LISTAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id ORDER BY u.email;";
     private static final String DELETAR = "DELETE FROM sistema.usuario WHERE id = ?";
     private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.id=? AND u.email=? AND u.celular=? AND p.nome=?";
+    private static final int BUFFER_SIZE = 4096;
 
     private Connection conexao;
 
@@ -83,7 +93,6 @@ public class UsuarioDAO implements IUsuarioDAO {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(AUTENTICA_USUARIO);
             pstmt.setString(1, usuario.getEmail());
-            pstmt.setString(2, usuario.getSenha());
             rsUsuario = pstmt.executeQuery();
             if (rsUsuario.next()) {
                 usuarioAutenticado = new Usuario();
@@ -186,6 +195,91 @@ public class UsuarioDAO implements IUsuarioDAO {
         }
     }
 
+    public void buscarId(Usuario usuario) {
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_ID);
+
+            pstmt.setInt(1, usuario.getIdUsuario());
+
+            usuario.setEmail(null);
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
+                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    public void buscarFotoPerfil(Usuario usuario) {
+        String filename = "perfil_" + usuario.getIdUsuario().toString() + "_" + Math.random();
+
+        String filepath = "D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/build/web/upload/profile/photos/" + filename + ".jpg";
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_FOTO_PERFIL);
+
+            pstmt.setInt(1, usuario.getIdUsuario());
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
+                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                Blob blob = rs.getBlob("fotoPerfil");
+                OutputStream outputStream;
+                try (InputStream inputStream1 = blob.getBinaryStream()) {
+                    outputStream = new FileOutputStream(filepath);
+                    int bytesRead = -1;
+                    byte[] buffer = new byte[BUFFER_SIZE];
+                    while ((bytesRead = inputStream1.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                }
+                outputStream.close();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
     @Override
     public Usuario buscaCompleta(Usuario usuario) {
 
@@ -216,11 +310,11 @@ public class UsuarioDAO implements IUsuarioDAO {
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
             }
-            
+
             return usuario;
 
         } catch (Exception ex) {
-            
+
             return usuario;
 
         } finally {
@@ -253,6 +347,78 @@ public class UsuarioDAO implements IUsuarioDAO {
             final ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
                 usuario.setIdUsuario(rs.getInt("id"));
+            }
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String alterarCelular(Usuario usuario) {
+
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt = null;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(ALTERAR_CELULAR);
+            pstmt.setLong(1, usuario.getCelular());
+            pstmt.setInt(2, usuario.getIdUsuario());
+
+            pstmt.execute();
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String alterarFotoPerfil(Usuario usuario) {
+
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt = null;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(ALTERAR_FOTO_PERFIL);
+
+            pstmt.setBlob(1, usuario.getFotoPerfil());
+            pstmt.setInt(2, usuario.getIdUsuario());
+
+            Integer row = pstmt.executeUpdate();
+            if (row > 0) {
+                sqlReturnCode = "0";
+            } else {
+                sqlReturnCode = row.toString();
             }
 
             return sqlReturnCode;
