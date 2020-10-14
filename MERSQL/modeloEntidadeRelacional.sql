@@ -1,10 +1,10 @@
 --# PerfilAcesso        (id,nome);
 --# Empresa             (id,nome,horaInicialTrabalho,horaFinalTrabalho,intervaloAgendamentoGeralServico);
---# Usuario             (id,email,senha,celular,fotoPerfil,habilitado,perfil);
+--# Usuario             (id,email,senha,celular,fotoPerfil,ativo,perfil);
 --# Pessoa              (id,nome,dataNascimento,USUARIO);
 --# Cliente             (id,PESSOA);
 --# Funcionario         (id,PESSOA);
---# CategoriaServico    (id,nome,descricao,categoriaPai);
+--# CategoriaServico    (id,nome,descricao,categoriaPai,ativo);
 --# Servico             (id,nome,descricao,valor,duracao,categoria,funcionarios,camposadicionais);
 --# CampoAdicional      (id,nome,descricao,tipo)
 --# TipoCampoAdicional  (id,nome)
@@ -39,7 +39,7 @@ create table Usuario(
   fotoPerfil bytea,
   celular bigint not null,
   perfil integer not null,
-  habilitado boolean default TRUE NOT NULL,
+  ativo boolean default TRUE NOT NULL,
   constraint pkUsuario primary key (id),
   constraint unqUsuario unique (email),
   constraint unqCelularUsuario unique (celular),
@@ -78,6 +78,7 @@ create table CategoriaServico(
   nome varchar(100) not null,
   descricao varchar(500) default '' not null,
   categoriaPai integer default 0,
+  ativo boolean default true not null,
   constraint pkCategoriaServico primary key (id),
   constraint unqNomeCategoria unique (nome,categoriaPai),
   constraint fkCategoriaPai foreign key (categoriaPai) references CategoriaServico(id)
