@@ -6,18 +6,23 @@
 package modelos;
 
 import java.sql.Time;
+import java.time.Duration;
+import java.util.ArrayList;
 
 /**
  *
  * @author mathm
  */
 public class Empresa {
-    
+
     private Integer idEmpresa;
     private String nome;
     private Time horaInicialTrabalho;
     private Time horaFinalTrabalho;
-    private Time intervaloAgendamentoGeralServico;
+    private Duration intervaloAgendamentoGeralServico;
+    private ArrayList<Integer> diaSemanaTrabalho; // 0- Domingo , 1-Segunda ..., 6-Sabado
+    private ArrayList<Long> telefone;
+    private String email;
 
     public Integer getIdEmpresa() {
         return idEmpresa;
@@ -51,15 +56,17 @@ public class Empresa {
         this.horaFinalTrabalho = horaFinalTrabalho;
     }
 
-    public Time getIntervaloAgendamentoGeralServico() {
+    public Duration getIntervaloAgendamentoGeralServico() {
         return intervaloAgendamentoGeralServico;
     }
 
-    public void setIntervaloAgendamentoGeralServico(Time intervaloAgendamentoGeralServico) {
+    public void setIntervaloAgendamentoGeralServico(Duration intervaloAgendamentoGeralServico) {
         this.intervaloAgendamentoGeralServico = intervaloAgendamentoGeralServico;
     }
 
-    public Empresa(Integer idEmpresa, String nome, Time horaInicialTrabalho, Time horaFinalTrabalho, Time intervaloAgendamentoGeralServico) {
+    
+
+    public Empresa(Integer idEmpresa, String nome, Time horaInicialTrabalho, Time horaFinalTrabalho, Duration intervaloAgendamentoGeralServico) {
         this.idEmpresa = idEmpresa;
         this.nome = nome;
         this.horaInicialTrabalho = horaInicialTrabalho;
@@ -73,5 +80,32 @@ public class Empresa {
 
     public Empresa() {
     }
+
+    public ArrayList<Integer> getDiaSemanaTrabalho() {
+        return diaSemanaTrabalho;
+    }
+
+    public void setDiaSemanaTrabalho(ArrayList<Integer> diasSemanaTrabalho) {
+        this.diaSemanaTrabalho = diasSemanaTrabalho;
+    }
+
+    public ArrayList<Long> getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(ArrayList<Long> telefone) {
+        this.telefone = telefone;
+    }
+
     
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    
+
 }

@@ -17,5 +17,7 @@ import modelos.Empresa;
 public interface IEmpresaDAO {
 
     public void buscar(Empresa objEmpresa);
+    
+    public boolean alterar(Empresa objEmpresa);
 
 }
