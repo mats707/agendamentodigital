@@ -132,9 +132,9 @@ public class restAgendamento {
         Empresa objEmpresa = new Empresa();
         EmpresaDAO objEmpresaDAO = new EmpresaDAO();
         objEmpresaDAO.buscar(objEmpresa);
-        Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
-        Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
-        Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
+        //Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
+        //Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
+        //Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
 
         ServicoDAO objServicoDAO = new ServicoDAO();
         objServicoDAO.buscar(objAgendamento.getServico());
@@ -143,9 +143,9 @@ public class restAgendamento {
         Integer duracaoServico = Integer.parseInt(duracaoServicoLong.toString());
 
         //Mantém o maior intervalo de agendamento como referência
-        if (duracaoServico >= intervaloAgendamento) {
-            intervaloAgendamento = duracaoServico;
-        }
+//        if (duracaoServico >= intervaloAgendamento) {
+//            intervaloAgendamento = duracaoServico;
+//        }
 
         //Calcula as horas ocupadas do funcionário e do cliente, respectivamente, atualizando conforme a duração de cada serviço já agendado
         //ArrayList<Map<String, String>> arrayHorariosOcupados_new = calcularHorasOcupadas(arrayHorariosOcupados, intervaloAgendamento);

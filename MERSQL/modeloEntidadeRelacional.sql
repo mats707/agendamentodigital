@@ -28,7 +28,11 @@ create table Empresa(
   nome varchar(100) not null,
   horaInicialTrabalho time not null,
   horaFinalTrabalho time not null,
-  intervaloAgendamentoGeralServico time not null,
+intervaloAgendamentoGeralServico interval not null,
+	diaSemanaTrabalho  integer[],
+	telefone bigint[] not null,
+	email varchar not null,
+	
   constraint pkEmpresa primary key (id)
 );
 
@@ -161,8 +165,8 @@ insert into PerfilAcesso values
   (2,'FUNCIONARIOCOMUM'),
   (3,'FUNCIONARIOADMIN');
 
-insert into Empresa (id, nome, horaInicialTrabalho, horaFinalTrabalho, intervaloAgendamentoGeralServico) values 
-  (nextval('sqn_empresa'),'Mafera Soft. Testes','08:00:00','17:00:00','00:30:00');
+insert into Empresa (id, nome, horaInicialTrabalho, horaFinalTrabalho, intervaloAgendamentoGeralServico, diaSemanaTrabalho,telefone,email) values 
+  (nextval('sqn_empresa'),'Mafera Soft. Testes','08:00:00','17:00:00','00:30:00',Array[0,6],Array[1139551324,11982231234],'empresa@empresa.com');
 
 insert into StatusAgendamento values
   (1,'AGUARDANDOATENDIMENTO'),

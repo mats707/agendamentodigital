@@ -159,6 +159,14 @@
                         </p>
                     </a>
                 </li>
+                 <li class="nav-item">
+                    <a href="${site}/BuscarEmpresa" id="home" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Minha empresa
+                        </p>
+                    </a>
+                </li>
                 <li id="menuPaiusuarios" class="nav-item has-treeview">
                     <a href="#" id="usuarios" class="nav-link">
                         <i class="nav-icon far fa-user"></i>
