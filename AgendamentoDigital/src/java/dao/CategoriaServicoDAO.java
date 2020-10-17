@@ -20,17 +20,13 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             + "VALUES (nextval('sistema.sqn_categoriaservico'),?,?,?);";
     private static final String CADASTRA_SUB_CATEGORIA = "INSERT INTO sistema.CategoriaServico (id, nome, descricao, categoriapai)\n"
             + "VALUES (nextval('sistema.sqn_categoriaservico'),?,?,?);";
-    private static final String ALTERA_SERVICO = "UPDATE sistema.CategoriaServico "
-            + "SET nome = ?, "
-            + "descricao = ?, "
-            + "categoriapai = ? "
-            + "WHERE id = ?";
+    private static final String ALTERA_SERVICO = "UPDATE sistema.CategoriaServico SET nome=?, descricao=? WHERE id=? AND categoriapai=?";
     private static final String BUSCAR = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.nome ilike ?";
     private static final String BUSCAR_ID = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id = ?";
     private static final String BUSCAR_CATEGORIA = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id = ? AND s.categoriapai = ?";
     private static final String BUSCAR_NOME = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE UPPER(s.nome) = UPPER(?) AND s.categoriapai = ?";
     private static final String LISTAR = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id != 0 ORDER BY s.categoriapai, s.nome";
-    private static final String DELETAR = "DELETE FROM sistema.CategoriaServico WHERE id = ?";
+    private static final String DELETAR = "DELETE FROM sistema.CategoriaServico WHERE id = ? AND categoriapai=?";
     private static final String BUSCA_COMPLETA = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id=? AND s.nome=? AND s.descricao=? AND S.categoriapai=?";
 
     private Connection conexao;
@@ -91,7 +87,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             //executa
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 CategoriaServico categoriaServicoPai = new CategoriaServico();
 
                 categoriaExistente.setIdCategoriaServico(Integer.parseInt(rs.getString("id")));
@@ -119,7 +115,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
 
     @Override
     public void buscarId(CategoriaServico categoriaServico) {
-        
+
         try {
 
             //Conexao
@@ -129,11 +125,11 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_ID);
 
             pstmt.setInt(1, categoriaServico.getIdCategoriaServico());
-            System.out.println(pstmt);
+            
             //executa
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 CategoriaServico categoriaServicoPai = new CategoriaServico();
 
                 categoriaServico.setIdCategoriaServico(Integer.parseInt(rs.getString("id")));
@@ -143,7 +139,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
                 categoriaServicoPai.setIdCategoriaServico(Integer.parseInt(rs.getString("categoriapai")));
                 categoriaServico.setCategoriaPai(categoriaServicoPai);
                 System.out.println(categoriaServico.getCategoriaPai());
-                if(!categoriaServico.getCategoriaPai().getIdCategoriaServico().equals(0)){
+                if (!categoriaServico.getCategoriaPai().getIdCategoriaServico().equals(0)) {
                     buscarId(categoriaServico.getCategoriaPai());
                 }
             }
@@ -260,7 +256,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             //executa
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
                 CategoriaServico categoriaServicoPai = new CategoriaServico();
 
                 categoriaServico.setIdCategoriaServico(Integer.parseInt(rs.getString("id")));
@@ -293,10 +289,10 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
 
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_CATEGORIA);
-            
+
             pstmt.setInt(1, categoriaServico.getIdCategoriaServico());
             pstmt.setInt(2, categoriaServico.getCategoriaPai().getIdCategoriaServico());
-            
+
             //executa
             ResultSet rs = pstmt.executeQuery();
 
@@ -379,20 +375,15 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
         PreparedStatement pstmt = null;
         try {
             conexao = ConectaBanco.getConexao();
-            pstmt = conexao.prepareStatement(ALTERA_SERVICO, Statement.RETURN_GENERATED_KEYS);
+            pstmt = conexao.prepareStatement(ALTERA_SERVICO);
 
             pstmt.setString(1, categoriaServico.getNome());
             pstmt.setString(2, categoriaServico.getDescricao());
-            pstmt.setInt(3, categoriaServico.getCategoriaPai().getIdCategoriaServico());
-            pstmt.setInt(4, categoriaServico.getIdCategoriaServico());
+            pstmt.setInt(3, categoriaServico.getIdCategoriaServico());
+            pstmt.setInt(4, categoriaServico.getCategoriaPai().getIdCategoriaServico());
 
-            pstmt.execute();
-
-            final ResultSet rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                categoriaServico.setIdCategoriaServico(rs.getInt("id"));
-            }
-
+            pstmt.executeUpdate();
+            
             return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
@@ -413,20 +404,27 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
     }
 
     @Override
-    public boolean excluir(CategoriaServico categoriaServico) {
+    public String deletar(CategoriaServico categoriaServico) {
+
+        String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(DELETAR);
+            
             pstmt.setInt(1, categoriaServico.getIdCategoriaServico());
-            pstmt.execute();
+            pstmt.setInt(2, categoriaServico.getCategoriaPai().getIdCategoriaServico());
 
-            return true;
+            pstmt.execute();
+            
+            return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
 
-            return false;
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
 
         } finally {
             if (conexao != null) {

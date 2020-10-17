@@ -65,6 +65,10 @@ public class CategoriaServico {
         this.ativo = ativo;
     }
 
+    public CategoriaServico(Integer editedCategoriaPai) {
+        this.idCategoriaServico = editedCategoriaPai;
+    }
+
     public CategoriaServico() {
     }
 

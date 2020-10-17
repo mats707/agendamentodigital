@@ -32,7 +32,7 @@ public interface ICategoriaServicoDAO {
    
     public String alterar(CategoriaServico categoriaServico);
 
-    public boolean excluir(CategoriaServico categoriaServico);
+    public String deletar(CategoriaServico categoriaServico);
     
 
 }

@@ -29,8 +29,7 @@ import javax.servlet.annotation.MultipartConfig;
     "/IniciarEdicaoCliente",
     "/AlterarCliente",
     "/HomeCliente",
-    "/MinhaConta",
-    "/MinhaConta/"})
+    "/MinhaConta"})
 public class ControleCliente extends HttpServlet {
 
     /**

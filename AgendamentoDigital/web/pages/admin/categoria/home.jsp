@@ -63,16 +63,16 @@
 
                 <!-- Main content -->
                 <section id="sectionCadastrarCategoria" class="content" style="display: none">
-                    <div id="divCadastrarCategoria" class="container-fluid">
+                    <div class="container-fluid">
                         <div class="row align-items-bottom justify-content-center">
                             <div class="col-lg">
 
-                                <div id="divCadastroCategorias" class="card card-info">
+                                <div id="divCadastrarCategorias" class="card card-info">
                                     <div class="card-header">
                                         <h3 class="card-title">Cadastrar Nova Categoria</h3>
 
                                         <div class="card-tools">
-                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                            <button id="btnCollapseCadastrar" type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -103,12 +103,54 @@
                                                 <button id="btnCadastrarCategoria" type="button" class="btn btn-block btn-success btn">Cadastrar categorias</button>
                                             </div>
                                         </div>
-                                        <div class="col-6" style="display: none">
-                                            <div class="form-group">
-                                                <label><br></label>
-                                                <button id="btnCategoria" type="button" class="btn btn-block btn-outline-success btn"></button>
-                                            </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.container-fluid -->
+                </section>
+
+                <!-- Edit content -->
+                <section id="sectionAlterarCategoria" class="content" style="display: none">
+                    <div id="divAlterarCategoria" class="container-fluid">
+                        <div class="row align-items-bottom justify-content-center">
+                            <div class="col-lg">
+
+                                <div id="divCategoria" class="card card-light">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Alterar Categoria</h3>
+
+                                        <div class="card-tools">
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                                         </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="formAlterarCategoria" action="${site}/CategoriaServico" method="post">
+                                            <div class="row align-items-top justify-content-center">
+                                                <div id="divEditCategoria" class="col-lg form-group">
+                                                    <label for="alterarCategoria">Categoria: </label>
+                                                    <label id="lblCategorias"></label>
+                                                    <div id="divNomeCategoria" class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-tasks"></i></span>
+                                                        </div>
+                                                        <input id="alterarNomeCategoria" name="alterarNomeCategoria" type="text" class="form-control" placeholder="Digite um nome">
+                                                    </div>
+                                                    <div id="divDescricaoCategoria" class="input-group mb-3">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text"><i class="fas fa-stream"></i></span>
+                                                        </div>
+                                                        <input id="alterarDescricaoCategoria" name="alterarDescricaoCategoria" type="text" class="form-control" placeholder="Digite uma descrição">
+                                                    </div>
+                                                    <div class="row-fluid">
+                                                        <button id="btnAlterarCategoria" name="acao" value="AlterarCategoria" type="submit" class="btn btn-success btn-block">Alterar categorias</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                     <!-- /.card-body -->
                                 </div>
@@ -125,7 +167,7 @@
                         <div class="row align-items-bottom justify-content-center">
                             <div class="col-lg">
                                 <div class="card">
-                                    <div class="card-header">
+                                    <div class="card-header card-light">
                                         <h3 class="card-title">Categorias</h3>
                                         <div class="text-right">
                                             <h8 class="card-subtitle text-muted">(clique no nome da categoria para "Expandir" ou "Diminuir")</h8>
@@ -134,7 +176,7 @@
                                     <!-- /.card-header -->
                                     <div class="card-body">
                                         <div id="listaCategorias" class="justify-content-center">
-                                            <!-- Aqui serão inseridas as categorias pelo cadastrar.js -->
+                                            <!-- Aqui serão inseridas as categorias pelo home.js -->
                                         </div>
                                         <!-- /.card-body -->
                                     </div>
@@ -156,6 +198,36 @@
 
     </div>
     <!-- ./wrapper -->
+
+    <!-- delete Categoria Modal-->
+    <div class="modal fade" id="deleteCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form id="formDeletarCategoria" action="${site}/CategoriaServico" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Excluir Categoria? </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="row align-items-center justify-content-center">
+                        <p class="danger">Caso essa categoria tenha subcategorias, todas as subcategorias serão excluídas também!</p>
+
+                        <div class="register-box">
+                            <div class="card">
+                                <input id="deletarNomeCategoria" name="deletarNomeCategoria" type="text" class="form-control" readonly>
+                                <input id="deletarDescricaoCategoria" name="deletarDescricaoCategoria" type="text" class="form-control" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnDeletarCategoria" name="acao" value="DeletarCategoria" type="submit" class="btn btn-success btn-block">Deletar Categoria</button>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
     <!-- jQuery -->
@@ -220,7 +292,8 @@
 
         })
     </script>
-    <script src="${site}/pages/admin/categoria/js/cadastrar.js" type="text/javascript"></script>
+    <script charset="utf-8" src="${site}/pages/admin/categoria/js/home.js" type="text/javascript"></script>
+    <script charset="utf-8" src="${site}/pages/admin/categoria/js/edit.js" type="text/javascript"></script>
 
     <script>
         includeHTMLNav("categorias", "");

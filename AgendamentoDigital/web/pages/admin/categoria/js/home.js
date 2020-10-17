@@ -1,11 +1,12 @@
+var categorias = [];
+var descricoes = [];
+
+var nameproject = window.location.pathname.split('/')[1];
+console.log(nameproject);
+var listaCategorias = '';
+var ObjListaCategorias;
+
 $(document).ready(function () {
-
-    var categorias = [];
-    var descricoes = [];
-
-    var nameproject = "/AgendamentoDigital";
-    var listaCategorias = '';
-    var ObjListaCategorias;
 
     carregarCategoriaServico();
 
@@ -79,42 +80,6 @@ $(document).ready(function () {
                     }
                 }
             };
-            var changeDisplay = function () {
-                var displayNova;
-                var displayEscolher;
-                var btnValue = document.getElementById('btnCategoria').value;
-                var btnText = '';
-
-                switch (btnValue) {
-                    case 'Nova' :
-                    {
-                        displayNova = 'block';
-                        displayEscolher = 'none';
-                        btnText = 'Escolher uma categoria existente';
-                        btnValue = 'Escolher';
-                        break;
-                    }
-                    case 'Escolher' :
-                    {
-                        displayNova = 'none';
-                        displayEscolher = 'block';
-                        btnText = 'Adicionar nova categoria';
-                        btnValue = 'Nova';
-                        break;
-                    }
-                    default:
-                    {
-                        console.log("Erro");
-                        console.log("displayNova: " + displayNova);
-                        console.log("displayEscolher: " + displayEscolher);
-                        break;
-                    }
-                }
-                document.getElementById('divNovaCategoria').style.display = displayNova;
-                document.getElementById('divEscolherCategoria').style.display = displayEscolher;
-                document.getElementById('btnCategoria').innerHTML = btnText;
-                document.getElementById('btnCategoria').value = btnValue;
-            };
             var submitForm = function () {
                 var categoria = document.getElementById('input-' + counter).value;
                 if (categoria == '') {
@@ -176,9 +141,6 @@ $(document).ready(function () {
                 console.log(categorias.toString());
                 console.log(descricoes.toString());
             }.bind(this));
-            btnCategoria.addEventListener('click', function () {
-                changeDisplay();
-            }.bind(this));
             btnCadastrarCategoria.addEventListener('click', function () {
                 submitForm();
             }.bind(this));
@@ -187,7 +149,7 @@ $(document).ready(function () {
 
     function carregarCategoriaServico() {
         $.ajax({
-            url: nameproject + '/api/CategoriaServico/Listar/', //lugar onde a servlet está
+            url: 'api/CategoriaServico/Listar/', //lugar onde a servlet está
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -241,12 +203,12 @@ $(document).ready(function () {
                                 </a>                                                                                                                                              \n\
                             </h4>                                                                                                                                                 \n\
                             <div class="card-tools">                                                                                                                              \n\
-                                <a class="btn btn-info btn-sm" href="#">                                                                                                          \n\
+                                <a id="alterar-categoria-' + idCategoria + '" class="btn btn-info btn-sm" href="#" onclick="alterarCategoria(this);">                                                                                                          \n\
                                     <i class="fas fa-pencil-alt">                                                                                                                 \n\
                                     </i>                                                                                                                                          \n\
-                                    Edit                                                                                                                                          \n\
+                                    Alterar                                                                                                                                          \n\
                                 </a>                                                                                                                                              \n\
-                                <a class="btn btn-danger btn-sm" href="#">                                                                                                        \n\
+                                <a id="deletar-categoria-' + idCategoria + '" class="btn btn-danger btn-sm" href="#" onclick="deletarCategoria(this);" data-toggle="modal" data-target="#deleteCategoriaModal">                                                                                                        \n\
                                     <i class="fas fa-trash">                                                                                                                      \n\
                                     </i>                                                                                                                                          \n\
                                     Delete                                                                                                                                        \n\
@@ -271,12 +233,12 @@ $(document).ready(function () {
                                 </a>                                                                                                                                              \n\
                             </h4>                                                                                                                                                 \n\
                             <div class="card-tools">                                                                                                                              \n\
-                                <a class="btn btn-info btn-sm" href="#" style="color: white">                                                                                                          \n\
+                                <a id="alterar-categoria-' + idCategoria + '" class="btn btn-info btn-sm" href="#" style="color: white" onclick="alterarCategoria(this);">                                                                                                          \n\
                                     <i class="fas fa-pencil-alt">                                                                                                                 \n\
                                     </i>                                                                                                                                          \n\
-                                    Edit                                                                                                                                          \n\
+                                    Alterar                                                                                                                                          \n\
                                 </a>                                                                                                                                              \n\
-                                <a class="btn btn-danger btn-sm" href="#" style="color: white">                                                                                                        \n\
+                                <a id="deletar-categoria-' + idCategoria + '" class="btn btn-danger btn-sm" href="#" style="color: white" onclick="deletarCategoria(this);" data-toggle="modal" data-target="#deleteCategoriaModal">                                                                                                        \n\
                                     <i class="fas fa-trash">                                                                                                                      \n\
                                     </i>                                                                                                                                          \n\
                                     Delete                                                                                                                                        \n\
@@ -310,12 +272,12 @@ $(document).ready(function () {
                                 </a>                                                                                                                                              \n\
                             </h4>                                                                                                                                                 \n\
                             <div class="card-tools">                                                                                                                              \n\
-                                <a class="btn btn-info btn-sm" href="#">                                                                                                          \n\
+                                <a id="alterar-categoria-' + idCategoria + '" class="btn btn-info btn-sm" href="#" onclick="alterarCategoria(this);">                                                                                                          \n\
                                     <i class="fas fa-pencil-alt">                                                                                                                 \n\
                                     </i>                                                                                                                                          \n\
-                                    Edit                                                                                                                                          \n\
+                                    Alterar                                                                                                                                          \n\
                                 </a>                                                                                                                                              \n\
-                                <a class="btn btn-danger btn-sm" href="#">                                                                                                        \n\
+                                <a id="deletar-categoria-' + idCategoria + '" class="btn btn-danger btn-sm" href="#" onclick="deletarCategoria(this);" data-toggle="modal" data-target="#deleteCategoriaModal">                                                                                                        \n\
                                     <i class="fas fa-trash">                                                                                                                      \n\
                                     </i>                                                                                                                                          \n\
                                     Delete                                                                                                                                        \n\
@@ -340,12 +302,12 @@ $(document).ready(function () {
                                 </a>                                                                                                                                              \n\
                             </h4>                                                                                                                                                 \n\
                             <div class="card-tools">                                                                                                                              \n\
-                                <a class="btn btn-info btn-sm" href="#" style="color: white">                                                                                                          \n\
+                                <a id="alterar-categoria-' + idCategoria + '" class="btn btn-info btn-sm" href="#" style="color: white" onclick="alterarCategoria(this);">                                                                                                          \n\
                                     <i class="fas fa-pencil-alt">                                                                                                                 \n\
                                     </i>                                                                                                                                          \n\
-                                    Edit                                                                                                                                          \n\
+                                    Alterar                                                                                                                                          \n\
                                 </a>                                                                                                                                              \n\
-                                <a class="btn btn-danger btn-sm" href="#" style="color: white">                                                                                                        \n\
+                                <a id="deletar-categoria-' + idCategoria + '" class="btn btn-danger btn-sm" href="#" style="color: white" onclick="deletarCategoria(this);" data-toggle="modal" data-target="#deleteCategoriaModal">                                                                                                        \n\
                                     <i class="fas fa-trash">                                                                                                                      \n\
                                     </i>                                                                                                                                          \n\
                                     Delete                                                                                                                                        \n\

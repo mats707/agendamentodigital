@@ -24,7 +24,8 @@ import javax.servlet.RequestDispatcher;
     "/ListarCategoriaServico",
     "/BuscarCategoriaServico",
     "/DeletarCategoriaServico",
-    "/AlterarCategoriaServico"})
+    "/AlterarCategoriaServico",
+    "/CategoriaServico"})
 public class ControleCategoriaServico extends HttpServlet {
 
     /**
@@ -42,6 +43,13 @@ public class ControleCategoriaServico extends HttpServlet {
         try {
             String uri = request.getRequestURI();
             String acao = "";
+            String acao_secundaria = request.getParameter("acao");
+
+            Object paginaAttr = request.getAttribute("pagina");
+
+            if (paginaAttr != null) {
+                acao_secundaria = null;
+            }
 
             if (uri.equals(request.getContextPath() + "/DeletarCategoriaServico")) {
                 acao = "Deletar";
@@ -49,8 +57,9 @@ public class ControleCategoriaServico extends HttpServlet {
                 acao = "Listar";
             } else if (uri.equals(request.getContextPath() + "/CadastrarCategoriaServico")) {
                 acao = "Cadastrar";
-            } else if (uri.equals(request.getContextPath() + "/AlterarCategoriaServico")) {
-                acao = "Alterar";
+            } else if (uri.equals(request.getContextPath() + "/CategoriaServico")) {
+                acao = "CategoriaServico";
+                acao = validarAcaoSecundaria(acao, acao_secundaria);
             } else if (uri.equals(request.getContextPath() + "/BuscarCategoriaServico")) {
                 acao = "Buscar";
             } else {
@@ -68,7 +77,7 @@ public class ControleCategoriaServico extends HttpServlet {
             String objCategoriaServico = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
             request.setAttribute("msg", objCategoriaServico);
             rd.forward(request, response);
@@ -119,4 +128,18 @@ public class ControleCategoriaServico extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    private String validarAcaoSecundaria(String acao, String acao_secundaria) {
+        if (null == acao_secundaria) {
+            return acao;
+        } else {
+            switch (acao_secundaria) {
+                case "AlterarCategoria":
+                    return "Alterar";
+                case "DeletarCategoria":
+                    return "Deletar";
+                default:
+                    return acao;
+            }
+        }
+    }
 }
