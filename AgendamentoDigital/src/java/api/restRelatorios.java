@@ -7,8 +7,10 @@ package api;
 
 import com.google.gson.*;
 import dao.*;
+import java.lang.reflect.Type;
 import modelos.*;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -111,10 +113,10 @@ public class restRelatorios {
 
         for (RelatorioServico objRelatorio : arr) {
             JsonObject json = (JsonObject) objgson.toJsonTree(objRelatorio);
-           json.remove("idAgendamento");
-           json.remove("idCliente");
-           json.remove("idFuncionario");
-           json.remove("idServico");
+            json.remove("idAgendamento");
+            json.remove("idCliente");
+            json.remove("idFuncionario");
+            json.remove("idServico");
             arrJson.add(json);
         }
 
@@ -122,17 +124,17 @@ public class restRelatorios {
 
         return json;
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/Agendamentos/Cliente/{idCliente}")
     public String getAgendamentosCliente(@PathParam("idCliente") Integer idCliente) throws SQLException, ClassNotFoundException {
-        
+
         //Instanciando Cliente
         Cliente objCliente = new Cliente();
         objCliente.setIdCliente(idCliente);
-        
-        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        Gson objgson = new GsonBuilder().registerTypeAdapter(Agendamento.class, new agendamentoAdapter()).setPrettyPrinting().create();
 
         AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
@@ -144,10 +146,35 @@ public class restRelatorios {
             objFuncionarioDao.buscar(objAgendamento.getFuncionario());
             objServicoDao.buscar_dados_basicos(objAgendamento.getServico());
         }
-
-        return objgson.toJson(arr);
+        String json = "[\n";
+        for (Agendamento objAgendamento : arr) {
+            json += objgson.toJson(objAgendamento);
+        }
+        json+="\n]";
+        return json;
     }
 
+    private class agendamentoAdapter implements JsonSerializer<Agendamento> {
 
+        @Override
+        public JsonElement serialize(Agendamento objAgendamento, Type typeofsrc, JsonSerializationContext context) {
+
+            JsonObject obj = new JsonObject();
+            
+            String dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").format(objAgendamento.getDataAgendamento());
+            obj.add("dataAgendamento", context.serialize(dataAgendamento));
+
+            String horaAgendamento = new SimpleDateFormat("kk:mm:ss").format(objAgendamento.getHoraAgendamento());
+            obj.add("horaAgendamento", context.serialize(horaAgendamento));
+            
+            obj.add("cliente", context.serialize(objAgendamento.getCliente()));
+            obj.add("funcionario", context.serialize(objAgendamento.getFuncionario()));
+            obj.add("servico", context.serialize(objAgendamento.getServico()));
+            obj.add("status", context.serialize(objAgendamento.getStatus()));
+
+            return obj;
+
+        }
+
+    }
 }
-

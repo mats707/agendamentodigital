@@ -40,10 +40,13 @@ public class AgendamentoDAO implements IAgendamentoDAO {
     private static final String ALTERAR = "UPDATE sistema.agendamento "
             + "SET dataAgendamento = ?, "
             + "horarioAgendamento = ?, "
-            + "servico = ? "
-            + "funcionario = ? "
-            + "status = ? "
+            + "servico = ?, "
+            + "funcionario = ?, "
+            + "status = (select id from sistema.statusAgendamento where nome ilike ?) "
             + "WHERE id = ? AND cliente=?";
+    private static final String ALTERAR_STATUS = "update sistema.agendamento "
+            + " set status= (select id from sistema.statusAgendamento where nome ilike ?) "
+            + " where cliente=? and dataAgendamento=?::DATE and horarioAgendamento=?::TIME;";
     private static final String BUSCAR_ID = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE id=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_HORARIOS_OCUPADOS = ""
@@ -136,10 +139,13 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "AND tab_cli.horarioAgendamento::time < tab_param.horarioFinalSolicitado)\n"
             + "OR  (tab_cli.horarioFinalAgendamento::time > tab_param.horarioSolicitado\n"
             + "AND tab_cli.horarioFinalAgendamento::time < tab_param.horarioFinalSolicitado);";
-    private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? ORDER BY dataAgendamento, horarioAgendamento";
+    private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? and a.status=1 ORDER BY dataAgendamento, horarioAgendamento";
     private static final String LISTAR_FUNCIONARIO = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE funcionario=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_STATUS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE status=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String DELETAR = "DELETE FROM sistema.agendamento WHERE id = ?";
+    private static final String BUSCAR_CANCELAR = "select ag.id, ag.dataAgendamento::DATE, ag.horarioAgendamento::TIME, ag.cliente,ag.servico,ag.funcionario,ag.status \n"
+            + "from sistema.agendamento as ag \n"
+            + "where ag.dataAgendamento = ? and ag.horarioAgendamento =? and ag.cliente = ? and ag.status=1;";
 
     private Connection conexao;
 
@@ -269,7 +275,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
 
             DateFormat formatter = new SimpleDateFormat("kk:mm");
             Time horarioAgendamento = null;
-            Time horarioFinalAgendamento = null;            
+            Time horarioFinalAgendamento = null;
 
             while (rs.next()) {
                 Map<String, String> arrHorariosOcupados = new HashMap<String, String>();
@@ -523,20 +529,18 @@ public class AgendamentoDAO implements IAgendamentoDAO {
 //
 //        String sqlReturnCode = "0";
 //
-//        PreparedStatement pstmt = null;
+//        PreparedStatement pstmt;
 //        try {
 //            conexao = ConectaBanco.getConexao();
-//            pstmt = conexao.prepareStatement(ALTERA_SERVICO, Statement.RETURN_GENERATED_KEYS);
-//            pstmt.setString(1, agendamento.getNome());
-//            pstmt.setString(2, agendamento.getDescricao());
-//            pstmt.setBigDecimal(3, agendamento.getValor());
-//            pstmt.setInt(4, agendamento.getIdAgendamento());
-//            pstmt.execute();
-//
-//            final ResultSet rs = pstmt.getGeneratedKeys();
-//            if (rs.next()) {
-//                agendamento.setIdAgendamento(rs.getInt("id"));
-//            }
+//            pstmt = conexao.prepareStatement(ALTERAR);
+//            pstmt.setDate(1, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+//            pstmt.setTime(2, agendamento.getHoraAgendamento());
+//            pstmt.setInt(3, agendamento.getServico().getIdServico());
+//            pstmt.setInt(4, agendamento.getFuncionario().getIdFuncionario());
+//            pstmt.setString(5, agendamento.getStatus().toString());
+//            pstmt.setInt(6, agendamento.getIdAgendamento());
+//            pstmt.setInt(7, agendamento.getCliente().getIdCliente());
+//            pstmt.executeUpdate();
 //
 //            return sqlReturnCode;
 //
@@ -556,7 +560,6 @@ public class AgendamentoDAO implements IAgendamentoDAO {
 //            }
 //        }
 //    }
-//
 //    @Override
 //    public boolean excluir(Agendamento agendamento) {
 //
@@ -582,19 +585,109 @@ public class AgendamentoDAO implements IAgendamentoDAO {
 //                }
 //            }
 //        }
-//    }
-    @Override
-    public Agendamento buscaCompleta(Agendamento agendamento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+//    } 
+    public Agendamento buscarCancelar(Agendamento agendamento) {
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_CANCELAR);
+
+            pstmt.setDate(1, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+            pstmt.setTime(2, new java.sql.Time(agendamento.getHoraAgendamento().getTime()));
+            pstmt.setInt(3, agendamento.getCliente().getIdCliente());
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                agendamento.setIdAgendamento(rs.getInt("id"));
+                agendamento.setDataAgendamento(rs.getDate("dataAgendamento"));
+                agendamento.setHoraAgendamento(rs.getTime("horarioAgendamento"));
+
+                Cliente objCliente = new Cliente();
+                objCliente.setIdCliente(rs.getInt("cliente"));
+                agendamento.setCliente(objCliente);
+
+                Servico objServico = new Servico();
+                objServico.setIdServico(rs.getInt("servico"));
+                agendamento.setServico(objServico);
+
+                Funcionario objFuncionario = new Funcionario();
+                objFuncionario.setIdFuncionario(rs.getInt("funcionario"));
+                agendamento.setFuncionario(objFuncionario);
+
+                agendamento.setStatus(StatusAgendamento.valueOf(rs.getString("status")));
+
+            }
+
+            return agendamento;
+
+        } catch (Exception ex) {
+
+            return agendamento;
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
     }
 
     @Override
     public String alterarAgendamento(Agendamento agendamento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
+
     }
 
     @Override
     public boolean excluir(Agendamento agendamento) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean alterarStatus(Agendamento agendamento) {
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(ALTERAR_STATUS);
+            pstmt.setString(1, agendamento.getStatus().toString()); //status
+            //pstmt.setInt(2, agendamento.getIdAgendamento());
+            pstmt.setInt(2, agendamento.getCliente().getIdCliente());
+            pstmt.setDate(3, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
+            pstmt.setTime(4, agendamento.getHoraAgendamento());
+            pstmt.executeUpdate();
+
+            //return sqlReturnCode;
+            return true;
+
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            //return sqlReturnCode;
+            return false;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public Agendamento buscaCompleta(Agendamento agendamento) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 };
