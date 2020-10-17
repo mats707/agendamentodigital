@@ -48,7 +48,7 @@ import modelos.Funcionario;
 import modelos.Empresa;
 import modelos.Cliente;
 import modelos.Servico;
-import testes.ValidarCodigo;
+//import testes.ValidarCodigo;
 
 /**
  * REST Web Service

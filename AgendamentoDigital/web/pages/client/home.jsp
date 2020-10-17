@@ -62,7 +62,9 @@
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- /.content-header -->
+                
 
+                </form>
                 <!-- Main content -->
                 <div class="content">
                     <div class="container-fluid">
@@ -121,6 +123,7 @@
             includeHTMLNav("home", "");
             var idCliente = '${cliente.idCliente}';
             carregarMaisAgendado(idCliente);
+           
         </script>
     </body>
 </html>
