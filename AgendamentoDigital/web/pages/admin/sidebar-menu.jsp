@@ -1,4 +1,4 @@
-
+<link rel="icon" type="image/png" href="${site}/util/imagens/favicon.png"/>
 <!-- Navbar -->
 <nav class="navbar navbar-expand navbar-dark main-header">
     <!-- Left navbar links -->
@@ -156,6 +156,14 @@
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
+                        </p>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a href="${site}/BuscarEmpresa" id="home" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Minha empresa
                         </p>
                     </a>
                 </li>

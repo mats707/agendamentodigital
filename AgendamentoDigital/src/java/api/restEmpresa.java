@@ -7,11 +7,14 @@ package api;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import dao.FuncionarioDAO;
 import dao.EmpresaDAO;
 import dao.ServicoDAO;
@@ -23,6 +26,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -43,7 +48,7 @@ import modelos.Funcionario;
 import modelos.Empresa;
 import modelos.Cliente;
 import modelos.Servico;
-import util.TimeDeserializer;
+//import testes.ValidarCodigo;
 
 /**
  * REST Web Service
@@ -62,25 +67,83 @@ public class restEmpresa {
     public restEmpresa() {
     }
 
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+//    @Path("/Listar")
+//    public String listar() throws SQLException, ClassNotFoundException {
+//
+//        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+//
+//        Empresa objEmpresa = new Empresa();
+//        EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+//        objEmpresaDAO.buscar(objEmpresa);
+//
+//        Integer horaInicialAgendamento = objEmpresa.getHoraInicialTrabalho().getHours() * 60;
+//        Integer horaFinalAgendamento = objEmpresa.getHoraFinalTrabalho().getHours() * 60;
+//        Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
+//        Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
+//        Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
+//
+//        ArrayList<Map<String, String>> arrHorasMinutos = new ArrayList<>();
+//
+//        Integer horaMaximaServico = horaFinalAgendamento - intervaloAgendamento;
+//
+//        //Montagem do array de horas disponíveis, passando em minutos e no formato HH:MM
+//        for (Integer m = horaInicialAgendamento; m < horaMaximaServico; m = m + intervaloAgendamento) {
+//            Map<String, String> hashHorariosOcupados = new HashMap<String, String>();
+//            hashHorariosOcupados.put("minutos", m.toString());
+//            arrHorasMinutos.add(hashHorariosOcupados);
+//        }
+//
+//        String msg = "horaInicialAgendamento: " + horaInicialAgendamento + "\n"
+//                + "horaFinalAgendamento: " + horaFinalAgendamento + "\n"
+//                + "intervaloAgendamento: " + intervaloAgendamento;
+//
+////        return msg;
+//        return objgson.toJson(arrHorasMinutos);
+//    }
     @GET
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Path("/Listar")
-    public String listar() throws SQLException, ClassNotFoundException {
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/Menu/Encontrar")
+    public String getEmpresa() throws SQLException, ClassNotFoundException, ParseException {
+        Gson objgson = new GsonBuilder().registerTypeAdapter(Empresa.class, new EmpresaAdapter()).setPrettyPrinting().create();
 
-        try {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson objgson = gsonBuilder.setPrettyPrinting().create();
+        Empresa objEmpresa = new Empresa();
 
-            Empresa objEmpresa = new Empresa();
-            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+        EmpresaDAO empresaDAO = new EmpresaDAO();
 
-            objEmpresaDAO.buscar(objEmpresa);
+        empresaDAO.buscar(objEmpresa);
 
-            String json = objgson.toJson(objEmpresa);
-            return json;
-        } catch (JsonParseException ex) {
-            return ex.getMessage();
-        }
+        String json = objgson.toJson(objEmpresa);
+
+        return json;
+
     }
 
+    private class EmpresaAdapter implements JsonSerializer<Empresa> {
+
+        public JsonElement serialize(Empresa objEmpresa, Type typeofsrc, JsonSerializationContext context) {
+
+            JsonObject obj = new JsonObject();
+            obj.add("nome", context.serialize(objEmpresa.getNome()));
+
+            String horainicialtrabalho = new SimpleDateFormat("kk:mm").format(objEmpresa.getHoraInicialTrabalho());
+            obj.add("horaInicialTrabalho", context.serialize(horainicialtrabalho));
+
+            String horafinaltrabalho = new SimpleDateFormat("kk:mm").format(objEmpresa.getHoraFinalTrabalho());
+            obj.add("horaFinalTrabalho", context.serialize(horafinaltrabalho));
+            int intervalo = Math.toIntExact(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes());
+            obj.add("intervaloAgendamentoGeralServico",context.serialize(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes()));
+            
+            
+            obj.add("diaSemanaTrabalho",context.serialize(objEmpresa.getDiaSemanaTrabalho()));
+            
+            obj.add("telefone",context.serialize(objEmpresa.getTelefone()));
+            
+            obj.add("email", context.serialize(objEmpresa.getEmail()));
+            return obj;
+
+        }
+
+    }
 }

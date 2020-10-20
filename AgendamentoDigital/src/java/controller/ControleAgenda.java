@@ -22,7 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControleAgenda", urlPatterns = {
     "/AgendarServico",
     "/VisualizarAgenda",
-    "/Home"})
+    "/Home",
+    "/CancelarAgendamento"})
 public class ControleAgenda extends HttpServlet {
 
     /**
@@ -47,6 +48,8 @@ public class ControleAgenda extends HttpServlet {
                 acao = "Visualizar";
             } else if (uri.equals(request.getContextPath() + "/Home")) {
                 acao = "Visualizar";
+            } else if (uri.equals(request.getContextPath() + "/CancelarAgendamento")) {
+                acao = "Cancelar";
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -62,7 +65,7 @@ public class ControleAgenda extends HttpServlet {
             String objAgenda = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
             request.setAttribute("msg", objAgenda);
             rd.forward(request, response);

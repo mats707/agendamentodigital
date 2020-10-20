@@ -11,33 +11,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.CategoriaServico;
+import static org.apache.commons.io.Charsets.ISO_8859_1;
+import static org.apache.commons.io.Charsets.UTF_8;
+import util.Util;
 
 /**
  *
  * @author alunocmc
  */
-
 public class AlterarAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "ListarCategoriaServico");
+        request.setAttribute("pagina", "pages/admin/categoria/home.jsp");
 
-        Integer id = Integer.parseInt(request.getParameter("idCategoriaServico"));
-        String editedNome = request.getParameter("editedNome");
-        String editedDescricao = request.getParameter("editedDescricao");
-        String editedValor = request.getParameter("editedValor");
+        String editedNome = Util.stringToUTF8(request.getParameter("alterarNomeCategoria"));
+        String editedDescricao = Util.stringToUTF8(request.getParameter("alterarDescricaoCategoria"));
+        String editedCategoria = request.getParameter("alterarCategoria");
+        String editedCategoriaPai = request.getParameter("alterarCategoriaPai");
 
         String funcaoMsg;
         String funcaoStatus;
 
-        if (id != null && editedNome != null && editedDescricao != null
-                && editedValor != null) {
+        if (editedNome != null && editedDescricao != null && editedCategoria != null && editedCategoriaPai != null) {
             CategoriaServico categoriaservico = new CategoriaServico();
-            categoriaservico.setIdCategoriaServico(id);
             categoriaservico.setNome(editedNome);
             categoriaservico.setDescricao(editedDescricao);
+            categoriaservico.setIdCategoriaServico(Integer.parseInt(editedCategoria));
+            categoriaservico.setCategoriaPai(new CategoriaServico(Integer.parseInt(editedCategoriaPai)));
 
             CategoriaServicoDAO categoriaServicoDAO = new CategoriaServicoDAO();
 

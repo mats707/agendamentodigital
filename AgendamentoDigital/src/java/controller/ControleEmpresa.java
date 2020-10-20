@@ -5,28 +5,24 @@
  */
 package controller;
 
-import command.categoriaservico.ICommand;
+import command.empresa.ICommand;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.RequestDispatcher;
 
 /**
  *
- * @author alunocmc
+ * @author Rafael Pereira
  */
-@WebServlet(name = "controleCategoriaServico", urlPatterns = {
-    "/CadastrarCategoriaServico",
-    "/ListarCategoriaServico",
-    "/BuscarCategoriaServico",
-    "/DeletarCategoriaServico",
-    "/AlterarCategoriaServico",
-    "/CategoriaServico"})
-public class ControleCategoriaServico extends HttpServlet {
+@WebServlet(name = "ControleEmpresa", urlPatterns = {"/ControleEmpresa",
+    "/BuscarEmpresa",
+    "/AtualizarEmpresa"})
+public class ControleEmpresa extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,30 +39,16 @@ public class ControleCategoriaServico extends HttpServlet {
         try {
             String uri = request.getRequestURI();
             String acao = "";
-            String acao_secundaria = request.getParameter("acao");
 
-            Object paginaAttr = request.getAttribute("pagina");
-
-            if (paginaAttr != null) {
-                acao_secundaria = null;
-            }
-
-            if (uri.equals(request.getContextPath() + "/DeletarCategoriaServico")) {
-                acao = "Deletar";
-            } else if (uri.equals(request.getContextPath() + "/ListarCategoriaServico")) {
-                acao = "Listar";
-            } else if (uri.equals(request.getContextPath() + "/CadastrarCategoriaServico")) {
-                acao = "Cadastrar";
-            } else if (uri.equals(request.getContextPath() + "/CategoriaServico")) {
-                acao = "CategoriaServico";
-                acao = validarAcaoSecundaria(acao, acao_secundaria);
-            } else if (uri.equals(request.getContextPath() + "/BuscarCategoriaServico")) {
-                acao = "Buscar";
+            if (uri.equals(request.getContextPath() + "/BuscarEmpresa")) {
+                acao = "BuscarEmpresa";
+            } else if (uri.equals(request.getContextPath() + "/AtualizarEmpresa")) {
+                acao = "AtualizarEmpresa";
             } else {
                 response.sendRedirect("404.jsp");
             }
 
-            String nomedaclasse = "command.categoriaservico." + acao + "Action";
+            String nomedaclasse = "command.empresa." + acao + "Action";
 
             //perceba que estamos usando um FACTORY
             Class classeAction = Class.forName(nomedaclasse);
@@ -74,12 +56,12 @@ public class ControleCategoriaServico extends HttpServlet {
             //Aqui estamos chamando a Acao que queremos
             ICommand comando_acao = (ICommand) classeAction.newInstance();
 
-            String objCategoriaServico = comando_acao.executar(request, response);
+            String objEmpresa = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-
+            
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
-            request.setAttribute("msg", objCategoriaServico);
+            request.setAttribute("msg", objEmpresa);
             rd.forward(request, response);
 
         } catch (Exception e) {
@@ -128,18 +110,4 @@ public class ControleCategoriaServico extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private String validarAcaoSecundaria(String acao, String acao_secundaria) {
-        if (null == acao_secundaria) {
-            return acao;
-        } else {
-            switch (acao_secundaria) {
-                case "AlterarCategoria":
-                    return "Alterar";
-                case "DeletarCategoria":
-                    return "Deletar";
-                default:
-                    return acao;
-            }
-        }
-    }
 }

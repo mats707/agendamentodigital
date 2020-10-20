@@ -15,6 +15,8 @@ public class CategoriaServico {
 
     private CategoriaServico categoriaPai;
 
+    private Boolean ativo;
+
     public Integer getIdCategoriaServico() {
         return idCategoriaServico;
     }
@@ -47,11 +49,24 @@ public class CategoriaServico {
         this.categoriaPai = categoriaPai;
     }
 
-    public CategoriaServico(Integer idCategoriaServico, String nome, String descricao, CategoriaServico categoriaPai) {
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public CategoriaServico(Integer idCategoriaServico, String nome, String descricao, CategoriaServico categoriaPai, Boolean ativo) {
         this.idCategoriaServico = idCategoriaServico;
         this.nome = nome;
         this.descricao = descricao;
         this.categoriaPai = categoriaPai;
+        this.ativo = ativo;
+    }
+
+    public CategoriaServico(Integer editedCategoriaPai) {
+        this.idCategoriaServico = editedCategoriaPai;
     }
 
     public CategoriaServico() {
