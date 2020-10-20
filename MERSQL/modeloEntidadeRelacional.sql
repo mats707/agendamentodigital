@@ -13,7 +13,7 @@
 
 --# SQL - Tabela
 
-drop schema sistema cascade;
+drop schema if exists sistema cascade;
 create schema sistema;
 set schema 'sistema';
 

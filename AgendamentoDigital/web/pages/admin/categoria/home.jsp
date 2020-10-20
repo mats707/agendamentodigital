@@ -297,12 +297,8 @@
 
     <script>
         includeHTMLNav("categorias", "");
-        var callSweet = "${funcaoMsgOperation}";
-        if (callSweet != "") {
-            sweet(callSweet, "${funcaoStatusOperation}", 6000);
-        } else {
-            sweet("${funcaoMsg}", "${funcaoStatus}", 3000);
-        }
+        console.log('{funcaoMsg} ${funcaoStatus}');
+        sweet("${funcaoMsg}", "${funcaoStatus}", 3000);
     </script>
 
     <!-- PAGE PLUGINS -->

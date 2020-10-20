@@ -1,6 +1,7 @@
 package dao;
 
 import dao.interfaces.ICategoriaServicoDAO;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +25,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
     private static final String BUSCAR = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.nome ilike ?";
     private static final String BUSCAR_ID = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id = ?";
     private static final String BUSCAR_CATEGORIA = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id = ? AND s.categoriapai = ?";
+    private static final String BUSCAR_CATEGORIA_FILHA = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.categoriapai IN ?";
     private static final String BUSCAR_NOME = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE UPPER(s.nome) = UPPER(?) AND s.categoriapai = ?";
     private static final String LISTAR = "SELECT s.id, s.nome, s.descricao, s.categoriapai FROM sistema.CategoriaServico s WHERE s.id != 0 ORDER BY s.categoriapai, s.nome";
     private static final String DELETAR = "DELETE FROM sistema.CategoriaServico WHERE id = ? AND categoriapai=?";
@@ -125,7 +127,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_ID);
 
             pstmt.setInt(1, categoriaServico.getIdCategoriaServico());
-            
+
             //executa
             ResultSet rs = pstmt.executeQuery();
 
@@ -320,6 +322,64 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
     }
 
     @Override
+    public ArrayList<CategoriaServico> buscarCategoriaFilha(ArrayList<Integer> arrCategoriaServico) {
+
+        ArrayList<CategoriaServico> categoriasFilhas = new ArrayList<>();
+
+        //'{"1","2"}'
+        ArrayList<String> categorias = new ArrayList<String>();
+        //conexao.createArrayOf("VARCHAR", new Object[]{"1", "2", "3"});
+
+        for (Integer categoria : arrCategoriaServico) {
+            categorias.add(String.valueOf(categoria));
+        }
+
+        Array arrayCategorias = null;
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_CATEGORIA_FILHA);
+
+            try {
+                arrayCategorias = conexao.createArrayOf("INTEGER", categorias.toArray());
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            pstmt.setArray(1, arrayCategorias);
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                CategoriaServico newCategoriaServico = new CategoriaServico();
+                CategoriaServico categoriaServicoPai = new CategoriaServico();
+
+                newCategoriaServico.setIdCategoriaServico(Integer.parseInt(rs.getString("id")));
+                newCategoriaServico.setNome(rs.getString("nome"));
+                newCategoriaServico.setDescricao(rs.getString("descricao"));
+                categoriaServicoPai.setIdCategoriaServico(Integer.parseInt(rs.getString("categoriapai")));
+                newCategoriaServico.setCategoriaPai(categoriaServicoPai);
+                categoriasFilhas.add(newCategoriaServico);
+            }
+            return categoriasFilhas;
+
+        } catch (Exception ex) {
+            return categoriasFilhas;
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(CategoriaServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @Override
     public CategoriaServico buscaCompleta(CategoriaServico categoriaServico) {
 
         try {
@@ -383,7 +443,7 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
             pstmt.setInt(4, categoriaServico.getCategoriaPai().getIdCategoriaServico());
 
             pstmt.executeUpdate();
-            
+
             return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
@@ -412,12 +472,12 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(DELETAR);
-            
+
             pstmt.setInt(1, categoriaServico.getIdCategoriaServico());
             pstmt.setInt(2, categoriaServico.getCategoriaPai().getIdCategoriaServico());
 
             pstmt.execute();
-            
+
             return sqlReturnCode;
 
         } catch (SQLException sqlErro) {

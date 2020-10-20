@@ -28,6 +28,8 @@ public interface ICategoriaServicoDAO {
     
     public void buscarCategoria(CategoriaServico categoriaServico);
     
+    public ArrayList<CategoriaServico> buscarCategoriaFilha(ArrayList<Integer> arrCategoriaServico);
+    
     public CategoriaServico buscaCompleta(CategoriaServico categoriaServico);
    
     public String alterar(CategoriaServico categoriaServico);
