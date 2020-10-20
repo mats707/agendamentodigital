@@ -7,7 +7,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="${site}/Home" class="nav-link">Home</a>
+            <a href="${site}/HomeCliente" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a href="${site}/MinhaConta" class="nav-link">Minha Conta</a>
@@ -53,7 +53,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="${site}/Home" id="home" class="nav-link">
+                    <a href="${site}/HomeCliente" id="home" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
