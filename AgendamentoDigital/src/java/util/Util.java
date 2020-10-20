@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import static org.apache.commons.io.Charsets.ISO_8859_1;
+import static org.apache.commons.io.Charsets.UTF_8;
 
 /**
  *
@@ -58,6 +60,13 @@ public class Util {
             Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
             return (Date) null;
         }
+    }
+
+    public static String stringToUTF8(String text) {
+        if (text != null) {
+            text = new String(text.getBytes(ISO_8859_1), UTF_8);
+        }
+        return text;
     }
 
 }

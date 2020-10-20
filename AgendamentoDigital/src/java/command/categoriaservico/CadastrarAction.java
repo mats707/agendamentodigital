@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.CategoriaServico;
+import util.Util;
 
 /**
  *
@@ -31,9 +32,8 @@ public class CadastrarAction implements ICommand {
         Gson objgson = new Gson();
         CategoriaServicoDAO categoriaServicoDAO = new CategoriaServicoDAO();
 
-        request.setAttribute("pagina", "pages/admin/categoria/cadastrar.jsp");
+        request.setAttribute("pagina", "pages/admin/categoria/home.jsp");
 //        request.setAttribute("pagina", "CadastrarCategoriaServico");
-
         String json = request.getParameter("lastService");
         String listCategoria = request.getParameter("categorias");
         String listDescricao = request.getParameter("descricoes");
@@ -47,7 +47,7 @@ public class CadastrarAction implements ICommand {
         CategoriaServico lastService = objgson.fromJson(json, CategoriaServico.class);
 
         if (lastService == null) {
-            lastService = new CategoriaServico(0, "DEFAULT", "", new CategoriaServico());
+            lastService = new CategoriaServico(0, "DEFAULT", "", new CategoriaServico(),Boolean.TRUE);
         }
         String sqlState = "0";
         String funcaoMsg = "Carregando...";;
@@ -55,9 +55,10 @@ public class CadastrarAction implements ICommand {
 
         if (categoriasString != null) {
             CategoriaServico newCategoria = new CategoriaServico();
-            newCategoria.setNome(categoriasString[0]);
-            newCategoria.setDescricao(descricoesString[0]);
+            newCategoria.setNome(Util.stringToUTF8(categoriasString[0]));
+            newCategoria.setDescricao(Util.stringToUTF8(descricoesString[0]));
             newCategoria.setCategoriaPai(lastService);
+            newCategoria.setAtivo(Boolean.TRUE);
 
             CategoriaServico categoriaExistente = categoriaServicoDAO.buscarNome(newCategoria);
             if (categoriaExistente.getIdCategoriaServico() != null) {
@@ -72,12 +73,14 @@ public class CadastrarAction implements ICommand {
                     funcaoStatus = "success";
                 }
             }
+            
             if (sqlState == "0") {
                 for (int i = 1; i < categoriasString.length; i++) {
                     CategoriaServico subCategoria = new CategoriaServico();
-                    subCategoria.setNome(categoriasString[i]);
-                    subCategoria.setDescricao(descricoesString[i]);
+                    subCategoria.setNome(Util.stringToUTF8(categoriasString[i]));
+                    subCategoria.setDescricao(Util.stringToUTF8(descricoesString[i]));
                     subCategoria.setCategoriaPai(lastService);
+                    subCategoria.setAtivo(Boolean.TRUE);
                     categoriaExistente = categoriaServicoDAO.buscarNome(subCategoria);
                     if (categoriaExistente.getIdCategoriaServico() != null) {
                         lastService = categoriaExistente;

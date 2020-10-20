@@ -54,6 +54,47 @@ public class restCategoriaServico {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/Buscar/{idCategoria}")
+    public String buscarCategoriaId(@PathParam("idCategoria") Integer idCategoria) throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        CategoriaServicoDAO objDao = new CategoriaServicoDAO();
+
+        CategoriaServico categoriaServico = new CategoriaServico();
+        categoriaServico.setIdCategoriaServico(idCategoria);
+
+        objDao.buscarId(categoriaServico);
+
+        String json = objgson.toJson(categoriaServico);
+
+        return json;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/BuscarFilhos/{idCategoria}")
+    public String buscarFilhosCategoriaId(@PathParam("idCategoria") Integer idCategoria) throws SQLException, ClassNotFoundException {
+
+        //Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        CategoriaServicoDAO objDao = new CategoriaServicoDAO();
+
+        CategoriaServico categoriaServico = new CategoriaServico();
+        categoriaServico.setIdCategoriaServico(idCategoria);
+        
+         ArrayList<Integer> categorias = new ArrayList<>();
+         categorias.add(idCategoria);
+
+         ArrayList<CategoriaServico> categoriasFilhas = objDao.buscarCategoriaFilha(categorias);
+
+        //String json = objgson.toJson(categoriasFilhas);
+
+        return categoriasFilhas.toString();
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("/BuscarNome/{nome}")
     public String buscarCategoriaNome(@PathParam("nome") String nome) throws SQLException, ClassNotFoundException {
 

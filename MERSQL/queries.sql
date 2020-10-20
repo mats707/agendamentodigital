@@ -28,3 +28,24 @@ OR  (t1.horarioAgendamento::time >= '15:30'::TIME
 AND t1.horarioAgendamento::time < '15:30'::TIME+'00:30'::INTERVAL)
 OR  (t1.horarioFinalAgendamento::time >= '15:30'::TIME
 AND t1.horarioFinalAgendamento::time < '15:30'::TIME+'00:30'::INTERVAL);
+
+
+
+-------------------------------------------
+SELECT * FROM sistema.CategoriaServico
+WHERE id = 25 AND categoriapai=0
+UNION
+SELECT * FROM sistema.CategoriaServico
+WHERE categoriapai=25;
+
+WITH categoria AS (
+	SELECT id                 -- your PK
+	FROM   sistema.CategoriaServico
+	WHERE  (id = 25 AND categoriapai=0)  -- your condition
+	OR (id in (SELECT id FROM sistema.CategoriaServico WHERE categoriapai=25))
+	LIMIT  50000
+	FOR    UPDATE             -- SKIP LOCKED ?
+)
+DELETE FROM sistema.CategoriaServico
+USING categoria
+WHERE  sistema.CategoriaServico.id = categoria.id;

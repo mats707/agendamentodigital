@@ -1,10 +1,10 @@
 --# PerfilAcesso        (id,nome);
 --# Empresa             (id,nome,horaInicialTrabalho,horaFinalTrabalho,intervaloAgendamentoGeralServico);
---# Usuario             (id,email,senha,celular,fotoPerfil,habilitado,perfil);
+--# Usuario             (id,email,senha,celular,fotoPerfil,ativo,perfil);
 --# Pessoa              (id,nome,dataNascimento,USUARIO);
 --# Cliente             (id,PESSOA);
 --# Funcionario         (id,PESSOA);
---# CategoriaServico    (id,nome,descricao,categoriaPai);
+--# CategoriaServico    (id,nome,descricao,categoriaPai,ativo);
 --# Servico             (id,nome,descricao,valor,duracao,categoria,funcionarios,camposadicionais);
 --# CampoAdicional      (id,nome,descricao,tipo)
 --# TipoCampoAdicional  (id,nome)
@@ -13,7 +13,7 @@
 
 --# SQL - Tabela
 
-drop schema sistema cascade;
+drop schema if exists sistema cascade;
 create schema sistema;
 set schema 'sistema';
 
@@ -43,7 +43,7 @@ create table Usuario(
   fotoPerfil bytea,
   celular bigint not null,
   perfil integer not null,
-  habilitado boolean default TRUE NOT NULL,
+  ativo boolean default TRUE NOT NULL,
   constraint pkUsuario primary key (id),
   constraint unqUsuario unique (email),
   constraint unqCelularUsuario unique (celular),
@@ -82,6 +82,7 @@ create table CategoriaServico(
   nome varchar(100) not null,
   descricao varchar(500) default '' not null,
   categoriaPai integer default 0,
+  ativo boolean default true not null,
   constraint pkCategoriaServico primary key (id),
   constraint unqNomeCategoria unique (nome,categoriaPai),
   constraint fkCategoriaPai foreign key (categoriaPai) references CategoriaServico(id)
@@ -184,33 +185,33 @@ insert into Usuario (id, email, senha, celular, perfil) values
 
 insert into CategoriaServico values
 	(0,'DEFAULT','Todas categorias serão filhas dessas categoria.',null),
-	(2,'Corte','Teste',0),
-	(3,'Masculino','Testes',2),
-	(8,'Feminino','Teste feminino',2),
-	(9,'Barba','...',3),
-	(10,'Cabelo','Cortamos diversos tipos de cabelos',3),
-	(11,'Massagem','Massagens de todos os tipos',0),
-	(12,'Depilacao','Todos os tipos de depilação',0),
-	(13,'Cabelo','Cortes de cabelos lindos',8),
-	(14,'Mulheres','Toda mulher precisa se sentir linda',12),
-	(15,'Perna','Depilação a laser',14),
-	(16,'Masculino','Todo homem precisa sentir-se lindo',12),
-	(17,'Axilas','Todas axilas precisam estar cheirosas',16),
-	(18,'Hardware','Equipamentos de informatica',0),
-	(19,'Monitor','Display LCD',18),
-	(20,'Gabinete','...',18),
-	(21,'Placa de Vídeo','VGA/HDMI',18),
-	(22,'Manutenção','Todos tipos de manutenção que a empresa atende',0),
-	(23,'Hidraúlica','...',22),
-	(24,'Elétrica','Qualquer tipo de manutenção com eletricidade',22),
-	(25,'Placa-mãe','Núcleo do computador',18),
-	(26,'slot','...',25);
+	(1,'Corte','Teste',0),
+	(2,'Masculino','Testes',1),
+	(3,'Barba','...',2),
+	(4,'Cabelo','Cortamos diversos tipos de cabelos',2),
+	(5,'Feminino','Teste feminino',1),
+	(6,'Cabelo','Cortes de cabelos lindos',5),
+	(7,'Massagem','Massagens de todos os tipos',0),
+	(8,'Depilacao','Todos os tipos de depilação',0),
+	(9,'Mulheres','Toda mulher precisa se sentir linda',8),
+	(10,'Perna','Depilação a laser',9),
+	(11,'Masculino','Todo homem precisa sentir-se lindo',8),
+	(12,'Axilas','Todas axilas precisam estar cheirosas',11),
+	(13,'Hardware','Equipamentos de informatica',0),
+	(14,'Monitor','Display LCD',13),
+	(15,'Gabinete','...',13),
+	(16,'Placa de Vídeo','VGA/HDMI',13),
+	(17,'Placa-mãe','Núcleo do computador',13),
+	(18,'slot','...',17),
+	(19,'Manutenção','Todos tipos de manutenção que a empresa atende',0),
+	(20,'Hidraúlica','...',19),
+	(21,'Elétrica','Qualquer tipo de manutenção com eletricidade',19);
 
-alter sequence sistema.sqn_categoriaservico restart with 27;
+alter sequence sistema.sqn_categoriaservico restart with 21;
 
 insert into Servico values
-	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25.90'::NUMERIC::MONEY,'PT30M'::INTERVAL,'10','{"1","2"}'),
-	(nextval('sqn_servico'),'Teste','Desenvolvimento','2500.90'::NUMERIC::MONEY,'PT240M'::INTERVAL,'22','{"2"}');
+	(nextval('sqn_servico'),'Corte de Cabelo Masculino','Diversos cortes para os homens','25.90'::NUMERIC::MONEY,'PT30M'::INTERVAL,4,'{"1","2"}'),
+	(nextval('sqn_servico'),'Teste','Desenvolvimento','2500.90'::NUMERIC::MONEY,'PT240M'::INTERVAL,19,'{"2"}');
  
 insert into Pessoa values
   (nextval('sqn_pessoa'),'Felipe Jesus','01/04/1992',2),

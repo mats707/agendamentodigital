@@ -1,4 +1,4 @@
-
+<link rel="icon" type="image/png" href="${site}/util/imagens/favicon.png"/>
 <!-- Navbar -->
 <nav class="navbar navbar-expand navbar-dark main-header">
     <!-- Left navbar links -->
