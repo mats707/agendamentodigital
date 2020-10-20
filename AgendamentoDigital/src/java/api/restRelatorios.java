@@ -149,7 +149,9 @@ public class restRelatorios {
         String json = "[\n";
         for (Agendamento objAgendamento : arr) {
             json += objgson.toJson(objAgendamento);
+            json += ",";
         }
+        json = json.substring(0, json.length()-1);
         json+="\n]";
         return json;
     }

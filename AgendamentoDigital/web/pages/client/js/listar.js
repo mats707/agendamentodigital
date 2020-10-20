@@ -10,9 +10,9 @@ function carregarMaisAgendado(idCliente) {
         complete: function (e, xrh, result) {
             if (e.readyState == 4 && e.status == 200)
             {
-                console.log(e.responseText);
                 try {
                     var Obj = eval("(" + e.responseText + ")");
+                    console.log(e.responseTex);
                 } catch (err)
                 {
                     alert("Sistema encontrou um erro");
@@ -20,6 +20,7 @@ function carregarMaisAgendado(idCliente) {
                 }
                 if (Obj != null)
                 {
+                    console.log(Obj);
                     lerTabela(Obj);
                 }
             }
@@ -29,6 +30,7 @@ function carregarMaisAgendado(idCliente) {
 
 function lerTabela(result) {
     ObjAgendamento = result;
+    console.log(ObjAgendamento);
     document.getElementById("target").innerHTML = '<table id="tabAgendamento" name="tabAgendamento" class="table table-hover"><thead class="thead-dark"><tr><th>Servi\xE7o</th><th>Data</th><th>Horario</th><th>Duracao</th><th>Valor</th><th>Funcionario</th><th>Edit</th></tr></thead></table>';
     var table = document.getElementById("tabAgendamento");
     if (ObjAgendamento != null) {
@@ -50,13 +52,13 @@ function lerTabela(result) {
                 cellValor.innerHTML = ObjAgendamento[i].servico.valor;
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
                 cancelarAgendamento.innerHTML =
-                        "<form name='formCancelar' action='" + site + "/CancelarAgendamento' method='POST'><input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + "><input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + "><a href='#' onclick='submit()'><i class='nav-icon fas fa-edit'></a></form>";
+                        "<form id='formCancelar-" + i + "' action='" + site + "/CancelarAgendamento' method='POST'><input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + "><input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + "><a id='btn-formCancelar-" + i + "' href='#' onclick='submit(this);'><i class='nav-icon fas fa-edit'></a></form>";
 
             }
 
             sweet("  Agendamentos carregados", "success", 1500);
         } else {
-            sweet(" N√£o h√° agendamentos", "info", 3000);
+            sweet(" N„o h· agendamentos", "info", 3000);
         }
     }
 
@@ -75,6 +77,8 @@ function sweet(title, type, timer) {
     });
 }
 
-function submit() {
-    document.formCancelar.submit();
+function submit(element) {
+    var form = element.id.substr(4);
+    console.log(form);
+    document.getElementById(form).submit();
 }
