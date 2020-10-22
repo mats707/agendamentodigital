@@ -34,12 +34,29 @@
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
         <!-- summernote -->
         <link rel="stylesheet" href="${site}/plugins/summernote/summernote-bs4.css">
-        <!-- SweetAlert2 -->
-        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-        <!--JQUERY timepicker-->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+        <!-- Select2 -->
+        <link rel="stylesheet" href="${site}/plugins/select2/css/select2.min.css">
+        <link rel="stylesheet" href="${site}/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+        <!-- Bootstrap4 Duallistbox -->
+        <link rel="stylesheet" href="${site}/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="${site}/dist/css/adminlte.min.css">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Tempusdominus Bbootstrap 4 -->
+        <link rel="stylesheet" href="${site}/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+        <!-- Daterange picker -->
+        <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
+        <!-- Datapicker css -->
+        <link href="${site}/plugins/bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker.css" rel="stylesheet" type="text/css"/>
+        <!-- Timepicker css -->
+        <link href="${site}/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css"/>
+        <!-- Datetime css -->
+        <link href="${site}/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
@@ -85,86 +102,66 @@
                                             </div>                                                                                    
                                         </div>
                                         <!-- informações da minha empresa-->
-                                        <form action="${site}/AtualizarEmpresa" method="POST">
+                                        <form action="${site}/CadastrarBloqueio" method="POST">
+                                            <div class="bootstrap-datetime">
+                                                <div class="form-group">
+                                                    <label for="datepicker">Selecione o dia do agendamento:</label>
+                                                    <!-- Date Picker -->
+                                                    <div id="datepicker" class="input-group date">
+                                                        <input id="inputDate" name="inputDate" type="text" readonly class="form-control"/>
+                                                        <div class="input-group-append input-group-addon">
+                                                            <span class="input-group-text">
+                                                                <i class="far fa-calendar"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- /.form group -->
+                                            </div>
                                             <div>
-                                                <label>Nome da Empresa:</label>
-                                                <input id="nome" name="nome">
-                                            </div>  
-                                            <div>
-                                                <label>Horario de abertura</label>
-                                                <input id="horaInicialTrabalho" disabled readonly>
-                                                <label>para</label>
-                                                <input class="timepicker" id="timepickerAbertura" name="timePickerAbertura" >
-                                            </div>  
-                                            <div>
-                                                <label>Horario de encerramento:</label>
-                                                <input id="horaFinalTrabalho" disabled readonly>
-                                                <label>para</label>
-                                                <input class="timepicker" id="timepickerEncerramento" name="timepickerEncerramento">
-                                            </div>  
-                                            <div>
-                                                <label>Tempo minimo de serviço:</label>
-                                                <input id="intervaloAgendamentoGeralServico" type="number" required placeholder="0" step="5" min="5" max="1440" name="intervaloAgendamentoGeralServico" >
+                                                <label>Duracao:</label>
+                                                <input id="duracaoBloqueio" type="number" required placeholder="0" step="5" min="5" max="1440" name="duracaoBloqueio" >
                                                 <label>Minutos</label>
                                             </div>  
-                                            <div>
-                                                <label>Dias úteis:</label>
-                                                <!--input id="diaSemanaTrabalho"-->
-                                                <input type="checkbox" id="DiaSemana0" name="diasemana" value="0" >
-                                                <label>Domingo</label>
-                                                <input type="checkbox" id="DiaSemana1" name="diasemana" value="1">
-                                                <label>Segunda-feira</label>
-                                                <input type="checkbox" id="DiaSemana2" name="diasemana" value="2">
-                                                <label>Terça-feira</label>
-                                                <input type="checkbox" id="DiaSemana3" name="diasemana" value="3">
-                                                <label>Quarta-feira</label>
-                                                <input type="checkbox" id="DiaSemana4" name="diasemana" value="4">
-                                                <label>Quinta-Feira</label>
-                                                <input type="checkbox" id="DiaSemana5" name="diasemana" value="5">
-                                                <label>Sexta</label>
-                                                <input type="checkbox" id="DiaSemana6" name="diasemana" value="6">
-                                                <label>Sabado</label>
-
-                                            </div>  
-                                            <div id="groupTelefone">
-                                            </div>  
-
-                                            <div>
-                                                <label>E-mail:</label>
-                                                <input type="email" id="email" name="email">
-                                            </div> 
+                                            <div class="form-group">
+                                                <label>Funcionários</label>
+                                                <select id="listaFuncionarios" name="listaFuncionarios" class="select2" multiple="multiple" data-placeholder="Selecione um funcionário" style="width: 100%;">
+                                                </select>
+                                            </div>
                                             <div class="card card-success">
                                                 <div class="card-body">
-                                                    <button type="submit" class="btn btn-success btn-block">Alterar</button>
+                                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
                                                 </div>
                                             </div>
                                         </form>
+
                                     </div>
-                                    <!-- /.card-header -->
-                                    <div id="target" class="card-body p-0"></div>
-                                    <!-- /.card-body -->
-
-
                                 </div>
+                                <!-- /.card-header -->
+                                <div id="target" class="card-body p-0"></div>
+                                <!-- /.card-body -->
 
-                                <!-- /.card -->
-                                <!-- /.col -->
+
                             </div>
+
+                            <!-- /.card -->
+                            <!-- /.col -->
                         </div>
-                        <!-- /.row -->
-                    </div><!-- /.container-fluid -->
+                    </div>
+                    <!-- /.row -->
+            </div><!-- /.container-fluid -->
 
-            </div>
-
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
 
-        <!-- Footer -->
-        <jsp:include page="../footer.jsp"/>
-
+        <!-- /.content -->
     </div>
-    <!-- ./wrapper -->
+    <!-- /.content-wrapper -->
+
+    <!-- Footer -->
+    <jsp:include page="../footer.jsp"/>
+
+</div>
+<!-- ./wrapper -->
 </body>
 
 <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
@@ -238,6 +235,32 @@
             scrollbar: true
 
         });
+        var meses = 2;
+        var dataAtual = new Date();
+        var dataMaxima = new Date(new Date().setMonth(dataAtual.getMonth() + meses));
+        console.log(dataAtual);
+        console.log(dataMaxima);
+        //Initialize DatePicker
+        $('#datepicker').datepicker({
+            format: "dd/mm/yyyy"
+            , showMeridian: true
+            , autoclose: false //Whether or not to close the datepicker immediately when a date is selected.
+            , clearBtn: true //If true, displays a “Clear” button at the bottom of the datepicker to clear the input value. If “autoclose” is also set to true, this button will also close the datepicker.
+            , datesDisabled: ['18/09/2020', '25/09/2020'] //Array of date strings or a single date string formatted in the given date format
+            , daysOfWeekDisabled: [0] //Days of the week that should be disabled. Values are 0 (Sunday) to 6 (Saturday). Multiple values should be comma-separated. Example: disable weekends: '06' or '0,6' or [0,6].
+            , disableTouchKeyboard: true //If true, no keyboard will show on mobile devices
+            , maxViewMode: 1 //Set a maximum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”.
+            , minViewMode: 0 //Set a minimum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”. 
+            , orientation: "auto" //A space-separated string consisting of one or two of “left” or “right”, “top” or “bottom”, and “auto” (may be omitted); for example, “top left”, “bottom” (horizontal orientation will default to “auto”), “right” (vertical orientation will default to “auto”), “auto top”. Allows for fixed placement of the picker popup.
+            , todayBtn: "linked"
+            , language: "pt-BR"
+            , todayHighlight: true
+            , startDate: dataAtual //today
+            , endDate: dataMaxima //Até o máximo de meses permitido
+            , leftArrow: '<i class="fas fa-long-arrow-left"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
+            , rightArrow: '<i class="fas fa-long-arrow-right"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
+            , multidate: false //Enable multidate picking. Each date in month view acts as a toggle button, keeping track of which dates the user has selected in order. If a number is given, the picker will limit how many dates can be selected to that number, dropping the oldest dates from the list when the number is exceeded. true equates to no limit. The input’s value (if present) is set to a string generated by joining the dates, formatted, with multidateSeparator.
+        });
 
     });
 
@@ -245,13 +268,12 @@
     console.log("${funcaoMsg}");
 </script>
 
-<script src="${site}/pages/admin/empresa/menuEmpresa.js" type="text/javascript"></script>
-
 <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
 <script src="${site}/plugins/raphael/raphael.min.js"></script>
 <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
 <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
 
+<script src="${site}/pages/admin/empresa/menuBloqueio.js" type="text/javascript"></script>
 <!-- PAGE PLUGINS -->
 <!-- jQuery Mapael -->
 <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
@@ -260,4 +282,15 @@
 <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
 <!-- JQuery TimePicker-->
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
-</html>
+<!-- Date Picker -->
+<script src="${site}/plugins/bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="${site}/plugins/bootstrap-datepicker-1.9.0-dist/locales/bootstrap-datepicker.pt-BR.min.js" type="text/javascript"></script>
+<script src="${site}/plugins/popper/popper.min.js" type="text/javascript"></script>
+<!-- DateTime Picker -->
+<script src="${site}/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<!-- Time Picker -->
+<script src="${site}/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="${site}/dist/js/timepicker.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+                                                        </html>

@@ -15,6 +15,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import dao.BloqueioAgendaDAO;
 import dao.FuncionarioDAO;
 import dao.EmpresaDAO;
 import dao.ServicoDAO;
@@ -44,6 +45,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import modelos.BloqueioAgenda;
 import modelos.Funcionario;
 import modelos.Empresa;
 import modelos.Cliente;
@@ -133,14 +135,63 @@ public class restEmpresa {
             String horafinaltrabalho = new SimpleDateFormat("kk:mm").format(objEmpresa.getHoraFinalTrabalho());
             obj.add("horaFinalTrabalho", context.serialize(horafinaltrabalho));
             int intervalo = Math.toIntExact(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes());
-            obj.add("intervaloAgendamentoGeralServico",context.serialize(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes()));
-            
-            
-            obj.add("diaSemanaTrabalho",context.serialize(objEmpresa.getDiaSemanaTrabalho()));
-            
-            obj.add("telefone",context.serialize(objEmpresa.getTelefone()));
-            
+            obj.add("intervaloAgendamentoGeralServico", context.serialize(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes()));
+
+            obj.add("diaSemanaTrabalho", context.serialize(objEmpresa.getDiaSemanaTrabalho()));
+
+            obj.add("telefone", context.serialize(objEmpresa.getTelefone()));
+
             obj.add("email", context.serialize(objEmpresa.getEmail()));
+            return obj;
+
+        }
+
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/Bloqueio/Listar")
+    public String listarBloqueio() {
+        Gson objgson = new GsonBuilder()
+                // .registerTypeAdapter(BloqueioAgenda.class, new BloqueioAdapter())
+                .setPrettyPrinting().create();
+
+        ArrayList<BloqueioAgenda> arrBloqueio = new ArrayList<BloqueioAgenda>();
+
+        BloqueioAgendaDAO bloqueioDAO = new BloqueioAgendaDAO();
+
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+
+        arrBloqueio = bloqueioDAO.listarBloqueio();
+
+        for (BloqueioAgenda objBloqueio : arrBloqueio) {
+            objFuncionarioDao.buscar(objBloqueio.getFuncionario());
+        }
+
+        return objgson.toJson(arrBloqueio);
+    }
+
+    private class BloqueioAdapter implements JsonSerializer<BloqueioAgenda> {
+
+        public JsonElement serialize(BloqueioAgenda bloqueio, Type typeofsrc, JsonSerializationContext context) {
+
+            JsonObject obj = new JsonObject();
+            obj.add("idBloqueio", context.serialize(bloqueio.getIdBloquieio()));
+
+            String horainicial = new SimpleDateFormat("kk:mm").format(bloqueio.getHoraInicial());
+            obj.add("horaInicial", context.serialize(horainicial));
+
+            obj.add("intervaloAgendamentoGeralServico", context.serialize(bloqueio.getDuracaoBloqueio().toMinutes()));
+
+            obj.add("funcionario", context.serialize(bloqueio.getFuncionario()));
+//            //Converte a String para array<Funcionario>
+//            ArrayList<Integer> arrDia = new ArrayList<Integer>();
+//            String[] diaSemanaString = request.getParameterValues("diasemana");
+//
+//            for (int i = 0; i < diaSemanaString.length; i++) {
+//                arrDia.add(Integer.parseInt(diaSemanaString[i]));
+//            }
+//            objEmpresa.setDiaSemanaTrabalho(arrDia);
             return obj;
 
         }

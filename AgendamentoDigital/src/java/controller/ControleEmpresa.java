@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControleEmpresa", urlPatterns = {"/ControleEmpresa",
     "/BuscarEmpresa",
-    "/AtualizarEmpresa"})
+    "/AtualizarEmpresa",
+    "/MenuBloqueio"})
 public class ControleEmpresa extends HttpServlet {
 
     /**
@@ -44,6 +45,8 @@ public class ControleEmpresa extends HttpServlet {
                 acao = "BuscarEmpresa";
             } else if (uri.equals(request.getContextPath() + "/AtualizarEmpresa")) {
                 acao = "AtualizarEmpresa";
+            } else if (uri.equals(request.getContextPath() + "/MenuBloqueio")) {
+                acao = "MenuBloqueio";
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -59,7 +62,7 @@ public class ControleEmpresa extends HttpServlet {
             String objEmpresa = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
             request.setAttribute("msg", objEmpresa);
             rd.forward(request, response);

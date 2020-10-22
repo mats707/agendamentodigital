@@ -142,7 +142,7 @@
                 <img src="${site}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">${usuarioAutenticado.email}</a>
+                <a href="${site}/BuscarEmpresa" class="d-block">${usuarioAutenticado.email}</a>
             </div>
         </div>
 
@@ -160,10 +160,10 @@
                     </a>
                 </li>
                  <li class="nav-item">
-                    <a href="${site}/BuscarEmpresa" id="home" class="nav-link">
+                    <a href="${site}/MenuBloqueio" id="home" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
-                            Minha empresa
+                            Bloqueio de Agenda
                         </p>
                     </a>
                 </li>
