@@ -28,11 +28,10 @@ create table Empresa(
   nome varchar(100) not null,
   horaInicialTrabalho time not null,
   horaFinalTrabalho time not null,
-intervaloAgendamentoGeralServico interval not null,
+  intervaloAgendamentoGeralServico interval not null,
 	diaSemanaTrabalho  integer[],
 	telefone bigint[] not null,
 	email varchar not null,
-	
   constraint pkEmpresa primary key (id)
 );
 
@@ -123,8 +122,7 @@ create table Agendamento(
   constraint fkServico foreign key (servico) references Servico(id),
   constraint fkFuncionario foreign key (funcionario) references Funcionario(id),
   constraint fkStatusAgendamento foreign key (status) references StatusAgendamento(id),
-  constraint unqAgendamentoCliente unique (dataAgendamento,horarioAgendamento,cliente),
-  constraint unqAgendamentoFuncionario unique (dataAgendamento,horarioAgendamento,funcionario)
+  constraint unqAgendamento unique (dataAgendamento,horarioAgendamento,cliente,funcionario,servico,status)
 );
 
 alter table Agendamento alter dataHoraInclusao set default now();
@@ -168,7 +166,7 @@ insert into PerfilAcesso values
   (3,'FUNCIONARIOADMIN');
 
 insert into Empresa (id, nome, horaInicialTrabalho, horaFinalTrabalho, intervaloAgendamentoGeralServico, diaSemanaTrabalho,telefone,email) values 
-  (nextval('sqn_empresa'),'Mafera Soft. Testes','08:00:00','17:00:00','00:30:00',Array[0,6],Array[1139551324,11982231234],'empresa@empresa.com');
+  (nextval('sqn_empresa'),'Mafera Soft. Testes','08:00:00','17:00:00','00:30:00',Array[1,2,3,4,5,6],Array[1139551324,11982231234],'empresa@empresa.com');
 
 insert into StatusAgendamento values
   (1,'AGUARDANDOATENDIMENTO'),

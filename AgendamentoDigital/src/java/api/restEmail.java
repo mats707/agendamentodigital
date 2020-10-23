@@ -63,7 +63,7 @@ public class restEmail {
 
     /**
      * Creates a new instance of restEmail
-    //http://localhost:8080/AgendamentoDigital/api/Email/Notificar/1/2/2/10-10-2020/12:00
+     * //http://localhost:8080/AgendamentoDigital/api/Email/Notificar/1/2/2/10-10-2020/12:00
      */
     public restEmail() {
     }
@@ -152,6 +152,92 @@ public class restEmail {
                 + "Sr(a) " + objCliente.getNome() + " fará o serviço com nosso funcionario(a) " + objFuncionario.getNome()
                 + " no dia " + dataAgendamentoString + " no horario de " + horaIni + " a " + horaFim
                 + "\nEsperamos você");
+        utilEmail.setRodape("Email enviado por Mafera! Volte sempre.");
+
+        return utilEmail.emailDispacher();
+
+    }
+
+    public String emailDispacherCancelar(@PathParam("idCliente") Integer idCliente,
+            @PathParam("idServico") Integer idServico,
+            @PathParam("idFuncionario") Integer idFuncionario,
+            @PathParam("data") String data,
+            @PathParam("horaIni") String horaIni) {
+
+        String horaFim = "";
+
+        //Construindo Objetos utilizados nesse metodo
+        ClienteDAO objClienteDAO = new ClienteDAO();
+        ServicoDAO objServicoDAO = new ServicoDAO();
+        FuncionarioDAO objFuncionarioDAO = new FuncionarioDAO();
+        PessoaDAO objPessoaDAO = new PessoaDAO();
+        UsuarioDAO objUsuarioDAO = new UsuarioDAO();
+
+        Cliente objCliente = new Cliente();
+        Funcionario objFuncionario = new Funcionario();
+        Servico objServico = new Servico();
+
+        //Construção de horario e Data
+        Date dataAgendamento = null;
+        String dataAgendamentoString = null;
+        try {
+            dataAgendamento = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+        } catch (ParseException ex) {
+            Logger.getLogger(restEmail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            dataAgendamentoString = new SimpleDateFormat("dd/MM/yyyy").format(dataAgendamento);
+        } catch (Exception ex) {
+            Logger.getLogger(restEmail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        ArrayList<String> emailsDestinatarios = new ArrayList<>();
+
+        //Construção de cliente
+        objCliente.setIdCliente(idCliente);
+        objClienteDAO.buscar(objCliente);
+        objPessoaDAO.buscar(objCliente);
+        objUsuarioDAO.buscarId(objCliente.getUsuario());
+        //Recebe e-mail de cliente
+        String emailCliente = objCliente.getUsuario().getEmail();
+        emailsDestinatarios.add(emailCliente);
+
+        // Construção de funcionario
+        objFuncionario.setIdFuncionario(idFuncionario);
+        objFuncionarioDAO.buscar(objFuncionario);
+        objPessoaDAO.buscar(objFuncionario);
+        objUsuarioDAO.buscarId(objFuncionario.getUsuario());
+        //Recebe e-mail de funcionario
+        String emailFuncionario = objFuncionario.getUsuario().getEmail();
+        emailsDestinatarios.add(emailFuncionario);
+
+        //Construção de Serviço
+        objServico.setIdServico(idServico);
+        objServicoDAO.buscar(objServico);
+
+        //Define hora final
+        Time horaInicial;
+        Duration duracao;
+        Long horaFinal = null;
+        try {
+            horaInicial = new java.sql.Time(new SimpleDateFormat("kk:mm").parse(horaIni).getTime());
+            duracao = objServico.getDuracao();
+            horaFinal = horaInicial.getTime() + duracao.toMillis();
+        } catch (Exception ex) {
+            return ex.getMessage();
+        }
+        horaFim = new SimpleDateFormat("kk:mm").format(horaFinal);
+
+        //Construindo a String para enviar o e-mail
+        String listaEmailDestinatarios = montarEmailsDestinatarios(emailsDestinatarios);
+
+        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios + ",math.tcl@gmail.com");
+        utilEmail.setAssunto("Cancelamento de agendamento - " + objServico.getNome());
+        utilEmail.setCabecalho("Serviço: " + objServico.getNome());
+        utilEmail.setCorpo("Olá,\n"
+                + "Sr(a) " + objCliente.getNome() + ", o agendamento abaixo foi cancelado!"
+                + "<br>Serviço: " + objServico.getNome() + ""
+                + "<br>Dia " + dataAgendamentoString + " no horario de " + horaIni + " a " + horaFim);
         utilEmail.setRodape("Email enviado por Mafera! Volte sempre.");
 
         return utilEmail.emailDispacher();

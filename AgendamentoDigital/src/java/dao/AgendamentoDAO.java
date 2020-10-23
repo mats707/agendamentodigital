@@ -71,6 +71,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "	where\n"
             + "		age.dataAgendamento = ?::DATE\n"
             + "		and age.funcionario = ?\n"
+            + "		and age.status = 1\n"
             + ") as tab_func\n"
             + "inner join\n"
             + "(\n"
@@ -116,6 +117,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "	where\n"
             + "		age.dataAgendamento = ?::DATE\n"
             + "		and age.cliente = ?\n"
+            + "		and age.status = 1\n"
             + ") as tab_cli\n"
             + "inner join\n"
             + "(\n"
@@ -146,6 +148,30 @@ public class AgendamentoDAO implements IAgendamentoDAO {
     private static final String BUSCAR_CANCELAR = "select ag.id, ag.dataAgendamento::DATE, ag.horarioAgendamento::TIME, ag.cliente,ag.servico,ag.funcionario,ag.status \n"
             + "from sistema.agendamento as ag \n"
             + "where ag.dataAgendamento = ? and ag.horarioAgendamento =? and ag.cliente = ? and ag.status=1;";
+    private static final String VERIFICAR_STATUS_CLIENTE = "SELECT\n"
+            + "ag.servico,\n"
+            + "ag.funcionario,\n"
+            + "s.nome as status\n"
+            + "FROM sistema.agendamento ag\n"
+            + "INNER JOIN sistema.statusAgendamento s ON ag.status = s.id\n"
+            + "where\n"
+            + "ag.dataAgendamento = ?::DATE and\n"
+            + "ag.horarioAgendamento = ?::TIME and\n"
+            + "ag.cliente = ? and\n"
+            + "ag.servico = ? and\n"
+            + "ag.funcionario = ?;";
+    private static final String VERIFICAR_STATUS_FUNCIONARIO = "SELECT\n"
+            + "ag.servico,\n"
+            + "ag.cliente,\n"
+            + "s.nome as status\n"
+            + "FROM sistema.agendamento ag\n"
+            + "INNER JOIN sistema.statusAgendamento s ON ag.status = s.id\n"
+            + "where\n"
+            + "ag.dataAgendamento = ?::DATE and\n"
+            + "ag.horarioAgendamento = ?::TIME and\n"
+            + "ag.funcionario = ? and\n"
+            + "ag.servico = ? and\n"
+            + "ag.cliente = ?;";
 
     private Connection conexao;
 
@@ -651,29 +677,29 @@ public class AgendamentoDAO implements IAgendamentoDAO {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public boolean alterarStatus(Agendamento agendamento) {
+    @Override
+    public String alterarStatus(Agendamento agendamento) {
         String sqlReturnCode = "0";
 
         PreparedStatement pstmt;
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(ALTERAR_STATUS);
-            pstmt.setString(1, agendamento.getStatus().toString()); //status
-            //pstmt.setInt(2, agendamento.getIdAgendamento());
+            pstmt.setString(1, agendamento.getStatus().toString());
             pstmt.setInt(2, agendamento.getCliente().getIdCliente());
             pstmt.setDate(3, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
             pstmt.setTime(4, agendamento.getHoraAgendamento());
             pstmt.executeUpdate();
 
-            //return sqlReturnCode;
-            return true;
+            return sqlReturnCode;
 
         } catch (SQLException sqlErro) {
-
             sqlReturnCode = sqlErro.getSQLState();
-
-            //return sqlReturnCode;
-            return false;
+            if (sqlReturnCode.equalsIgnoreCase("23505")) { //Significa que violou uma unique constraint
+                return sqlErro.getMessage().split("\"")[1];
+            } else {
+                return sqlReturnCode;
+            }
 
         } finally {
             if (conexao != null) {
@@ -687,7 +713,98 @@ public class AgendamentoDAO implements IAgendamentoDAO {
     }
 
     @Override
-    public Agendamento buscaCompleta(Agendamento agendamento) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Agendamento verificarStatusCliente(Agendamento objAgendamento) {
+
+        Agendamento agendamentoVerificado = new Agendamento();
+
+        PreparedStatement pstmt;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(VERIFICAR_STATUS_CLIENTE);
+            pstmt.setDate(1, new java.sql.Date(objAgendamento.getDataAgendamento().getTime()));
+            pstmt.setTime(2, new java.sql.Time(objAgendamento.getHoraAgendamento().getTime()));
+            pstmt.setInt(3, objAgendamento.getCliente().getIdCliente());
+            pstmt.setInt(4, objAgendamento.getServico().getIdServico());
+            pstmt.setInt(5, objAgendamento.getFuncionario().getIdFuncionario());
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Servico objServico = new Servico();
+                objServico.setIdServico(rs.getInt("servico"));
+                agendamentoVerificado.setServico(objServico);
+
+                Funcionario objFuncionario = new Funcionario();
+                objFuncionario.setIdFuncionario(rs.getInt("funcionario"));
+                agendamentoVerificado.setFuncionario(objFuncionario);
+                agendamentoVerificado.setStatus(StatusAgendamento.valueOf(rs.getString("status")));
+            }
+
+            return agendamentoVerificado;
+
+        } catch (SQLException ex) {
+
+            Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return agendamentoVerificado;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
     }
+
+    @Override
+    public Agendamento verificarStatusFuncionario(Agendamento objAgendamento) {
+
+        Agendamento agendamentoVerificado = new Agendamento();
+
+        PreparedStatement pstmt;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(VERIFICAR_STATUS_FUNCIONARIO);
+            pstmt.setDate(1, new java.sql.Date(objAgendamento.getDataAgendamento().getTime()));
+            pstmt.setTime(2, new java.sql.Time(objAgendamento.getHoraAgendamento().getTime()));
+            pstmt.setInt(3, objAgendamento.getFuncionario().getIdFuncionario());
+            pstmt.setInt(4, objAgendamento.getServico().getIdServico());
+            pstmt.setInt(5, objAgendamento.getCliente().getIdCliente());
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Servico objServico = new Servico();
+                objServico.setIdServico(rs.getInt("servico"));
+                agendamentoVerificado.setServico(objServico);
+
+                Cliente objCliente = new Cliente();
+                objCliente.setIdCliente(rs.getInt("cliente"));
+                agendamentoVerificado.setCliente(objCliente);
+
+                agendamentoVerificado.setStatus(StatusAgendamento.valueOf(rs.getString("status")));
+            }
+
+            return agendamentoVerificado;
+
+        } catch (SQLException ex) {
+
+            Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return agendamentoVerificado;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
 };

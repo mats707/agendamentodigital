@@ -51,7 +51,7 @@ public class DeletarAction implements ICommand {
                     funcaoMsgOperation = "Deletado com sucesso!";
                     funcaoStatusOperation = "success";
                 } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"servico\" violates foreign key constraint \"fkservico\" on table \"agendamento\"")) {
-                    funcaoMsgOperation = "Você possui um agendamento com esse serviço! Delete o agendamento primeiro!";
+                    funcaoMsgOperation = "Você possui um agendamento com esse serviço!\\n Não é possível deletar!";
                     funcaoStatusOperation = "error";
                 } else {
                     funcaoMsgOperation = "Não foi possível deletar o serviço, tente novamente mais tarde!";

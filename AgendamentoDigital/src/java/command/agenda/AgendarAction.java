@@ -5,7 +5,6 @@
  */
 package command.agenda;
 
-import api.restEmail;
 import command.servico.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,7 +44,7 @@ import modelos.PerfilDeAcesso;
 import modelos.Servico;
 import modelos.StatusAgendamento;
 import modelos.Usuario;
-import api.restAgendamento;
+import api.*;
 import java.sql.SQLException;
 
 /**
@@ -61,17 +60,42 @@ public class AgendarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
 
-        //Configurações para o datetimepicker
-        int day = Calendar.DAY_OF_MONTH;
-        int month = Calendar.MONTH;
-        int year = Calendar.YEAR;
-        String datahoje = year + "-" + month + "-" + day;
-        String datamaxima = year + "-" + (month + 1) + "-" + day;
-        String allowTimes = "'09:00','11:00','12:00','20:00'";
-        String[] ArrayAllowTimes = allowTimes.split(",");
-        String maxTime = ArrayAllowTimes[ArrayAllowTimes.length - 1].substring(0, 5) + "1'"; //Soma 1 minuto no ultimo tempo permitido
-        String minTime = ArrayAllowTimes[0];
-        String maxMonth = "3";
+        restEmpresa apiEmpresa = new restEmpresa();
+        Empresa objEmpresa = apiEmpresa.buscar();
+
+        //String nome = objEmpresa.getNome();
+        Time horaInicialTrabalho = objEmpresa.getHoraInicialTrabalho();
+        Time horaFinalTrabalho = objEmpresa.getHoraFinalTrabalho();
+        ArrayList<Integer> diaSemanaTrabalho = objEmpresa.getDiaSemanaTrabalho();
+        //Duration intervaloAgendamentoGeralServico = objEmpresa.getIntervaloAgendamentoGeralServico();
+        //ArrayList<Long> telefone = objEmpresa.getTelefone();
+
+        //Configurações para o datetimepicker "dd/mm/yyyy"
+        Date dataAtualDate = new Date();
+        //Define a data máxima de agendamento
+        Integer qtdDiasMaximo = 30;
+        //Calcula a data maxima para o calendario
+        final Calendar c1 = Calendar.getInstance();
+        c1.setTime(dataAtualDate);
+        c1.add(Calendar.DATE, qtdDiasMaximo);
+        Date dataMaximaDate = c1.getTime();
+        String dataAtual = new SimpleDateFormat("dd/MM/yyyy").format(dataAtualDate);
+        String dataMaxima = new SimpleDateFormat("dd/MM/yyyy").format(dataMaximaDate);
+
+        //Define hora inicial e final de trabalho
+        final Calendar c2 = Calendar.getInstance();
+        c2.setTime(horaFinalTrabalho);
+        c2.add(Calendar.MINUTE, 1);
+        horaFinalTrabalho.setTime(c2.getTimeInMillis());
+        String minTime = new SimpleDateFormat("kk:mm").format(horaInicialTrabalho);
+        String maxTime = new SimpleDateFormat("kk:mm").format(horaFinalTrabalho);
+
+        //Define os dias bloqueados a partir dos dias úteis da empresa        
+        ArrayList<Integer> diasBloqueados = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6));
+        diaSemanaTrabalho.forEach((dia) -> {
+            diasBloqueados.remove(dia);
+        });
+
         //Pagina a ser exibida
         request.setAttribute("pagina", "pages/client/agendamento/agendar.jsp");
 
@@ -84,8 +108,6 @@ public class AgendarAction implements ICommand {
         }
         String data = request.getParameter("inputDate");
         String hora = request.getParameter("listaHorarios");
-
-        DateFormat formatter = new SimpleDateFormat("kk:mm");
 
         String sqlState = "0";
         String funcaoMsg = "Carregando...";
@@ -136,7 +158,7 @@ public class AgendarAction implements ICommand {
 
             //Parse horaAgendamento
             try {
-                horaAgendamento = new java.sql.Time(formatter.parse(hora).getTime());
+                horaAgendamento = new java.sql.Time(new SimpleDateFormat("kk:mm").parse(hora).getTime());
             } catch (ParseException ex) {
                 Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -160,16 +182,12 @@ public class AgendarAction implements ICommand {
                         funcaoMsg = "Agendamento Realizado!\\nInfelizmente houve uma falha ao enviar o e-mail de confirmação.";
                         funcaoStatus = "info";
                     }
-                } else if (sqlState.equalsIgnoreCase("unqagendamentocliente")) {
+                } else if (sqlState.equalsIgnoreCase("unqagendamento")) {
                     // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
                     funcaoMsg = "Você já possui um agendamento nesse horário!";
-                    funcaoStatus = "error";
-                } else if (sqlState.equalsIgnoreCase("unqAgendamentoFuncionario")) {
-                    // Independente do serviço o funcionário não poderá ter mais de um agendamento no mesmo horário
-                    funcaoMsg = "O funcionário escolhido já possui hora marcada!\\nEscolha outro horário, por favor!";
-                    funcaoStatus = "error";
+                    funcaoStatus = "warning";
                 } else {
-                    funcaoMsg = "Não foi possível realizar o agendamento, tente novamente mais tarde!";
+                    funcaoMsg = "Não foi possível realizar o agendamento.\\nTente novamente mais tarde ou entre em contato com nossa equipe!";
                 }
             } else if (validoParaAgendar == "funcionario_ocupado") {
                 funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário!\\nEscolha outro horário, por favor!";
@@ -177,8 +195,38 @@ public class AgendarAction implements ICommand {
             } else if (validoParaAgendar == "cliente_ocupado") {
                 funcaoMsg = "Você possui um agendamento durante o horário escolhido!\\nEscolha outro horário ou cancele o agendamento em conflito...";
                 funcaoStatus = "error";
+            } else if (validoParaAgendar == "data_invalida") {
+                funcaoMsg = "Data não permitida pela empresa";
+                funcaoStatus = "error";
+            } else if (validoParaAgendar == "empresa_fechada") {
+                funcaoMsg = "Empresa não disponível para esse dia!";
+                funcaoStatus = "error";
+            } else if (validoParaAgendar == "agendamento_cliente_aguardandoatendimento") {
+                // Esse agendamento foi cancelado, valido por DATA, HORA, CLIENTE, SERVICO e FUNCIONARIO
+                funcaoMsg = "Você já possui um agendamento nesse horário!";
+                funcaoStatus = "error";
+            } else if (validoParaAgendar == "agendamento_cliente_cancelado") {
+                // Esse agendamento foi cancelado, valido por DATA, HORA, CLIENTE, SERVICO e FUNCIONARIO
+                funcaoMsg = "Você CANCELOU esse agendamento!\\nTente outro dia/horário, outro funcionário ou então outro serviço!";
+                funcaoStatus = "warning";
+            } else if (validoParaAgendar == "agendamento_cliente_finalizado") {
+                // Esse agendamento foi cancelado, valido por DATA, HORA, CLIENTE, SERVICO e FUNCIONARIO
+                funcaoMsg = "Você já FINALIZOU esse agendamento!";
+                funcaoStatus = "info";
+            } else if (validoParaAgendar == "agendamento_funcionario_aguardandoatendimento") {
+                // Esse agendamento foi cancelado, valido por DATA, HORA, CLIENTE, SERVICO e FUNCIONARIO
+                funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário!\\nEscolha outro horário, por favor!";
+                funcaoStatus = "error";
+            } else if (validoParaAgendar == "agendamento_funcionario_cancelado") {
+                // Esse agendamento foi cancelado, valido por DATA, HORA, CLIENTE, SERVICO e FUNCIONARIO
+                funcaoMsg = "Você CANCELOU esse agendamento!\\nTente outro dia/horário, outro funcionário ou então outro serviço!";
+                funcaoStatus = "warning";
+            } else if (validoParaAgendar == "agendamento_funcionario_finalizado") {
+                // Esse agendamento foi cancelado, valido por DATA, HORA, CLIENTE, SERVICO e FUNCIONARIO
+                funcaoMsg = "Você já FINALIZOU esse agendamento!";
+                funcaoStatus = "info";
             } else {
-                funcaoMsg = "Erro de validação do horário,\\nem caso de dúvidas contate o suporte!";
+                funcaoMsg = validoParaAgendar;
                 funcaoStatus = "error";
             }
         } else {
@@ -188,11 +236,11 @@ public class AgendarAction implements ICommand {
 
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
-        request.setAttribute("datahoje", datahoje);
-        request.setAttribute("allowTimes", Arrays.toString(ArrayAllowTimes));
+        request.setAttribute("dataAtual", dataAtual);
+        request.setAttribute("dataMaxima", dataMaxima);
+        request.setAttribute("diasBloqueados", diasBloqueados);
         request.setAttribute("maxTime", maxTime);
         request.setAttribute("minTime", minTime);
-        request.setAttribute("maxMonth", maxMonth);
         return funcaoMsg;
     }
 

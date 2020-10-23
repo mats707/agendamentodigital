@@ -48,17 +48,24 @@ function lerTabela(result) {
                 cellServico.innerHTML = ObjAgendamento[i].servico.nome;
                 cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                 cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
-                cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60+ " minutos";
+                cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60 + " minutos";
                 cellValor.innerHTML = ObjAgendamento[i].servico.valor;
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
                 cancelarAgendamento.innerHTML =
-                        "<form id='formCancelar-" + i + "' action='" + site + "/CancelarAgendamento' method='POST'><input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + "><input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + "><a id='btn-formCancelar-" + i + "' href='#' onclick='submit(this);'><i class='nav-icon fas fa-edit'></a></form>";
+                        "<form id='formCancelar-" + i + "' action='" + site + "/CancelarAgendamento' method='POST'>\n\
+                            <input type='hidden' name='servico' value=" + ObjAgendamento[i].servico.idServico + ">\n\
+                            <input type='hidden' name='funcionario' value=" + ObjAgendamento[i].funcionario.idFuncionario + ">\n\
+                            <input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + ">\n\
+                            <input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + ">\n\
+                            <a id='btn-formCancelar-" + i + "' href='#' onclick='submit(this);'>\n\
+                            <i class='nav-icon fas fa-edit'></a></form>";
 
             }
-
-            sweet("  Agendamentos carregados", "success", 1500);
+            if (window.location.pathname.split('/')[2] == "HomeCliente")
+                sweet("  Agendamentos carregados", "success", 1500);
         } else {
-            sweet(" Não há agendamentos", "info", 3000);
+            if (window.location.pathname.split('/')[2] == "HomeCliente")
+                sweet(" Não há agendamentos", "info", 3000);
         }
     }
 

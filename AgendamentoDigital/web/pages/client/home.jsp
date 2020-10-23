@@ -62,7 +62,7 @@
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- /.content-header -->
-                
+
 
                 </form>
                 <!-- Main content -->
@@ -110,20 +110,10 @@
         <script charset="ISO-8859-1" src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
 
         <script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: 1000
-            });
-            Toast.fire({
-                type: '${funcaoStatus}',
-                title: ' ${funcaoMsg}'
-            });
+            sweet(" ${funcaoMsg}", "${funcaoStatus}", 4000);
             includeHTMLNav("home", "");
             var idCliente = '${cliente.idCliente}';
             carregarMaisAgendado(idCliente);
-           
         </script>
     </body>
 </html>
