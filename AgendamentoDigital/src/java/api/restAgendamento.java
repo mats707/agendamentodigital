@@ -82,44 +82,44 @@ public class restAgendamento {
         return objgson.toJson(arr);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Path("/Testes/Servico/{idServico}/Cliente/{idCliente}/Funcionario/{idFuncionario}/{dataEntrada}/{horaEntrada}")
-    public String verificarHorarioOcupado(@PathParam("idServico") Integer idServico, @PathParam("idCliente") Integer idCliente, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada, @PathParam("horaEntrada") String horaEntrada) throws SQLException, ClassNotFoundException {
-
-        Agendamento objAgendamento = new Agendamento();
-        objAgendamento.setCliente(new Cliente(idCliente));
-        objAgendamento.setFuncionario(new Funcionario(idFuncionario));
-        objAgendamento.setServico(new Servico(idServico));
-        objAgendamento.setStatus(StatusAgendamento.AGUARDANDOATENDIMENTO);
-        Date dataAgendamento = null;
-        Time horaAgendamento = null;
-        //Parse dataAgendamento
-        try {
-            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
-        } catch (ParseException ex1) {
-            try {
-                dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(dataEntrada);
-            } catch (ParseException ex2) {
-                Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex2);
-            }
-            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex1);
-        }
-        objAgendamento.setDataAgendamento(dataAgendamento);
-
-        DateFormat formatter = new SimpleDateFormat("kk:mm");
-        //Parse horaAgendamento
-        try {
-            horaAgendamento = new java.sql.Time(formatter.parse(horaEntrada).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        objAgendamento.setHoraAgendamento(horaAgendamento);
-
-        String validoParaAgendar = validoParaAgendar(objAgendamento);
-
-        return validoParaAgendar;
-    }
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+//    @Path("/Testes/Servico/{idServico}/Cliente/{idCliente}/Funcionario/{idFuncionario}/{dataEntrada}/{horaEntrada}")
+//    public String verificarHorarioOcupado(@PathParam("idServico") Integer idServico, @PathParam("idCliente") Integer idCliente, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada, @PathParam("horaEntrada") String horaEntrada) throws SQLException, ClassNotFoundException {
+//
+//        Agendamento objAgendamento = new Agendamento();
+//        objAgendamento.setCliente(new Cliente(idCliente));
+//        objAgendamento.setFuncionario(new Funcionario(idFuncionario));
+//        objAgendamento.setServico(new Servico(idServico));
+//        objAgendamento.setStatus(StatusAgendamento.AGUARDANDOATENDIMENTO);
+//        Date dataAgendamento = null;
+//        Time horaAgendamento = null;
+//        //Parse dataAgendamento
+//        try {
+//            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
+//        } catch (ParseException ex1) {
+//            try {
+//                dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(dataEntrada);
+//            } catch (ParseException ex2) {
+//                Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex2);
+//            }
+//            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex1);
+//        }
+//        objAgendamento.setDataAgendamento(dataAgendamento);
+//
+//        DateFormat formatter = new SimpleDateFormat("kk:mm");
+//        //Parse horaAgendamento
+//        try {
+//            horaAgendamento = new java.sql.Time(formatter.parse(horaEntrada).getTime());
+//        } catch (ParseException ex) {
+//            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        objAgendamento.setHoraAgendamento(horaAgendamento);
+//
+//        String validoParaAgendar = validoParaAgendar(objAgendamento);
+//
+//        return validoParaAgendar;
+//    }
 
     public String validoParaAgendar(Agendamento objAgendamento) {
 

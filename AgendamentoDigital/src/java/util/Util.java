@@ -22,8 +22,12 @@ import static org.apache.commons.io.Charsets.UTF_8;
 public class Util {
 
     public static boolean isInteger(String str) {
-        str = str.replaceAll("([+()\\-a-z ]+)", "");
-        return str != null && str.matches("[0-9]*");
+        if (str != null) {
+            str = str.replaceAll("([+()\\-a-z ]+)", "");
+            return str != null && str.matches("[0-9]*");
+        } else {
+            return false;
+        }
     }
 
     public static boolean isValidEmailAddress(String email) {

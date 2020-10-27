@@ -31,7 +31,15 @@ function carregarMaisAgendado(idCliente) {
 function lerTabela(result) {
     ObjAgendamento = result;
     console.log(ObjAgendamento);
-    document.getElementById("target").innerHTML = '<table id="tabAgendamento" name="tabAgendamento" class="table table-hover"><thead class="thead-dark"><tr><th>Servi\xE7o</th><th>Data</th><th>Horario</th><th>Duracao</th><th>Valor</th><th>Funcionario</th><th>Edit</th></tr></thead></table>';
+    document.getElementById("target").innerHTML = '<table id="tabAgendamento" name="tabAgendamento" class="table table-hover"><thead class="thead-dark">\n\
+        <tr><th>Serviço</th>\n\
+            <th>Data</th>\n\
+            <th>Horario</th>\n\
+            <th>Duração</th>\n\
+            <th>Valor</th>\n\
+            <th>Funcionário</th>\n\
+            <th>Cancelar</th>\n\
+        </tr></thead></table>';
     var table = document.getElementById("tabAgendamento");
     if (ObjAgendamento != null) {
         if (ObjAgendamento.length > 0) {
@@ -57,9 +65,8 @@ function lerTabela(result) {
                             <input type='hidden' name='funcionario' value=" + ObjAgendamento[i].funcionario.idFuncionario + ">\n\
                             <input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + ">\n\
                             <input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + ">\n\
-                            <a id='btn-formCancelar-" + i + "' href='#' onclick='submit(this);'>\n\
-                            <i class='nav-icon fas fa-edit'></a></form>";
-
+                            <a id='btn-formCancelar-" + i + "' href='#' class='nav-link' onclick='sweetCancelar(this);'>\n\
+                            <i class='nav-icon fas fa-times-circle'></a></form>";
             }
             if (window.location.pathname.split('/')[2] == "HomeCliente")
                 sweet("  Agendamentos carregados", "success", 1500);
@@ -81,6 +88,45 @@ function sweet(title, type, timer) {
     Toast.fire({
         type: type,
         title: ' ' + title
+    });
+}
+
+function sweetCancelar(element) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: 'Tem certeza?',
+        text: "Após o cancelamento esse serviço não poderá ser reagendando para esse mesmo horário!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Não, voltar!',
+        reverseButtons: true
+    }).then((result) => {
+        console.log(result);
+        if (result.value) {
+            swalWithBootstrapButtons.fire(
+                    'Solicitação concluída!',
+                    'Clique em OK para prosseguir.',
+                    'success'
+                    );
+            submit(element);
+        } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+                ) {
+            swalWithBootstrapButtons.fire(
+                    'Fechando...',
+                    'Seu agendamento está seguro :)',
+                    'error'
+                    );
+        }
     });
 }
 

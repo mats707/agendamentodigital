@@ -32,44 +32,55 @@ public class CadastrarAction implements ICommand {
         String celular = request.getParameter("celular");
         String perfil = request.getParameter("perfil");
 
-        if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && perfil != null) {
+        String sqlState = "0";
+        String funcaoMsg = "Carregando...";
+        String funcaoStatus = "info";
+        
+        if (email != null && senha != null && chkPassword != null && celular != null && perfil != null) {
+            if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && perfil != null) {
 
-            Usuario usuario = new Usuario();
-            usuario.setEmail(email);
-            usuario.setSenha(geraHash.hashPassword(senha));
-            usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
-            if (perfil.equalsIgnoreCase("administrador")) {
-                usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
-            } else if (perfil.equalsIgnoreCase("comum")) {
-                usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
-            } else {
-                usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
-            }
-
-            if (geraHash.checkPassword(chkPassword, usuario.getSenha())) {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-
-                String sqlState = usuarioDAO.cadastraNovoUsuario(usuario);
-
-                if (sqlState == "0") {
-                    request.setAttribute("colorMsg", "success");
-                    return "Cadastrado com sucesso!";
-                } else if ("23505".equals(sqlState)) {
-                    request.setAttribute("colorMsg", "danger");
-                    return "Tente outro email ou celular!";
+                Usuario usuario = new Usuario();
+                usuario.setEmail(email);
+                usuario.setSenha(geraHash.hashPassword(senha));
+                usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
+                if (perfil.equalsIgnoreCase("administrador")) {
+                    usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
+                } else if (perfil.equalsIgnoreCase("comum")) {
+                    usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
                 } else {
-                    request.setAttribute("colorMsg", "danger");
-                    return "Não foi possível cadastrar o usuário, tente novamente!";
+                    usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
+                }
+
+                if (geraHash.checkPassword(chkPassword, usuario.getSenha())) {
+                    UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+                    sqlState = usuarioDAO.cadastraNovoUsuario(usuario);
+
+                    if (sqlState == "0") {
+                        funcaoStatus = "success";
+                        funcaoMsg =  "Cadastrado com sucesso!";
+                    } else if ("23505".equals(sqlState)) {
+                        funcaoStatus = "danger";
+                        funcaoMsg =  "Tente outro email ou celular!";
+                    } else {
+                        funcaoStatus = "danger";
+                        funcaoMsg =  "Não foi possível cadastrar o usuário, tente novamente!";
+                    }
+                } else {
+                    funcaoStatus = "warning";
+                    funcaoMsg =  "Senhas diferente!";
                 }
             } else {
-                request.setAttribute("colorMsg", "warning");
-                return "Senhas diferente!";
+                funcaoStatus = "danger";
+                funcaoMsg =  "Dados inválidos!";
             }
         } else {
-            request.setAttribute("colorMsg", "danger");
-            return "Dados inválidos!";
+            funcaoMsg = "Carregando...\\nAguarde um momento!";
+            funcaoStatus = "info";
         }
 
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
+        return funcaoMsg;
     }
-
 }

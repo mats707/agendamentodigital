@@ -56,7 +56,7 @@ public class CancelarAction implements ICommand {
         String StatusEmail = null;
 
         if (idServico!= null && idFuncionario!= null && dataAgendamentoString != null && horaAgendamentoString != null && idCliente != null) {
-
+            
             //Instanciando Funcionario
             Funcionario objFuncionario = new Funcionario();
             objFuncionario.setIdFuncionario(Integer.parseInt(idFuncionario));

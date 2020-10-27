@@ -177,13 +177,6 @@
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/js/locales/pt-BR.js" type="text/javascript"></script>
         <script charset="ISO-8859-1" src="${site}/pages/client/js/minhaConta.js" type="text/javascript"></script>
         <script>
-                                                    const Toast = Swal.mixin({
-                                                        toast: true,
-                                                        position: 'center',
-                                                        showConfirmButton: false,
-                                                        timer: 1000
-                                                    });
-
                                                     sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
                                                     console.log("${funcaoMsg}");
                                                     includeHTMLNav("home", "");

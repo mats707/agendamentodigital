@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="${site}/pages/client/css/home.css" rel="stylesheet" type="text/css"/>
     </head>
     <!--
     BODY TAG OPTIONS:

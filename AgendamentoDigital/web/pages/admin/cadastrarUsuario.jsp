@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="${site}/plugins/daterangepicker/daterangepicker.css">
         <!-- summernote -->
         <link rel="stylesheet" href="${site}/plugins/summernote/summernote-bs4.css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
     </head>
@@ -126,11 +128,6 @@
                                                             <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
                                                         </div>
                                                         <!-- /.col -->
-                                                        <p class="text-${colorMsg} mb-3">
-                                                            <c:if test="${msg!=null}">
-                                                                ${msg}
-                                                            </c:if>
-                                                        </p>
                                                     </div>
                                                 </form>
 
@@ -218,6 +215,11 @@
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
+        
+        <!-- SweetAlert2 -->
+        <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
+        <script src="${site}/pages/admin/cadastrarUsuario.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -230,9 +232,9 @@
 
                 $('[data-mask]').inputmask()
 
-            })
+            });
+            sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
         </script>
-        <script src="cadastrarUsuario.js" type="text/javascript"></script>
 
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
