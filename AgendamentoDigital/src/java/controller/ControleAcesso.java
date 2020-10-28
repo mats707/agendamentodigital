@@ -40,7 +40,7 @@ public class ControleAcesso extends HttpServlet {
                         HttpSession sessaoUsuario = request.getSession();
                         sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
                         sessaoUsuario.setAttribute("cliente", cliente);
-
+                        
                         //redireciona para a pagina principal
                         response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
 

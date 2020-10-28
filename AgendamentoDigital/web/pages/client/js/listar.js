@@ -111,11 +111,12 @@ function sweetCancelar(element) {
     }).then((result) => {
         console.log(result);
         if (result.value) {
-            swalWithBootstrapButtons.fire(
-                    'Solicitação concluída!',
-                    'Clique em OK para prosseguir.',
-                    'success'
-                    );
+            swalWithBootstrapButtons.fire({
+                title: 'Solicitação em andamento...',
+                text: 'Aguarde ( 0-2 min )',
+                type: 'info',
+                showConfirmButton: false
+            });
             submit(element);
         } else if (
                 /* Read more about handling dismissals below */

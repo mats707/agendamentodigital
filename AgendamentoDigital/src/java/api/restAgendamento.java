@@ -120,7 +120,6 @@ public class restAgendamento {
 //
 //        return validoParaAgendar;
 //    }
-
     public String validoParaAgendar(Agendamento objAgendamento) {
 
         String statusValidacao = "";
@@ -412,5 +411,40 @@ public class restAgendamento {
         }
 
         return msgRetorno;
+    }
+
+    public String validoParaCancelar(Agendamento objAgendamento) {
+        //Obtém os valores padrão de agendamento definido pela empresa
+        Empresa objEmpresa = new Empresa();
+        EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+        objEmpresaDAO.buscar(objEmpresa);
+        
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+        objAgendamentoDao.buscarCancelar(objAgendamento);
+
+        Date dataAgendamento = objAgendamento.getDataAgendamento();
+        Time horaAgendamento = objAgendamento.getHoraAgendamento();
+        Date dataHoraAgendamentoUTC = new java.util.Date(dataAgendamento.getTime() + horaAgendamento.getTime() - (3 * 3600 * 1000));
+
+        //Validar horário de cancelamento do agendamento
+        Duration periodoMinimoCancelamento = objEmpresa.getPeriodoMinimoCancelamento();
+
+        Date dataMinimoCancelamento = new java.sql.Date(dataHoraAgendamentoUTC.getTime() - periodoMinimoCancelamento.toMillis());
+        Date dataAtual = new Date();
+
+        if (objAgendamento.getStatus() == StatusAgendamento.AGUARDANDOATENDIMENTO) {
+            if (dataAtual.getTime() >= dataMinimoCancelamento.getTime()
+                    && dataAtual.getTime() < dataHoraAgendamentoUTC.getTime()) {
+                return "cancelamento_invalido";
+            } else {
+                return "cancelamento_valido";
+            }
+        } else if (objAgendamento.getStatus() == StatusAgendamento.CANCELADO) {
+            return "agendamento_cancelado";
+        } else if (objAgendamento.getStatus() == StatusAgendamento.FINALIZADO) {
+            return "agendamento_finalizado";
+        } else {
+            return null;
+        }
     }
 }

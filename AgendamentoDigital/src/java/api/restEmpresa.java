@@ -111,8 +111,8 @@ public class restEmpresa {
 
             String horafinaltrabalho = new SimpleDateFormat("kk:mm").format(objEmpresa.getHoraFinalTrabalho());
             obj.add("horaFinalTrabalho", context.serialize(horafinaltrabalho));
-            int intervalo = Math.toIntExact(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes());
             obj.add("intervaloAgendamentoGeralServico", context.serialize(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes()));
+            obj.add("periodoMinimoCancelamento", context.serialize(objEmpresa.getPeriodoMinimoCancelamento().toMinutes()));
 
             obj.add("diaSemanaTrabalho", context.serialize(objEmpresa.getDiaSemanaTrabalho()));
 

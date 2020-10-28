@@ -8,6 +8,7 @@ package command.agenda;
 import api.restAgendamento;
 import api.restEmail;
 import dao.AgendamentoDAO;
+import dao.EmpresaDAO;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import modelos.Agendamento;
 import modelos.Cliente;
+import modelos.Empresa;
 import modelos.Funcionario;
 import modelos.PerfilDeAcesso;
 import modelos.Servico;
@@ -55,8 +57,8 @@ public class CancelarAction implements ICommand {
         String funcaoStatus = "info";
         String StatusEmail = null;
 
-        if (idServico!= null && idFuncionario!= null && dataAgendamentoString != null && horaAgendamentoString != null && idCliente != null) {
-            
+        if (idServico != null && idFuncionario != null && dataAgendamentoString != null && horaAgendamentoString != null && idCliente != null) {
+
             //Instanciando Funcionario
             Funcionario objFuncionario = new Funcionario();
             objFuncionario.setIdFuncionario(Integer.parseInt(idFuncionario));
@@ -64,10 +66,10 @@ public class CancelarAction implements ICommand {
             //Instanciando Servico
             Servico objServico = new Servico();
             objServico.setIdServico(Integer.parseInt(idServico));
-            
+
             //Instanciando Cliente
             Cliente objCliente = new Cliente();
-            
+
             //Verifica Usuario Cliente
             //cria uma sessao para resgatar o usuario
             HttpSession sessaoUsuario = request.getSession();
@@ -78,16 +80,11 @@ public class CancelarAction implements ICommand {
                 objCliente.setIdCliente(Integer.parseInt(idCliente));
             }
 
-            //Instanciando StatusAgendamento
-            StatusAgendamento objStatus = StatusAgendamento.CANCELADO;
-            
-            
             //Instanciando Agendamento
             Agendamento objAgendamento = new Agendamento();
             objAgendamento.setCliente(objCliente);
             objAgendamento.setFuncionario(objFuncionario);
             objAgendamento.setServico(objServico);
-            objAgendamento.setStatus(objStatus);
             Date dataAgendamento = null;
             Time horaAgendamento = null;
             //Parse dataAgendamento
@@ -106,25 +103,60 @@ public class CancelarAction implements ICommand {
 
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
-            //Chamada da DAO para Cadastrar
-            sqlState = agendamentoDAO.alterarStatus(objAgendamento);
+            //Obtém os valores padrão de agendamento definido pela empresa
+            Empresa objEmpresa = new Empresa();
+            EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+            objEmpresaDAO.buscar(objEmpresa);
 
-            //Verifica o retorno da DAO (banco de dados)
-            if (sqlState == "0") {
-                StatusEmail = notificarAgendamento(objAgendamento);
-                if (StatusEmail == "email_enviado") {
-                    funcaoMsg = "Cancelado com sucesso!\\nUm e-mail foi enviado como lembrete.";
-                    funcaoStatus = "success";
+            Long periodoMinimoCancelamentoLong = objEmpresa.getPeriodoMinimoCancelamento().toMinutes();
+            String labelPeriodoMinimoCancelamento = "minutos";
+            if (periodoMinimoCancelamentoLong >= 60) {
+                periodoMinimoCancelamentoLong = periodoMinimoCancelamentoLong / 60;
+                if (periodoMinimoCancelamentoLong == 1) {
+                    labelPeriodoMinimoCancelamento = "hora";
                 } else {
-                    funcaoMsg = "Cancelamento Realizado!\\nInfelizmente houve uma falha ao enviar o e-mail de cancelamento.";
-                    funcaoStatus = "info";
+                    labelPeriodoMinimoCancelamento = "horas";
                 }
-            } else if (sqlState.equalsIgnoreCase("unqagendamento")) {
-                // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
-                funcaoMsg = "Tivemos problemas para cancelar seu agendamento\\nPor favor entre em contato com o atendimento!";
-                funcaoStatus = "warning";
-            } else {
-                funcaoMsg = "Não foi possível realizar o cancelamento.\\nTente novamente mais tarde ou entre em contato com nossa equipe!";
+            }
+
+            String validoParaCancelar = objRestAgendamento.validoParaCancelar(objAgendamento);
+
+            //Instanciando StatusAgendamento
+            StatusAgendamento objStatus = StatusAgendamento.CANCELADO;
+            
+            objAgendamento.setStatus(objStatus);
+
+            if (validoParaCancelar == "cancelamento_valido") {
+
+                //Chamada da DAO para Cadastrar
+                sqlState = agendamentoDAO.alterarStatus(objAgendamento);
+
+                //Verifica o retorno da DAO (banco de dados)
+                if (sqlState == "0") {
+                    StatusEmail = notificarAgendamento(objAgendamento);
+                    if (StatusEmail == "email_enviado") {
+                        funcaoMsg = "Cancelado com sucesso!\\nUm e-mail foi enviado como lembrete.";
+                        funcaoStatus = "success";
+                    } else {
+                        funcaoMsg = "Cancelamento Realizado!\\nInfelizmente houve uma falha ao enviar o e-mail de cancelamento.";
+                        funcaoStatus = "info";
+                    }
+                } else if (sqlState.equalsIgnoreCase("unqagendamento")) {
+                    // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
+                    funcaoMsg = "Tivemos problemas para cancelar seu agendamento\\nPor favor entre em contato com o atendimento!";
+                    funcaoStatus = "warning";
+                } else {
+                    funcaoMsg = "Não foi possível realizar o cancelamento.\\nTente novamente mais tarde ou entre em contato com nossa equipe!";
+                }
+            } else if (validoParaCancelar == "cancelamento_invalido") {
+                funcaoMsg = "Cancelamento fora do prazo de antecêdencia!\\nCancele com até " + periodoMinimoCancelamentoLong + " " + labelPeriodoMinimoCancelamento + " antes do agendamento!";
+                funcaoStatus = "error";
+            } else if (validoParaCancelar == "agendamento_cancelado") {
+                funcaoMsg = "Esse agendamento já foi cancelado";
+                funcaoStatus = "error";
+            } else if (validoParaCancelar == "agendamento_finalizado") {
+                funcaoMsg = "Esse agendamento está finalizado\\nNão é permitido cancelar!";
+                funcaoStatus = "error";
             }
 
         }

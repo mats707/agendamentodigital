@@ -145,9 +145,10 @@ public class AgendamentoDAO implements IAgendamentoDAO {
     private static final String LISTAR_FUNCIONARIO = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE funcionario=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_STATUS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE status=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String DELETAR = "DELETE FROM sistema.agendamento WHERE id = ?";
-    private static final String BUSCAR_CANCELAR = "select ag.id, ag.dataAgendamento::DATE, ag.horarioAgendamento::TIME, ag.cliente,ag.servico,ag.funcionario,ag.status \n"
+    private static final String BUSCAR_AGENDAMENTO = "select ag.id, ag.dataAgendamento::DATE, ag.horarioAgendamento::TIME, ag.cliente,ag.servico,ag.funcionario,s.nome as status \n"
             + "from sistema.agendamento as ag \n"
-            + "where ag.dataAgendamento = ? and ag.horarioAgendamento =? and ag.cliente = ? and ag.status=1;";
+            + "INNER JOIN sistema.statusAgendamento s ON ag.status = s.id \n"
+            + "where ag.dataAgendamento = ? and ag.horarioAgendamento =? and ag.cliente = ?;";
     private static final String VERIFICAR_STATUS_CLIENTE = "SELECT\n"
             + "ag.servico,\n"
             + "ag.funcionario,\n"
@@ -619,7 +620,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             conexao = ConectaBanco.getConexao();
 
             //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_CANCELAR);
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_AGENDAMENTO);
 
             pstmt.setDate(1, new java.sql.Date(agendamento.getDataAgendamento().getTime()));
             pstmt.setTime(2, new java.sql.Time(agendamento.getHoraAgendamento().getTime()));
