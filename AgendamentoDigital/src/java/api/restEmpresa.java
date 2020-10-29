@@ -69,41 +69,20 @@ public class restEmpresa {
     public restEmpresa() {
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-//    @Path("/Listar")
-//    public String listar() throws SQLException, ClassNotFoundException {
-//
-//        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-//
-//        Empresa objEmpresa = new Empresa();
-//        EmpresaDAO objEmpresaDAO = new EmpresaDAO();
-//        objEmpresaDAO.buscar(objEmpresa);
-//
-//        Integer horaInicialAgendamento = objEmpresa.getHoraInicialTrabalho().getHours() * 60;
-//        Integer horaFinalAgendamento = objEmpresa.getHoraFinalTrabalho().getHours() * 60;
-//        Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
-//        Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
-//        Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
-//
-//        ArrayList<Map<String, String>> arrHorasMinutos = new ArrayList<>();
-//
-//        Integer horaMaximaServico = horaFinalAgendamento - intervaloAgendamento;
-//
-//        //Montagem do array de horas disponíveis, passando em minutos e no formato HH:MM
-//        for (Integer m = horaInicialAgendamento; m < horaMaximaServico; m = m + intervaloAgendamento) {
-//            Map<String, String> hashHorariosOcupados = new HashMap<String, String>();
-//            hashHorariosOcupados.put("minutos", m.toString());
-//            arrHorasMinutos.add(hashHorariosOcupados);
-//        }
-//
-//        String msg = "horaInicialAgendamento: " + horaInicialAgendamento + "\n"
-//                + "horaFinalAgendamento: " + horaFinalAgendamento + "\n"
-//                + "intervaloAgendamento: " + intervaloAgendamento;
-//
-////        return msg;
-//        return objgson.toJson(arrHorasMinutos);
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Path("/Buscar")
+    public Empresa buscar() throws SQLException, ClassNotFoundException {
+
+        Empresa objEmpresa = new Empresa();
+
+        EmpresaDAO empresaDAO = new EmpresaDAO();
+
+        empresaDAO.buscar(objEmpresa);
+
+        return objEmpresa;
+    }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/Menu/Encontrar")
@@ -134,8 +113,8 @@ public class restEmpresa {
 
             String horafinaltrabalho = new SimpleDateFormat("kk:mm").format(objEmpresa.getHoraFinalTrabalho());
             obj.add("horaFinalTrabalho", context.serialize(horafinaltrabalho));
-            int intervalo = Math.toIntExact(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes());
             obj.add("intervaloAgendamentoGeralServico", context.serialize(objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes()));
+            obj.add("periodoMinimoCancelamento", context.serialize(objEmpresa.getPeriodoMinimoCancelamento().toMinutes()));
 
             obj.add("diaSemanaTrabalho", context.serialize(objEmpresa.getDiaSemanaTrabalho()));
 

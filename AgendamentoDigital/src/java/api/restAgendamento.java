@@ -19,6 +19,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,76 +82,107 @@ public class restAgendamento {
         return objgson.toJson(arr);
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Path("/Testes/Servico/{idServico}/Cliente/{idCliente}/Funcionario/{idFuncionario}/{dataEntrada}/{horaEntrada}")
-    public String verificarHorarioOcupado(@PathParam("idServico") Integer idServico, @PathParam("idCliente") Integer idCliente, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada, @PathParam("horaEntrada") String horaEntrada) throws SQLException, ClassNotFoundException {
-
-        Agendamento objAgendamento = new Agendamento();
-        objAgendamento.setCliente(new Cliente(idCliente));
-        objAgendamento.setFuncionario(new Funcionario(idFuncionario));
-        objAgendamento.setServico(new Servico(idServico));
-        objAgendamento.setStatus(StatusAgendamento.AGUARDANDOATENDIMENTO);
-        Date dataAgendamento = null;
-        Time horaAgendamento = null;
-        //Parse dataAgendamento
-        try {
-            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
-        } catch (ParseException ex1) {
-            try {
-                dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(dataEntrada);
-            } catch (ParseException ex2) {
-                Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex2);
-            }
-            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex1);
-        }
-        objAgendamento.setDataAgendamento(dataAgendamento);
-
-        DateFormat formatter = new SimpleDateFormat("kk:mm");
-        //Parse horaAgendamento
-        try {
-            horaAgendamento = new java.sql.Time(formatter.parse(horaEntrada).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        objAgendamento.setHoraAgendamento(horaAgendamento);
-
-        String validoParaAgendar = validoParaAgendar(objAgendamento);
-
-        return validoParaAgendar;
-    }
-
+//    @GET
+//    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+//    @Path("/Testes/Servico/{idServico}/Cliente/{idCliente}/Funcionario/{idFuncionario}/{dataEntrada}/{horaEntrada}")
+//    public String verificarHorarioOcupado(@PathParam("idServico") Integer idServico, @PathParam("idCliente") Integer idCliente, @PathParam("idFuncionario") Integer idFuncionario, @PathParam("dataEntrada") String dataEntrada, @PathParam("horaEntrada") String horaEntrada) throws SQLException, ClassNotFoundException {
+//
+//        Agendamento objAgendamento = new Agendamento();
+//        objAgendamento.setCliente(new Cliente(idCliente));
+//        objAgendamento.setFuncionario(new Funcionario(idFuncionario));
+//        objAgendamento.setServico(new Servico(idServico));
+//        objAgendamento.setStatus(StatusAgendamento.AGUARDANDOATENDIMENTO);
+//        Date dataAgendamento = null;
+//        Time horaAgendamento = null;
+//        //Parse dataAgendamento
+//        try {
+//            dataAgendamento = new SimpleDateFormat("yyyy-MM-dd").parse(dataEntrada);
+//        } catch (ParseException ex1) {
+//            try {
+//                dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").parse(dataEntrada);
+//            } catch (ParseException ex2) {
+//                Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex2);
+//            }
+//            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex1);
+//        }
+//        objAgendamento.setDataAgendamento(dataAgendamento);
+//
+//        DateFormat formatter = new SimpleDateFormat("kk:mm");
+//        //Parse horaAgendamento
+//        try {
+//            horaAgendamento = new java.sql.Time(formatter.parse(horaEntrada).getTime());
+//        } catch (ParseException ex) {
+//            Logger.getLogger(restAgendamento.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        objAgendamento.setHoraAgendamento(horaAgendamento);
+//
+//        String validoParaAgendar = validoParaAgendar(objAgendamento);
+//
+//        return validoParaAgendar;
+//    }
     public String validoParaAgendar(Agendamento objAgendamento) {
 
         String statusValidacao = "";
 
         //Retorna horário ocupados pelo funcionário e cliente no dia solicitado
-        ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
-        arrayHorariosOcupados = agendamentoDAO.listarHorariosOcupados(objAgendamento);
+        ArrayList<Map<String, String>> arrayHorariosOcupadosAgendamento = new ArrayList<>();
+        arrayHorariosOcupadosAgendamento = agendamentoDAO.listarHorariosOcupados(objAgendamento);
 
         //Obtém os valores padrão de agendamento definido pela empresa
         Empresa objEmpresa = new Empresa();
         EmpresaDAO objEmpresaDAO = new EmpresaDAO();
         objEmpresaDAO.buscar(objEmpresa);
-        //Integer intervaloAgendamentoHoraMin = objEmpresa.getIntervaloAgendamentoGeralServico().getHours() * 60;
-        //Integer intervaloAgendamentoMin = objEmpresa.getIntervaloAgendamentoGeralServico().getMinutes();
-        //Integer intervaloAgendamento = intervaloAgendamentoHoraMin + intervaloAgendamentoMin;
 
-        ServicoDAO objServicoDAO = new ServicoDAO();
-        objServicoDAO.buscar(objAgendamento.getServico());
+        //Data Atual
+        final Calendar c1 = Calendar.getInstance();
+        c1.setTime(new Date());
+        c1.set(Calendar.HOUR_OF_DAY, 0);
+        c1.set(Calendar.MINUTE, 0);
+        c1.set(Calendar.SECOND, 0);
+        c1.set(Calendar.MILLISECOND, 0);
+        Date dataAtualDate = c1.getTime();
 
-        Long duracaoServicoLong = objAgendamento.getServico().getDuracao().toMinutes();
-        Integer duracaoServico = Integer.parseInt(duracaoServicoLong.toString());
+        //Define a data máxima de agendamento
+        Integer qtdDiasMaximo = 30;
+        //Calcula a data maxima para o calendario
+        final Calendar c2 = Calendar.getInstance();
+        c2.setTime(new Date());
+        c2.add(Calendar.DATE, qtdDiasMaximo);
+        Date dataMaximaDate = c2.getTime();
 
-        //Mantém o maior intervalo de agendamento como referência
-//        if (duracaoServico >= intervaloAgendamento) {
-//            intervaloAgendamento = duracaoServico;
-//        }
+        //Data é permitida pela empresa?
+        if (objAgendamento.getDataAgendamento().getTime() < dataAtualDate.getTime()
+                || objAgendamento.getDataAgendamento().getTime() > dataMaximaDate.getTime()) {
+            return "data_invalida";
+        }
+
+        //Validar dia útil da empresa
+        ArrayList<Integer> diaSemanaTrabalho = objEmpresa.getDiaSemanaTrabalho();
+        //Define os dias bloqueados a partir dos dias úteis da empresa
+        Integer diaAgendamento = objAgendamento.getDataAgendamento().getDay();
+
+        boolean diaAgendamentoValido = false;
+        for (Integer dia : diaSemanaTrabalho) {
+            if (diaAgendamento == dia) {
+                diaAgendamentoValido = true;
+            }
+        }
+
+        if (!diaAgendamentoValido) {
+            return "empresa_fechada";
+        }
 
         //Calcula as horas ocupadas do funcionário e do cliente, respectivamente, atualizando conforme a duração de cada serviço já agendado
         //ArrayList<Map<String, String>> arrayHorariosOcupados_new = calcularHorasOcupadas(arrayHorariosOcupados, intervaloAgendamento);
         //Verifica se o funcionário e cliente é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
-        statusValidacao = validarHorasOcupadas(objAgendamento, arrayHorariosOcupados);
+        statusValidacao = validarHorasOcupadasAgendamento(objAgendamento, arrayHorariosOcupadosAgendamento);
+
+        if ("valido".equals(statusValidacao)) {
+            statusValidacao = validarAgendamentoCliente(objAgendamento);
+        }
+        if ("valido".equals(statusValidacao)) {
+            statusValidacao = validarAgendamentoFuncionario(objAgendamento);
+        }
 
         return statusValidacao;
 
@@ -207,12 +240,12 @@ public class restAgendamento {
 //        }
 //        return msgRetorno;
 //    }
-    private String validarHorasOcupadas(Agendamento objAgendamento, ArrayList<Map<String, String>> arrayHorariosOcupados) {
+    private String validarHorasOcupadasAgendamento(Agendamento objAgendamento, ArrayList<Map<String, String>> arrayHorariosOcupadosAgendamento) {
 
         String msgRetorno = "valido";
 
-        for (int i = 0; i < arrayHorariosOcupados.size(); i++) {
-            Map<String, String> horaOcupada = arrayHorariosOcupados.get(i);
+        for (int i = 0; i < arrayHorariosOcupadosAgendamento.size(); i++) {
+            Map<String, String> horaOcupada = arrayHorariosOcupadosAgendamento.get(i);
             if (objAgendamento.getCliente().getIdCliente() == Integer.parseInt(horaOcupada.get("cliente"))) {
                 msgRetorno = "cliente_ocupado";
                 break;
@@ -322,5 +355,96 @@ public class restAgendamento {
         }
 
         return objgson.toJson(arr);
+    }
+
+    private String validarAgendamentoCliente(Agendamento objAgendamento) {
+
+        String msgRetorno = "valido";
+
+        Agendamento agendamentoClienteExistente = agendamentoDAO.verificarStatusCliente(objAgendamento);
+        if (agendamentoClienteExistente.getStatus() == null) {
+            msgRetorno = "valido";
+        } else if (agendamentoClienteExistente.getStatus().compareTo(StatusAgendamento.AGUARDANDOATENDIMENTO) == 0) {
+            msgRetorno = "agendamento_cliente_aguardandoatendimento";
+        } else if (agendamentoClienteExistente.getStatus().compareTo(StatusAgendamento.CANCELADO) == 0) {
+            if (agendamentoClienteExistente.getFuncionario().getIdFuncionario() == objAgendamento.getFuncionario().getIdFuncionario()
+                    && agendamentoClienteExistente.getServico().getIdServico() == objAgendamento.getServico().getIdServico()) {
+                msgRetorno = "agendamento_cliente_cancelado";
+            } else {
+                msgRetorno = "valido";
+            }
+        } else if (agendamentoClienteExistente.getStatus().compareTo(StatusAgendamento.FINALIZADO) == 0) {
+            if (agendamentoClienteExistente.getFuncionario().getIdFuncionario() == objAgendamento.getFuncionario().getIdFuncionario()
+                    && agendamentoClienteExistente.getServico().getIdServico() == objAgendamento.getServico().getIdServico()) {
+                msgRetorno = "agendamento_cliente_finalizado";
+            } else {
+                msgRetorno = "valido";
+            }
+        }
+
+        return msgRetorno;
+    }
+
+    private String validarAgendamentoFuncionario(Agendamento objAgendamento) {
+
+        String msgRetorno = "valido";
+
+        Agendamento agendamentoFuncionarioExistente = agendamentoDAO.verificarStatusFuncionario(objAgendamento);
+        if (agendamentoFuncionarioExistente.getStatus() == null) {
+            msgRetorno = "valido";
+        } else if (agendamentoFuncionarioExistente.getStatus().compareTo(StatusAgendamento.AGUARDANDOATENDIMENTO) == 0) {
+            msgRetorno = "agendamento_funcionario_aguardandoatendimento";
+        } else if (agendamentoFuncionarioExistente.getStatus().compareTo(StatusAgendamento.CANCELADO) == 0) {
+            if (agendamentoFuncionarioExistente.getCliente().getIdCliente() == objAgendamento.getCliente().getIdCliente()
+                    && agendamentoFuncionarioExistente.getServico().getIdServico() == objAgendamento.getServico().getIdServico()) {
+                msgRetorno = "agendamento_cliente_cancelado";
+            } else {
+                msgRetorno = "valido";
+            }
+        } else if (agendamentoFuncionarioExistente.getStatus().compareTo(StatusAgendamento.FINALIZADO) == 0) {
+            if (agendamentoFuncionarioExistente.getCliente().getIdCliente() == objAgendamento.getCliente().getIdCliente()
+                    && agendamentoFuncionarioExistente.getServico().getIdServico() == objAgendamento.getServico().getIdServico()) {
+                msgRetorno = "agendamento_funcionario_finalizado";
+            } else {
+                msgRetorno = "valido";
+            }
+        }
+
+        return msgRetorno;
+    }
+
+    public String validoParaCancelar(Agendamento objAgendamento) {
+        //Obtém os valores padrão de agendamento definido pela empresa
+        Empresa objEmpresa = new Empresa();
+        EmpresaDAO objEmpresaDAO = new EmpresaDAO();
+        objEmpresaDAO.buscar(objEmpresa);
+        
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+        objAgendamentoDao.buscarCancelar(objAgendamento);
+
+        Date dataAgendamento = objAgendamento.getDataAgendamento();
+        Time horaAgendamento = objAgendamento.getHoraAgendamento();
+        Date dataHoraAgendamentoUTC = new java.util.Date(dataAgendamento.getTime() + horaAgendamento.getTime() - (3 * 3600 * 1000));
+
+        //Validar horário de cancelamento do agendamento
+        Duration periodoMinimoCancelamento = objEmpresa.getPeriodoMinimoCancelamento();
+
+        Date dataMinimoCancelamento = new java.sql.Date(dataHoraAgendamentoUTC.getTime() - periodoMinimoCancelamento.toMillis());
+        Date dataAtual = new Date();
+
+        if (objAgendamento.getStatus() == StatusAgendamento.AGUARDANDOATENDIMENTO) {
+            if (dataAtual.getTime() >= dataMinimoCancelamento.getTime()
+                    && dataAtual.getTime() < dataHoraAgendamentoUTC.getTime()) {
+                return "cancelamento_invalido";
+            } else {
+                return "cancelamento_valido";
+            }
+        } else if (objAgendamento.getStatus() == StatusAgendamento.CANCELADO) {
+            return "agendamento_cancelado";
+        } else if (objAgendamento.getStatus() == StatusAgendamento.FINALIZADO) {
+            return "agendamento_finalizado";
+        } else {
+            return null;
+        }
     }
 }

@@ -31,7 +31,15 @@ function carregarMaisAgendado(idCliente) {
 function lerTabela(result) {
     ObjAgendamento = result;
     console.log(ObjAgendamento);
-    document.getElementById("target").innerHTML = '<table id="tabAgendamento" name="tabAgendamento" class="table table-hover"><thead class="thead-dark"><tr><th>Servi\xE7o</th><th>Data</th><th>Horario</th><th>Duracao</th><th>Valor</th><th>Funcionario</th><th>Edit</th></tr></thead></table>';
+    document.getElementById("target").innerHTML = '<table id="tabAgendamento" name="tabAgendamento" class="table table-hover"><thead class="thead-dark">\n\
+        <tr><th>Serviço</th>\n\
+            <th>Data</th>\n\
+            <th>Horario</th>\n\
+            <th>Duração</th>\n\
+            <th>Valor</th>\n\
+            <th>Funcionário</th>\n\
+            <th>Cancelar</th>\n\
+        </tr></thead></table>';
     var table = document.getElementById("tabAgendamento");
     if (ObjAgendamento != null) {
         if (ObjAgendamento.length > 0) {
@@ -48,17 +56,23 @@ function lerTabela(result) {
                 cellServico.innerHTML = ObjAgendamento[i].servico.nome;
                 cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                 cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
-                cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60+ " minutos";
+                cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60 + " minutos";
                 cellValor.innerHTML = ObjAgendamento[i].servico.valor;
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
                 cancelarAgendamento.innerHTML =
-                        "<form id='formCancelar-" + i + "' action='" + site + "/CancelarAgendamento' method='POST'><input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + "><input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + "><a id='btn-formCancelar-" + i + "' href='#' onclick='submit(this);'><i class='nav-icon fas fa-edit'></a></form>";
-
+                        "<form id='formCancelar-" + i + "' action='" + site + "/CancelarAgendamento' method='POST'>\n\
+                            <input type='hidden' name='servico' value=" + ObjAgendamento[i].servico.idServico + ">\n\
+                            <input type='hidden' name='funcionario' value=" + ObjAgendamento[i].funcionario.idFuncionario + ">\n\
+                            <input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + ">\n\
+                            <input type='hidden' name='dataAgendamento' value=" + ObjAgendamento[i].dataAgendamento + ">\n\
+                            <a id='btn-formCancelar-" + i + "' href='#' class='nav-link' onclick='sweetCancelar(this);'>\n\
+                            <i class='nav-icon fas fa-times-circle'></a></form>";
             }
-
-            sweet("  Agendamentos carregados", "success", 1500);
+            if (window.location.pathname.split('/')[2] == "HomeCliente")
+                sweet("  Agendamentos carregados", "success", 1500);
         } else {
-            sweet(" Não há agendamentos", "info", 3000);
+            if (window.location.pathname.split('/')[2] == "HomeCliente")
+                sweet(" Não há agendamentos", "info", 3000);
         }
     }
 
@@ -74,6 +88,46 @@ function sweet(title, type, timer) {
     Toast.fire({
         type: type,
         title: ' ' + title
+    });
+}
+
+function sweetCancelar(element) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: 'Tem certeza?',
+        text: "Após o cancelamento esse serviço não poderá ser reagendando para esse mesmo horário!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Não, voltar!',
+        reverseButtons: true
+    }).then((result) => {
+        console.log(result);
+        if (result.value) {
+            swalWithBootstrapButtons.fire({
+                title: 'Solicitação em andamento...',
+                text: 'Aguarde ( 0-2 min )',
+                type: 'info',
+                showConfirmButton: false
+            });
+            submit(element);
+        } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+                ) {
+            swalWithBootstrapButtons.fire(
+                    'Fechando...',
+                    'Seu agendamento está seguro :)',
+                    'error'
+                    );
+        }
     });
 }
 
