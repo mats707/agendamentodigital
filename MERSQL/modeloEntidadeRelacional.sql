@@ -156,7 +156,8 @@ horaInicial time not null,
 duracao interval not null,
 funcionario integer,
 constraint pkBloqueioAgenda primary key (id),
-constraint fkFuncionario foreign key (funcionario) references Funcionario(id)
+constraint fkFuncionario foreign key (funcionario) references Funcionario(id),
+constraint unqBloqueioAgenda unique (dataBloqueio,horaInicial,funcionario)
 );
 
 --###########

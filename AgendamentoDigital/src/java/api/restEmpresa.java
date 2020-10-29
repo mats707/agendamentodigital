@@ -153,7 +153,7 @@ public class restEmpresa {
     @Path("/Bloqueio/Listar")
     public String listarBloqueio() {
         Gson objgson = new GsonBuilder()
-                // .registerTypeAdapter(BloqueioAgenda.class, new BloqueioAdapter())
+                .registerTypeAdapter(BloqueioAgenda.class, new BloqueioAdapter())
                 .setPrettyPrinting().create();
 
         ArrayList<BloqueioAgenda> arrBloqueio = new ArrayList<BloqueioAgenda>();
@@ -171,6 +171,35 @@ public class restEmpresa {
         return objgson.toJson(arrBloqueio);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/Bloqueio/Listar/{idfunc}")
+    public String listarBloqueioFunc(@PathParam("idfunc") Integer idfunc) {
+        Gson objgson = new GsonBuilder()
+                .registerTypeAdapter(BloqueioAgenda.class, new BloqueioAdapter())
+                .setPrettyPrinting().create();
+
+        ArrayList<BloqueioAgenda> arrBloqueio = new ArrayList<BloqueioAgenda>();
+
+        BloqueioAgendaDAO bloqueioDAO = new BloqueioAgendaDAO();
+
+        FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
+
+        BloqueioAgenda bloqueio = new BloqueioAgenda();
+        Funcionario func = new Funcionario();
+
+        func.setIdFuncionario(idfunc);
+        bloqueio.setFuncionario(func);
+
+        arrBloqueio = bloqueioDAO.listarBloqueioFunc(bloqueio);
+
+        for (BloqueioAgenda objBloqueio : arrBloqueio) {
+            objFuncionarioDao.buscar(objBloqueio.getFuncionario());
+        }
+
+        return objgson.toJson(arrBloqueio);
+    }
+
     private class BloqueioAdapter implements JsonSerializer<BloqueioAgenda> {
 
         public JsonElement serialize(BloqueioAgenda bloqueio, Type typeofsrc, JsonSerializationContext context) {
@@ -178,20 +207,17 @@ public class restEmpresa {
             JsonObject obj = new JsonObject();
             obj.add("idBloqueio", context.serialize(bloqueio.getIdBloquieio()));
 
+            // bloqueio.setDataBloqueio(dataBloqueio);
+            String dataBloqueio = new SimpleDateFormat("dd/MM/yyyy").format(bloqueio.getDataBloqueio());
+            obj.add("dataBloqueio", context.serialize(dataBloqueio));
+
             String horainicial = new SimpleDateFormat("kk:mm").format(bloqueio.getHoraInicial());
             obj.add("horaInicial", context.serialize(horainicial));
 
-            obj.add("intervaloAgendamentoGeralServico", context.serialize(bloqueio.getDuracaoBloqueio().toMinutes()));
+            obj.add("duracaoBloqueio", context.serialize(bloqueio.getDuracaoBloqueio().toMinutes()));
 
             obj.add("funcionario", context.serialize(bloqueio.getFuncionario()));
-//            //Converte a String para array<Funcionario>
-//            ArrayList<Integer> arrDia = new ArrayList<Integer>();
-//            String[] diaSemanaString = request.getParameterValues("diasemana");
-//
-//            for (int i = 0; i < diaSemanaString.length; i++) {
-//                arrDia.add(Integer.parseInt(diaSemanaString[i]));
-//            }
-//            objEmpresa.setDiaSemanaTrabalho(arrDia);
+
             return obj;
 
         }

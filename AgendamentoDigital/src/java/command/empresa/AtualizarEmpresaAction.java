@@ -32,7 +32,7 @@ public class AtualizarEmpresaAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("pagina", "pages/client/minhaConta.jsp");
+        request.setAttribute("pagina", "pages/admin/empresa/menuEmpresa.jsp");
 
         Empresa objEmpresa = new Empresa();
 

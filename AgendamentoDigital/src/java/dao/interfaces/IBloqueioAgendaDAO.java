@@ -18,8 +18,8 @@ public interface IBloqueioAgendaDAO {
 
     public ArrayList<BloqueioAgenda> listarBloqueio();
 
-    public boolean alterar(BloqueioAgenda bloqueio);
+    public String deletar (BloqueioAgenda bloqueio);
 
-    public boolean cadastrar(BloqueioAgenda bloqueio);
+    public String cadastrar(BloqueioAgenda bloqueio);
 
 }

@@ -2,6 +2,7 @@ var arrHorasMinutos = [];
 var listaFuncionarios = ['0'];
 var listaFuncionariosCadastrados = [];
 var ObjListaFuncionarios;
+var listaDiasFolga = ['0', '1', '2', '3', '4', '5', '6'];
 
 
 $(document).ready(function () {
@@ -46,6 +47,63 @@ $(document).ready(function () {
             $("#listaFuncionarios").append("<option value='" + id + "'>" + nome + "</option>");
         });
     }
+
+    function listarDadosEmpresa()
+    {
+        $.ajax({
+            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet está
+            type: "GET",
+            complete: function (e, xhr, result) {
+                if (e.readyState == 4 && e.status == 200) {
+                    console.log(e.responseText);
+                    try { //Converte a resposta HTTP JSON em um objeto JavaScript
+                        var Obj = eval("(" + e.responseText + ")");
+
+                    } catch (err) { //
+                        // Mostra Aviso
+                        alert("Algo de errado aconteceu!");
+                        alert(err);
+                    }
+                    if (Obj != null) {                        
+                        $("#diaSemanaTrabalho").val(Obj.diaSemanaTrabalho);
+                        for (var i = 0; i < Obj.diaSemanaTrabalho.length; i++)
+                        {
+                            switch (Obj.diaSemanaTrabalho[i])
+                            {
+                                case 0:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+                                case 1:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+                                case 2:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+                                case 3:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+                                case 4:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+                                case 5:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+                                case 6:
+                                    listaDiasFolga.splice(i, 1);
+                                    break;
+
+                            }
+                        }
+                        $("#datepicker").daysOfWeekDisabled = listaDiasFolga;                     
+                        $(".timepicker").startTime=Obj.horaInicialTrabalho;
+                        $(".timepicker").maxTime=Obj.horaFinalTrabalho.split(':')[0] + ":" + Obj.horaFinalTrabalho.split(':')[1];
+
+                    }
+                    
+                }
+            }
+        });
+    }
 });
 
 function changeValue() {
@@ -58,43 +116,15 @@ function changeValue() {
     };
 }
 
-
-function timepicker() {
-
-
-
-    var inputDate = document.getElementById("inputDate")
-    var valueInputDate = inputDate.value;
-    var dayValueInputDate = valueInputDate.substring(0, 2);
-    var monthValueInputDate = valueInputDate.substring(3, 5);
-    var yearValueInputDate = valueInputDate.substring(6, 10);
-
-    console.log("indexListaFuncionarios: " + indexListaFuncionarios);
-    console.log("valueInputDate: " + valueInputDate);
-
-    valueInputDate = formatDate(yearValueInputDate, monthValueInputDate, dayValueInputDate);
-
-    arrHorasMinutos = [];
-    carregarHorarios(indexListaFuncionarios, valueInputDate, "Funcionario");
-}
-function isNumber(x) {
-    if (isNaN(x)) {
-        return false;
-    }
-    return true;
-}
-
-function formatDate(year, month, date) {
-    date = new Date(year + "-" + month + "-" + date);
-    var dateUtc = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
-    console.log("formatDate : " + dateUtc);
-    year = new Intl.DateTimeFormat('en', {year: 'numeric'}).format(dateUtc);
-    month = new Intl.DateTimeFormat('en', {month: 'numeric'}).format(dateUtc);
-    date = new Intl.DateTimeFormat('en', {day: '2-digit'}).format(dateUtc);
-
-    var new_inputDate = `${year}-${month}-${date}`;
-    console.log("Data Antiga: " + date);
-    console.log("Data Nova: " + new_inputDate);
-
-    return new_inputDate;
+function sweet(title, type, timer) {
+    const Toast = swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: timer
+    });
+    Toast.fire({
+        type: type,
+        title: ' ' + title
+    });
 }

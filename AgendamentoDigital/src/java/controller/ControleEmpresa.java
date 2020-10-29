@@ -22,7 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "ControleEmpresa", urlPatterns = {"/ControleEmpresa",
     "/BuscarEmpresa",
     "/AtualizarEmpresa",
-    "/MenuBloqueio"})
+    "/MenuBloqueio",
+    "/CadastrarBloqueio",
+    "/ListarBloqueio",
+    "/ListarBloqueio/Funcionario",
+    "/CancelarBloqueio"})
 public class ControleEmpresa extends HttpServlet {
 
     /**
@@ -47,6 +51,14 @@ public class ControleEmpresa extends HttpServlet {
                 acao = "AtualizarEmpresa";
             } else if (uri.equals(request.getContextPath() + "/MenuBloqueio")) {
                 acao = "MenuBloqueio";
+            } else if (uri.equals(request.getContextPath() + "/CadastrarBloqueio")) {
+                acao = "CadastrarBloqueio";
+            } else if (uri.equals(request.getContextPath() + "/ListarBloqueio")) {
+                acao = "ListarBloqueio";
+            } else if (uri.equals(request.getContextPath() + "/ListarBloqueio/Funcionario")) {
+                acao = "ListarBloqueioFuncionario";
+            } else if (uri.equals(request.getContextPath() + "/CancelarBloqueio")) {
+                acao = "CancelarBloqueio";
             } else {
                 response.sendRedirect("404.jsp");
             }
