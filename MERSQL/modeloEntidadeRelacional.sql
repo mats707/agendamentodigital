@@ -10,6 +10,7 @@
 --# TipoCampoAdicional  (id,nome)
 --# StatusAgendamento	(id,nome)
 --# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,FUNCIONARIO,STATUS)
+--# BloqueioAgenda 	(id,dataBloqueio,horaInicil,duracao,funcionario)
 
 --# SQL - Tabela
 
@@ -148,6 +149,18 @@ create table CampoAdicional(
   constraint fkTipo foreign key (tipo) references TipoCampoAdicional(id)
 );
 
+create table bloqueioAgenda 
+(
+id integer,
+dataBloqueio date not null,
+horaInicial time not null,
+duracao interval not null,
+funcionario integer,
+constraint pkBloqueioAgenda primary key (id),
+constraint fkFuncionario foreign key (funcionario) references Funcionario(id),
+constraint unqBloqueioAgenda unique (dataBloqueio,horaInicial,funcionario)
+);
+
 --###########
 create sequence sistema.sqn_empresa;
 create sequence sistema.sqn_usuario;
@@ -159,6 +172,7 @@ create sequence sistema.sqn_agendamento;
 create sequence sistema.sqn_categoriaservico;
 create sequence sistema.sqn_campoadicional;
 create sequence sistema.sqn_tipocampoadicional;
+create sequence sistema.sqn_bloqueioAgenda;
 
 --###########
 
@@ -237,3 +251,7 @@ insert into Agendamento (id,dataAgendamento,horarioAgendamento,cliente,servico,f
   (nextval('sqn_agendamento'),'2020-09-29','08:30:00',1,1,2,1),
   (nextval('sqn_agendamento'),'2020-09-30','08:00:00',1,1,2,1),
   (nextval('sqn_agendamento'),'2020-09-30','12:00:00',2,2,2,1);
+  
+insert into BloqueioAgenda (id,dataBloqueio,horaInicial,duracao,funcionario) values
+(nextval('sqn_bloqueioAgenda'),'02/11/2020','00:00','PT1440M'::INTERVAL,1),
+(nextval('sqn_bloqueioAgenda'),'22/11/2020','15:00','PT30M'::INTERVAL,1);

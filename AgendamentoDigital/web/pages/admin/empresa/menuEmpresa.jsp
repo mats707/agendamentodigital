@@ -133,7 +133,11 @@
                                                 <label>E-mail:</label>
                                                 <input type="email" id="email" name="email">
                                             </div> 
-                                            <button type="submit">Alterar</button>
+                                            <div class="card card-success">
+                                                <div class="card-body">
+                                                    <button type="submit" class="btn btn-success btn-block">Alterar</button>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
                                     <!-- /.card-header -->
@@ -236,8 +240,8 @@
         });
 
     });
-    
-    sweet("${funcaoMsg}","${funcaoStatus}", 2000);
+
+    sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
     console.log("${funcaoMsg}");
 </script>
 

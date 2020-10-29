@@ -64,32 +64,42 @@
                     </div>
                     <!-- /.container-fluid -->
                 </section>
-                <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
-                    <div>
-                        <select name="mes" id="mes">
-                            <option selected disabled>-- Selecione o mes --</option>
-                            <option value="1">Janeiro</option>
-                            <option value="2">Fevereiro</option>
-                            <option value="3">Março</option>
-                            <option value="4">Abril</option>
-                            <option value="5">Maio</option>
-                            <option value="6">Junho</option>
-                            <option value="7">Julho</option>
-                            <option value="8">Agosto</option>
-                            <option value="9">Setembro</option>
-                            <option value="10">Outubro</option>
-                            <option value="11">Novembro</option>
-                            <option value="12">Dezembro</option>
-                        </select>
-                        <select name="ano" id="ano">
-                            <option selected disabled>-- Selecione o ano --</option>
-                            <option value="2020">2020</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
-                        <button id="btnFiltar" type="submit" class="btn btn-primary btn-block">Filtrar</button>
-                    </div>
-                </form>
+                <section class="content">
+                    <div class="container-fluid">      
+                        <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select name="mes" id="mes" class="form-control select select-danger" data-dropdown-css-class="select2-danger">
+                                            <option selected disabled>-- Selecione o mes --</option>
+                                            <option value="1">Janeiro</option>
+                                            <option value="2">Fevereiro</option>
+                                            <option value="3">Março</option>
+                                            <option value="4">Abril</option>
+                                            <option value="5">Maio</option>
+                                            <option value="6">Junho</option>
+                                            <option value="7">Julho</option>
+                                            <option value="8">Agosto</option>
+                                            <option value="9">Setembro</option>
+                                            <option value="10">Outubro</option>
+                                            <option value="11">Novembro</option>
+                                            <option value="12">Dezembro</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <select name="ano" id="ano" class="form-control select select-danger" data-dropdown-css-class="select2-danger">
+                                            <option selected disabled>-- Selecione o ano --</option>
+                                            <option value="2020">2020</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <button id="btnFiltar" type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                </section>
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
@@ -100,11 +110,7 @@
                                         <h3 class="card-title">${pgRelatorio}</h3>
                                         <div class="card-tools">
                                             <div class="input-group input-group-sm" style="width: 150px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
