@@ -142,7 +142,7 @@
                 <img src="https://ui-avatars.com/api/?rounded=true&background=fff&color=0a5&name=${funcionario.nome}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">${usuarioAutenticado.email}</a>
+                <a href="${site}/BuscarEmpresa" class="d-block">${usuarioAutenticado.email}</a>
             </div>
         </div>
 
@@ -159,14 +159,7 @@
                         </p>
                     </a>
                 </li>
-                 <li class="nav-item">
-                    <a href="${site}/BuscarEmpresa" id="home" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p>
-                            Minha empresa
-                        </p>
-                    </a>
-                </li>
+
                 <li id="menuPaiusuarios" class="nav-item has-treeview">
                     <a href="#" id="usuarios" class="nav-link">
                         <i class="nav-icon far fa-user"></i>
@@ -243,32 +236,48 @@
                             </a>
                         </li>
                     </ul>
+                <li class="nav-item">
+                    <a href="${site}/MenuBloqueio" id="home" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Bloqueio de agenda
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="${site}/ListarBloqueio" id="home" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p>
+                            Listar bloqueio de agenda
+                        </p>
+                    </a>
+                </li>
 
-                    <!--<li id="menuPaiagenda" class="nav-item has-treeview">
-                        <a href="#" id="agenda" class="nav-link">
-                            <i class="nav-icon far fa-calendar"></i>
-                            <p>
-                                Agenda
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
-                                    <i class="fas fa-calendar-plus nav-icon"></i>
-                                    <p>Agendar Serviço</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
-                                    <i class="fas fa-calendar-times nav-icon"></i>
-                                    <p>Visualizar Agenda</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>-->
+                <!--<li id="menuPaiagenda" class="nav-item has-treeview">
+                    <a href="#" id="agenda" class="nav-link">
+                        <i class="nav-icon far fa-calendar"></i>
+                        <p>
+                            Agenda
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
+                                <i class="fas fa-calendar-plus nav-icon"></i>
+                                <p>Agendar Serviço</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
+                                <i class="fas fa-calendar-times nav-icon"></i>
+                                <p>Visualizar Agenda</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>-->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

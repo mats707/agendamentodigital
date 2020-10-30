@@ -21,7 +21,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControleEmpresa", urlPatterns = {"/ControleEmpresa",
     "/BuscarEmpresa",
-    "/AtualizarEmpresa"})
+    "/AtualizarEmpresa",
+    "/MenuBloqueio",
+    "/CadastrarBloqueio",
+    "/ListarBloqueio",
+    "/ListarBloqueio/Funcionario",
+    "/CancelarBloqueio"})
 public class ControleEmpresa extends HttpServlet {
 
     /**
@@ -44,6 +49,16 @@ public class ControleEmpresa extends HttpServlet {
                 acao = "BuscarEmpresa";
             } else if (uri.equals(request.getContextPath() + "/AtualizarEmpresa")) {
                 acao = "AtualizarEmpresa";
+            } else if (uri.equals(request.getContextPath() + "/MenuBloqueio")) {
+                acao = "MenuBloqueio";
+            } else if (uri.equals(request.getContextPath() + "/CadastrarBloqueio")) {
+                acao = "CadastrarBloqueio";
+            } else if (uri.equals(request.getContextPath() + "/ListarBloqueio")) {
+                acao = "ListarBloqueio";
+            } else if (uri.equals(request.getContextPath() + "/ListarBloqueio/Funcionario")) {
+                acao = "ListarBloqueioFuncionario";
+            } else if (uri.equals(request.getContextPath() + "/CancelarBloqueio")) {
+                acao = "CancelarBloqueio";
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -59,7 +74,7 @@ public class ControleEmpresa extends HttpServlet {
             String objEmpresa = comando_acao.executar(request, response);
 
             String pagina = request.getAttribute("pagina").toString();
-            
+
             RequestDispatcher rd = request.getRequestDispatcher(pagina);
             request.setAttribute("msg", objEmpresa);
             rd.forward(request, response);
