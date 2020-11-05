@@ -13,12 +13,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Agendamento;
 import modelos.BloqueioAgenda;
 import modelos.Funcionario;
+import modelos.Servico;
 import util.ConectaBanco;
 
 /**
@@ -33,7 +41,48 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
             + " (nextval('sistema.sqn_bloqueioAgenda'),?::DATE,?::TIME,?::INTERVAL,?);";
     private static final String DELETAR = "DELETE FROM sistema.bloqueioagenda where databloqueio =?::DATE and horainicial=?::TIME and funcionario=?;";
     private static final String LISTAR_FILTRO_FUNC = "SELECT bl.id,bl.databloqueio,bl.horainicial,bl.funcionario,pessoa.nome,bl.duracao from sistema.bloqueioagenda as bl, sistema.pessoa as pessoa, sistema.funcionario as func where bl.funcionario=func.id and func.pessoa = pessoa.id and bl.funcionario=? order by id desc;";
-
+    private static final String LISTAR_HORARIOS_OCUPADOS = ""
+            + "select\n"
+            + "	 tab_bloq.horaInicial\n"
+            + "	,tab_bloq.horaFinal\n"
+            + "	,tab_bloq.funcionario\n"
+            + "from\n"
+            + "(\n"
+            + "	select\n"
+            + "		 bloq.id as bloqueioAgenda\n"
+            + "		,bloq.dataBloqueio\n"
+            + "		,bloq.horaInicial\n"
+            + "		,bloq.horaInicial + bloq.duracao as horaFinal\n"
+            + "		,bloq.funcionario\n"
+            + "	from sistema.BloqueioAgenda bloq\n"
+            + "	where\n"
+            + "		bloq.dataBloqueio = ?::DATE\n"
+            + "		and bloq.funcionario = ?\n"
+            + ") as tab_bloq\n"
+            + "inner join\n"
+            + "(\n"
+            + "	select\n"
+            + "		t_servico.id,\n"
+            + "		t1.horarioSolicitado,\n"
+            + "		t1.horarioSolicitado + t_servico.duracao as horarioFinalSolicitado\n"
+            + "	from (\n"
+            + "		select\n"
+            + "			? as servico\n"
+            + "			,?::TIME as horarioSolicitado\n"
+            + "	) t1\n"
+            + "	inner join sistema.servico t_servico\n"
+            + "	on t_servico.id = t1.servico\n"
+            + ") as tab_param\n"
+            + "on (tab_param.horarioSolicitado >= tab_bloq.horaInicial::time\n"
+            + "AND tab_param.horarioSolicitado < tab_bloq.horaFinal::time)\n"
+            + "OR (tab_param.horarioFinalSolicitado > tab_bloq.horaInicial::time\n"
+            + "AND tab_param.horarioFinalSolicitado < tab_bloq.horaFinal::time)\n"
+            + "OR  (tab_bloq.horaInicial::time >= tab_param.horarioSolicitado\n"
+            + "AND tab_bloq.horaInicial::time < tab_param.horarioFinalSolicitado)\n"
+            + "OR  (tab_bloq.horaFinal::time > tab_param.horarioSolicitado\n"
+            + "AND tab_bloq.horaFinal::time < tab_param.horarioFinalSolicitado)\n"
+            + "\n"
+            + ";";
     private Connection conexao;
 
     @Override
@@ -210,6 +259,75 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
             } catch (SQLException ex) {
                 Logger.getLogger(BloqueioAgenda.class
                         .getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public ArrayList<Map<String, String>> listarHorariosOcupados(BloqueioAgenda bloqueioAgenda, Servico servico) {
+
+        ArrayList<Map<String, String>> arrayHorariosOcupados = new ArrayList<>();
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(LISTAR_HORARIOS_OCUPADOS);
+            pstmt.setDate(1, new java.sql.Date(bloqueioAgenda.getDataBloqueio().getTime()));
+            pstmt.setInt(2, bloqueioAgenda.getFuncionario().getIdFuncionario());
+            pstmt.setInt(3, servico.getIdServico());
+            pstmt.setTime(4, new java.sql.Time(bloqueioAgenda.getHoraInicial().getTime()));
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            DateFormat formatter = new SimpleDateFormat("kk:mm");
+            Time horaInicialBloqueio = null;
+            Time horaFinalBloqueio = null;
+
+            while (rs.next()) {
+                Map<String, String> arrHorariosOcupados = new HashMap<String, String>();
+                arrHorariosOcupados.put("funcionario", rs.getString("funcionario"));
+                //Parse horaAgendamento
+                try {
+                    horaInicialBloqueio = new java.sql.Time(formatter.parse(rs.getString("horaInicial")).getTime());
+                } catch (ParseException ex) {
+                    Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                try {
+                    horaFinalBloqueio = new java.sql.Time(formatter.parse(rs.getString("horaFinal")).getTime());
+                } catch (ParseException ex) {
+                    Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                arrHorariosOcupados.put("horaInicialBloqueio", horaInicialBloqueio.toString().substring(0, 5));
+                arrHorariosOcupados.put("horaFinalBloqueio", horaFinalBloqueio.toString().substring(0, 5));
+                arrayHorariosOcupados.add(arrHorariosOcupados);
+//                [
+//                    {
+//                        "cliente": "X",
+//                        "funcionario": "X",
+//                        "horarioAgendamento": "kk:mm" ,
+//                        "horarioFinalAgendamento": "kk:mm"
+//                    },
+//                    {
+//                        "cliente": "X",
+//                        "funcionario": "X",
+//                        "horarioAgendamento": "kk:mm" ,
+//                        "horarioFinalAgendamento": "kk:mm"
+//                    }
+//                ]                
+            }
+            return arrayHorariosOcupados;
+
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return arrayHorariosOcupados;
+        } finally {
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(AgendamentoDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -189,6 +189,9 @@ public class AgendarAction implements ICommand {
                 } else {
                     funcaoMsg = "Não foi possível realizar o agendamento.\\nTente novamente mais tarde ou entre em contato com nossa equipe!";
                 }
+            } else if (validoParaAgendar == "funcionario_bloqueado") {
+                funcaoMsg = "O funcionário escolhido não atenderá nesse horário!\\nEscolha outra data ou horário, por favor!";
+                funcaoStatus = "error";
             } else if (validoParaAgendar == "funcionario_ocupado") {
                 funcaoMsg = "O funcionário escolhido já possui um serviço agendando nesse horário!\\nEscolha outro horário, por favor!";
                 funcaoStatus = "error";

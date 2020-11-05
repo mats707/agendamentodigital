@@ -158,6 +158,15 @@
                             Home
                         </p>
                     </a>
+                </li>                
+                
+                <li class="nav-item">
+                    <a href="${site}/BuscarEmpresa" id="buscarEmpresa" class="nav-link">
+                        <i class="nav-icon fas fa-industry"></i>
+                        <p>
+                            Empresa
+                        </p>
+                    </a>
                 </li>
 
                 <li id="menuPaiusuarios" class="nav-item has-treeview">
@@ -202,21 +211,21 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/CadastrarServico" id="cadastrarServico" class="nav-link">
-                                <i class="fas fa-store-alt nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Cadastrar</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="${site}/ListarServico" id="listarServico" class="nav-link">
-                                <i class="fas fa-folder-open nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Listar</p>
                             </a>
                         </li>
                     </ul>
                 </li>  
                 <li id="menuPaiservicos" class="nav-item has-treeview">
-                    <a href="#" id="servicos" class="nav-link">
-                        <i class="nav-icon fas fa-store"></i>
+                    <a href="#" id="relatorios" class="nav-link">
+                        <i class="nav-icon fas fa-chart-bar"></i>
                         <p>
                             Relatorios de Serviços
                             <i class="fas fa-angle-left right"></i>
@@ -225,28 +234,29 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/Relatorios/Servicos/MaisAgendado" id="relatorioServicoMaisAgendado" class="nav-link">
-                                <i class="fas fa-store-alt nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Serviços mais agendados</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
-                                <i class="fas fa-folder-open nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Funcionarios mais trabalhados</p>
                             </a>
                         </li>
                     </ul>
+                </li>
                 <li class="nav-item">
-                    <a href="${site}/MenuBloqueio" id="home" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
+                    <a href="${site}/MenuBloqueio" id="menuBloqueio" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-minus"></i>
                         <p>
                             Bloqueio de agenda
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="${site}/ListarBloqueio" id="home" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
+                    <a href="${site}/ListarBloqueio" id="listarBloqueio" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-minus"></i>
                         <p>
                             Listar bloqueio de agenda
                         </p>

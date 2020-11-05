@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.FuncionarioDAO;
 import dao.AgendamentoDAO;
+import dao.BloqueioAgendaDAO;
 import dao.EmpresaDAO;
 import dao.ServicoDAO;
 import java.math.BigDecimal;
@@ -37,6 +38,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelos.Funcionario;
 import modelos.Agendamento;
+import modelos.BloqueioAgenda;
 import modelos.Cliente;
 import modelos.Empresa;
 import modelos.Servico;
@@ -51,6 +53,7 @@ import modelos.StatusAgendamento;
 public class restAgendamento {
 
     AgendamentoDAO agendamentoDAO = new AgendamentoDAO();
+    BloqueioAgendaDAO bloqueioAgendaDAO = new BloqueioAgendaDAO();
 
     @Context
     private UriInfo context;
@@ -128,6 +131,17 @@ public class restAgendamento {
         ArrayList<Map<String, String>> arrayHorariosOcupadosAgendamento = new ArrayList<>();
         arrayHorariosOcupadosAgendamento = agendamentoDAO.listarHorariosOcupados(objAgendamento);
 
+        BloqueioAgenda objBloqueioAgenda = new BloqueioAgenda();
+        objBloqueioAgenda.setDataBloqueio(objAgendamento.getDataAgendamento());
+        objBloqueioAgenda.setHoraInicial(objAgendamento.getHoraAgendamento());
+        objBloqueioAgenda.setFuncionario(objAgendamento.getFuncionario());
+
+        Servico objServico = objAgendamento.getServico();
+
+        //Retorna horário bloqueados dos funcionário no dia solicitado
+        ArrayList<Map<String, String>> arrayHorariosBloqueados = new ArrayList<>();
+        arrayHorariosBloqueados = bloqueioAgendaDAO.listarHorariosOcupados(objBloqueioAgenda, objServico);
+
         //Obtém os valores padrão de agendamento definido pela empresa
         Empresa objEmpresa = new Empresa();
         EmpresaDAO objEmpresaDAO = new EmpresaDAO();
@@ -176,12 +190,14 @@ public class restAgendamento {
         //ArrayList<Map<String, String>> arrayHorariosOcupados_new = calcularHorasOcupadas(arrayHorariosOcupados, intervaloAgendamento);
         //Verifica se o funcionário e cliente é válido, ou seja, se os horários que ele possui agendado tem conflito com o novo agendamento
         statusValidacao = validarHorasOcupadasAgendamento(objAgendamento, arrayHorariosOcupadosAgendamento);
-
         if ("valido".equals(statusValidacao)) {
-            statusValidacao = validarAgendamentoCliente(objAgendamento);
-        }
-        if ("valido".equals(statusValidacao)) {
-            statusValidacao = validarAgendamentoFuncionario(objAgendamento);
+            statusValidacao = validarHorasBloqueadas(objAgendamento, arrayHorariosBloqueados);
+            if ("valido".equals(statusValidacao)) {
+                statusValidacao = validarAgendamentoCliente(objAgendamento);
+                if ("valido".equals(statusValidacao)) {
+                    statusValidacao = validarAgendamentoFuncionario(objAgendamento);
+                }
+            }
         }
 
         return statusValidacao;
@@ -251,6 +267,20 @@ public class restAgendamento {
                 break;
             } else {
                 msgRetorno = "funcionario_ocupado";
+            }
+        }
+        return msgRetorno;
+    }
+
+    private String validarHorasBloqueadas(Agendamento objAgendamento, ArrayList<Map<String, String>> arrayHorariosBloqueados) {
+
+        String msgRetorno = "valido";
+
+        for (int i = 0; i < arrayHorariosBloqueados.size(); i++) {
+            Map<String, String> horaOcupada = arrayHorariosBloqueados.get(i);
+            if (objAgendamento.getFuncionario().getIdFuncionario() == Integer.parseInt(horaOcupada.get("funcionario"))) {
+                msgRetorno = "funcionario_bloqueado";
+                break;
             }
         }
         return msgRetorno;
@@ -418,7 +448,7 @@ public class restAgendamento {
         Empresa objEmpresa = new Empresa();
         EmpresaDAO objEmpresaDAO = new EmpresaDAO();
         objEmpresaDAO.buscar(objEmpresa);
-        
+
         AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
         objAgendamentoDao.buscarCancelar(objAgendamento);
 
