@@ -141,7 +141,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "AND tab_cli.horarioAgendamento::time < tab_param.horarioFinalSolicitado)\n"
             + "OR  (tab_cli.horarioFinalAgendamento::time > tab_param.horarioSolicitado\n"
             + "AND tab_cli.horarioFinalAgendamento::time < tab_param.horarioFinalSolicitado);";
-    private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? and a.status=1 ORDER BY dataAgendamento, horarioAgendamento";
+    private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? and s.nome=? ORDER BY dataAgendamento, horarioAgendamento";
     private static final String LISTAR_FUNCIONARIO = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE funcionario=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String LISTAR_STATUS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE status=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String DELETAR = "DELETE FROM sistema.agendamento WHERE id = ?";
@@ -364,6 +364,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR_CLIENTE);
             pstmt.setInt(1, agendamento.getCliente().getIdCliente());
+            pstmt.setString(2, agendamento.getStatus().toString());
 
             //executa
             ResultSet rs = pstmt.executeQuery();

@@ -347,7 +347,7 @@ public class restAgendamento {
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
         ServicoDAO objServicoDao = new ServicoDAO();
 
-        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(new Cliente(idCliente)));
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(new Cliente(idCliente),StatusAgendamento.AGUARDANDOATENDIMENTO));
 
         for (Agendamento objAgendamento : arr) {
             objFuncionarioDao.buscar(objAgendamento.getFuncionario());

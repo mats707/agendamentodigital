@@ -65,7 +65,7 @@
                     <!-- /.container-fluid -->
                 </section>
                 <section class="content">
-                    <div class="container-fluid">      
+                    <div class="container-fluid border rounded">      
                         <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
                             <div class="row">
                                 <div class="col-md-6">
@@ -99,6 +99,7 @@
                                 </div>
                             </div>
                         </form>
+                    </div>
                 </section>
                 <!-- Main content -->
                 <section class="content">

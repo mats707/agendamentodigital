@@ -20,6 +20,7 @@ import modelos.Agendamento;
 import modelos.Usuario;
 import modelos.Cliente;
 import modelos.PerfilDeAcesso;
+import modelos.StatusAgendamento;
 
 /**
  *
@@ -48,7 +49,7 @@ public class VisualizarAction implements ICommand {
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
         ServicoDAO objServicoDao = new ServicoDAO();
 
-        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(objCliente));
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(objCliente,StatusAgendamento.AGUARDANDOATENDIMENTO));
 
         for (Agendamento objAgendamento : arr) {
             objFuncionarioDao.buscar(objAgendamento.getFuncionario());

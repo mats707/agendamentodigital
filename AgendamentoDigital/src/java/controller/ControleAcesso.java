@@ -18,6 +18,8 @@ public class ControleAcesso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String funcaoMsg = "Execute seu acesso";
+        String funcaoStatus = "info";
         try {
             RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
             String acao = request.getParameter("acao");
@@ -40,12 +42,16 @@ public class ControleAcesso extends HttpServlet {
                         HttpSession sessaoUsuario = request.getSession();
                         sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
                         sessaoUsuario.setAttribute("cliente", cliente);
-                        
+
                         //redireciona para a pagina principal
                         response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
 
                     } else {
-                        request.setAttribute("msg", "Email ou Senha Incorreto!");
+
+                        funcaoMsg = "Email ou senha incorreto";
+                        funcaoStatus = "error";
+                        request.setAttribute("funcaoMsg", funcaoMsg);
+                        request.setAttribute("funcaoStatus", funcaoStatus);
                         rd.forward(request, response);
                     }
                     break;
@@ -72,6 +78,7 @@ public class ControleAcesso extends HttpServlet {
                 default:
                     break;
             }
+
         } catch (IOException | ServletException erro) {
             RequestDispatcher rd = request.getRequestDispatcher("/erro.jsp");
             request.setAttribute("erro", erro);

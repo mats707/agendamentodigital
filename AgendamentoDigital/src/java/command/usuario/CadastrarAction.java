@@ -35,7 +35,7 @@ public class CadastrarAction implements ICommand {
         String sqlState = "0";
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
-        
+
         if (email != null && senha != null && chkPassword != null && celular != null && perfil != null) {
             if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && perfil != null) {
 
@@ -45,10 +45,13 @@ public class CadastrarAction implements ICommand {
                 usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
                 if (perfil.equalsIgnoreCase("administrador")) {
                     usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
-                } else if (perfil.equalsIgnoreCase("comum")) {
+                } else if (perfil.equalsIgnoreCase("funcionariocomum")) {
                     usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
-                } else {
+                } else if (perfil.equalsIgnoreCase("clientecomum")) {
                     usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
+                } else {
+                    funcaoStatus = "error";
+                    funcaoMsg = "Não foi possível cadastrar o usuário, tente novamente!\\nPerfil inválido";
                 }
 
                 if (geraHash.checkPassword(chkPassword, usuario.getSenha())) {
@@ -58,21 +61,21 @@ public class CadastrarAction implements ICommand {
 
                     if (sqlState == "0") {
                         funcaoStatus = "success";
-                        funcaoMsg =  "Cadastrado com sucesso!";
+                        funcaoMsg = "Cadastrado com sucesso!";
                     } else if ("23505".equals(sqlState)) {
                         funcaoStatus = "danger";
-                        funcaoMsg =  "Tente outro email ou celular!";
+                        funcaoMsg = "Tente outro email ou celular!";
                     } else {
                         funcaoStatus = "danger";
-                        funcaoMsg =  "Não foi possível cadastrar o usuário, tente novamente!";
+                        funcaoMsg = "Não foi possível cadastrar o usuário, tente novamente!";
                     }
                 } else {
                     funcaoStatus = "warning";
-                    funcaoMsg =  "Senhas diferente!";
+                    funcaoMsg = "Senhas diferente!";
                 }
             } else {
                 funcaoStatus = "danger";
-                funcaoMsg =  "Dados inválidos!";
+                funcaoMsg = "Dados inválidos!";
             }
         } else {
             funcaoMsg = "Carregando...\\nAguarde um momento!";

@@ -23,7 +23,7 @@ public class ClienteDAO implements IClienteDAO {
     private static final String BUSCAR_USUARIO = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON c.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE u.id = ? ORDER BY u.id;";
     private static final String BUSCAR = "SELECT id, pessoa FROM sistema.cliente WHERE id= ?;";
     private static final String CADASTRAR = "INSERT INTO sistema.cliente (id, pessoa) VALUES (NEXTVAL('sistema.sqn_cliente'),(SELECT id FROM sistema.pessoa WHERE id = ?));";
-    private static final String DELETE = "DELETE FROM cliente WHERE id=?;";
+    private static final String DELETE = " FROM cliente WHERE id=?;";
 
     private Connection conexao;
 

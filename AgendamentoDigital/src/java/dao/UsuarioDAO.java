@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelos.Agendamento;
 import modelos.PerfilDeAcesso;
 import modelos.Usuario;
 import util.ConectaBanco;
@@ -30,7 +31,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     private static final String ALTERAR_CELULAR = "UPDATE sistema.usuario SET celular = ? WHERE id = ?";
     private static final String ALTERAR_FOTO_PERFIL = "UPDATE sistema.usuario SET fotoPerfil = ? WHERE id = ?";
     private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
-            + "ON u.perfil = p.id WHERE u.email=?";
+            + "ON u.perfil = p.id WHERE u.email=? and u.habilitado=true";
     private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
     private static final String BUSCAR_ID = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
@@ -42,6 +43,9 @@ public class UsuarioDAO implements IUsuarioDAO {
     private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.id=? AND u.email=? AND u.celular=? AND p.nome=?";
     private static final int BUFFER_SIZE = 4096;
+    private static final String DESATIVAR = "UPDATE SISTEMA.USUARIO\n"
+            + "SET HABILITADO=FALSE\n"
+            + "WHERE ID=?;";
 
     private Connection conexao;
 
@@ -461,6 +465,38 @@ public class UsuarioDAO implements IUsuarioDAO {
             } else {
                 return sqlReturnCode;
             }
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    public String desativar(Usuario usuario) {
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(DESATIVAR);
+            pstmt.setInt(1, usuario.getIdUsuario());
+
+            pstmt.executeUpdate();
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+            sqlReturnCode = sqlErro.getSQLState();
+            if (sqlReturnCode.equalsIgnoreCase("23505")) { //Significa que violou uma unique constraint
+                return sqlErro.getMessage().split("\"")[1];
+            } else {
+                return sqlReturnCode;
+            }
+
         } finally {
             if (conexao != null) {
                 try {

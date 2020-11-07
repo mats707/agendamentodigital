@@ -93,7 +93,8 @@ public class Agendamento {
         this.status = status;
     }
 
-    public Agendamento(Cliente cliente) {
+    public Agendamento(Cliente cliente,StatusAgendamento status) {
         this.cliente = cliente;
+        this.status = status;
     }    
 }

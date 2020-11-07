@@ -72,7 +72,7 @@
                                             <div class="card-body register-card-body">
                                                 <p class="login-box-msg">Cadastrar um novo usuário</p>
 
-                                                <form id="cadastrarUsuario" action="${site}/CadastrarUsuario" method="post">
+                                                <form id="cadastrarUsuario" autocomplete="off" action="${site}/CadastrarUsuario"  method="post" >
                                                     <div class="input-group mb-3">
                                                         <input id="email" name="email" type="email" class="form-control" placeholder="Email">
                                                         <div class="input-group-append">
@@ -106,13 +106,25 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
-                                                        <label class="btn bg-info">
-                                                            <input type="radio" name="perfil" id="perfil1" value="COMUM"> Funcionário
-                                                        </label>
-                                                        <label class="btn bg-info">
-                                                            <input type="radio" name="perfil" id="perfil2" value="ADMINISTRADOR"> Administrador
-                                                        </label>
+                                                    <div class="border  rounded p-2 mb-4">
+                                                        <label>Perfil</label>
+
+                                                        <div class="form-group justify-center">
+
+                                                            <div class="custom-control custom-radio">
+                                                                <input class="custom-control-input" type="radio" name="perfil" id="perfil1"  value="FUNCIONARIOCOMUM">
+                                                                <label for="perfil1" class="custom-control-label">Funcionário</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input class="custom-control-input" type="radio" name="perfil" id="perfil2" value="ADMINISTRADOR">
+                                                                <label for="perfil2" class="custom-control-label">Administrador</label>
+                                                            </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input class="custom-control-input" type="radio" name="perfil" id="perfil3" value="CLIENTECOMUM" >
+                                                                <label for="perfil3" class="custom-control-label">Cliente</label>
+                                                            </div>
+                                                        </div>
+
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-8">
@@ -125,7 +137,7 @@
                                                         </div>
                                                         <!-- /.col -->
                                                         <div class="col-4">
-                                                            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+                                                            <button type="submit" class="btn btn-block btn-success">Cadastrar</button>
                                                         </div>
                                                         <!-- /.col -->
                                                     </div>
@@ -215,7 +227,7 @@
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
-        
+
         <!-- SweetAlert2 -->
         <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>

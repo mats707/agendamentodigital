@@ -127,8 +127,8 @@ public class restRelatorios {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Agendamentos/Cliente/{idCliente}")
-    public String getAgendamentosCliente(@PathParam("idCliente") Integer idCliente) throws SQLException, ClassNotFoundException {
+    @Path("/Agendamentos/Cliente/{idCliente}/{status}")
+    public String getAgendamentosCliente(@PathParam("idCliente") Integer idCliente, @PathParam("status") String status) throws SQLException, ClassNotFoundException {
 
         //Instanciando Cliente
         Cliente objCliente = new Cliente();
@@ -140,7 +140,11 @@ public class restRelatorios {
         FuncionarioDAO objFuncionarioDao = new FuncionarioDAO();
         ServicoDAO objServicoDao = new ServicoDAO();
 
-        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(objCliente));
+//        if (status == null) {
+//            status = "AGUARDANDOATENDIMENTO";
+//        }
+
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarCliente(new Agendamento(objCliente, StatusAgendamento.valueOf(status)));
 
         for (Agendamento objAgendamento : arr) {
             objFuncionarioDao.buscar(objAgendamento.getFuncionario());
@@ -151,8 +155,8 @@ public class restRelatorios {
             json += objgson.toJson(objAgendamento);
             json += ",";
         }
-        json = json.substring(0, json.length()-1);
-        json+="\n]";
+        json = json.substring(0, json.length() - 1);
+        json += "\n]";
         return json;
     }
 
@@ -162,13 +166,13 @@ public class restRelatorios {
         public JsonElement serialize(Agendamento objAgendamento, Type typeofsrc, JsonSerializationContext context) {
 
             JsonObject obj = new JsonObject();
-            
+
             String dataAgendamento = new SimpleDateFormat("dd/MM/yyyy").format(objAgendamento.getDataAgendamento());
             obj.add("dataAgendamento", context.serialize(dataAgendamento));
 
             String horaAgendamento = new SimpleDateFormat("kk:mm:ss").format(objAgendamento.getHoraAgendamento());
             obj.add("horaAgendamento", context.serialize(horaAgendamento));
-            
+
             obj.add("cliente", context.serialize(objAgendamento.getCliente()));
             obj.add("funcionario", context.serialize(objAgendamento.getFuncionario()));
             obj.add("servico", context.serialize(objAgendamento.getServico()));
