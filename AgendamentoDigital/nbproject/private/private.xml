@@ -2,6 +2,21 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/RelatoriosDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/AgendarAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/relatorios/MaisAgendadoAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleAgenda.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/ServicoDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/relatorios/MaisAgendadoPeriodoAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleEmpresa.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/ICommand.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/interfaces/IClienteDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restRelatorios.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/CancelarAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/controller/ControleCliente.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/interfaces/IPessoaDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/agenda/VisualizarAction.java</file>
+        </group>
     </open-files>
 </project-private>
