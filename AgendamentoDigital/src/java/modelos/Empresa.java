@@ -20,6 +20,7 @@ public class Empresa {
     private Time horaInicialTrabalho;
     private Time horaFinalTrabalho;
     private Duration intervaloAgendamentoGeralServico;
+    private Duration periodoMinimoCancelamento;
     private ArrayList<Integer> diaSemanaTrabalho; // 0- Domingo , 1-Segunda ..., 6-Sabado
     private ArrayList<Long> telefone;
     private String email;
@@ -64,21 +65,12 @@ public class Empresa {
         this.intervaloAgendamentoGeralServico = intervaloAgendamentoGeralServico;
     }
 
-    
-
-    public Empresa(Integer idEmpresa, String nome, Time horaInicialTrabalho, Time horaFinalTrabalho, Duration intervaloAgendamentoGeralServico) {
-        this.idEmpresa = idEmpresa;
-        this.nome = nome;
-        this.horaInicialTrabalho = horaInicialTrabalho;
-        this.horaFinalTrabalho = horaFinalTrabalho;
-        this.intervaloAgendamentoGeralServico = intervaloAgendamentoGeralServico;
+    public Duration getPeriodoMinimoCancelamento() {
+        return periodoMinimoCancelamento;
     }
 
-    public Empresa(Integer idEmpresa) {
-        this.idEmpresa = idEmpresa;
-    }
-
-    public Empresa() {
+    public void setPeriodoMinimoCancelamento(Duration periodoMinimoCancelamento) {
+        this.periodoMinimoCancelamento = periodoMinimoCancelamento;
     }
 
     public ArrayList<Integer> getDiaSemanaTrabalho() {
@@ -97,7 +89,6 @@ public class Empresa {
         this.telefone = telefone;
     }
 
-    
     public String getEmail() {
         return email;
     }
@@ -105,7 +96,21 @@ public class Empresa {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    
+
+    public Empresa(Integer idEmpresa, String nome, Time horaInicialTrabalho, Time horaFinalTrabalho, Duration intervaloAgendamentoGeralServico, Duration periodoMinimoCancelamento) {
+        this.idEmpresa = idEmpresa;
+        this.nome = nome;
+        this.horaInicialTrabalho = horaInicialTrabalho;
+        this.horaFinalTrabalho = horaFinalTrabalho;
+        this.intervaloAgendamentoGeralServico = intervaloAgendamentoGeralServico;
+        this.periodoMinimoCancelamento = periodoMinimoCancelamento;
+    }
+
+    public Empresa(Integer idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public Empresa() {
+    }
 
 }

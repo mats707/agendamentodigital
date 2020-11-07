@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="${site}/pages/client/css/home.css" rel="stylesheet" type="text/css"/>
     </head>
     <!--
     BODY TAG OPTIONS:
@@ -62,7 +64,7 @@
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- /.content-header -->
-                
+
 
                 </form>
                 <!-- Main content -->
@@ -110,20 +112,10 @@
         <script charset="ISO-8859-1" src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
 
         <script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: 1000
-            });
-            Toast.fire({
-                type: '${funcaoStatus}',
-                title: ' ${funcaoMsg}'
-            });
+            sweet(" ${funcaoMsg}", "${funcaoStatus}", 4000);
             includeHTMLNav("home", "");
             var idCliente = '${cliente.idCliente}';
             carregarMaisAgendado(idCliente);
-           
         </script>
     </body>
 </html>

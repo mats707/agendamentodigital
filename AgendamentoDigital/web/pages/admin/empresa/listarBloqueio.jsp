@@ -41,7 +41,7 @@
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="../sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -50,25 +50,42 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Empresa MAFERA</h1>
+                                <h1 class="m-0 text-dark">Bloqueio de agenda dos funcionarios</h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Agendamentos</li>
+                                    <li class="breadcrumb-item active">Lista de bloqueio</li>
                                 </ol>
                             </div><!-- /.col -->
                         </div><!-- /.row -->
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- /.content-header -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <form id="filtrarPeriodo" action="${site}/ListarBloqueio/Funcionario" method="post">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div id="groupFiltro" name="groupFiltro" class="form-group">
+
+                                    </div>
+                                    <div class="col-6">
+                                        <button id="btnFiltar" type="submit" class="btn btn-primary btn-block" >Filtrar</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
 
                 <!-- Main content -->
                 <div class="content">
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-header border-0">
-                                <h3 class="card-title">Agendamentos</h3>
+                                <h3 class="card-title">Lista de bloqueio</h3>
                                 <div class="card-tools">
                                     <a href="#" class="btn btn-tool btn-sm">
                                         <i class="fas fa-calendar"></i>
@@ -87,7 +104,7 @@
             </div>
             <!-- /.content-wrapper -->
             <!-- Footer -->
-            <jsp:include page="footer.jsp"/>
+            <jsp:include page="../footer.jsp"/>
         </div>
         <!-- ./wrapper -->
 
@@ -104,12 +121,13 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/empresa/listarBloqueio.js" type="text/javascript"></script>
 
-        <script charset="ISO-8859-1" src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
 
         <script>
             var result = ${msg};
-            includeHTMLNav("home", "");
+            includeHTMLNav("listarBloqueio", "");
+            carregarFuncionario();
             lerTabela(result);
         </script>
     </body>

@@ -129,9 +129,9 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="home.jsp" class="brand-link">
-        <img src="${site}/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+        <img src="${site}/dist/img/AdminLTELogo.png" alt="Agendamento Digital" class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <span class="brand-text font-weight-light">Agendamento Digital</span>
     </a>
 
     <!-- Sidebar -->
@@ -139,10 +139,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="${site}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                <img src="https://ui-avatars.com/api/?rounded=true&background=fff&color=0a5&name=${funcionario.nome}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">${usuarioAutenticado.email}</a>
+                <a href="${site}/BuscarEmpresa" class="d-block">${usuarioAutenticado.email}</a>
             </div>
         </div>
 
@@ -158,15 +158,17 @@
                             Home
                         </p>
                     </a>
-                </li>
-                 <li class="nav-item">
-                    <a href="${site}/BuscarEmpresa" id="home" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
+                </li>                
+                
+                <li class="nav-item">
+                    <a href="${site}/BuscarEmpresa" id="buscarEmpresa" class="nav-link">
+                        <i class="nav-icon fas fa-industry"></i>
                         <p>
-                            Minha empresa
+                            Empresa
                         </p>
                     </a>
                 </li>
+
                 <li id="menuPaiusuarios" class="nav-item has-treeview">
                     <a href="#" id="usuarios" class="nav-link">
                         <i class="nav-icon far fa-user"></i>
@@ -209,21 +211,21 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/CadastrarServico" id="cadastrarServico" class="nav-link">
-                                <i class="fas fa-store-alt nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Cadastrar</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="${site}/ListarServico" id="listarServico" class="nav-link">
-                                <i class="fas fa-folder-open nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Listar</p>
                             </a>
                         </li>
                     </ul>
                 </li>  
                 <li id="menuPaiservicos" class="nav-item has-treeview">
-                    <a href="#" id="servicos" class="nav-link">
-                        <i class="nav-icon fas fa-store"></i>
+                    <a href="#" id="relatorios" class="nav-link">
+                        <i class="nav-icon fas fa-chart-bar"></i>
                         <p>
                             Relatorios de Serviços
                             <i class="fas fa-angle-left right"></i>
@@ -232,43 +234,60 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/Relatorios/Servicos/MaisAgendado" id="relatorioServicoMaisAgendado" class="nav-link">
-                                <i class="fas fa-store-alt nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Serviços mais agendados</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
-                                <i class="fas fa-folder-open nav-icon"></i>
+                                <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Funcionarios mais trabalhados</p>
                             </a>
                         </li>
                     </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="${site}/MenuBloqueio" id="menuBloqueio" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-minus"></i>
+                        <p>
+                            Bloqueio de agenda
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="${site}/ListarBloqueio" id="listarBloqueio" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-minus"></i>
+                        <p>
+                            Listar bloqueio de agenda
+                        </p>
+                    </a>
+                </li>
 
-                    <!--<li id="menuPaiagenda" class="nav-item has-treeview">
-                        <a href="#" id="agenda" class="nav-link">
-                            <i class="nav-icon far fa-calendar"></i>
-                            <p>
-                                Agenda
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
-                                    <i class="fas fa-calendar-plus nav-icon"></i>
-                                    <p>Agendar Serviço</p>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
-                                    <i class="fas fa-calendar-times nav-icon"></i>
-                                    <p>Visualizar Agenda</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>-->
+                <!--<li id="menuPaiagenda" class="nav-item has-treeview">
+                    <a href="#" id="agenda" class="nav-link">
+                        <i class="nav-icon far fa-calendar"></i>
+                        <p>
+                            Agenda
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/AgendarServico" id="agendarServico" class="nav-link">
+                                <i class="fas fa-calendar-plus nav-icon"></i>
+                                <p>Agendar Serviço</p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
+                                <i class="fas fa-calendar-times nav-icon"></i>
+                                <p>Visualizar Agenda</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>-->
             </ul>
         </nav>
         <!-- /.sidebar-menu -->

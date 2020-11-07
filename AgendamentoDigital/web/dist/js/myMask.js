@@ -14,9 +14,22 @@ $(document).on('focusin', '.mask', function () {
     makeMask(mask, $this);
 });
 
+$(document).on('focusout', '.mask', function () {
+    var $this = $(this);
+    var mask = $this.data('mask');
+    makeMask(mask, $this);
+});
+
 var makeMask = function (mask, $this) {
+    console.log($this[0]);
+    len_this = $this[0].value.replace(/\D/g,'').length;
+    console.log(len_this);
     if (mask === 'telefone') {
-        $this.inputmask({"mask": "(99) [9] 9999-9999"});
+        if (len_this < 11) {
+            $this.inputmask({"mask": "(99) 9999-9999[9]"});
+        } else {
+            $this.inputmask({"mask": "(99) [9] 9999-9999"});
+        }
     }
     if (mask === 'email') {
         $this.inputmask({"alias": "email"});

@@ -159,8 +159,8 @@
                                                             </div>
                                                         </div>
                                                     -->
-                                                        <!-- /.input group -->
-<!--                                                    </div>-->
+                                                    <!-- /.input group -->
+                                                    <!--                                                    </div>-->
                                                     <!-- /.form group -->
                                                 </div>
                                             </div>
@@ -255,7 +255,7 @@
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
         <script type="text/javascript">
-                                                    includeHTMLNav("agendamento", "agendarServico");
+                                                                includeHTMLNav("agendamento", "agendarServico");
         </script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
@@ -263,7 +263,7 @@
         <script src="${site}/plugins/jquery-ui/jquery-ui.min.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script type="text/javascript">
-                                                    $.widget.bridge('uibutton', $.ui.button);
+                                                                $.widget.bridge('uibutton', $.ui.button);
         </script>
         <!-- Bootstrap 4 -->
         <script src="${site}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -311,63 +311,66 @@
         <script src="${site}/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
         <!-- Time Picker -->
         <script src="${site}/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
-        <script src="${site}/dist/js/timepicker.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/dist/js/timepicker.js" type="text/javascript"></script>
         <script type="text/javascript">
-                                                    $(function () {
-                                                        //Initialize Select2 Elements
-                                                        $('.select2').select2({
-                                                            language: "pt-BR",
-                                                            state: "pt-BR"
-                                                        });
+                                                                $(function () {
+                                                                    //Initialize Select2 Elements
+                                                                    $('.select2').select2({
+                                                                        language: "pt-BR",
+                                                                        state: "pt-BR"
+                                                                    });
 
-                                                        $('[data-mask]').inputmask();
+                                                                    $('[data-mask]').inputmask();
 
-                                                        //Initialize MaskMoney
-                                                        $('[type=money]').maskMoney({
-                                                            thousands: '.',
-                                                            decimal: ','
-                                                        });
+                                                                    //Initialize MaskMoney
+                                                                    $('[type=money]').maskMoney({
+                                                                        thousands: '.',
+                                                                        decimal: ','
+                                                                    });
 
-                                                        var meses = 2;
-                                                        var dataAtual = new Date();
-                                                        var dataMaxima = new Date(new Date().setMonth(dataAtual.getMonth() + meses));
-                                                        console.log(dataAtual);
-                                                        console.log(dataMaxima);
+                                                                    var dataAtual = '${dataAtual}';
+                                                                    var dataMaxima = '${dataMaxima}';
+                                                                    var diasBloqueados = ${diasBloqueados};
+                                                                    
+                                                                    dataMaxima = null;
+                                                                    diasBloqueados = null;
+                                                                    console.log(dataAtual);
+                                                                    console.log(dataMaxima);
 
-                                                        //Initialize DatePicker
-                                                        $('#datepicker').datepicker({
-                                                            format: "dd/mm/yyyy"
-                                                            , showMeridian: true
-                                                            , autoclose: false //Whether or not to close the datepicker immediately when a date is selected.
-                                                            , clearBtn: true //If true, displays a “Clear” button at the bottom of the datepicker to clear the input value. If “autoclose” is also set to true, this button will also close the datepicker.
-                                                            , datesDisabled: ['18/09/2020', '25/09/2020'] //Array of date strings or a single date string formatted in the given date format
-                                                            , daysOfWeekDisabled: [0] //Days of the week that should be disabled. Values are 0 (Sunday) to 6 (Saturday). Multiple values should be comma-separated. Example: disable weekends: '06' or '0,6' or [0,6].
-                                                            , disableTouchKeyboard: true //If true, no keyboard will show on mobile devices
-                                                            , maxViewMode: 1 //Set a maximum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”.
-                                                            , minViewMode: 0 //Set a minimum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”. 
-                                                            , orientation: "auto" //A space-separated string consisting of one or two of “left” or “right”, “top” or “bottom”, and “auto” (may be omitted); for example, “top left”, “bottom” (horizontal orientation will default to “auto”), “right” (vertical orientation will default to “auto”), “auto top”. Allows for fixed placement of the picker popup.
-                                                            , todayBtn: "linked"
-                                                            , language: "pt-BR"
-                                                            , todayHighlight: true
-                                                            , startDate: dataAtual //today
-                                                            , endDate: dataMaxima //Até o máximo de meses permitido
-                                                            , leftArrow: '<i class="fas fa-long-arrow-left"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
-                                                            , rightArrow: '<i class="fas fa-long-arrow-right"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
-                                                            , multidate: false //Enable multidate picking. Each date in month view acts as a toggle button, keeping track of which dates the user has selected in order. If a number is given, the picker will limit how many dates can be selected to that number, dropping the oldest dates from the list when the number is exceeded. true equates to no limit. The input’s value (if present) is set to a string generated by joining the dates, formatted, with multidateSeparator.
-                                                        });
+                                                                    //Initialize DatePicker
+                                                                    $('#datepicker').datepicker({
+                                                                        format: "dd/mm/yyyy"
+                                                                        , showMeridian: true
+                                                                        , autoclose: false //Whether or not to close the datepicker immediately when a date is selected.
+                                                                        , clearBtn: true //If true, displays a “Clear” button at the bottom of the datepicker to clear the input value. If “autoclose” is also set to true, this button will also close the datepicker.
+                                                                        , datesDisabled: ['18/09/2020', '25/09/2020'] //Array of date strings or a single date string formatted in the given date format
+                                                                        , daysOfWeekDisabled: diasBloqueados //Days of the week that should be disabled. Values are 0 (Sunday) to 6 (Saturday). Multiple values should be comma-separated. Example: disable weekends: '06' or '0,6' or [0,6].
+                                                                        , disableTouchKeyboard: true //If true, no keyboard will show on mobile devices
+                                                                        , maxViewMode: 1 //Set a maximum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”.
+                                                                        , minViewMode: 0 //Set a minimum limit for the view mode. Accepts: 0 or “days” or “month”, 1 or “months” or “year”, 2 or “years” or “decade”, 3 or “decades” or “century”, and 4 or “centuries” or “millenium”. 
+                                                                        , orientation: "auto" //A space-separated string consisting of one or two of “left” or “right”, “top” or “bottom”, and “auto” (may be omitted); for example, “top left”, “bottom” (horizontal orientation will default to “auto”), “right” (vertical orientation will default to “auto”), “auto top”. Allows for fixed placement of the picker popup.
+                                                                        , todayBtn: "linked"
+                                                                        , language: "pt-BR"
+                                                                        , todayHighlight: true
+                                                                        , startDate: dataAtual //today
+                                                                        , endDate: dataMaxima //Até o máximo de dias permitido
+                                                                        , leftArrow: '<i class="fas fa-long-arrow-left"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
+                                                                        , rightArrow: '<i class="fas fa-long-arrow-right"></i>' //The templates used to generate some parts of the picker. Each property must be a string with only text, or valid html. You can use this property to use custom icons libs.
+                                                                        , multidate: false //Enable multidate picking. Each date in month view acts as a toggle button, keeping track of which dates the user has selected in order. If a number is given, the picker will limit how many dates can be selected to that number, dropping the oldest dates from the list when the number is exceeded. true equates to no limit. The input’s value (if present) is set to a string generated by joining the dates, formatted, with multidateSeparator.
+                                                                    });
 
-                                                        //Initilizar DateTimePicker
-                                                        $('#timepicker').datetimepicker({
-                                                            format: 'LT'
-                                                            , locale: ''
-                                                            , stepping: 30
-                                                            , sideBySide: false
-                                                            , icons: {
-                                                                up: "fas fa-chevron-up",
-                                                                down: "fas fa-chevron-down"
-                                                            }
-                                                        });
-                                                    });
+                                                                    //Initilizar DateTimePicker
+                                                                    $('#timepicker').datetimepicker({
+                                                                        format: 'LT'
+                                                                        , locale: ''
+                                                                        , stepping: 30
+                                                                        , sideBySide: false
+                                                                        , icons: {
+                                                                            up: "fas fa-chevron-up",
+                                                                            down: "fas fa-chevron-down"
+                                                                        }
+                                                                    });
+                                                                });
         </script>
 
 
@@ -423,7 +426,7 @@
             });
 
         </script>
-        <script src="${site}/pages/client/agendamento/js/agendamento.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/client/agendamento/js/agendamento.js" type="text/javascript"></script>
 
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->

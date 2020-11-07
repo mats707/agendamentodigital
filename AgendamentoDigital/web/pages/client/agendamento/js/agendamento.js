@@ -295,19 +295,19 @@ function carregarServicoSelecionado(id) {
             if (e.readyState == 4 && e.status == 200) {
                 try { //Converte a resposta HTTP JSON em um objeto JavaScript
                     var Obj = eval("(" + e.responseText + ")");
+                    sweet(" Carregando serviços", "info", 3000);
                 } catch (err) { //
                     // Mostra Aviso
-                    alert("Algo de errado aconteceu!");
-                    alert(err);
+                    setTimeout(() => {  sweet(" Algo de errado aconteceu!", "error", 4000); }, 2000);
+                    setTimeout(() => {  sweet(" " + err, "error", 4000);}, 2000);
                 }
                 if (Obj != null) {
                     if (Obj.length > 0) {
-                        sweet();
                         for (var i = 0; i < Obj.length; i++) {
                             $("#listaServico").append("<option value='" + Obj[i].idServico + "'>" + Obj[i].nome + "</option>");
                         }
                         document.getElementById("groupListaServicos").style.display = "block";
-                        sweet();
+                        sweet(" Serviços carregado", "success", 3000);
 
                     } else {
                         document.getElementById("groupListaServicos").style.display = "none";
@@ -363,16 +363,16 @@ function exibeServico() {
 
 }
 
-function sweet() {
+function sweet(title, type, timer) {
     const Toast = swal.mixin({
         toast: true,
         position: 'center',
         showConfirmButton: false,
-        timer: 3000
+        timer: timer
     });
     Toast.fire({
-        type: 'info',
-        title: ' Carregando Servi\xE7o'
+        type: type,
+        title: ' ' + title
     });
 }
 

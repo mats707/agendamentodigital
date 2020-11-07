@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelos.Empresa;
+import util.Util;
 
 /**
  *
@@ -25,8 +26,6 @@ import modelos.Empresa;
 public class AtualizarEmpresaAction implements ICommand {
 
     DateFormat formatter = new SimpleDateFormat("kk:mm");
-    Time horaAbertura;
-    Time horaEncerramento;
     String funcaoMsg;
     String funcaoStatus;
 
@@ -34,70 +33,93 @@ public class AtualizarEmpresaAction implements ICommand {
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         request.setAttribute("pagina", "pages/admin/empresa/menuEmpresa.jsp");
 
-        Empresa objEmpresa = new Empresa();
-
-        EmpresaDAO empresaDAO = new EmpresaDAO();
-
+        //Obtendo os parametros do REQUEST
         String nome = request.getParameter("nome");
-        objEmpresa.setNome(nome);
-        //Converte String do timepicker de Abertura para time
         String horaAberturaString = request.getParameter("timePickerAbertura");
-
-        try {
-            horaAbertura = new java.sql.Time(formatter.parse(horaAberturaString).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(Empresa.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        objEmpresa.setHoraInicialTrabalho(horaAbertura);
-
-        //Converte String do timepicker de Encerramento para time
         String horaEncerramentoString = request.getParameter("timepickerEncerramento");
-        try {
-            horaEncerramento = new java.sql.Time(formatter.parse(horaEncerramentoString).getTime());
-        } catch (ParseException ex) {
-            Logger.getLogger(Empresa.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        objEmpresa.setHoraFinalTrabalho(horaEncerramento);
-
-        //Converte String do intervalo para o tipo Duration
-        String intervaloString = request.getParameter("intervaloAgendamentoGeralServico");
-        Duration tempo = Duration.ofHours(Integer.parseInt("00"));
-        tempo = tempo.plusMinutes(Integer.parseInt(intervaloString));
-        tempo = tempo.plusSeconds(Integer.parseInt("00"));
-        objEmpresa.setIntervaloAgendamentoGeralServico(tempo);
-
-        //Converte a String para array<Integer>
-        ArrayList<Integer> arrDia = new ArrayList<Integer>();
+        String intervaloAgendamentoGeralServicoString = request.getParameter("intervaloAgendamentoGeralServico");
+        String periodoMinimoCancelamentoString = request.getParameter("periodoMinimoCancelamento");
         String[] diaSemanaString = request.getParameterValues("diasemana");
-
-        for (int i = 0; i < diaSemanaString.length; i++) {
-            arrDia.add(Integer.parseInt(diaSemanaString[i]));
-        }
-        objEmpresa.setDiaSemanaTrabalho(arrDia);
-
-        //Converte a String para array<Integer>
-        ArrayList<Long> arrTelefone = new ArrayList<Long>();
         String[] telefone = request.getParameterValues("telefone");
+        String email = request.getParameter("email");
 
-        for (int i = 0; i < telefone.length; i++) {
-            arrTelefone.add(Long.parseLong(telefone[i]));
-        }
-        objEmpresa.setTelefone(arrTelefone);
+        String sqlState = "0";
+        String funcaoMsg = "Carregando...";
+        String funcaoStatus = "info";
 
-        objEmpresa.setEmail(request.getParameter("email"));
+        if (nome != null && horaAberturaString != null && horaEncerramentoString != null
+                && intervaloAgendamentoGeralServicoString != null
+                && periodoMinimoCancelamentoString != null
+                && diaSemanaString != null && telefone != null && email != null) {
 
-        Empresa objEmpresaAntiga = new Empresa();
+            Empresa objEmpresa = new Empresa();
+            objEmpresa.setNome(nome);
 
-        empresaDAO.buscar(objEmpresaAntiga);
+            Time horaAbertura = null;
+            Time horaEncerramento = null;
 
-        objEmpresa.setIdEmpresa(objEmpresaAntiga.getIdEmpresa());
+            //Converte String do timepicker de Abertura para time
+            try {
+                horaAbertura = new java.sql.Time(formatter.parse(horaAberturaString).getTime());
+            } catch (ParseException ex) {
+                Logger.getLogger(Empresa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            objEmpresa.setHoraInicialTrabalho(horaAbertura);
+            //Converte String do timepicker de Encerramento para time
+            try {
+                horaEncerramento = new java.sql.Time(formatter.parse(horaEncerramentoString).getTime());
+            } catch (ParseException ex) {
+                Logger.getLogger(Empresa.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            objEmpresa.setHoraFinalTrabalho(horaEncerramento);
 
-        if (empresaDAO.alterar(objEmpresa)) {
-            funcaoMsg = "Alterado com sucesso";
-            funcaoStatus = "success";
-        } else {
-            funcaoMsg = "Falha na alteração";
-            funcaoStatus = "error";
+            //Converte String do intervalo para o tipo Duration
+            Duration intervaloAgendamentoGeralServicoDuration = Duration.ofHours(Integer.parseInt("00"));
+            intervaloAgendamentoGeralServicoDuration = intervaloAgendamentoGeralServicoDuration.plusMinutes(Integer.parseInt("00"));
+            intervaloAgendamentoGeralServicoDuration = intervaloAgendamentoGeralServicoDuration.plusSeconds(Integer.parseInt(intervaloAgendamentoGeralServicoString));
+            objEmpresa.setIntervaloAgendamentoGeralServico(intervaloAgendamentoGeralServicoDuration);
+
+            //Converte String do intervalo para o tipo Duration
+            Duration periodoMinimoCancelamentoDuration = Duration.ofHours(Integer.parseInt("00"));
+            periodoMinimoCancelamentoDuration = periodoMinimoCancelamentoDuration.plusMinutes(Integer.parseInt("00"));
+            periodoMinimoCancelamentoDuration = periodoMinimoCancelamentoDuration.plusSeconds(Integer.parseInt(periodoMinimoCancelamentoString));
+            objEmpresa.setPeriodoMinimoCancelamento(periodoMinimoCancelamentoDuration);
+
+            //Converte a String para array<Integer>
+            ArrayList<Integer> arrDia = new ArrayList<Integer>();
+            for (int i = 0; i < diaSemanaString.length; i++) {
+                arrDia.add(Integer.parseInt(diaSemanaString[i]));
+            }
+            objEmpresa.setDiaSemanaTrabalho(arrDia);
+
+            //Converte a String para array<Integer>
+            ArrayList<Long> arrTelefone = new ArrayList<Long>();
+            for (int i = 0; i < telefone.length; i++) {
+                String telefoneString = telefone[i];
+                if (Util.isInteger(telefoneString));
+                {
+                    telefoneString = telefoneString.replace("(", "").replace(")", "").replace("-", "").replace(" ", "");
+                    arrTelefone.add(Long.parseLong(telefoneString));
+                }
+            }
+            objEmpresa.setTelefone(arrTelefone);
+            objEmpresa.setEmail(email);
+
+            EmpresaDAO empresaDAO = new EmpresaDAO();
+
+            Empresa objEmpresaAntiga = new Empresa();
+            empresaDAO.buscar(objEmpresaAntiga);
+
+            objEmpresa.setIdEmpresa(objEmpresaAntiga.getIdEmpresa());
+            sqlState = empresaDAO.alterar(objEmpresa);
+
+            if (sqlState == "0") {
+                funcaoMsg = "Alterado com sucesso";
+                funcaoStatus = "success";
+            } else {
+                funcaoMsg = "Infelizmente não foi possível alterar os dados de empresa\\nContate o suporte administrador";
+                funcaoStatus = "error";
+            }
         }
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);

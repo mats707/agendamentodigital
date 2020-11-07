@@ -24,7 +24,7 @@
         <!-- Automatic element centering -->
         <div class="login-box">
             <div class="login-logo">
-                <a href="${site}/index2.html"><b>Agendamento</b>DIGITAL</a>
+                <a href=""><b>Agendamento</b>DIGITAL</a>
             </div>
             <div class="card">
                 <form action="${site}/ControleAcesso" method="post">
