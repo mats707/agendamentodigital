@@ -96,4 +96,8 @@ public class Agendamento {
     public Agendamento(Cliente cliente) {
         this.cliente = cliente;
     }    
+
+    public Agendamento(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }    
 }

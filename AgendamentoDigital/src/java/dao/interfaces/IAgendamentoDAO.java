@@ -24,9 +24,13 @@ public interface IAgendamentoDAO {
 
     public ArrayList<Agendamento> listarCliente(Agendamento agendamento);
 
+    public ArrayList<Agendamento> listarFuncionario(Agendamento agendamento);
+
     public String alterarAgendamento(Agendamento agendamento);
 
     public String alterarStatus(Agendamento agendamento);
+
+    public Agendamento buscar(Agendamento agendamento);
 
     public Agendamento verificarStatusCliente(Agendamento agendamento);
 

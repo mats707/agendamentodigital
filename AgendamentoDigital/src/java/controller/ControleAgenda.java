@@ -23,7 +23,9 @@ import javax.servlet.http.HttpServletResponse;
     "/AgendarServico",
     "/VisualizarAgenda",
     "/Home",
-    "/CancelarAgendamento"})
+    "/CancelarAgendamento",
+    "/Funcionario/CancelarAgendamento",
+    "/Funcionario/ConcluirAgendamento"})
 public class ControleAgenda extends HttpServlet {
 
     /**
@@ -50,6 +52,10 @@ public class ControleAgenda extends HttpServlet {
                 acao = "Visualizar";
             } else if (uri.equals(request.getContextPath() + "/CancelarAgendamento")) {
                 acao = "Cancelar";
+            } else if (uri.equals(request.getContextPath() + "/Funcionario/CancelarAgendamento")) {
+                acao = "FuncionarioCancelar";
+            } else if (uri.equals(request.getContextPath() + "/Funcionario/ConcluirAgendamento")) {
+                acao = "FuncionarioConcluir";
             } else {
                 response.sendRedirect("404.jsp");
             }

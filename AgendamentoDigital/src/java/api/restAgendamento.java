@@ -78,7 +78,7 @@ public class restAgendamento {
         ArrayList<Agendamento> arr = objAgendamentoDao.listar();
 
         for (Agendamento objAgendamento : arr) {
-            objFuncionarioDao.listarCompletoId(objAgendamento.getFuncionario());
+            objFuncionarioDao.buscar(objAgendamento.getFuncionario());
             objServicoDao.buscar_dados_basicos(objAgendamento.getServico());
         }
 
@@ -450,7 +450,7 @@ public class restAgendamento {
         objEmpresaDAO.buscar(objEmpresa);
 
         AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
-        objAgendamentoDao.buscarCancelar(objAgendamento);
+        objAgendamentoDao.buscar(objAgendamento);
 
         Date dataAgendamento = objAgendamento.getDataAgendamento();
         Time horaAgendamento = objAgendamento.getHoraAgendamento();
@@ -475,6 +475,23 @@ public class restAgendamento {
             return "agendamento_finalizado";
         } else {
             return null;
+        }
+    }
+
+    public String validoParaConcluir(Agendamento objAgendamento) {
+
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+        objAgendamentoDao.buscar(objAgendamento);
+
+        switch (objAgendamento.getStatus()) {
+            case AGUARDANDOATENDIMENTO:
+                return "concluir_valido";
+            case CANCELADO:
+                return "agendamento_cancelado";
+            case FINALIZADO:
+                return "agendamento_finalizado";
+            default:
+                return null;
         }
     }
 }

@@ -18,7 +18,7 @@ public interface IFuncionarioDAO {
 
     public ArrayList<Funcionario> listarCompleto();
 
-    public void listarCompletoId(Funcionario funcionario);
+    public void buscarUsuario(Funcionario funcionario);
 
     public void buscar(Funcionario funcionario);
 
@@ -26,6 +26,6 @@ public interface IFuncionarioDAO {
 
     public boolean excluir(Funcionario funcionario);
 
-    public boolean cadastrar(Funcionario funcionario);
+    public String cadastrar(Funcionario funcionario);
 
 }

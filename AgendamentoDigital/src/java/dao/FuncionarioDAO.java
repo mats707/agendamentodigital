@@ -20,22 +20,11 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
     private static final String LISTAR = "SELECT id, pessoa FROM sistema.funcionario ORDER BY id;";
     private static final String LISTAR_PESSOA = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id ORDER BY f.id;";
-    private static final String BUSCAR_COMPLETO_ID = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE f.id = ? ORDER BY f.id;";
+    private static final String BUSCAR_USUARIO = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE u.id = ? ORDER BY u.id;";
     private static final String BUSCAR_ID = "SELECT f.id as idFunc, p.id as idPessoa, p.nome, p.dataNascimento FROM sistema.funcionario f INNER JOIN sistema.pessoa p ON f.pessoa = p.id WHERE f.id = ? ORDER BY f.id;";
     private static final String BUSCAR = "SELECT * FROM sistema.funcionario WHERE nome ilike ?;";
-    private static final String INSERT =
-            "INSERT INTO sistema.funcionario (id, nome, dataNascimento, endereco, sexo, estadoCivil, qtdFilhos, profissao, escolaridade)\n"
-            + "  VALUES (NEXTVAL('sqn_funcionario'),\n"
-            + "		?,\n"
-            + "		?,\n"
-            + "		(SELECT id FROM endereco WHERE id = ?),\n"
-            + "		(SELECT id FROM sexo WHERE id = ?),\n"
-            + "		(SELECT id FROM estadoCivil WHERE id = ?),\n"
-            + "		?,\n"
-            + "		(SELECT id FROM profissao WHERE id = ?),\n"
-            + "		(SELECT id FROM escolaridade WHERE id = ?)\n"
-            + "  );";
-    private static final String DELETE = "DELETE FROM funcionario WHERE id=?;";
+    private static final String CADASTRAR = "INSERT INTO sistema.funcionario (id, pessoa) VALUES (NEXTVAL('sistema.sqn_funcionario'),(SELECT id FROM sistema.pessoa WHERE id = ?));";
+    private static final String DELETE = "DELETE FROM sistema.funcionario WHERE id=?;";
     private static final String UPDATE = "UPDATE funcionario SET nome=? WHERE id=?;";
 
     private Connection conexao;
@@ -137,7 +126,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
     }
 
     @Override
-    public void listarCompletoId(Funcionario funcionario) {
+    public void buscarUsuario(Funcionario funcionario) {
 
         try {
 
@@ -145,10 +134,10 @@ public class FuncionarioDAO implements IFuncionarioDAO {
             conexao = ConectaBanco.getConexao();
 
             //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_COMPLETO_ID);
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_USUARIO);
             
             //Passa ID como parametro
-            pstmt.setInt(1, funcionario.getIdFuncionario());
+            pstmt.setInt(1, funcionario.getUsuario().getIdUsuario());
 
             //executa
             ResultSet rs = pstmt.executeQuery();
@@ -275,16 +264,16 @@ public class FuncionarioDAO implements IFuncionarioDAO {
     }
 
     @Override
-    public boolean cadastrar(Funcionario funcionario) {
+    public String cadastrar(Funcionario funcionario) {
+
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt = null;
 
         try {
-
             conexao = ConectaBanco.getConexao();
-
-            PreparedStatement pstmt = conexao.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-
-            pstmt.setString(1, funcionario.getNome());
-
+            pstmt = conexao.prepareStatement(CADASTRAR, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setInt(1, funcionario.getIdPessoa());
             pstmt.execute();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
@@ -292,21 +281,22 @@ public class FuncionarioDAO implements IFuncionarioDAO {
                 funcionario.setIdFuncionario(rs.getInt("id"));
             }
 
-            return true;
+            return sqlReturnCode;
 
-        } catch (Exception ex) {
+        } catch (SQLException sqlErro) {
 
-            return false;
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
 
         } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(FuncionarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
-
         }
-
     }
 };

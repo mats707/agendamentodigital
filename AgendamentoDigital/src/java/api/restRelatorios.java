@@ -156,6 +156,39 @@ public class restRelatorios {
         return json;
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/Agendamentos/Funcionario/{idFuncionario}")
+    public String getAgendamentosFuncionario(@PathParam("idFuncionario") Integer idFuncionario) throws SQLException, ClassNotFoundException {
+
+        //Instanciando Cliente
+        Funcionario objFuncionario = new Funcionario();
+        objFuncionario.setIdFuncionario(idFuncionario);
+
+        Gson objgson = new GsonBuilder().registerTypeAdapter(Agendamento.class, new agendamentoAdapter()).setPrettyPrinting().create();
+
+        AgendamentoDAO objAgendamentoDao = new AgendamentoDAO();
+        ClienteDAO objClienteDao = new ClienteDAO();
+        PessoaDAO objPessoaDao = new PessoaDAO();
+        ServicoDAO objServicoDao = new ServicoDAO();
+
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarFuncionario(new Agendamento(objFuncionario));
+
+        for (Agendamento objAgendamento : arr) {
+            objClienteDao.buscar(objAgendamento.getCliente());
+            objPessoaDao.buscar(objAgendamento.getCliente());
+            objServicoDao.buscar_dados_basicos(objAgendamento.getServico());
+        }
+        String json = "[\n";
+        for (Agendamento objAgendamento : arr) {
+            json += objgson.toJson(objAgendamento);
+            json += ",";
+        }
+        json = json.substring(0, json.length()-1);
+        json+="\n]";
+        return json;
+    }
+
     private class agendamentoAdapter implements JsonSerializer<Agendamento> {
 
         @Override

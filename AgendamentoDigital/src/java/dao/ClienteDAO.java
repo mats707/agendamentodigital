@@ -124,7 +124,7 @@ public class ClienteDAO implements IClienteDAO {
     }
 
     @Override
-    public void listarCompletoId(Cliente cliente) {
+    public void buscarUsuario(Cliente cliente) {
 
         try {
 

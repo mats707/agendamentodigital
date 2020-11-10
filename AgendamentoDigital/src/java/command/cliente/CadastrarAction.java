@@ -70,9 +70,9 @@ public class CadastrarAction implements ICommand {
                         //Apesar de ser herança e não ter o campo pessoa dentro de cliente, no banco de dados teremos o campo 'pessoa'
                         cliente.setIdPessoa(objPessoa.getIdPessoa());
 
-                        ClienteDAO cienteDao = new ClienteDAO();
+                        ClienteDAO clienteDao = new ClienteDAO();
 
-                        String sqlStateCliente = cienteDao.cadastrar(cliente);
+                        String sqlStateCliente = clienteDao.cadastrar(cliente);
 
                         if (sqlStateCliente == "0") {
                             request.setAttribute("colorMsg", "success");

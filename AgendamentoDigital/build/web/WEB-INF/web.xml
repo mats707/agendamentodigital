@@ -26,7 +26,8 @@
     </filter>
     <filter-mapping>
         <filter-name>AcessoFuncionarioComum</filter-name>
-        <url-pattern>/pages/user/*</url-pattern>
+        <url-pattern>/pages/funcionario/*</url-pattern>
+        <url-pattern>/Funcionario/*</url-pattern>
     </filter-mapping>
     
     <filter>
