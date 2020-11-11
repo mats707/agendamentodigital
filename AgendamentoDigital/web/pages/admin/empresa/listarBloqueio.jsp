@@ -63,7 +63,7 @@
                 </div>
                 <!-- /.content-header -->
                 <section class="content">
-                    <div class="container-fluid border rounded">
+                    <div class="container-fluid">
                         <form id="filtrarPeriodo" action="${site}/ListarBloqueio/Funcionario" method="post">
                             <div class="row">
                                 <div class="col-md-6">

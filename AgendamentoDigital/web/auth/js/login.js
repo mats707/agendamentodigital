@@ -62,7 +62,7 @@ function sweet(title, type, timer) {
             timer: timer,
             icon: type,
             title: 'Oops...',
-            text: title,
+            text: title.split("--", "\n"),
             footer: '<a id="btn1RegisterLink" class="btn-sing-up-now" style="color: #007bff;text-decoration: none;cursor: pointer;" data-action="Register" onclick="rotateCard(this)">Deseja se cadastrar?</a>'
         })
     }

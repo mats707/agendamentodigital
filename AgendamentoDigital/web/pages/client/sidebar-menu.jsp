@@ -76,14 +76,14 @@
                             </a>
                         </li>
                     </ul>
-                    <ul class="nav nav-treeview">
+                    <!--ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="${site}/VisualizarAgenda" id="vizualizaragenda" class="nav-link">
                                 <i class="fas fa-calendar-alt nav-icon"></i>
                                 <p>Visualizar Agenda</p>
                             </a>
                         </li>
-                    </ul>
+                    </ul-->
                 </li>
             </ul>
         </nav>

@@ -64,14 +64,17 @@
                     </div>
                     <!-- /.container-fluid -->
                 </section>
-                <section class="content">
-                    <div class="container-fluid border rounded">      
-                        <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
+                <form id="filtrarPeriodo" action="${site}/Relatorios/Servicos/${command}/Periodo" method="post">
+                    <section class="content">
+
+                        <div class="container-fluid mb-2 col-12">      
+
                             <div class="row">
+                                <!-- Left Column -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <select name="mes" id="mes" class="form-control select select-danger" data-dropdown-css-class="select2-danger">
-                                            <option selected disabled>-- Selecione o mes --</option>
+                                        <select name="mes" id="mes" class="form-control select select-danger col-6" data-dropdown-css-class="select2-danger">
+                                            <option selected disabled value="null">-- Selecione o mes --</option>
                                             <option value="1">Janeiro</option>
                                             <option value="2">Fevereiro</option>
                                             <option value="3">Março</option>
@@ -88,19 +91,34 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <select name="ano" id="ano" class="form-control select select-danger" data-dropdown-css-class="select2-danger">
+                                        <select name="ano" id="ano" class="form-control select select-danger col-6" data-dropdown-css-class="select2-danger">
                                             <option selected disabled>-- Selecione o ano --</option>
                                             <option value="2020">2020</option>
                                         </select>
                                     </div>
-                                    <div class="col-6">
-                                        <button id="btnFiltar" type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <select name="status" id="status" class="form-control select select-danger col-6" data-dropdown-css-class="select2 - danger" placeholder="Selecione o estado">
+                                            <option selected disabled value="null">-- Selecione a situação --</option>
+                                            <option value="FINALIZADO">Finalizado</option>
+                                            <option value="AGUARDANDOATENDIMENTO">Aguardando atendimento</option>
+                                            <option value="CANCELADO">Cancelado</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                        </div>
+                    </section>
+                    <div class="align-center">
+                        <div class="col-2 mb-2">
+                            <button id="btnFiltar" type="submit" class="btn btn-primary btn-block">Filtrar</button>
+                        </div>
                     </div>
-                </section>
+
+                </form>
+
+
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
@@ -202,9 +220,11 @@
     <script src="${site}/pages/admin/relatorios/${pgjs}.js" type="text/javascript"></script>
 
     <script>
+        sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
         var result = ${msg};
         includeHTMLNav("maisAgendado", "maisAgendado");
         lerJson(result);
+
     </script>
 
     <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>

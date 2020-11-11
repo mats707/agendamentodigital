@@ -43,8 +43,8 @@ public class CadastrarBloqueioAction implements ICommand {
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
         String sqlState = "";
-        int countok=0;
-        int counterro=0;
+        int countok = 0;
+        int counterro = 0;
 
         if (dataString != null && duracaoString != null && horaInicialString != null && funcionarioString != null) {
             //Converte String do intervalo para o tipo Duration
@@ -81,13 +81,14 @@ public class CadastrarBloqueioAction implements ICommand {
                 sqlState = objDAO.cadastrar(bloqueio);
                 //Verifica o retorno da DAO (banco de dados)
                 if (sqlState == "0") {
-                    funcaoMsg += "Funconario: " + objFunc.getNome() + " foi cadastrado com sucesso!\n";
-                    funcaoStatus = "success";
-                    countok++;
+                    funcaoMsg += objFunc.getNome() + " foi cadastrado com sucesso! ";
+                    if (funcaoStatus != "error") {
+                        funcaoStatus = "success";
+                    }
 
                 } else if (sqlState.equalsIgnoreCase("unqbloqueioagenda")) {
                     // Independente do serviço o cliente não poderá agendar em um horário que ele já marcou/agendou
-                    funcaoMsg += "\nO funcionario " + objFunc.getNome() + " já possui bloqueio nesta data e horario";
+                    funcaoMsg += objFunc.getNome() + " já possui bloqueio nesta data e horario! ";
                     funcaoStatus = "error";
                 }
 

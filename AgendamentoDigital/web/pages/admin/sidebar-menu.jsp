@@ -224,13 +224,19 @@
                         <li class="nav-item">
                             <a href="${site}/Relatorios/Servicos/MaisAgendado" id="relatorioServicoMaisAgendado" class="nav-link">
                                 <i class="fas fa-store-alt nav-icon"></i>
-                                <p>Serviços mais agendados</p>
+                                <p>Serviços agendados</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
                                 <i class="fas fa-folder-open nav-icon"></i>
-                                <p>Funcionarios mais trabalhados</p>
+                                <p>Funcionarios</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${site}/Relatorios/Servicos/Cliente" id="relatorioCliente" class="nav-link">
+                                <i class="fas fa-folder-open nav-icon"></i>
+                                <p>Cliente</p>
                             </a>
                         </li>
                     </ul>
