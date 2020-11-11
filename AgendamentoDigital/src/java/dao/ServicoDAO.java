@@ -29,8 +29,8 @@ import util.ConectaBanco;
 
 public class ServicoDAO implements IServicoDAO {
 
-    private static final String CADASTRAR = "INSERT INTO sistema.servico (id, nome, descricao, valor, duracao, categoria, funcionarios, camposadicionais) \n"
-            + "VALUES (nextval('sistema.sqn_servico'),?,?,?::NUMERIC::MONEY ,?::INTERVAL,?,?,NULL);";
+    private static final String CADASTRAR = "INSERT INTO sistema.servico (id, nome, descricao, valor, duracao, categoria, funcionarios) \n"
+            + "VALUES (nextval('sistema.sqn_servico'),?,?,?::NUMERIC::MONEY ,?::INTERVAL,?,?);";
     private static final String ALTERAR = "UPDATE sistema.servico "
             + "SET nome = ?, "
             + "descricao = ?, "
@@ -47,10 +47,10 @@ public class ServicoDAO implements IServicoDAO {
             + "valor = ? "
             + "servicoPai = ? "
             + "WHERE id = ?";
-    private static final String BUSCAR_ID = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico WHERE id=? ORDER BY nome";
+    private static final String BUSCAR_ID = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico WHERE id=? ORDER BY nome";
     private static final String BUSCAR_DADOS_BASICOS = "SELECT id, nome, descricao, valor, duracao::INTERVAL FROM sistema.servico WHERE id=? ORDER BY nome";
-    private static final String LISTAR = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico ORDER BY nome";
-    private static final String LISTAR_POR_CATEGORIA = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios, camposadicionais FROM sistema.servico WHERE categoria = ? ORDER BY nome";
+    private static final String LISTAR = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico ORDER BY nome";
+    private static final String LISTAR_POR_CATEGORIA = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico WHERE categoria = ? ORDER BY nome";
     private static final String DELETAR = "DELETE FROM sistema.servico WHERE id = ?";
     private static final String BUSCA_COMPLETA = "SELECT s.id, s.nome, s.descricao FROM sistema.servico s WHERE s.id=? AND s.nome=? AND s.descricao=?";
 
@@ -129,9 +129,6 @@ public class ServicoDAO implements IServicoDAO {
         ArrayList<Servico> listaServico = new ArrayList<>();
         Integer[] funcionarios = null;
         Array arrayFuncionarios = null;
-        ArrayList<Integer> listaCamposAdicionais = new ArrayList<>();
-        Integer[] camposAdicionais = null;
-        Array arrayCamposAdicionais = null;
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         try {
@@ -173,23 +170,6 @@ public class ServicoDAO implements IServicoDAO {
                     listaFuncionario.add(novoFuncionario);
                 }
                 novoServico.setFuncionarios(listaFuncionario);
-                try {
-                    if (rs.getArray("camposadicionais") != null) {
-                        arrayCamposAdicionais = conexao.createArrayOf("INTEGER", (Object[]) rs.getArray("camposadicionais").getArray());
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                arrayCamposAdicionais = rs.getArray("camposadicionais");
-                if (arrayCamposAdicionais != null) {
-                    camposAdicionais = (Integer[]) arrayCamposAdicionais.getArray();
-                    for (int i = 0; i < camposAdicionais.length; i++) {
-                        Integer campoAdicional = null;
-                        campoAdicional = camposAdicionais[i];
-                        listaCamposAdicionais.add(campoAdicional);
-                    }
-                }
-                novoServico.setCamposadicionais(listaCamposAdicionais);
                 CategoriaServico objCategoria = new CategoriaServico();
                 objCategoria.setIdCategoriaServico(rs.getInt("categoria"));
                 novoServico.setCategoria(objCategoria);
@@ -219,9 +199,6 @@ public class ServicoDAO implements IServicoDAO {
         ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
         Integer[] funcionarios = null;
         Array arrayFuncionarios = null;
-        ArrayList<Integer> listaCamposAdicionais = new ArrayList<>();
-        Integer[] camposAdicionais = null;
-        Array arrayCamposAdicionais = null;
 
         try {
 
@@ -264,23 +241,6 @@ public class ServicoDAO implements IServicoDAO {
                     listaFuncionario.add(novoFuncionario);
                 }
                 novoServico.setFuncionarios(listaFuncionario);
-                try {
-                    if (rs.getArray("camposadicionais") != null) {
-                        arrayCamposAdicionais = conexao.createArrayOf("INTEGER", (Object[]) rs.getArray("camposadicionais").getArray());
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                arrayCamposAdicionais = rs.getArray("camposadicionais");
-                if (arrayCamposAdicionais != null) {
-                    camposAdicionais = (Integer[]) arrayCamposAdicionais.getArray();
-                    for (int i = 0; i < camposAdicionais.length; i++) {
-                        Integer campoAdicional = null;
-                        campoAdicional = camposAdicionais[i];
-                        listaCamposAdicionais.add(campoAdicional);
-                    }
-                }
-                novoServico.setCamposadicionais(listaCamposAdicionais);
                 CategoriaServico objCategoria = new CategoriaServico();
                 objCategoria.setIdCategoriaServico(rs.getInt("categoria"));
                 novoServico.setCategoria(objCategoria);
@@ -307,10 +267,6 @@ public class ServicoDAO implements IServicoDAO {
         ArrayList<Funcionario> listaFuncionario = new ArrayList<>();
         Integer[] funcionarios = null;
         Array arrayFuncionarios = null;
-
-        ArrayList<Integer> listaCamposAdicionais = new ArrayList<>();
-        Integer[] camposAdicionais = null;
-        Array arrayCamposAdicionais = null;
 
         try {
             //Conexao
@@ -351,23 +307,6 @@ public class ServicoDAO implements IServicoDAO {
                     listaFuncionario.add(novoFuncionario);
                 }
                 servico.setFuncionarios(listaFuncionario);
-                try {
-                    if (rs.getArray("camposadicionais") != null) {
-                        arrayCamposAdicionais = conexao.createArrayOf("INTEGER", (Object[]) rs.getArray("camposadicionais").getArray());
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(ServicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                arrayCamposAdicionais = rs.getArray("camposadicionais");
-                if (arrayCamposAdicionais != null) {
-                    camposAdicionais = (Integer[]) arrayCamposAdicionais.getArray();
-                    for (int i = 0; i < camposAdicionais.length; i++) {
-                        Integer campoAdicional = null;
-                        campoAdicional = camposAdicionais[i];
-                        listaCamposAdicionais.add(campoAdicional);
-                    }
-                }
-                servico.setCamposadicionais(listaCamposAdicionais);
                 CategoriaServico objCategoria = new CategoriaServico();
                 objCategoria.setIdCategoriaServico(rs.getInt("categoria"));
                 servico.setCategoria(objCategoria);

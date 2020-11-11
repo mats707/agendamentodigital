@@ -5,9 +5,9 @@
 --# Cliente             (id,PESSOA);
 --# Funcionario         (id,PESSOA);
 --# CategoriaServico    (id,nome,descricao,categoriaPai,ativo);
---# Servico             (id,nome,descricao,valor,duracao,categoria,funcionarios,camposadicionais);
---# CampoAdicional      (id,nome,descricao,tipo)
---# TipoCampoAdicional  (id,nome)
+--# Servico             (id,nome,descricao,valor,duracao,categoria,funcionarios);
+--# Não implementado CampoAdicional      (id,nome,descricao,tipo)
+--# Não implementado TipoCampoAdicional  (id,nome)
 --# StatusAgendamento	(id,nome)
 --# Agendamento			(id,CLIENTE,dataAgendamento,horarioAgendamento,SERVICO,FUNCIONARIO,STATUS)
 
@@ -96,7 +96,7 @@ create table Servico(
   duracao interval,
   categoria integer,
   funcionarios integer[],
-  camposadicionais integer[],
+  --camposadicionais integer[],
   constraint pkServico primary key (id),
   constraint unqNomeServico unique (nome),
   constraint fkCategoria foreign key (categoria) references CategoriaServico(id)
@@ -129,23 +129,23 @@ create table Agendamento(
 alter table Agendamento alter dataHoraInclusao set default now();
 alter table Agendamento alter dataHoraAlteracao set default now();
 
-create table TipoCampoAdicional(
-  id integer,
-  nome varchar(100) not null,
-  descricao varchar(500),
-  constraint pkTipoCampoAdicional primary key (id),
-  constraint unqNomeTipoCampoAdicional unique (nome)
-);
+--create table TipoCampoAdicional(
+--  id integer,
+--  nome varchar(100) not null,
+--  descricao varchar(500),
+--  constraint pkTipoCampoAdicional primary key (id),
+--  constraint unqNomeTipoCampoAdicional unique (nome)
+--);
 
-create table CampoAdicional(
-  id integer,
-  nome varchar(100) not null,
-  descricao varchar(500),
-  tipo integer,
-  constraint pkCampoAdicional primary key (id),
-  constraint unqNomeCampoAdicional unique (nome),
-  constraint fkTipo foreign key (tipo) references TipoCampoAdicional(id)
-);
+--create table CampoAdicional(
+--  id integer,
+--  nome varchar(100) not null,
+--  descricao varchar(500),
+--  tipo integer,
+--  constraint pkCampoAdicional primary key (id),
+--  constraint unqNomeCampoAdicional unique (nome),
+--  constraint fkTipo foreign key (tipo) references TipoCampoAdicional(id)
+--);
 
 create table bloqueioAgenda 
 (
