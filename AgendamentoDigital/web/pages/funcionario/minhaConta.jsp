@@ -31,7 +31,7 @@
         <!-- BS fileinput -->
         <link href="${site}/plugins/bootstrap-fileinput/5.1.2/css/fileinput.min.css" rel="stylesheet" type="text/css"/>
         <!-- Estilo Personalizado -->
-        <link href="${site}/pages/client/css/minhaConta.css" rel="stylesheet" type="text/css"/>
+        <link href="${site}/pages/funcionario/css/minhaConta.css" rel="stylesheet" type="text/css"/>
     </head>
     <!--
     BODY TAG OPTIONS:
@@ -70,75 +70,48 @@
 
                 <!-- Main content -->
                 <div class="">
-                    <div class="container">
-                        <h4>Formulário</h4>
-                        <div id="panel" class="panel panel-default no-padding" >
-                            <div class="panel-body no-padding">
-                                <div class="form-horizontal">
-                                    <div class="row">
-                                        <div id="colImg" class="col-md-2 col-sm-2 col-xs-12 col-img">
-                                            <!-- Background image -->
+                    <div id="panel" class="panel panel-default no-padding" >
+                        <div class="panel-body no-padding">
+                            <div class="form-horizontal">
+                                <div class="row">
+                                    <div class="col-md-5 col-sm-5 col-xs-12 padding">
+                                        <p class="lead">Alterar Meus Dados</p>
+                                        <div id="meusDados" class="list-group">
+                                            <a id="itemNome" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Nome: ${objFuncionario.nome}</a>
+                                            <a id="itemDataNascimento" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">
+                                                Data de Nascimento: <fmt:formatDate pattern = "dd/MM/yyyy" value="${objFuncionario.dataNascimento}"/></a>
+                                            <a id="itemCelular" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Celular: ${objFuncionario.usuario.celular}</a>
                                         </div>
-                                        <div class="col-md-5 col-sm-5 col-xs-12  padding border-right">
-                                            <p class="lead">Foto de Perfil</p>
-
-                                            <div class="col-sm-4 text-center">
-                                                <form action="${site}/ControleClienteMinhaConta" method="post" enctype="multipart/form-data">
-                                                    <div class="kv-avatar">
-                                                        <div class="file-loading">
-                                                            <input id="fotoPerfil" name="fotoPerfil" type="file" required>
-                                                            <input name="acao" type="text" value="AlterarFotoPerfil" hidden>
-                                                        </div>
+                                        <form class="mt-2" action="${site}/Funcionario/MinhaConta" method="post">
+                                            <div id="groupNome" class="input-group mb-3" style="display: none">
+                                                <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" readonly value="${objFuncionario.nome}">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <span class="fas fa-user"></span>
                                                     </div>
-                                                    <div class="kv-avatar-hint">
-                                                        <small>Select file < 1500 KB</small>
-                                                    </div>
-                                                    <div class="text-right">
-                                                        <button id="btnAlterarFotoPerfil" type="submit" class="btn btn-primary btn-block">Alterar Foto</button>
-                                                    </div>
-                                                </form>
+                                                </div>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-5 col-sm-5 col-xs-12  padding">
-                                            <p class="lead">Alterar Meus Dados</p>
-                                            <div id="meusDados" class="list-group">
-                                                <a id="itemNome" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Nome: ${objFuncionario.nome}</a>
-                                                <a id="itemDataNascimento" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">
-                                                    Data de Nascimento: <fmt:formatDate pattern = "dd/MM/yyyy" value="${objFuncionario.dataNascimento}"/></a>
-                                                <a id="itemCelular" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Celular: ${objFuncionario.usuario.celular}</a>
+                                            <div id="groupDataNascimento" class="input-group mb-3" style="display: none">
+                                                <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" readonly value="<fmt:formatDate pattern = "yyyy-MM-dd" value="${objFuncionario.dataNascimento}"/>">
                                             </div>
-                                            <form class="mt-2" action="${site}/MinhaConta" method="post">
-                                                <div id="groupNome" class="input-group mb-3" style="display: none">
-                                                    <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" readonly value="${objFuncionario.nome}">
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">
-                                                            <span class="fas fa-user"></span>
-                                                        </div>
+                                            <!-- phone mask -->
+                                            <div id="groupCelular" class="input-group mb-3" style="display: none">
+                                                <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' readonly value="${objFuncionario.usuario.celular}">
+                                                <div class="input-group-append">
+                                                    <div class="input-group-text">
+                                                        <span class="fas fa-phone"></span>
                                                     </div>
                                                 </div>
-                                                <div id="groupDataNascimento" class="input-group mb-3" style="display: none">
-                                                    <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" readonly value="<fmt:formatDate pattern = "yyyy-MM-dd" value="${objFuncionario.dataNascimento}"/>">
-                                                </div>
-                                                <!-- phone mask -->
-                                                <div id="groupCelular" class="input-group mb-3" style="display: none">
-                                                    <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' readonly value="${objFuncionario.usuario.celular}">
-                                                    <div class="input-group-append">
-                                                        <div class="input-group-text">
-                                                            <span class="fas fa-phone"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row-fluid">
-                                                    <button id="btnAlterarDados" name="acao" value="AlterarCliente" type="submit" class="btn btn-success btn-block" style="display: none">Alterar Dados</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                            <div class="row-fluid">
+                                                <button id="btnAlterarDados" name="acao" value="Alterar" type="submit" class="btn btn-success btn-block" style="display: none">Alterar Dados</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- End of .container -->
+                    </div>
                 </div>
                 <!-- /.content -->
             </div>
@@ -175,11 +148,11 @@
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/js/fileinput.min.js" type="text/javascript"></script>
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/themes/fa/theme.js" type="text/javascript"></script>
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/js/locales/pt-BR.js" type="text/javascript"></script>
-        <script charset="ISO-8859-1" src="${site}/pages/client/js/minhaConta.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/funcionario/js/minhaConta.js" type="text/javascript"></script>
         <script>
-                                                    sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
-                                                    console.log("${funcaoMsg}");
-                                                    includeHTMLNav("home", "");
+                                                sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
+                                                console.log("${funcaoMsg}");
+                                                includeHTMLNav("home", "");
         </script>
 
         <!-- Mask js -->

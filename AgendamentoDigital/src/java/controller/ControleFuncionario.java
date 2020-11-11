@@ -129,7 +129,7 @@ public class ControleFuncionario extends HttpServlet {
             return acao;
         } else {
             switch (acao_secundaria) {
-                case "AlterarFuncionario":
+                case "Alterar":
                     return "Alterar";
                 default:
                     return acao;

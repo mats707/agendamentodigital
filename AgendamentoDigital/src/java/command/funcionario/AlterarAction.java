@@ -29,7 +29,7 @@ public class AlterarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "MinhaConta");
+        request.setAttribute("pagina", "/Funcionario/MinhaConta");
 
         String nome = request.getParameter("inputName");
         String dataNascimento = request.getParameter("inputDataNasc");
@@ -47,11 +47,10 @@ public class AlterarAction implements ICommand {
         //cria uma sessao para resgatar o usuario
         HttpSession sessaoUsuario = request.getSession();
         Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
-        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.CLIENTECOMUM)) {
+        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
             objFuncionario = (Funcionario) sessaoUsuario.getAttribute("funcionario");
             objFuncionario.setUsuario(usuarioAutenticado);
         } else {
-            objFuncionario.setIdFuncionario(Integer.parseInt(null));
             funcaoMsg = "Conta não autenticada!";
             funcaoStatus = "error";
             request.setAttribute("funcaoMsg", funcaoMsg);

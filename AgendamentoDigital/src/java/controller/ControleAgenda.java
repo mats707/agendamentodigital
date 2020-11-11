@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
     "/VisualizarAgenda",
     "/Home",
     "/CancelarAgendamento",
+    "/Funcionario/AgendarServico",
     "/Funcionario/CancelarAgendamento",
     "/Funcionario/ConcluirAgendamento"})
 public class ControleAgenda extends HttpServlet {
