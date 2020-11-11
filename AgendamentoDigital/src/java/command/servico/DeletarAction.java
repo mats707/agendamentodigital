@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.PerfilDeAcesso;
 import modelos.Servico;
+import util.Util;
 import util.geraHash;
 
 /**
@@ -37,8 +38,8 @@ public class DeletarAction implements ICommand {
         if (id != null && deletedNome != null && deletedDescricao != null) {
             Servico servico = new Servico();
             servico.setIdServico(id);
-            servico.setNome(deletedNome);
-            servico.setDescricao(deletedDescricao);
+            servico.setNome(Util.stringToUTF8(deletedNome));
+            servico.setDescricao(Util.stringToUTF8(deletedDescricao));
 
             ServicoDAO servicoDAO = new ServicoDAO();
             Servico servicoSolicitado = servicoDAO.buscaCompleta(servico);

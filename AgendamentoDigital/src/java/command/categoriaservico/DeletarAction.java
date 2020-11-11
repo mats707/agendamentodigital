@@ -26,32 +26,35 @@ public class DeletarAction implements ICommand {
 
         request.setAttribute("pagina", "pages/admin/categoria/home.jsp");
 
-//        String editedCategoria = request.getParameter("deletarCategoria");
-//        String editedCategoriaPai = request.getParameter("deletarCategoriaPai");
+        String editedCategoria = request.getParameter("deletarCategoria");
+        String editedCategoriaPai = request.getParameter("deletarCategoriaPai");
 
-        String funcaoMsg = "Por enquanto essa função está sendo implantada!\\nFique ligado que em breve traremos novidades!";
-        String funcaoStatus = "warning";
+        String funcaoMsg = "";
+        String funcaoStatus = "";
 
-//        if (editedCategoria != null && editedCategoriaPai != null) {
-//            CategoriaServico categoriaservico = new CategoriaServico();
-//            categoriaservico.setIdCategoriaServico(Integer.parseInt(editedCategoria));
-//            categoriaservico.setCategoriaPai(new CategoriaServico(Integer.parseInt(editedCategoriaPai)));
-//
-//            CategoriaServicoDAO categoriaServicoDAO = new CategoriaServicoDAO();
-//
-//            String sqlState = categoriaServicoDAO.deletar(categoriaservico);
-//
-//            if (sqlState == "0") {
-//                funcaoMsg = "Deletado com sucesso!";
-//                funcaoStatus = "success";
-//            } else {
-//                funcaoMsg = "Não foi possível deletar o serviço, tente novamente!";
-//                funcaoStatus = "error";
-//            }
-//        } else {
-//            funcaoMsg = "Serviço inválido!";
-//            funcaoStatus = "error";
-//        }
+        if (editedCategoria != null && editedCategoriaPai != null) {
+            CategoriaServico categoriaservico = new CategoriaServico();
+            categoriaservico.setIdCategoriaServico(Integer.parseInt(editedCategoria));
+            categoriaservico.setCategoriaPai(new CategoriaServico(Integer.parseInt(editedCategoriaPai)));
+
+            CategoriaServicoDAO categoriaServicoDAO = new CategoriaServicoDAO();
+
+            String sqlState = categoriaServicoDAO.deletar(categoriaservico);
+
+            if (sqlState == "0") {
+                funcaoMsg = "Deletado com sucesso!";
+                funcaoStatus = "success";               
+            } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"categoriaservico\" violates foreign key constraint \"fkcategoriapai\" on table \"categoriaservico\"")) {
+                funcaoMsg = "Não é possivel deletar categoria que tenham subcategorias!\\n Favor deletar subcategorias primeiro";
+                funcaoStatus = "warning";
+            } else {
+                funcaoMsg = "Não foi possível deletar a categoria, tente novamente!";
+                funcaoStatus = "error";
+            }
+        } else {
+            funcaoMsg = "Categoria inválida!";
+            funcaoStatus = "error";
+        }
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         return funcaoMsg;

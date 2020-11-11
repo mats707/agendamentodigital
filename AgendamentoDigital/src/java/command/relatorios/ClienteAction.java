@@ -19,8 +19,7 @@ import modelos.RelatorioServico;
  *
  * @author Rafael Pereira
  */
-public class MaisTrabalhadoAction implements ICommand {
-
+public class ClienteAction implements ICommand{
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
@@ -30,7 +29,7 @@ public class MaisTrabalhadoAction implements ICommand {
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisTrabalhado();
+        arr = objRelatorioDAO.listarCliente();
         if (request.getAttribute("funcaoMsg") != null) {
             funcaoMsg = request.getAttribute("funcaoMsg").toString();
             funcaoStatus = request.getAttribute("funcaoStatus").toString();
@@ -54,24 +53,16 @@ public class MaisTrabalhadoAction implements ICommand {
         }
 
         String json = arrJson.toString();
+        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+        request.setAttribute("pgjs", "cliente");
+        request.setAttribute("command", "Cliente");
+        request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
+        request.setAttribute("pgTitulo", "Relatorios de Serviços");
+        request.setAttribute("pgRelatorio", "Serviços mais utilizados total");
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
 
-        request.setAttribute(
-                "pagina", "/pages/admin/relatorios/relatorio.jsp");
-        request.setAttribute(
-                "pgjs", "maisTrabalhado");
-        request.setAttribute(
-                "command", "MaisTrabalhado");
-        request.setAttribute(
-                "pgAba", "Relatorio de funcionarios com mais finalizações");
-        request.setAttribute(
-                "pgTitulo", "Relatorios de Funcionarios");
-        request.setAttribute(
-                "pgRelatorio", "Funcionarios que mais finalizaram serviços");
-        request.setAttribute(
-                "funcaoMsg", funcaoMsg);
-        request.setAttribute(
-                "funcaoStatus", funcaoStatus);
         return json;
-    }
 
+    }
 }

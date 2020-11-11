@@ -64,7 +64,7 @@ $(document).ready(function () {
                         alert("Algo de errado aconteceu!");
                         alert(err);
                     }
-                    if (Obj != null) {                        
+                    if (Obj != null) {
                         $("#diaSemanaTrabalho").val(Obj.diaSemanaTrabalho);
                         for (var i = 0; i < Obj.diaSemanaTrabalho.length; i++)
                         {
@@ -94,12 +94,12 @@ $(document).ready(function () {
 
                             }
                         }
-                        $("#datepicker").daysOfWeekDisabled = listaDiasFolga;                     
-                        $(".timepicker").startTime=Obj.horaInicialTrabalho;
-                        $(".timepicker").maxTime=Obj.horaFinalTrabalho.split(':')[0] + ":" + Obj.horaFinalTrabalho.split(':')[1];
+                        $("#datepicker").daysOfWeekDisabled = listaDiasFolga;
+                        $(".timepicker").startTime = Obj.horaInicialTrabalho;
+                        $(".timepicker").maxTime = Obj.horaFinalTrabalho.split(':')[0] + ":" + Obj.horaFinalTrabalho.split(':')[1];
 
                     }
-                    
+
                 }
             }
         });
@@ -117,14 +117,14 @@ function changeValue() {
 }
 
 function sweet(title, type, timer) {
-    const Toast = swal.mixin({
-        toast: true,
-        position: 'center',
-        showConfirmButton: false,
-        timer: timer
-    });
-    Toast.fire({
-        type: type,
-        title: ' ' + title
-    });
+    if (title !== "") {
+
+        Swal.fire({
+            showConfirmButton: true,
+            timer: false,
+            icon: type,
+            title: 'Confirmação do cadastro!',
+            text: title
+        })
+    }
 }

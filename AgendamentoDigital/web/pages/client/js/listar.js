@@ -2,8 +2,19 @@ var nameproject = window.location.pathname.split('/')[1];
 console.log(nameproject);
 
 var site = "/AgendamentoDigital"
-function carregarMaisAgendado(idCliente) {
-    var URL = 'api/Relatorios/Agendamentos/Cliente/' + idCliente;
+
+function chamaCarregar()
+{
+    
+    var status = document.getElementById('selectStatus').value;
+    carregarMaisAgendado(idCliente, status);
+}
+function carregarMaisAgendado(idCliente, status) {
+    if (status == null)
+    {
+        status = 'AGUARDANDOATENDIMENTO';
+    }
+    var URL = 'api/Relatorios/Agendamentos/Cliente/' + idCliente + '/' + status;
     $.ajax({
         url: URL,
         type: "GET",
@@ -28,16 +39,18 @@ function carregarMaisAgendado(idCliente) {
     });
 }
 
+
 function lerTabela(result) {
     ObjAgendamento = result;
     console.log(ObjAgendamento);
     document.getElementById("target").innerHTML = '<table id="tabAgendamento" name="tabAgendamento" class="table table-hover"><thead class="thead-dark">\n\
-        <tr><th>Serviço</th>\n\
+        <tr><th>Serviï¿½o</th>\n\
             <th>Data</th>\n\
             <th>Horario</th>\n\
-            <th>Duração</th>\n\
+            <th>Duraï¿½ï¿½o</th>\n\
             <th>Valor</th>\n\
-            <th>Funcionário</th>\n\
+            <th>Funcionï¿½rio</th>\n\
+            <th>SituaÃ§Ã£o</th>\n\
             <th>Cancelar</th>\n\
         </tr></thead></table>';
     var table = document.getElementById("tabAgendamento");
@@ -52,13 +65,15 @@ function lerTabela(result) {
                 var cellDuracao = row.insertCell(3);//Duracao
                 var cellValor = row.insertCell(4);//Valor
                 var cellFuncionario = row.insertCell(5);//Funcionario
-                var cancelarAgendamento = row.insertCell(6);
+                var cellSituacao = row.insertCell(6); //Status do servico
+                var cancelarAgendamento = row.insertCell(7);
                 cellServico.innerHTML = ObjAgendamento[i].servico.nome;
                 cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                 cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
                 cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60 + " minutos";
                 cellValor.innerHTML = ObjAgendamento[i].servico.valor;
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
+                cellSituacao.innerHTML = ObjAgendamento[i].status;
                 cancelarAgendamento.innerHTML =
                         "<form id='formCancelar-" + i + "' action='" + site + "/CancelarAgendamento' method='POST'>\n\
                             <input type='hidden' name='servico' value=" + ObjAgendamento[i].servico.idServico + ">\n\
@@ -72,7 +87,7 @@ function lerTabela(result) {
                 sweet("  Agendamentos carregados", "success", 1500);
         } else {
             if (window.location.pathname.split('/')[2] == "HomeCliente")
-                sweet(" Não há agendamentos", "info", 3000);
+                sweet(" Nï¿½o hï¿½ agendamentos", "info", 3000);
         }
     }
 
@@ -102,17 +117,17 @@ function sweetCancelar(element) {
 
     swalWithBootstrapButtons.fire({
         title: 'Tem certeza?',
-        text: "Após o cancelamento esse serviço não poderá ser reagendando para esse mesmo horário!",
+        text: "Apï¿½s o cancelamento esse serviï¿½o nï¿½o poderï¿½ ser reagendando para esse mesmo horï¿½rio!",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sim, cancelar!',
-        cancelButtonText: 'Não, voltar!',
+        cancelButtonText: 'Nï¿½o, voltar!',
         reverseButtons: true
     }).then((result) => {
         console.log(result);
         if (result.value) {
             swalWithBootstrapButtons.fire({
-                title: 'Solicitação em andamento...',
+                title: 'Solicitaï¿½ï¿½o em andamento...',
                 text: 'Aguarde ( 0-2 min )',
                 type: 'info',
                 showConfirmButton: false
@@ -124,7 +139,7 @@ function sweetCancelar(element) {
                 ) {
             swalWithBootstrapButtons.fire(
                     'Fechando...',
-                    'Seu agendamento está seguro :)',
+                    'Seu agendamento estï¿½ seguro :)',
                     'error'
                     );
         }

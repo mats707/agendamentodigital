@@ -25,7 +25,7 @@ import javax.servlet.annotation.MultipartConfig;
     "/CadastrarCliente",
     "/ListarCliente",
     "/BuscarCliente",
-    "/DeletarCliente",
+    "/DesativarCliente",
     "/IniciarEdicaoCliente",
     "/AlterarCliente",
     "/HomeCliente",
@@ -73,6 +73,8 @@ public class ControleCliente extends HttpServlet {
             } else if (uri.equals(request.getContextPath() + "/MinhaConta")) {
                 acao = "MinhaConta";
                 acao = validarAcaoSecundaria(acao, acao_secundaria);
+            } else if (uri.equals(request.getContextPath() + "/DesativarCliente")) {
+                acao = "Desativar";
             } else {
                 response.sendRedirect("404.jsp");
             }

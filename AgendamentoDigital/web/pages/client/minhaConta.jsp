@@ -140,6 +140,11 @@
                         </div>
                     </div><!-- End of .container -->
                 </div>
+                                                    <form id="formDesativar" name="formDesativar" action="${site}/DesativarCliente" method="post">
+                                                        <div class="col-md-2">
+                                                            <button type="button" class="btn btn-block btn-danger" onclick="sweetDesativar()">Desativar conta</button> 
+                                                        </div>
+                                                    </form>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
