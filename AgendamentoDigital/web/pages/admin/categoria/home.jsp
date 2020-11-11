@@ -292,8 +292,8 @@
 
         })
     </script>
-    <script charset="utf-8" src="${site}/pages/admin/categoria/js/home.js" type="text/javascript"></script>
-    <script charset="utf-8" src="${site}/pages/admin/categoria/js/edit.js" type="text/javascript"></script>
+    <script charset="ISO-8859-1" src="${site}/pages/admin/categoria/js/home.js" type="text/javascript"></script>
+    <script charset="ISO-8859-1" src="${site}/pages/admin/categoria/js/edit.js" type="text/javascript"></script>
 
     <script>
         includeHTMLNav("categorias", "");

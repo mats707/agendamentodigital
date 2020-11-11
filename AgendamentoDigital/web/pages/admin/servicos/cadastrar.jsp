@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -277,10 +277,10 @@
             });
 
         </script>
-        <script src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
-        
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
+
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
         <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>

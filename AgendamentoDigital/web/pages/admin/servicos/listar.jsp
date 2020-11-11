@@ -326,9 +326,9 @@
 
             })
         </script>
-        <script src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
 
         <script>
             var result = ${msg};
