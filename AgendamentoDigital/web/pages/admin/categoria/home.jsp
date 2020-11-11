@@ -211,7 +211,7 @@
                         </button>
                     </div>
                     <div class="row align-items-center justify-content-center">
-                        <p class="danger">Caso essa categoria tenha subcategorias, todas as subcategorias serão excluídas também!</p>
+                        <p class="danger">Caso essa categoria tenha subcategorias,não será possivel deletar!</p>
 
                         <div class="register-box">
                             <div class="card">
