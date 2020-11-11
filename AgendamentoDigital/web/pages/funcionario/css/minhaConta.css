@@ -1,0 +1,112 @@
+body {
+    font-size: 14px;
+    background: #eee;
+}
+
+.container {
+    margin: 20px auto;
+    padding: 20px;
+}
+
+h2 {
+    text-align: left;
+    margin: 20px 0 20px 0;
+}
+
+input,
+select {
+    margin-bottom: 20px;
+    border-radius: 0 !important;
+}
+
+.panel.panel-default {
+    background: #fff;
+}
+
+.padding {
+    padding: 40px;
+}
+
+.no-padding {
+    padding: 0;
+    margin: 0;
+}
+
+.border-right {
+    border-right: 1px solid #ccc;
+}
+
+.badge {
+    margin-left: 5px;
+    background-color: #5bc0de;
+}
+
+.badge a {
+    color: #fff;
+}
+
+.col-img {
+    background: url('https://4.bp.blogspot.com/-t43kGQ83NDQ/WpdOJ2HppbI/AAAAAAAAB-o/ajy6puehUqMax4N83175Y7hVR8iOVqB9wCKgBGAs/s1600/25014823_172743660127958_6003870624856932352_n.jpg');
+    background-size: cover;
+}
+
+.limpar,
+.enviar {
+    float: right;
+    margin: 20px 5px 0 0;
+}
+
+.enviar {
+    margin: 20px 0 0 0;
+}
+
+.kv-avatar .krajee-default.file-preview-frame,.kv-avatar .krajee-default.file-preview-frame:hover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    text-align: center;
+}
+.kv-avatar {
+    display: inline-block;
+}
+.kv-avatar .file-input {
+    display: table-cell;
+    width: 213px;
+}
+.kv-reqd {
+    color: red;
+    font-family: monospace;
+    font-weight: normal;
+}
+
+.file-drop-zone {
+    border: 1px dashed #aaa;
+    min-height: 200px;
+    border-radius: 4px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 12px 15px 12px 12px;
+    padding: 5px;
+}
+
+.krajee-default.file-preview-frame .kv-file-content {
+    width: 150px;
+    height: 150px;
+}
+
+.krajee-default .file-footer-caption {
+    width: 150px;
+    height: 5px;
+}
+
+.list-group-item {
+    background-color: #e9ecef;
+}
+
+.list-group-item.active {
+    z-index: 2;
+    color: #006c19;
+    background-color: #bdffc3;
+    border-color: #28a745;
+}

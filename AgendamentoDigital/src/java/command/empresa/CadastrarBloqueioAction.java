@@ -100,7 +100,7 @@ public class CadastrarBloqueioAction implements ICommand {
 
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
-        request.setAttribute("pagina", "pages/admin/empresa/menuBloqueio.jsp");
+        request.setAttribute("pagina", "MenuBloqueio");
 
         return null;
     }

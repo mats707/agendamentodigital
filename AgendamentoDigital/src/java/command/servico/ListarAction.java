@@ -41,7 +41,7 @@ public class ListarAction implements ICommand {
         for (Servico objServico : arr) {
             if (objServico.getIdServico() != null) {
                 for (Funcionario objFuncionario : objServico.getFuncionarios()) {
-                    objFuncionarioDao.listarCompletoId(objFuncionario);
+                    objFuncionarioDao.buscar(objFuncionario);
                 }
                 objCategoriaServicoDAO.buscarId(objServico.getCategoria());
             }

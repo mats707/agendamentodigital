@@ -184,8 +184,10 @@
         </div>
         <!-- ./wrapper -->
     </body>
-
     <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
+    <script>
+        includeHTMLNav("buscarEmpresa", "");
+    </script>
     <!-- jQuery -->
     <script src="${site}/plugins/jquery/jquery.min.js"></script>
 

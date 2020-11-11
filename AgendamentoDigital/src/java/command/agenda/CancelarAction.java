@@ -103,7 +103,7 @@ public class CancelarAction implements ICommand {
 
             objAgendamento.setHoraAgendamento(horaAgendamento);
 
-            //Obtém os valores padrão de agendamento definido pela empresa
+            //Obtém os valores padrão de agendamento definido pela empresa para exibição de mensagem
             Empresa objEmpresa = new Empresa();
             EmpresaDAO objEmpresaDAO = new EmpresaDAO();
             objEmpresaDAO.buscar(objEmpresa);

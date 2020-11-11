@@ -1,5 +1,5 @@
 function includeHTMLNav(menuPai, pagina) {
-    var itemMenu = ["home", "usuarios", "servicos", "agenda", "categorias"];
+    var itemMenu = ["home", "empresa", "usuarios", "servicos", "agenda", "categorias"];
     var subitemPagina = ["cadastrarUsuario", "listarUsuario",
         "cadastrarServico", "listarServico",
         "visualizarAgenda"];

@@ -126,7 +126,7 @@
 
         <script>
             var result = ${msg};
-            includeHTMLNav("home", "");
+            includeHTMLNav("listarBloqueio", "");
             carregarFuncionario();
             lerTabela(result);
         </script>

@@ -6,7 +6,9 @@
 package dao.interfaces;
 
 import java.util.ArrayList;
+import java.util.Map;
 import modelos.BloqueioAgenda;
+import modelos.Servico;
 
 /**
  *
@@ -21,5 +23,7 @@ public interface IBloqueioAgendaDAO {
     public String deletar (BloqueioAgenda bloqueio);
 
     public String cadastrar(BloqueioAgenda bloqueio);
+    
+    public ArrayList<Map<String, String>> listarHorariosOcupados(BloqueioAgenda bloqueioAgenda, Servico servico);
 
 }
