@@ -221,7 +221,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="btnDeletarCategoria" name="acao" value="DeletarCategoria" type="submit" class="btn btn-success btn-block">Deletar Categoria</button>
+                        <button id="btnDeletarCategoria" name="acao" value="DeletarCategoria" type="submit" class="btn btn-danger btn-block">Deletar Categoria</button>
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
