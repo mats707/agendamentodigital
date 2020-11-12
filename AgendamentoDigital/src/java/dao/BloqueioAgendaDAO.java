@@ -86,26 +86,26 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
     private Connection conexao;
 
     @Override
-    public void buscar(BloqueioAgenda bloqueio) {
+    public void buscar(BloqueioAgenda bloqueioAgenda) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public String deletar(BloqueioAgenda bloqueio) {
+    public String deletar(BloqueioAgenda bloqueioAgenda) {
         String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(DELETAR, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setDate(1, new java.sql.Date(bloqueio.getDataBloqueio().getTime()));
-            pstmt.setTime(2, bloqueio.getHoraInicial());
-            pstmt.setInt(3, bloqueio.getFuncionario().getIdFuncionario());
+            pstmt.setDate(1, new java.sql.Date(bloqueioAgenda.getDataBloqueio().getTime()));
+            pstmt.setTime(2, bloqueioAgenda.getHoraInicial());
+            pstmt.setInt(3, bloqueioAgenda.getFuncionario().getIdFuncionario());
             pstmt.execute();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                bloqueio.setIdBloquieio(rs.getInt("id"));
+                bloqueioAgenda.setIdBloquieio(rs.getInt("id"));
             }
 
             return sqlReturnCode;
@@ -132,22 +132,22 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
     }
 
     @Override
-    public String cadastrar(BloqueioAgenda bloqueio) {
+    public String cadastrar(BloqueioAgenda bloqueioAgenda) {
         String sqlReturnCode = "0";
 
         PreparedStatement pstmt = null;
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(CADASTRAR, Statement.RETURN_GENERATED_KEYS);
-            pstmt.setDate(1, new java.sql.Date(bloqueio.getDataBloqueio().getTime()));
-            pstmt.setTime(2, bloqueio.getHoraInicial());
-            pstmt.setString(3, bloqueio.getDuracaoBloqueio().toString());
-            pstmt.setInt(4, bloqueio.getFuncionario().getIdFuncionario());
+            pstmt.setDate(1, new java.sql.Date(bloqueioAgenda.getDataBloqueio().getTime()));
+            pstmt.setTime(2, bloqueioAgenda.getHoraInicial());
+            pstmt.setString(3, bloqueioAgenda.getDuracaoBloqueio().toString());
+            pstmt.setInt(4, bloqueioAgenda.getFuncionario().getIdFuncionario());
             pstmt.execute();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
-                bloqueio.setIdBloquieio(rs.getInt("id"));
+                bloqueioAgenda.setIdBloquieio(rs.getInt("id"));
             }
 
             return sqlReturnCode;
@@ -186,23 +186,23 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                BloqueioAgenda bloqueio = new BloqueioAgenda();
-                bloqueio.setIdBloquieio(rs.getInt("id"));
-                bloqueio.setDataBloqueio(rs.getDate("dataBloqueio"));
-                bloqueio.setHoraInicial(rs.getTime("horaInicial"));
+                BloqueioAgenda bloqueioAgenda = new BloqueioAgenda();
+                bloqueioAgenda.setIdBloquieio(rs.getInt("id"));
+                bloqueioAgenda.setDataBloqueio(rs.getDate("dataBloqueio"));
+                bloqueioAgenda.setHoraInicial(rs.getTime("horaInicial"));
                 //Converse a duracao do banco (interval) para Duration do java
                 String[] tempo = rs.getString("duracao").split(":");
                 Duration duracao = Duration.ofHours(Integer.parseInt(tempo[0]));
                 duracao = duracao.plusMinutes(Integer.parseInt(tempo[1]));
                 duracao = duracao.plusSeconds(Integer.parseInt(tempo[2]));
-                bloqueio.setDuracaoBloqueio(duracao);
+                bloqueioAgenda.setDuracaoBloqueio(duracao);
 
                 Funcionario objFunc = new Funcionario();
                 objFunc.setIdFuncionario(rs.getInt("funcionario"));
                 objFunc.setIdPessoa(Integer.BYTES);
-                bloqueio.setFuncionario(objFunc);
+                bloqueioAgenda.setFuncionario(objFunc);
 
-                listaBloqueioAgenda.add(bloqueio);
+                listaBloqueioAgenda.add(bloqueioAgenda);
             }
             return listaBloqueioAgenda;
         } catch (Exception ex) {
@@ -218,7 +218,7 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
         }
     }
 
-    public ArrayList<BloqueioAgenda> listarBloqueioFunc(BloqueioAgenda bloqueio) {
+    public ArrayList<BloqueioAgenda> listarBloqueioFunc(BloqueioAgenda bloqueioAgenda) {
         ArrayList<BloqueioAgenda> listaBloqueioAgenda = new ArrayList<BloqueioAgenda>();
 
         try {
@@ -226,7 +226,7 @@ public class BloqueioAgendaDAO implements IBloqueioAgendaDAO {
             conexao = ConectaBanco.getConexao();
 
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR_FILTRO_FUNC);
-            pstmt.setInt(1, bloqueio.getFuncionario().getIdFuncionario());
+            pstmt.setInt(1, bloqueioAgenda.getFuncionario().getIdFuncionario());
 
             ResultSet rs = pstmt.executeQuery();
 

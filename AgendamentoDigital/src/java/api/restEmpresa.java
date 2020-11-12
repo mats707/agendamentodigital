@@ -86,7 +86,7 @@ public class restEmpresa {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/Menu/Encontrar")
-    public String getEmpresa() throws SQLException, ClassNotFoundException, ParseException {
+    public String encontrarEmpresa() throws SQLException, ClassNotFoundException, ParseException {
         Gson objgson = new GsonBuilder().registerTypeAdapter(Empresa.class, new EmpresaAdapter()).setPrettyPrinting().create();
 
         Empresa objEmpresa = new Empresa();

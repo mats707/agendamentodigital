@@ -16,13 +16,13 @@ import modelos.Servico;
  */
 public interface IBloqueioAgendaDAO {
 
-    public void buscar(BloqueioAgenda bloqueio);
+    public void buscar(BloqueioAgenda bloqueioAgenda);
 
     public ArrayList<BloqueioAgenda> listarBloqueio();
 
-    public String deletar (BloqueioAgenda bloqueio);
+    public String deletar (BloqueioAgenda bloqueioAgenda);
 
-    public String cadastrar(BloqueioAgenda bloqueio);
+    public String cadastrar(BloqueioAgenda bloqueioAgenda);
     
     public ArrayList<Map<String, String>> listarHorariosOcupados(BloqueioAgenda bloqueioAgenda, Servico servico);
 

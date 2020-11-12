@@ -111,13 +111,13 @@ public class AtualizarEmpresaAction implements ICommand {
             empresaDAO.buscar(objEmpresaAntiga);
 
             objEmpresa.setIdEmpresa(objEmpresaAntiga.getIdEmpresa());
-            sqlState = empresaDAO.alterar(objEmpresa);
+            sqlState = empresaDAO.atualizar(objEmpresa);
 
             if (sqlState == "0") {
                 funcaoMsg = "Alterado com sucesso";
                 funcaoStatus = "success";
             } else {
-                funcaoMsg = "Infelizmente não foi possível alterar os dados de empresa\\nContate o suporte administrador";
+                funcaoMsg = "Infelizmente não foi possível atualizar os dados de empresa\\nContate o suporte administrador";
                 funcaoStatus = "error";
             }
         }
