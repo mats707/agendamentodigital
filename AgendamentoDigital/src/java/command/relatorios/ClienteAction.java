@@ -22,7 +22,11 @@ import modelos.RelatorioServico;
 public class ClienteAction implements ICommand{
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        
+        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+        
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+        
         String funcaoMsg = "";
         String funcaoStatus = "";
 
@@ -53,11 +57,10 @@ public class ClienteAction implements ICommand{
         }
 
         String json = arrJson.toString();
-        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
         request.setAttribute("pgjs", "cliente");
         request.setAttribute("command", "Cliente");
-        request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
-        request.setAttribute("pgTitulo", "Relatorios de Serviços");
+        request.setAttribute("pgAba", "Relatório de Clientes");
+        request.setAttribute("pgTitulo", "Relatórios de Clientes");
         request.setAttribute("pgRelatorio", "Serviços mais utilizados total");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);

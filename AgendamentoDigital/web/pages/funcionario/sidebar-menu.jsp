@@ -65,6 +65,35 @@
                         <i class="fas fa-calendar-plus nav-icon"></i>
                         <p>Agendar Serviço</p>
                     </a>
+                </li>  
+                <li id="menuPaiservicos" class="nav-item has-treeview">
+                    <a href="#" id="relatorios" class="nav-link">
+                        <i class="nav-icon fas fa-chart-bar"></i>
+                        <p>
+                            Relatorios de Serviços
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/Relatorios/Servicos/MaisAgendado" id="relatorioServicoMaisAgendado" class="nav-link">
+                                <i class="fas fa-caret-right nav-icon"></i>
+                                <p>Serviços agendados</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
+                                <i class="fas fa-caret-right nav-icon"></i>
+                                <p>Funcionários</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${site}/Relatorios/Servicos/Cliente" id="relatorioCliente" class="nav-link">
+                                <i class="fas fa-caret-right nav-icon"></i>
+                                <p>Cliente</p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

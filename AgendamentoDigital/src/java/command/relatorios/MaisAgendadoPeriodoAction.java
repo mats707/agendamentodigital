@@ -24,6 +24,9 @@ public class MaisAgendadoPeriodoAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+        
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         StatusAgendamento status = null;
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
@@ -83,8 +86,6 @@ public class MaisAgendadoPeriodoAction implements ICommand {
                 }
 
                 String json = arrJson.toString();
-
-                request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
                 request.setAttribute("pgjs", "maisAgendado");
                 request.setAttribute("command", "MaisAgendado");
                 request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
@@ -128,7 +129,7 @@ public class MaisAgendadoPeriodoAction implements ICommand {
 
             String json = arrJson.toString();
 
-            request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+            request.setAttribute("pagina", "/pages/funcionario/relatorios/relatorio.jsp");
             request.setAttribute("pgjs", "maisAgendado");
             request.setAttribute("command", "MaisAgendado");
             request.setAttribute("pgAba", "Relatorio de serviço mais agendado");

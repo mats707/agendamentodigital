@@ -23,6 +23,9 @@ public class MaisTrabalhadoAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+        
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         String funcaoMsg = "";
         String funcaoStatus = "";
@@ -54,23 +57,13 @@ public class MaisTrabalhadoAction implements ICommand {
         }
 
         String json = arrJson.toString();
-
-        request.setAttribute(
-                "pagina", "/pages/admin/relatorios/relatorio.jsp");
-        request.setAttribute(
-                "pgjs", "maisTrabalhado");
-        request.setAttribute(
-                "command", "MaisTrabalhado");
-        request.setAttribute(
-                "pgAba", "Relatorio de funcionarios com mais finalizações");
-        request.setAttribute(
-                "pgTitulo", "Relatorios de Funcionarios");
-        request.setAttribute(
-                "pgRelatorio", "Funcionarios que mais finalizaram serviços");
-        request.setAttribute(
-                "funcaoMsg", funcaoMsg);
-        request.setAttribute(
-                "funcaoStatus", funcaoStatus);
+        request.setAttribute("pgjs", "maisTrabalhado");
+        request.setAttribute("command", "MaisTrabalhado");
+        request.setAttribute("pgAba", "Relatório de funcionários");
+        request.setAttribute("pgTitulo", "Relatórios de Funcionários");
+        request.setAttribute("pgRelatorio", "Funcionários que mais finalizaram serviços");
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
         return json;
     }
 
