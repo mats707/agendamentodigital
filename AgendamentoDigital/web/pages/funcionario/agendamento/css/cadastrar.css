@@ -1,0 +1,8 @@
+.textarea{  
+    box-sizing: content-box;
+    overflow: hidden;
+    padding:10px;
+    width:100%;
+    font-size:14px;
+    display:block;
+}

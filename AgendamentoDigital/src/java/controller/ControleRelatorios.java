@@ -20,13 +20,15 @@ import javax.servlet.http.HttpServletResponse;
  * @author Rafael Pereira
  */
 @WebServlet(name = "ControleRelatorios", urlPatterns = {"/ControleRelatorios",
-     "/RelatoriosServico",
-     "/MaisAgendados",   
-     "/Relatorios/Servicos/MaisAgendado",
-     "/Relatorios/Servicos/MaisAgendado/Periodo",
-     "/Relatorios/Servicos/MaisTrabalhado",
-     "/Relatorios/Servicos/MaisTrabalhado/Periodo"
-     
+    "/RelatoriosServico",
+    "/MaisAgendados",
+    "/Relatorios/Servicos/MaisAgendado",
+    "/Relatorios/Servicos/MaisAgendado/Periodo",
+    "/Relatorios/Servicos/MaisTrabalhado",
+    "/Relatorios/Servicos/MaisTrabalhado/Periodo",
+    "/Relatorios/Servicos/Cliente",
+    "/Relatorios/Servicos/Cliente/Periodo"
+
 })
 public class ControleRelatorios extends HttpServlet {
 
@@ -54,6 +56,10 @@ public class ControleRelatorios extends HttpServlet {
                 acao = "MaisTrabalhadoPeriodo";
             } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisTrabalhado")) {
                 acao = "MaisTrabalhado";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Cliente/Periodo")) {
+                acao = "ClientePeriodo";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Cliente")) {
+                acao = "Cliente";
             } else {
                 response.sendRedirect("404.jsp");
             }

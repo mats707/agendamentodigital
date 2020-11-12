@@ -280,7 +280,7 @@
 
         });
     });
-    //sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
+    sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
     //alert(${funcaoMsg});
     console.log("${funcaoMsg}");</script>
 

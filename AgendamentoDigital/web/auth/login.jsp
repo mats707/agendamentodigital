@@ -25,6 +25,8 @@
         <link href="https://fonts.googleapis.com/css?family=Arima+Madurai:100,200,300,400,500,700,800,900" rel="stylesheet">
         <!-- Estilo Personalizado -->
         <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <!-- SweetAlert2 -->
+        <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 
         <!--<link href="http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">-->
         <link href="${site}/auth/css/auth.css" rel="stylesheet" type="text/css">
@@ -87,7 +89,7 @@
                                                 </div>
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                    <button type="submit" class="btn btn-primary btn-block" name="acao" value="Entrar">Entrar</button>
+                                                    <button type="submit" class="btn btn-primary btn-block" name="acao" value="Entrar" onclick="">Entrar</button>
                                                 </div>
                                                 <!-- /.col -->
                                             </div>
@@ -187,24 +189,17 @@
                                             </div>
                                         </form>
 
-                                        <p class="text-${colorMsg} mb-3">
-                                            <c:if test="${msg!=null}">
-                                                ${msg}
-                                            </c:if>
-                                        </p>
+
+
                                     </div>
                                 </div>
-                                <div class="footer">
-                                    <button id="btnBackLogin" data-action="Login" class="btn btn-simple" rel="tooltip" title="Voltar para LOGIN" onclick="rotateCard(this)">
+                                <div c                                                lass="footer">
+                                    <button id="btnBackLogin" data-action="Lo                                                gin" class="btn btn-simple" rel="tooltip" title="Voltar para LOGIN" onclick="rotateCard(this)">
                                         <i class="fa fa-reply"></i> Voltar
                                     </button>
-                                    <div class="social-links text-center">
-                                        <a href="http://deepak646.blogspot.in/" class="facebook"><i class="fa fa-facebook fa-fw"></i></a>
-                                        <a href="http://deepak646.blogspot.in/" class="google"><i class="fa fa-google-plus fa-fw"></i></a>
-                                        <a href="http://deepak646.blogspot.in/" class="twitter"><i class="fa fa-twitter fa-fw"></i></a>
-                                    </div>
+                                    
                                 </div>
-                            </div> <!-- end back panel -->
+                            </div> <!-- end back panel                                                                        -->
                         </div> <!-- end card -->
                     </div> <!-- end card-container -->
                 </div>
@@ -229,10 +224,15 @@
         <!-- InputMask -->
         <script src="${site}/plugins/moment/moment.min.js"></script>
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
+        <!-- SweetAlert2 -->
+        <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <script>
                                         $(function () {
                                             $('[data-mask]').inputmask();
                                         })
+
+                                        sweet('${funcaoMsg}', '${funcaoStatus}', 2000);
         </script>
     </body>
 </html>

@@ -26,6 +26,7 @@ import modelos.Funcionario;
 import modelos.Servico;
 import java.time.Duration;
 import modelos.Empresa;
+import util.Util;
 
 /**
  *
@@ -96,8 +97,8 @@ public class CadastrarAction implements ICommand {
             categoria.setIdCategoriaServico(Integer.parseInt(categoriaFinal));
 
             Servico objServico = new Servico();
-            objServico.setNome(nome);
-            objServico.setDescricao(descricao);
+            objServico.setNome(Util.stringToUTF8(nome));
+            objServico.setDescricao(Util.stringToUTF8(descricao));
             objServico.setCategoria(categoria);
             objServico.setValor(BigDecimal.valueOf(Double.parseDouble(valor)));
             objServico.setDuracao(tempo);

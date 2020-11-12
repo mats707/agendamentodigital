@@ -1,9 +1,3 @@
-<%-- 
-    Document   : maisagendado
-    Created on : 01/09/2020, 14:29:36
-    Author     : Rafael Pereira
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 

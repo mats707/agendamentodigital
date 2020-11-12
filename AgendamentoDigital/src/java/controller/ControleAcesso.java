@@ -1,6 +1,7 @@
 package controller;
 
 import dao.ClienteDAO;
+import dao.FuncionarioDAO;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +19,8 @@ public class ControleAcesso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        String funcaoMsg = "Execute seu acesso";
+        String funcaoStatus = "info";
         try {
             RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");
             String acao = request.getParameter("acao");
@@ -28,24 +31,22 @@ public class ControleAcesso extends HttpServlet {
                     usuario.setSenha(request.getParameter("inputPassword"));
                     UsuarioDAO usuarioDAO = new UsuarioDAO();
                     Usuario usuarioAutenticado = usuarioDAO.autenticaUsuario(usuario);
-                    Cliente cliente = new Cliente();
-                    ClienteDAO clienteDAO = new ClienteDAO();
                     //se o usuario existe no banco de dados
                     if (usuarioAutenticado != null && usuario.logar(usuarioAutenticado)) {
-
-                        cliente.setUsuario(usuarioAutenticado);
-                        clienteDAO.listarCompletoId(cliente);
 
                         //cria uma sessao para o usuario
                         HttpSession sessaoUsuario = request.getSession();
                         sessaoUsuario.setAttribute("usuarioAutenticado", usuarioAutenticado);
-                        sessaoUsuario.setAttribute("cliente", cliente);
-                        
+
                         //redireciona para a pagina principal
-                        response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
+                        response.sendRedirect(direcionar(usuarioAutenticado, sessaoUsuario));
 
                     } else {
-                        request.setAttribute("msg", "Email ou Senha Incorreto!");
+
+                        funcaoMsg = "Email ou senha incorreto";
+                        funcaoStatus = "error";
+                        request.setAttribute("funcaoMsg", funcaoMsg);
+                        request.setAttribute("funcaoStatus", funcaoStatus);
                         rd.forward(request, response);
                     }
                     break;
@@ -63,7 +64,7 @@ public class ControleAcesso extends HttpServlet {
                     Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
                     //se o usuario existe no banco de dados
                     if (usuarioAutenticado != null) {
-                        response.sendRedirect(direcionar(usuarioAutenticado.getPerfil()));
+                        response.sendRedirect(direcionar(usuarioAutenticado, sessaoUsuario));
                     } else {
                         rd.forward(request, response);
                     }
@@ -72,6 +73,7 @@ public class ControleAcesso extends HttpServlet {
                 default:
                     break;
             }
+
         } catch (IOException | ServletException erro) {
             RequestDispatcher rd = request.getRequestDispatcher("/erro.jsp");
             request.setAttribute("erro", erro);
@@ -91,15 +93,29 @@ public class ControleAcesso extends HttpServlet {
         processRequest(request, response);
     }
 
-    private String direcionar(PerfilDeAcesso perfil) {
-
+    private String direcionar(Usuario usuarioAutenticado, HttpSession sessaoUsuario) {
+        
+        Funcionario funcionario = new Funcionario();
+        FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+        Cliente cliente = new Cliente();
+        ClienteDAO clienteDAO = new ClienteDAO();
+        
         //redireciona para a pagina principal
-        switch (perfil) {
+        switch (usuarioAutenticado.getPerfil()) {
             case FUNCIONARIOADMIN:
+                funcionario.setUsuario(usuarioAutenticado);
+                funcionarioDAO.buscarUsuario(funcionario);
+                sessaoUsuario.setAttribute("funcionario", funcionario);
                 return ("pages/admin/home.jsp");
             case FUNCIONARIOCOMUM:
-                return ("pages/user/index3.jsp");
+                funcionario.setUsuario(usuarioAutenticado);
+                funcionarioDAO.buscarUsuario(funcionario);
+                sessaoUsuario.setAttribute("funcionario", funcionario);
+                return ("Funcionario/Home");
             case CLIENTECOMUM:
+                cliente.setUsuario(usuarioAutenticado);
+                clienteDAO.buscarUsuario(cliente);
+                sessaoUsuario.setAttribute("cliente", cliente);
                 return ("HomeCliente");
             default:
                 return ("");

@@ -483,8 +483,11 @@ public class CategoriaServicoDAO implements ICategoriaServicoDAO {
         } catch (SQLException sqlErro) {
 
             sqlReturnCode = sqlErro.getSQLState();
-
-            return sqlReturnCode;
+            if (sqlReturnCode.equalsIgnoreCase("23503")) { //Significa que violou uma foreignkey (fk) constraint
+                return sqlErro.getMessage().split("\n")[0];
+            } else {
+                return sqlReturnCode;
+            }
 
         } finally {
             if (conexao != null) {

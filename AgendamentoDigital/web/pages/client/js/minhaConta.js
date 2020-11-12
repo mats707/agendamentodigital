@@ -67,7 +67,7 @@ function editarDados(element) {
             }
             break;
         default:
-            console.log("Inv�lido");
+            console.log("Inv�lido");
     }
 
     if (document.getElementById("inputName").readOnly === true &&
@@ -98,4 +98,47 @@ function sweet(title, type, timer) {
         type: type,
         title: '  ' + title
     });
+}
+
+function sweetDesativar() {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: 'Tem certeza?',
+        text: "Seu usuario será desativado, podendo ser reativado depois!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim, cancelar!',
+        cancelButtonText: 'Não, voltar!',
+        reverseButtons: true
+    }).then((result) => {
+        console.log(result);
+        if (result.value) {
+            swalWithBootstrapButtons.fire(
+                    'Solicitação concluída!',
+                    'Clique em OK para prosseguir.',
+                    'success'
+                    );
+            submit();
+        } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+                ) {
+            swalWithBootstrapButtons.fire(
+                    'Fechando...',
+                    'Seu bloqueio está seguro :)',
+                    'error'
+                    );
+        }
+    });
+}
+
+function submit() {    
+    document.getElementById("formDesativar").submit();
 }

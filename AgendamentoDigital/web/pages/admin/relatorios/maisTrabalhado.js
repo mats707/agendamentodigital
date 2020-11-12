@@ -1,46 +1,20 @@
-$(document).ready(function () {
-
-    var nameproject = "/AgendamentoDigital";
-
-    var tabMaisAgendado = document.getElementById('tabMaisTrabalhado');
-
-    for (var i; i < tabMaisAgendado.rows.length; i++)
-    {
-        tabMaisAgendado.rows[i].onclick = function ()
-        {
-            var relatorio = this.cells[1].innerHTML;
-            carregarRelatorio();
-        };
-    }
-    // Função para carregar os dados da tabela em seus campos
-    function carregarRelatorio() {
-        $.ajax({
-            url: nameproject + '/api/Relatorios/Servicos/MaisTrabalhado',
-            type: "GET",
-            complete: function (e, xrh, result) {
-                if (e.readyState == 4 && e.status == 200)
-                {
-                    console.log(e.responseText);
-                    try {
-                        var Obj = eval("(" + e.responseText + ")");
-                    } catch (err)
-                    {
-                        alert("Sistema encontrou um erro");
-                        alert(err);
-                    }
-                    if (obj != null)
-                    {
-                        $("#nomeServico").val(Obj.nomeFuncionario);
-                        $("$contator").val(Obj.count);
-                    }
-                }
-            }
-        })
-    }
-
-});
 
 
+var nameproject = "/AgendamentoDigital";
+
+
+function sweet(title, type, timer) {
+    const Toast = swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: timer
+    });
+    Toast.fire({
+        type: type,
+        title: ' ' + title
+    });
+}
 
 
 function lerJson(result) {
@@ -49,4 +23,6 @@ function lerJson(result) {
             return e;
         }).join('</td><td>') + '</tr>'
     }).join('\n') + '</table>');
+
+
 }

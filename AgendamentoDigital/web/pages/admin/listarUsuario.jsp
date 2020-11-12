@@ -66,15 +66,7 @@
                                     <div class="card-header">
                                         <h3 class="card-title">Usuários Cadastrados</h3>
 
-                                        <div class="card-tools">
-                                            <div class="input-group input-group-sm" style="width: 150px;">
-                                                <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-                                                <div class="input-group-append">
-                                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                     <!-- /.card-header -->
                                     <div id="target" class="card-body p-0"></div>
@@ -286,10 +278,10 @@
             includeHTMLNav("usuarios", "listarUsuario");
             lerJson(result);
             var callSweet = "${funcaoMsgOperation}";
-            if(callSweet != ""){
-                sweet(callSweet,"${funcaoStatusOperation}",6000);
+            if (callSweet != "") {
+                sweet(callSweet, "${funcaoStatusOperation}", 6000);
             } else {
-                sweet("${funcaoMsg}","${funcaoStatus}",3000);
+                sweet("${funcaoMsg}", "${funcaoStatus}", 3000);
             }
         </script>
 

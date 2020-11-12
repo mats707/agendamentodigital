@@ -18,7 +18,7 @@ public interface IClienteDAO {
 
     public ArrayList<Cliente> listarCompleto();
 
-    public void listarCompletoId(Cliente cliente);
+    public void buscarUsuario(Cliente cliente);
 
     public void buscar(Cliente cliente);
 

@@ -211,7 +211,7 @@
                         </button>
                     </div>
                     <div class="row align-items-center justify-content-center">
-                        <p class="danger">Caso essa categoria tenha subcategorias, todas as subcategorias serão excluídas também!</p>
+                        <p class="danger">Caso essa categoria tenha subcategorias,não será possivel deletar!</p>
 
                         <div class="register-box">
                             <div class="card">
@@ -221,7 +221,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="btnDeletarCategoria" name="acao" value="DeletarCategoria" type="submit" class="btn btn-success btn-block">Deletar Categoria</button>
+                        <button id="btnDeletarCategoria" name="acao" value="DeletarCategoria" type="submit" class="btn btn-danger btn-block">Deletar Categoria</button>
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>
@@ -292,8 +292,8 @@
 
         })
     </script>
-    <script charset="utf-8" src="${site}/pages/admin/categoria/js/home.js" type="text/javascript"></script>
-    <script charset="utf-8" src="${site}/pages/admin/categoria/js/edit.js" type="text/javascript"></script>
+    <script charset="ISO-8859-1" src="${site}/pages/admin/categoria/js/home.js" type="text/javascript"></script>
+    <script charset="ISO-8859-1" src="${site}/pages/admin/categoria/js/edit.js" type="text/javascript"></script>
 
     <script>
         includeHTMLNav("categorias", "");

@@ -31,7 +31,7 @@ function carregarFuncionario() {
 //                        comboFiltro.add(optionFiltro, x);
 //                    }
                     var groupFiltro = document.getElementById("groupFiltro");
-                    groupFiltro.innerHTML = '<select name="filtroFuncionario" id="filtroFuncionario"class="form-control select2 select2-danger" data-dropdown-css-class="select2-danger">';
+                    groupFiltro.innerHTML = '<select name="filtroFuncionario" id="filtroFuncionario"class="form-control select2 select2-danger col-6" data-dropdown-css-class="select2-danger">';
                     var optionFiltro = document.getElementById("filtroFuncionario");
                     optionFiltro.innerHTML = " <option selected disabled >-- Selecione o funcionario --</option>";
                     for (var x = 0; x < Obj.length; x++)
