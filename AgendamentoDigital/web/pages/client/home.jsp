@@ -83,7 +83,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <select name="selectStatus" id="selectStatus" class="form-control select select-danger" data-dropdown-css-class="select2-danger" onchange="chamaCarregar()">
+                                            <select name="selectStatus" id="selectStatus" class="form-control select select-danger" data-dropdown-css-class="select2-danger" onchange="carregarAgendamentos(${cliente.idCliente})">
                                                 <option selected disabled value="AGUARDANDOATENDIMENTO">-- Selecione a situação --</option>
                                                 <option value="AGUARDANDOATENDIMENTO">Aguardando por atendimento</option>
                                                 <option value="FINALIZADO">Finalizado</option>
@@ -129,8 +129,7 @@
                                                 sweet(" ${funcaoMsg}", "${funcaoStatus}", 4000);
                                                 includeHTMLNav("home", "");
                                                 var idCliente = '${cliente.idCliente}';
-                                                var status = null;
-                                                chamaCarregar()
+                                                carregarAgendamentos(idCliente)
 
         </script>
     </body>

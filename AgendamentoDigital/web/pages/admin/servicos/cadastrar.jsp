@@ -247,6 +247,9 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
+
+        <!-- Mask Money -->
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -287,8 +290,5 @@
         <script src="${site}/plugins/raphael/raphael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-        <!-- Mask Money -->
-        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
     </body>
 </html>

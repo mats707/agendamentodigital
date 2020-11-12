@@ -243,19 +243,6 @@ insert into Cliente values
   (nextval('sqn_cliente'),5);
 
 insert into Agendamento (id,dataAgendamento,horarioAgendamento,cliente,servico,funcionario,status) values
-<<<<<<< HEAD
-  (nextval('sqn_agendamento'),'2020-10-28','16:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-10-30','09:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-10-30','11:30:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-10-30','12:00:00',1,1,1,1),
-  (nextval('sqn_agendamento'),'2020-10-29','08:30:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-10-30','08:00:00',1,1,2,1),
-  (nextval('sqn_agendamento'),'2020-10-30','12:00:00',2,2,2,1);
-  
-insert into BloqueioAgenda (id,dataBloqueio,horaInicial,duracao,funcionario) values
-(nextval('sqn_bloqueioAgenda'),'02/11/2020','00:00','PT1440M'::INTERVAL,1),
-(nextval('sqn_bloqueioAgenda'),'22/11/2020','15:00','PT30M'::INTERVAL,1);
-=======
   (nextval('sqn_agendamento'),'2020-10-29','16:00:00',1,1,1,1),
   (nextval('sqn_agendamento'),'2020-10-31','09:00:00',1,1,1,1),
   (nextval('sqn_agendamento'),'2020-10-31','11:30:00',1,1,2,1),
@@ -267,4 +254,3 @@ insert into BloqueioAgenda (id,dataBloqueio,horaInicial,duracao,funcionario) val
 insert into BloqueioAgenda (id,dataBloqueio,horaInicial,duracao,funcionario) values
 (nextval('sqn_bloqueioAgenda'),'2020-11-02','00:00','PT1440M'::INTERVAL,1),
 (nextval('sqn_bloqueioAgenda'),'2020-11-23','15:00','PT30M'::INTERVAL,2);
->>>>>>> feature-funcionario

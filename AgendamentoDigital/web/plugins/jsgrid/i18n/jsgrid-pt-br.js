@@ -4,13 +4,13 @@
         grid: {
             noDataContent: "NÃ£o encontrado",
             deleteConfirm: "VocÃª tem certeza que deseja remover este item?",
-            pagerFormat: "PÃ¡ginas: {first} {prev} {pages} {next} {last} &nbsp;&nbsp; {pageIndex} de {pageCount}",
+            pagerFormat: "Páginas: {first} {prev} {pages} {next} {last} &nbsp;&nbsp; {pageIndex} de {pageCount}",
             pagePrevText: "Anterior",
             pageNextText: "Seguinte",
             pageFirstText: "Primeira",
             pageLastText: "Ãšltima",
             loadMessage: "Por favor, espere...",
-            invalidMessage: "Dados invÃ¡lidos!"
+            invalidMessage: "Dados inválidos!"
         },
 
         loadIndicator: {
@@ -20,14 +20,14 @@
         fields: {
             control: {
                 searchModeButtonTooltip: "Mudar para busca",
-                insertModeButtonTooltip: "Mudar para inserÃ§Ã£o",
+                insertModeButtonTooltip: "Mudar para inserção",
                 editButtonTooltip: "Editar",
                 deleteButtonTooltip: "Remover",
                 searchButtonTooltip: "Buscar",
                 clearFilterButtonTooltip: "Remover filtro",
                 insertButtonTooltip: "Adicionar",
                 updateButtonTooltip: "Atualizar",
-                cancelEditButtonTooltip: "Cancelar EdiÃ§Ã£o"
+                cancelEditButtonTooltip: "Cancelar Edição"
             }
         },
 

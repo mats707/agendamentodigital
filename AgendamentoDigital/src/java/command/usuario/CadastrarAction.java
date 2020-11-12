@@ -37,7 +37,7 @@ public class CadastrarAction implements ICommand {
         String funcaoStatus = "info";
 
         if (email != null && senha != null && chkPassword != null && celular != null && perfil != null) {
-            if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && perfil != null) {
+            if (Util.isInteger(celular) && Util.isValidEmailAddress(email)) {
 
                 Usuario usuario = new Usuario();
                 usuario.setEmail(email);

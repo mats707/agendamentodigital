@@ -17,7 +17,7 @@ $(document).ready(function () {
     function carregarUsuario(email) {
         if (email !== "" && email.length >= 2) {
             $.ajax({
-                url: nameproject + '/api/Usuario/BuscarEmail/' + email, //lugar onde a servlet est√°
+                url: nameproject + '/api/Usuario/BuscarEmail/' + email, //lugar onde a servlet est·
                 type: "GET",
                 complete: function (e, xhr, result) {
                     if (e.readyState == 4 && e.status == 200) {

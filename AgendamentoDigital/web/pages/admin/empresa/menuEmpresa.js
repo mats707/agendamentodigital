@@ -9,7 +9,7 @@ $(document).ready(function () {
     // Funcao para carregar os dados da consulta nos respectivos campos
     function carregarEmpresa() {
         $.ajax({
-            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet est√°
+            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {

@@ -15,19 +15,19 @@
 $.extend( $.validator.messages, {
 	required: "Þessi reitur er nauðsynlegur.",
 	remote: "Lagaðu þennan reit.",
-	maxlength: $.validator.format( "Sláðu inn mest {0} stafi." ),
-	minlength: $.validator.format( "Sláðu inn minnst {0} stafi." ),
-	rangelength: $.validator.format( "Sláðu inn minnst {0} og mest {1} stafi." ),
-	email: "Sláðu inn gilt netfang.",
-	url: "Sláðu inn gilda vefslóð.",
-	date: "Sláðu inn gilda dagsetningu.",
-	number: "Sláðu inn tölu.",
-	digits: "Sláðu inn tölustafi eingöngu.",
-	equalTo: "Sláðu sama gildi inn aftur.",
-	range: $.validator.format( "Sláðu inn gildi milli {0} og {1}." ),
-	max: $.validator.format( "Sláðu inn gildi sem er minna en eða jafnt og {0}." ),
-	min: $.validator.format( "Sláðu inn gildi sem er stærra en eða jafnt og {0}." ),
-	creditcard: "Sláðu inn gilt greiðslukortanúmer."
+	maxlength: $.validator.format( "Sl�ðu inn mest {0} stafi." ),
+	minlength: $.validator.format( "Sl�ðu inn minnst {0} stafi." ),
+	rangelength: $.validator.format( "Sl�ðu inn minnst {0} og mest {1} stafi." ),
+	email: "Sl�ðu inn gilt netfang.",
+	url: "Sl�ðu inn gilda vefslóð.",
+	date: "Sl�ðu inn gilda dagsetningu.",
+	number: "Sl�ðu inn tölu.",
+	digits: "Sl�ðu inn tölustafi eingöngu.",
+	equalTo: "Sl�ðu sama gildi inn aftur.",
+	range: $.validator.format( "Sl�ðu inn gildi milli {0} og {1}." ),
+	max: $.validator.format( "Sl�ðu inn gildi sem er minna en eða jafnt og {0}." ),
+	min: $.validator.format( "Sl�ðu inn gildi sem er stærra en eða jafnt og {0}." ),
+	creditcard: "Sl�ðu inn gilt greiðslukortanúmer."
 } );
 return $;
 }));

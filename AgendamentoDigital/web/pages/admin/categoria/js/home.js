@@ -149,7 +149,7 @@ $(document).ready(function () {
 
     function carregarCategoriaServico() {
         $.ajax({
-            url: 'api/CategoriaServico/Listar/', //lugar onde a servlet est√°
+            url: 'api/CategoriaServico/Listar/', //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {

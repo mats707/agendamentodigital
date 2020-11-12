@@ -36,21 +36,20 @@ public class AlterarAction implements ICommand {
         String funcaoMsgOperation = "";
         String funcaoStatusOperation = "";
 
-        if (id != null && Util.isInteger(editedCelular) && Util.isValidEmailAddress(editedEmail) && editedPerfil != null) {
-            Usuario usuario = new Usuario();
-            usuario.setIdUsuario(id);
-            usuario.setEmail(editedEmail);
-            usuario.setSenha(geraHash.hashPassword(editedPassword));
-            usuario.setCelular(Long.parseLong(editedCelular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
-            if (editedPerfil.equalsIgnoreCase("administrador")) {
-                usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
-            } else if (editedPerfil.equalsIgnoreCase("comum")) {
-                usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
-            } else {
-                usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
-            }
+        if (editedEmail != null && editedCelular != null && editedPerfil != null) {
+            if (id != null && Util.isInteger(editedCelular) && Util.isValidEmailAddress(editedEmail)) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(id);
+                usuario.setEmail(editedEmail);
+                usuario.setCelular(Long.parseLong(editedCelular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
+                if (editedPerfil.equalsIgnoreCase("administrador")) {
+                    usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
+                } else if (editedPerfil.equalsIgnoreCase("comum")) {
+                    usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
+                } else {
+                    usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
+                }
 
-            if (geraHash.checkPassword(editedChkPassword,usuario.getSenha())) {
                 UsuarioDAO usuarioDAO = new UsuarioDAO();
 
                 String sqlState = usuarioDAO.alterarUsuario(usuario);
@@ -58,25 +57,37 @@ public class AlterarAction implements ICommand {
                 if (sqlState == "0") {
                     funcaoMsgOperation = "Alterado com sucesso!";
                     funcaoStatusOperation = "success";
+                    if (!"".equals(editedPassword) && !"".equals(editedChkPassword)) {
+                        usuario.setSenha(geraHash.hashPassword(editedPassword));
+                        if (geraHash.checkPassword(editedChkPassword, usuario.getSenha())) {
+                            sqlState = usuarioDAO.alterarSenha(usuario);
+                            if (sqlState == "0") {
+                                funcaoMsgOperation = "Usuário e senha alterados com sucesso!";
+                                funcaoStatusOperation = "success";
+                            } else {
+                                funcaoMsgOperation = "Usuário alterado com sucesso\\nMas não foi possível alterar a senha, tente novamente!";
+                                funcaoStatusOperation = "warning";
+                            }
+                        } else {
+                            funcaoMsgOperation = "Senhas diferentes!";
+                            funcaoStatusOperation = "warning";
+                        }
+                    }
                 } else if ("23505".equals(sqlState)) {
-                    funcaoMsgOperation = "Tente outro Email ou Celular!";
+                    funcaoMsgOperation = "Tente outro email ou celular!";
                     funcaoStatusOperation = "error";
                 } else {
                     funcaoMsgOperation = "Não foi possível alterar o usuário, tente novamente!";
                     funcaoStatusOperation = "error";
                 }
             } else {
-                funcaoMsgOperation = "Senhas diferente!";
-                funcaoStatusOperation = "warning";
+                funcaoMsgOperation = "dados inválido!";
+                funcaoStatusOperation = "error";
             }
-        } else {
-            funcaoMsgOperation = "Usuário inválido!";
-            funcaoStatusOperation = "error";
         }
+
         request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
         request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
         return funcaoMsgOperation;
-
     }
-
 }

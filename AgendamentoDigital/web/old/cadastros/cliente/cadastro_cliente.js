@@ -41,7 +41,7 @@ $(document).ready(function () {
 
         //fazer a chamado da servlet
         $.ajax({
-            url: nameproject + '/api/TipoContato/BuscarNome/Email', //lugar onde a servlet est√°
+            url: nameproject + '/api/TipoContato/BuscarNome/Email', //lugar onde a servlet est·
             type: 'GET',
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -67,7 +67,7 @@ $(document).ready(function () {
     function enchesexo() {
         //fazer a chamado da servlet
         $.ajax({
-            url: nameproject + '/listarSexo', //lugar onde a servlet est√°
+            url: nameproject + '/listarSexo', //lugar onde a servlet est·
             type: 'POST',
             data: {
                 oper: "1"
@@ -98,7 +98,7 @@ $(document).ready(function () {
     function enchetipodocumento() {
         //fazer a chamado da servlet
         $.ajax({
-            url: nameproject + '/api/TipoDocumento/Listar', //lugar onde a servlet est√°
+            url: nameproject + '/api/TipoDocumento/Listar', //lugar onde a servlet est·
             type: 'GET',
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -126,7 +126,7 @@ $(document).ready(function () {
     function enchetipocontato() {
         //fazer a chamado da servlet
         $.ajax({
-            url: nameproject + '/api/TipoContato/Listar', //lugar onde a servlet est√°
+            url: nameproject + '/api/TipoContato/Listar', //lugar onde a servlet est·
             type: 'GET',
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -155,7 +155,7 @@ $(document).ready(function () {
     function encheestadocivil() {
         //fazer a chamado da servlet
         $.ajax({
-            url: nameproject + '/api/EstadoCivil/Listar', //lugar onde a servlet est√°
+            url: nameproject + '/api/EstadoCivil/Listar', //lugar onde a servlet est·
             type: 'GET',
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -184,7 +184,7 @@ $(document).ready(function () {
     function encheescolaridade() {
         //fazer a chamado da servlet
         $.ajax({
-            url: nameproject + '/api/Escolaridade/Listar', //lugar onde a servlet est√°
+            url: nameproject + '/api/Escolaridade/Listar', //lugar onde a servlet est·
             type: 'GET',
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -224,14 +224,14 @@ $(document).ready(function () {
 
     });
 
-    // Atribui evento e fun√ß√£o para limpeza dos campos
+    // Atribui evento e funÁ„o para limpeza dos campos
     $('#inputBuscarProfissao').on('input', limpaCampos);
 
     $("#inputBuscarProfissao").autocomplete({
         minLength: 2,
         source: function (request, response) {
             $.ajax({
-                url: nameproject + '/api/Profissao/BuscarNome/' + $("#inputBuscarProfissao").val(), //lugar onde a servlet est√°
+                url: nameproject + '/api/Profissao/BuscarNome/' + $("#inputBuscarProfissao").val(), //lugar onde a servlet est·
                 dataType: "json",
                 success: function (data) {
                     response(data);
@@ -256,13 +256,13 @@ $(document).ready(function () {
                 .appendTo(ul);
     };
 
-    // Fun√ß√£o para carregar os dados da consulta nos respectivos campos
+    // FunÁ„o para carregar os dados da consulta nos respectivos campos
     function carregarDados() {
         var dados = $("#inputProfissao").attr("data-id");
 
         if (dados !== "" && dados.length >= 2) {
             $.ajax({
-                url: nameproject + '/api/Profissao/BuscarId/' + dados, //lugar onde a servlet est√°
+                url: nameproject + '/api/Profissao/BuscarId/' + dados, //lugar onde a servlet est·
                 dataType: "json",
                 success: function (data) {
 
@@ -281,7 +281,7 @@ $(document).ready(function () {
 
 
     }
-//     Fun√ß√£o para limpar os campos caso a busca esteja vazia
+//     FunÁ„o para limpar os campos caso a busca esteja vazia
     function limpaCampos() {
         var busca = $('#inputBuscarProfissao').val();
 
@@ -308,7 +308,7 @@ $(document).ready(function () {
 
             //fazer a chamado da servlet
             $.ajax({
-                url: nameproject + '/api/TipoDocumento/Buscar/' + i, //lugar onde a servlet est√°
+                url: nameproject + '/api/TipoDocumento/Buscar/' + i, //lugar onde a servlet est·
                 type: 'GET',
                 complete: function (e, xhr, result) {
                     if (e.readyState == 4 && e.status == 200) {
@@ -349,7 +349,7 @@ $(document).ready(function () {
 
             //fazer a chamado da servlet
             $.ajax({
-                url: nameproject + '/api/TipoContato/Buscar/' + i, //lugar onde a servlet est√°
+                url: nameproject + '/api/TipoContato/Buscar/' + i, //lugar onde a servlet est·
                 type: 'GET',
                 complete: function (e, xhr, result) {
                     if (e.readyState == 4 && e.status == 200) {
@@ -396,7 +396,7 @@ $(document).ready(function () {
         console.log(username);
 
         $.ajax({
-            url: nameproject + '/api/Usuario/BuscarNome/' + username, //lugar onde a servlet est√°
+            url: nameproject + '/api/Usuario/BuscarNome/' + username, //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -413,12 +413,12 @@ $(document).ready(function () {
                             div.style.display = "contents";
                             div.style.color = "green";
                             habilita('inputPassword');
-                            div.innerHTML = "Este usu√°rio est√° dispon√≠vel!";
+                            div.innerHTML = "Este usu·rio est· dispon√≠vel!";
                         } else {
                             div.style.display = "contents";
                             div.style.color = "red";
                             desabilita('inputPassword');
-                            div.innerHTML = "Usu√°rio j√° foi cadastrado! Tente outro!";
+                            div.innerHTML = "Usu·rio j· foi cadastrado! Tente outro!";
                         }
                     }
                 }

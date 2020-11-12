@@ -162,8 +162,8 @@ public class restRelatorios {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Agendamentos/Funcionario/{idFuncionario}")
-    public String getAgendamentosFuncionario(@PathParam("idFuncionario") Integer idFuncionario) throws SQLException, ClassNotFoundException {
+    @Path("/Agendamentos/Funcionario/{idFuncionario}/{status}")
+    public String getAgendamentosFuncionario(@PathParam("idFuncionario") Integer idFuncionario, @PathParam("status") String status) throws SQLException, ClassNotFoundException {
 
         //Instanciando Cliente
         Funcionario objFuncionario = new Funcionario();
@@ -176,7 +176,7 @@ public class restRelatorios {
         PessoaDAO objPessoaDao = new PessoaDAO();
         ServicoDAO objServicoDao = new ServicoDAO();
 
-        ArrayList<Agendamento> arr = objAgendamentoDao.listarFuncionario(new Agendamento(objFuncionario));
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarFuncionario(new Agendamento(objFuncionario, StatusAgendamento.valueOf(status)));
 
         for (Agendamento objAgendamento : arr) {
             objClienteDao.buscar(objAgendamento.getCliente());

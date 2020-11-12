@@ -47,10 +47,10 @@ public class ServicoDAO implements IServicoDAO {
             + "valor = ? "
             + "servicoPai = ? "
             + "WHERE id = ?";
-    private static final String BUSCAR_ID = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico WHERE id=? ORDER BY nome";
-    private static final String BUSCAR_DADOS_BASICOS = "SELECT id, nome, descricao, valor, duracao::INTERVAL FROM sistema.servico WHERE id=? ORDER BY nome";
-    private static final String LISTAR = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico ORDER BY nome";
-    private static final String LISTAR_POR_CATEGORIA = "SELECT id, nome, descricao, valor, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico WHERE categoria = ? ORDER BY nome";
+    private static final String BUSCAR_ID = "SELECT id, nome, descricao, valor::MONEY::NUMERIC, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico WHERE id=? ORDER BY nome";
+    private static final String BUSCAR_DADOS_BASICOS = "SELECT id, nome, descricao, valor::MONEY::NUMERIC, duracao::INTERVAL FROM sistema.servico WHERE id=? ORDER BY nome";
+    private static final String LISTAR = "SELECT id, nome, descricao, valor::MONEY::NUMERIC, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico ORDER BY nome";
+    private static final String LISTAR_POR_CATEGORIA = "SELECT id, nome, descricao, valor::MONEY::NUMERIC, duracao::INTERVAL, categoria, funcionarios FROM sistema.servico WHERE categoria = ? ORDER BY nome";
     private static final String DELETAR = "DELETE FROM sistema.servico WHERE id = ?";
     private static final String BUSCA_COMPLETA = "SELECT s.id, s.nome, s.descricao FROM sistema.servico s WHERE s.id=? AND s.nome=? AND s.descricao=?";
 
@@ -144,7 +144,7 @@ public class ServicoDAO implements IServicoDAO {
                 novoServico.setIdServico(rs.getInt("id"));
                 novoServico.setNome(rs.getString("nome"));
                 novoServico.setDescricao(rs.getString("descricao"));
-                novoServico.setValor(parseBigDecimal(rs.getString("valor"), Locale.FRANCE));
+                novoServico.setValor(parseBigDecimal(rs.getString("valor").replace(".", ","), Locale.FRANCE));
 
                 // get the hours, minutes and seconds value and add it to the duration
                 String[] tempo = rs.getString("duracao").split(":");

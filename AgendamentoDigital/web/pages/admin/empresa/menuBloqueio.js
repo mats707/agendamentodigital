@@ -13,7 +13,7 @@ $(document).ready(function () {
     // Funcao para carregar os dados da consulta nos respectivos campos
     function carregarFuncionario() {
         $.ajax({
-            url: nameproject + '/api/Funcionario/ListarCompleto/', //lugar onde a servlet est√°
+            url: nameproject + '/api/Funcionario/ListarCompleto/', //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -51,7 +51,7 @@ $(document).ready(function () {
     function listarDadosEmpresa()
     {
         $.ajax({
-            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet est√°
+            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -123,7 +123,7 @@ function sweet(title, type, timer) {
             showConfirmButton: true,
             timer: false,
             icon: type,
-            title: 'Confirma√ß√£o do cadastro!',
+            title: 'ConfirmaÁ„o do cadastro!',
             text: title
         })
     }

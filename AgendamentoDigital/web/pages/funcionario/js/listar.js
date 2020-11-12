@@ -1,9 +1,13 @@
 var nameproject = "/" + window.location.pathname.split('/')[1] + "/";
 console.log(nameproject);
 
-var site = "/AgendamentoDigital"
-function carregarMaisAgendado(idFuncionario) {
-    var URL = nameproject + 'api/Relatorios/Agendamentos/Funcionario/' + idFuncionario;
+function carregarAgendamentos(idFuncionario) {
+    var status = document.getElementById('selectStatus').value;
+    if (status == null)
+    {
+        status = 'AGUARDANDOATENDIMENTO';
+    }
+    var URL = nameproject + 'api/Relatorios/Agendamentos/Funcionario/' + idFuncionario + '/' + status;
     $.ajax({
         url: URL,
         type: "GET",
@@ -39,6 +43,7 @@ function lerTabela(result) {
             <th>Duração</th>\n\
             <th>Valor</th>\n\
             <th>Cliente</th>\n\
+            <th>Situação</th>\n\
             <th>Concluir</th>\n\
             <th>Cancelar</th>\n\
         </tr></thead></table>';
@@ -54,16 +59,18 @@ function lerTabela(result) {
                 var cellDuracao = row.insertCell(3);//Duracao
                 var cellValor = row.insertCell(4);//Valor
                 var cellCliente = row.insertCell(5);//Funcionario
-                var concluirAgendamento = row.insertCell(6);
-                var cancelarAgendamento = row.insertCell(7);
+                var cellSituacao = row.insertCell(6); //Status do servico
+                var concluirAgendamento = row.insertCell(7);
+                var cancelarAgendamento = row.insertCell(8);
                 cellServico.innerHTML = ObjAgendamento[i].servico.nome;
                 cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                 cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
                 cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60 + " minutos";
                 cellValor.innerHTML = ObjAgendamento[i].servico.valor;
                 cellCliente.innerHTML = ObjAgendamento[i].cliente.nomePessoa;
+                cellSituacao.innerHTML = ObjAgendamento[i].status;
                 concluirAgendamento.innerHTML =
-                        "<form id='formConcluir-" + i + "' action='" + site + "/Funcionario/ConcluirAgendamento' method='POST'>\n\
+                        "<form id='formConcluir-" + i + "' action='" + nameproject + "Funcionario/ConcluirAgendamento' method='POST'>\n\
                             <input type='hidden' name='servico' value=" + ObjAgendamento[i].servico.idServico + ">\n\
                             <input type='hidden' name='cliente' value=" + ObjAgendamento[i].cliente.idCliente + ">\n\
                             <input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + ">\n\
@@ -71,7 +78,7 @@ function lerTabela(result) {
                             <a id='btn-formConcluir-" + i + "' href='#' class='nav-link' onclick='sweetConcluir(this);'>\n\
                             <i class='nav-icon fas fa-check-circle'></a></form>";
                 cancelarAgendamento.innerHTML =
-                        "<form id='formCancelar-" + i + "' action='" + site + "/Funcionario/CancelarAgendamento' method='POST'>\n\
+                        "<form id='formCancelar-" + i + "' action='" + nameproject + "Funcionario/CancelarAgendamento' method='POST'>\n\
                             <input type='hidden' name='servico' value=" + ObjAgendamento[i].servico.idServico + ">\n\
                             <input type='hidden' name='cliente' value=" + ObjAgendamento[i].cliente.idCliente + ">\n\
                             <input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + ">\n\

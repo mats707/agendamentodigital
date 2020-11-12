@@ -220,7 +220,7 @@
     <script src="${site}/pages/admin/relatorios/${pgjs}.js" type="text/javascript"></script>
 
     <script>
-        sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
+        sweet("${funcaoMsg}", "${funcaoStatus}", 4000);
         var result = ${msg};
         includeHTMLNav("maisAgendado", "maisAgendado");
         lerJson(result);

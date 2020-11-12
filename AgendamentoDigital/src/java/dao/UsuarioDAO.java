@@ -24,10 +24,10 @@ public class UsuarioDAO implements IUsuarioDAO {
     private static final String CADASTRA_NOVO_USUARIO = "INSERT INTO sistema.usuario (id, email, senha, celular, perfil) VALUES (nextval('sistema.sqn_usuario'),?,?,?,(select id from sistema.perfilacesso where nome ilike ?));";
     private static final String ALTERA_USUARIO = "UPDATE sistema.usuario\n"
             + "SET email = ?,"
-            + "senha = ?,\n"
             + "celular = ?,\n"
             + "perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?))\n"
             + "WHERE id = ?";
+    private static final String ALTERAR_SENHA = "UPDATE sistema.usuario SET senha = ? WHERE id = ?";
     private static final String ALTERAR_CELULAR = "UPDATE sistema.usuario SET celular = ? WHERE id = ?";
     private static final String ALTERAR_FOTO_PERFIL = "UPDATE sistema.usuario SET fotoPerfil = ? WHERE id = ?";
     private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
@@ -342,16 +342,48 @@ public class UsuarioDAO implements IUsuarioDAO {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(ALTERA_USUARIO, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, usuario.getEmail());
-            pstmt.setString(2, usuario.getSenha());
-            pstmt.setLong(3, usuario.getCelular());
-            pstmt.setString(4, usuario.getPerfil().toString());
-            pstmt.setInt(5, usuario.getIdUsuario());
-            pstmt.execute();
+            pstmt.setLong(2, usuario.getCelular());
+            pstmt.setString(3, usuario.getPerfil().toString());
+            pstmt.setInt(4, usuario.getIdUsuario());
+            pstmt.executeUpdate();
 
             final ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
                 usuario.setIdUsuario(rs.getInt("id"));
             }
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String alterarSenha(Usuario usuario) {
+
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt = null;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(ALTERAR_SENHA);
+            pstmt.setString(1, usuario.getSenha());
+            pstmt.setInt(2, usuario.getIdUsuario());
+
+            pstmt.executeUpdate();
 
             return sqlReturnCode;
 

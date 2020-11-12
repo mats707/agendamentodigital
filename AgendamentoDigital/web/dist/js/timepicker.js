@@ -60,7 +60,7 @@ function formatDate(year, month, date) {
 function carregarHorarios(indexListaFuncionarios, valueInputDate, pessoa) {
     if (isNumber(indexListaFuncionarios) && valueInputDate != '') {
 
-        var urlApi = 'api/Agendamento/HorariosOcupados/' + pessoa + '/' + indexListaFuncionarios + '/' + valueInputDate; //lugar onde a servlet est√°
+        var urlApi = 'api/Agendamento/HorariosOcupados/' + pessoa + '/' + indexListaFuncionarios + '/' + valueInputDate; //lugar onde a servlet est·
         var arrHorarioDisponivel = [];
 
         console.log(urlApi);

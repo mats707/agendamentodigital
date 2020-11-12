@@ -12,13 +12,13 @@ $(document).ready(function () {
         };
     }
 
-    // Fun√ß√£o para carregar os dados da consulta nos respectivos campos
+    // FunÁ„o para carregar os dados da consulta nos respectivos campos
     function carregarServico(element) {
         var id = element.cells[0].innerHTML;
         var categorias = element.cells[5].innerHTML;
         if (id !== "") {
             $.ajax({
-                url: nameproject + '/api/Servico/Buscar/' + id, //lugar onde a servlet est√°
+                url: nameproject + '/api/Servico/Buscar/' + id, //lugar onde a servlet est·
                 type: "GET",
                 complete: function (e, xhr, result) {
                     if (e.readyState == 4 && e.status == 200) {
@@ -56,7 +56,7 @@ $(document).ready(function () {
                             } else {
                                 document.getElementById("btnVoltarCategoria").style.display = 'block';
                             }
-                            $("#editedValor").val(Obj.valor);
+                            $("#editedValor").val(Obj.valor.toFixed(2));
                             $("#editedDuracao").val(Obj.duracao.seconds / 60);
                             var values = [];
                             for (var i = 0; i < Obj.funcionarios.length; i++) {
@@ -98,7 +98,7 @@ function lerTabela(result) {
                 cellId.innerHTML = ObjServico[i].idServico;
                 cellServico.innerHTML = ObjServico[i].nome;
                 cellDescricao.innerHTML = ObjServico[i].descricao;
-                cellValor.innerHTML = "R$ " + ObjServico[i].valor;
+                cellValor.innerHTML = "R$ " + ObjServico[i].valor.toFixed(2);
                 cellDuracao.innerHTML = (ObjServico[i].duracao.seconds / 60) + " minutos";
                 cellEdit.innerHTML = '<a href="#" id="edituser" class="nav-link" data-toggle="modal" data-target="#editModal" ><i class="nav-icon fas fa-edit"></i></a>';
                 cellDelete.innerHTML = '<a href="#" id="deleteuser" class="nav-link" data-toggle="modal" data-target="#deleteModal" ><i class="nav-icon fas fa-trash-alt"></i></a>';

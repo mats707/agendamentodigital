@@ -26,6 +26,8 @@ public interface IUsuarioDAO {
 
     public String alterarUsuario(Usuario usuario);
 
+    public String alterarSenha(Usuario usuario);
+
     public String alterarCelular(Usuario usuario);
     
     public String alterarFotoPerfil(Usuario usuario);
