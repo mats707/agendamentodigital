@@ -104,7 +104,7 @@ public class MaisAgendadoPeriodoAction implements ICommand {
             }
         } else if (status_String != null) {
             ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-
+            
             arr = objRelatorioDAO.listarMaisAgendadoStatus(status);
             request.setAttribute("pgRelatorio", "Serviços " + status);
 

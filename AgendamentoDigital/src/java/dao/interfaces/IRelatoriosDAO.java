@@ -8,6 +8,7 @@ package dao.interfaces;
 import java.util.ArrayList;
 import modelos.Agendamento;
 import modelos.RelatorioServico;
+import modelos.StatusAgendamento;
 
 /**
  *
@@ -22,5 +23,7 @@ public interface IRelatoriosDAO {
     public ArrayList<RelatorioServico> listarMaisTrabalhado();
 
     public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodo(int mes,int ano);
+    
+    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodoStatus (int mes, int ano, StatusAgendamento status);
 
 }

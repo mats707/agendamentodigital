@@ -165,6 +165,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
+    @Override
     public ArrayList<RelatorioServico> listarMaisAgendadoPeriodoStatus(int mes, int ano, StatusAgendamento status) {
         ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
 
@@ -375,7 +376,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
             }
         }
     }
-    
+
     public ArrayList<RelatorioServico> listarCliente() {
         ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
 
@@ -406,7 +407,6 @@ public class RelatoriosDAO implements IRelatoriosDAO {
             }
         }
     }
-
 
     public ArrayList<RelatorioServico> listarClientePeriodo(int mes, int ano) {
         ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
