@@ -37,20 +37,27 @@ $(document).ready(function () {
                             $("#deletedEmail").val(Obj.email);
                             $("#deletedCelular").val(Obj.celular);
 
+                            $('#editedPerfil1').attr('checked', false); // or 'checked'
+                            $('#editedPerfil2').attr('checked', false); // or 'checked'
+                            $('#editedPerfil3').attr('checked', false); // or 'checked'
                             if ("FUNCIONARIOADMIN" == Obj.perfil) {
-                                document.getElementById("editedPerfil1_lbl").classList.remove("active");
-                                document.getElementById("editedPerfil2_lbl").classList.add("active");
                                 $('#editedPerfil1').attr('checked', true); // or 'checked'
                                 $('#editedPerfil2').attr('checked', false); // or 'checked'
+                                $('#editedPerfil3').attr('checked', false); // or 'checked'
                                 $("#deletedPerfil").val('Administrador');
                                 console.log("Administrador");
-                            } else {
-                                document.getElementById("editedPerfil1_lbl").classList.add("active");
-                                document.getElementById("editedPerfil2_lbl").classList.remove("active");
+                            } else if ("FUNCIONARIOCOMUM" == Obj.perfil) {
                                 $('#editedPerfil1').attr('checked', false); // or 'checked'
                                 $('#editedPerfil2').attr('checked', true); // or 'checked'
-                                $("#deletedPerfil").val('Comum');
+                                $('#editedPerfil3').attr('checked', false); // or 'checked'
+                                $("#deletedPerfil").val('Funcionario');
                                 console.log("Funcionario");
+                            } else {
+                                $('#editedPerfil1').attr('checked', false); // or 'checked'
+                                $('#editedPerfil2').attr('checked', false); // or 'checked'
+                                $('#editedPerfil3').attr('checked', true); // or 'checked'
+                                $("#deletedPerfil").val('Cliente');
+                                console.log("Cliente");
                             }
                         }
                     }

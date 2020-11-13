@@ -44,9 +44,9 @@ public class AlterarAction implements ICommand {
                 usuario.setCelular(Long.parseLong(editedCelular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
                 if (editedPerfil.equalsIgnoreCase("administrador")) {
                     usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
-                } else if (editedPerfil.equalsIgnoreCase("comum")) {
+                } else if (editedPerfil.equalsIgnoreCase("funcionario")) {
                     usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
-                } else {
+                } else if (editedPerfil.equalsIgnoreCase("cliente")) {
                     usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
                 }
 

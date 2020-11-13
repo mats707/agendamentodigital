@@ -45,7 +45,7 @@ public class CadastrarAction implements ICommand {
         password = request.getParameter("inputPassword");
         chkpassword = request.getParameter("inputChkPassword");
 
-        if (Util.isInteger(celular) && Util.isValidEmailAddress(email)) {
+        if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && nome != null && dataNascimento != null) {
             Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, password, celular).constroi();
 
             if (geraHash.checkPassword(chkpassword,cliente.getUsuario().getSenha())) {
@@ -78,6 +78,8 @@ public class CadastrarAction implements ICommand {
                             request.setAttribute("colorMsg", "success");
                             return "Cadastrado com sucesso!";
                         } else {
+                            pessoaDao.deletar(objPessoa);
+                            usuarioDao.deletar(cliente.getUsuario());
                             request.setAttribute("colorMsg", "danger");
                             return "Cliente inválido! Entre em contato com o suporte.";
                         }

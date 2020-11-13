@@ -23,7 +23,7 @@ public interface IPessoaDAO {
 
     public String alterar(Pessoa Pessoa);
 
-    public boolean excluir(Pessoa pessoa);
+    public boolean deletar(Pessoa pessoa);
 
     public String cadastrar(Pessoa Pessoa);
 

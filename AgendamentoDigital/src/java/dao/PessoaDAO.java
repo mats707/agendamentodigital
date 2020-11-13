@@ -225,7 +225,7 @@ public class PessoaDAO implements IPessoaDAO {
     }
 
     @Override
-    public boolean excluir(Pessoa pessoa) {
+    public boolean deletar(Pessoa pessoa) {
 
         try {
 

@@ -36,7 +36,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="../sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -84,7 +84,7 @@
             <!-- /.content-wrapper -->
 
             <!-- Footer -->
-            <jsp:include page="footer.jsp"/>
+            <jsp:include page="../footer.jsp"/>
 
         </div>
         <!-- ./wrapper -->
@@ -121,13 +121,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
-                                        <label id="editedPerfil1_lbl" class="btn bg-info">
-                                            <input type="radio" name="editedPerfil" id="editedPerfil1" autocomplete="off" checked value="COMUM"> Funcionário
-                                        </label>
-                                        <label id="editedPerfil2_lbl" class="btn bg-info">
-                                            <input type="radio" name="editedPerfil" id="editedPerfil2" autocomplete="off" value="ADMINISTRADOR"> Administrador
-                                        </label>
+                                    <div class="border  rounded p-2 mb-4">
+                                        <label>Perfil</label>
+                                        <div class="form-group justify-center">
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" name="editedPerfil" id="editedPerfil1" value="ADMINISTRADOR">
+                                                <label for="editedPerfil1" class="custom-control-label">Administrador</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" name="editedPerfil" id="editedPerfil2" value="FUNCIONARIO">
+                                                <label for="editedPerfil2" class="custom-control-label">Funcionário</label>
+                                            </div>
+                                            <div class="custom-control custom-radio">
+                                                <input class="custom-control-input" type="radio" name="editedPerfil" id="editedPerfil3" value="CLIENTE" >
+                                                <label for="editedPerfil3" class="custom-control-label">Cliente</label>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="input-group mb-3">
@@ -272,7 +281,7 @@
 
             })
         </script>
-        <script src="${site}/pages/admin/listarUsuario.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/usuarios/listarUsuario.js" type="text/javascript"></script>
         <script>
             var result = ${msg};
             includeHTMLNav("usuarios", "listarUsuario");

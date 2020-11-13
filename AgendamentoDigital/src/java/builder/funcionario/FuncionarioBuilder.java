@@ -33,11 +33,15 @@ public class FuncionarioBuilder {
     //##########################################################################
     //# Usuário
     //##########################################################################
-    public FuncionarioBuilder comUsuario(String email, String senha, String celular) {
+    public FuncionarioBuilder comUsuario(String email, String senha, String celular, String perfil) {
         usuario.setEmail(email);
         usuario.setSenha(geraHash.hashPassword(senha));
         usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
-        usuario.setPerfil(PerfilDeAcesso.CLIENTECOMUM);
+        if (perfil.equalsIgnoreCase("administrador")) {
+            usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
+        } else if (perfil.equalsIgnoreCase("funcionariocomum")) {
+            usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOCOMUM);
+        }
         return this;
     }
 

@@ -13,7 +13,10 @@ import dao.RelatoriosDAO;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelos.PerfilDeAcesso;
 import modelos.RelatorioServico;
+import modelos.Usuario;
 
 /**
  *
@@ -23,8 +26,19 @@ public class MaisAgendadoAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        
-        request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
+
+        //Verifica Perfil Usuario
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        String perfil = "";
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOADMIN)) {
+            perfil = "admin";
+        } else if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+            perfil = "funcionario";
+        }
+
+        request.setAttribute("pagina", "/pages/funcionario/relatorios/relatorio.jsp");
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         String funcaoMsg = "";
@@ -56,6 +70,7 @@ public class MaisAgendadoAction implements ICommand {
         }
 
         String json = arrJson.toString();
+        request.setAttribute("pgperfil", perfil);
         request.setAttribute("pgjs", "maisAgendado");
         request.setAttribute("command", "MaisAgendado");
         request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
