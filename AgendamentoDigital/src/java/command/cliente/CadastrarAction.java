@@ -16,7 +16,9 @@ import modelos.Cliente;
 import builder.cliente.ClienteBuilder;
 import dao.PessoaDAO;
 import dao.UsuarioDAO;
+import javax.servlet.http.HttpSession;
 import modelos.Pessoa;
+import modelos.Usuario;
 import util.Util;
 import util.geraHash;
 
@@ -36,8 +38,15 @@ public class CadastrarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "auth/login.jsp");
-
+        //Verifica Usuario logado
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+            request.setAttribute("pagina", "/pages/funcionario/clientes/cadastrar.jsp");
+        } else {
+            request.setAttribute("pagina", "auth/login.jsp");
+        }
         nome = request.getParameter("inputName");
         dataNascimento = request.getParameter("inputDataNasc");
         celular = request.getParameter("inputCelular");
@@ -48,7 +57,7 @@ public class CadastrarAction implements ICommand {
         if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && nome != null && dataNascimento != null) {
             Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, password, celular).constroi();
 
-            if (geraHash.checkPassword(chkpassword,cliente.getUsuario().getSenha())) {
+            if (geraHash.checkPassword(chkpassword, cliente.getUsuario().getSenha())) {
 
                 //Realiza o cadastro do usuário com passagem por referência - Na função será atribuído ao objeto o ID que foi gerado após o cadastro
                 UsuarioDAO usuarioDao = new UsuarioDAO();

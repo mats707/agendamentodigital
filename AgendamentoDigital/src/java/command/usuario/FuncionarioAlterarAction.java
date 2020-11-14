@@ -19,12 +19,12 @@ import util.geraHash;
  *
  * @author alunocmc
  */
-public class AlterarAction implements ICommand {
+public class FuncionarioAlterarAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
-
-        request.setAttribute("pagina", "ListarUsuario");
+        
+        request.setAttribute("pagina", "/Usuario/Funcionario/Listar");
 
         Integer id = Integer.parseInt(request.getParameter("idUsuario"));
         String editedEmail = request.getParameter("editedEmail");
@@ -33,15 +33,15 @@ public class AlterarAction implements ICommand {
         String editedCelular = request.getParameter("editedCelular");
         String editedPerfil = request.getParameter("editedPerfil");
 
-        String funcaoMsgOperation = "";
-        String funcaoStatusOperation = "";
+        String funcaoMsg = "";
+        String funcaoStatus = "";
 
         if (editedEmail != null && editedCelular != null && editedPerfil != null) {
             if (id != null && Util.isInteger(editedCelular) && Util.isValidEmailAddress(editedEmail)) {
                 Usuario usuario = new Usuario();
                 usuario.setIdUsuario(id);
                 usuario.setEmail(editedEmail);
-                usuario.setCelular(Long.parseLong(editedCelular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
+                usuario.setCelular(Long.parseLong(editedCelular.replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", "")));
                 if (editedPerfil.equalsIgnoreCase("administrador")) {
                     usuario.setPerfil(PerfilDeAcesso.FUNCIONARIOADMIN);
                 } else if (editedPerfil.equalsIgnoreCase("funcionario")) {
@@ -55,39 +55,39 @@ public class AlterarAction implements ICommand {
                 String sqlState = usuarioDAO.alterarUsuario(usuario);
 
                 if (sqlState == "0") {
-                    funcaoMsgOperation = "Alterado com sucesso!";
-                    funcaoStatusOperation = "success";
+                    funcaoMsg = "Alterado com sucesso!";
+                    funcaoStatus = "success";
                     if (!"".equals(editedPassword) && !"".equals(editedChkPassword)) {
                         usuario.setSenha(geraHash.hashPassword(editedPassword));
                         if (geraHash.checkPassword(editedChkPassword, usuario.getSenha())) {
                             sqlState = usuarioDAO.alterarSenha(usuario);
                             if (sqlState == "0") {
-                                funcaoMsgOperation = "Usuário e senha alterados com sucesso!";
-                                funcaoStatusOperation = "success";
+                                funcaoMsg = "Usuário e senha alterados com sucesso!";
+                                funcaoStatus = "success";
                             } else {
-                                funcaoMsgOperation = "Usuário alterado com sucesso\\nMas não foi possível alterar a senha, tente novamente!";
-                                funcaoStatusOperation = "warning";
+                                funcaoMsg = "Usuário alterado com sucesso\\nMas não foi possível alterar a senha, tente novamente!";
+                                funcaoStatus = "warning";
                             }
                         } else {
-                            funcaoMsgOperation = "Senhas diferentes!";
-                            funcaoStatusOperation = "warning";
+                            funcaoMsg = "Senhas diferentes!";
+                            funcaoStatus = "warning";
                         }
                     }
                 } else if ("23505".equals(sqlState)) {
-                    funcaoMsgOperation = "Tente outro email ou celular!";
-                    funcaoStatusOperation = "error";
+                    funcaoMsg = "Tente outro email ou celular!";
+                    funcaoStatus = "error";
                 } else {
-                    funcaoMsgOperation = "Não foi possível alterar o usuário, tente novamente!";
-                    funcaoStatusOperation = "error";
+                    funcaoMsg = "Não foi possível alterar o usuário, tente novamente!";
+                    funcaoStatus = "error";
                 }
             } else {
-                funcaoMsgOperation = "dados inválido!";
-                funcaoStatusOperation = "error";
+                funcaoMsg = "dados inválidos!";
+                funcaoStatus = "error";
             }
         }
 
-        request.setAttribute("funcaoMsgOperation", funcaoMsgOperation);
-        request.setAttribute("funcaoStatusOperation", funcaoStatusOperation);
-        return funcaoMsgOperation;
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
+        return funcaoMsg;
     }
 }

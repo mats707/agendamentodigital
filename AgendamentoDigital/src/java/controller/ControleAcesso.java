@@ -19,7 +19,7 @@ public class ControleAcesso extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String funcaoMsg = "Execute seu acesso";
+        String funcaoMsg = "Acesse com email e senha";
         String funcaoStatus = "info";
         try {
             RequestDispatcher rd = request.getRequestDispatcher("/auth/login.jsp");

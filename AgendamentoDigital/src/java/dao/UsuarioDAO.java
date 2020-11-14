@@ -38,13 +38,15 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "ON u.perfil = p.id WHERE u.id=?";
     private static final String BUSCAR_FOTO_PERFIL = "SELECT u.fotoPerfil FROM sistema.usuario u WHERE u.id=?";
     private static final String LISTAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
-            + "ON u.perfil = p.id ORDER BY u.email;";
+            + "ON u.perfil = p.id WHERE u.ativo=true ORDER BY u.email;";
+    private static final String LISTAR_PERFIL = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+            + "ON u.perfil = p.id WHERE u.ativo=true AND perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?)) ORDER BY u.email;";
     private static final String DELETAR = "DELETE FROM sistema.usuario WHERE id = ?";
     private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.id=? AND u.email=? AND u.celular=? AND p.nome=?";
     private static final int BUFFER_SIZE = 4096;
-    private static final String DESATIVAR = "UPDATE SISTEMA.USUARIO\n"
-            + "SET HABILITADO=FALSE\n"
+    private static final String DESATIVAR = "UPDATE sistema.usuario\n"
+            + "SET ativo=false\n"
             + "WHERE ID=?;";
 
     private Connection conexao;
@@ -131,6 +133,48 @@ public class UsuarioDAO implements IUsuarioDAO {
             conexao = ConectaBanco.getConexao();
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR);
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Usuario novoUsuario = new Usuario();
+                novoUsuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
+                novoUsuario.setEmail(rs.getString("email"));
+                novoUsuario.setCelular(Long.parseLong(rs.getString("celular")));
+                novoUsuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+
+                //add na lista
+                listaUsuario.add(novoUsuario);
+            }
+            return listaUsuario;
+
+        } catch (Exception ex) {
+
+            return listaUsuario;
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @Override
+    public ArrayList<Usuario> listarPerfil(Usuario usuario) {
+
+        ArrayList<Usuario> listaUsuario = new ArrayList<Usuario>();
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(LISTAR_PERFIL);
+            pstmt.setString(1, usuario.getPerfil().toString());
             //executa
             ResultSet rs = pstmt.executeQuery();
 
@@ -438,45 +482,6 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public String alterarFotoPerfil(Usuario usuario) {
-
-        String sqlReturnCode = "0";
-
-        PreparedStatement pstmt = null;
-        try {
-            conexao = ConectaBanco.getConexao();
-            pstmt = conexao.prepareStatement(ALTERAR_FOTO_PERFIL);
-
-            pstmt.setBlob(1, usuario.getFotoPerfil());
-            pstmt.setInt(2, usuario.getIdUsuario());
-
-            Integer row = pstmt.executeUpdate();
-            if (row > 0) {
-                sqlReturnCode = "0";
-            } else {
-                sqlReturnCode = row.toString();
-            }
-
-            return sqlReturnCode;
-
-        } catch (SQLException sqlErro) {
-
-            sqlReturnCode = sqlErro.getSQLState();
-
-            return sqlReturnCode;
-
-        } finally {
-            if (conexao != null) {
-                try {
-                    conexao.close();
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-            }
-        }
-    }
-
-    @Override
     public String deletar(Usuario usuario) {
 
         String sqlReturnCode = "0";
@@ -523,11 +528,7 @@ public class UsuarioDAO implements IUsuarioDAO {
 
         } catch (SQLException sqlErro) {
             sqlReturnCode = sqlErro.getSQLState();
-            if (sqlReturnCode.equalsIgnoreCase("23505")) { //Significa que violou uma unique constraint
-                return sqlErro.getMessage().split("\"")[1];
-            } else {
-                return sqlReturnCode;
-            }
+            return sqlReturnCode;
 
         } finally {
             if (conexao != null) {

@@ -20,6 +20,8 @@ public interface IUsuarioDAO {
 
     public ArrayList<Usuario> listar();
 
+    public ArrayList<Usuario> listarPerfil(Usuario usuario);
+
     public void buscar(Usuario usuario);
 
     public Usuario buscaCompleta(Usuario usuario);
@@ -29,8 +31,6 @@ public interface IUsuarioDAO {
     public String alterarSenha(Usuario usuario);
 
     public String alterarCelular(Usuario usuario);
-    
-    public String alterarFotoPerfil(Usuario usuario);
 
     public String deletar(Usuario usuario);
 

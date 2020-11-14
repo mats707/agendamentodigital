@@ -10,10 +10,8 @@
         <url-pattern>/pages/funcionario/</url-pattern>
         <url-pattern>/Relatorios</url-pattern>
         <url-pattern>/CadastrarUsuario</url-pattern>
-        <url-pattern>/ListarUsuario</url-pattern>
-        <url-pattern>/BuscarUsuario</url-pattern>
-        <url-pattern>/ExcluirUsuario</url-pattern>
-        <url-pattern>/AlterarUsuario</url-pattern>
+        <url-pattern>/Usuario</url-pattern>
+        <url-pattern>/Usuario/*</url-pattern>
         <url-pattern>/CadastrarServico</url-pattern>
         <url-pattern>/ListarServico</url-pattern>
         <url-pattern>/BuscarServico</url-pattern>
@@ -29,6 +27,7 @@
     <filter-mapping>
         <filter-name>AcessoFuncionarioComum</filter-name>
         <url-pattern>/pages/funcionario/</url-pattern>
+        <url-pattern>/Funcionario</url-pattern>
         <url-pattern>/Funcionario/*</url-pattern>
         <url-pattern>/Relatorios</url-pattern>
     </filter-mapping>

@@ -65,7 +65,32 @@
                         <i class="fas fa-calendar-plus nav-icon"></i>
                         <p>Agendar Serviço</p>
                     </a>
-                </li>  
+                </li>
+
+
+                <li id="menuPaiclientes" class="nav-item has-treeview">
+                    <a href="#" id="clientes" class="nav-link">
+                        <i class="nav-icon far fa-user"></i>
+                        <p>
+                            Clientes
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="${site}/Funcionario/Cliente/Cadastrar" id="cadastrarCliente" class="nav-link">
+                                <i class="fas fa-user-plus nav-icon"></i>
+                                <p>Cadastrar</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${site}/Funcionario/Cliente/Listar" id="listarClientes" class="nav-link">
+                                <i class="fas fa-user-tag nav-icon"></i>
+                                <p>Listar</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li id="menuPaiservicos" class="nav-item has-treeview">
                     <a href="#" id="relatorios" class="nav-link">
                         <i class="nav-icon fas fa-chart-bar"></i>

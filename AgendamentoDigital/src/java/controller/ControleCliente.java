@@ -23,7 +23,9 @@ import javax.servlet.annotation.MultipartConfig;
  */
 @WebServlet(name = "controleCliente", urlPatterns = {
     "/CadastrarCliente",
-    "/ListarCliente",
+    "/Funcionario/Cliente/Cadastrar",
+    "/Funcionario/Cliente/Listar",
+    "/ListarClientes",
     "/BuscarCliente",
     "/DesativarCliente",
     "/IniciarEdicaoCliente",
@@ -56,13 +58,13 @@ public class ControleCliente extends HttpServlet {
                 acao_secundaria = null;
             }
 
-            if (uri.equals(request.getContextPath() + "/DeletarCliente")) {
-                acao = "Deletar";
-            } else if (uri.equals(request.getContextPath() + "/ListarCliente")) {
+            if (uri.equals(request.getContextPath() + "/Funcionario/Cliente/Listar")
+                    || uri.equals(request.getContextPath() + "/ListarClientes")) {
                 acao = "Listar";
             } else if (uri.equals(request.getContextPath() + "/IniciarEdicaoCliente")) {
                 acao = "IniciarEdicao";
-            } else if (uri.equals(request.getContextPath() + "/CadastrarCliente")) {
+            } else if (uri.equals(request.getContextPath() + "/Funcionario/Cliente/Cadastrar")
+                    || uri.equals(request.getContextPath() + "/CadastrarCliente")) {
                 acao = "Cadastrar";
             } else if (uri.equals(request.getContextPath() + "/AlterarCliente")) {
                 acao = "Alterar";

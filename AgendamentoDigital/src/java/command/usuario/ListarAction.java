@@ -36,6 +36,7 @@ public class ListarAction implements ICommand {
         String funcaoMsg = "Carregando Usuários";
         String funcaoStatus = "info";
 
+        request.setAttribute("pgperfil", "Usuarios");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         

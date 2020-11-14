@@ -3,19 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package command.cliente;
+package command.usuario;
 
-import command.usuario.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.ClienteDAO;
-import dao.PessoaDAO;
 import dao.UsuarioDAO;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelos.Cliente;
 import modelos.PerfilDeAcesso;
 import modelos.Usuario;
 
@@ -23,36 +19,36 @@ import modelos.Usuario;
  *
  * @author alunocmc
  */
-public class ListarAction implements ICommand {
+public class FuncionarioListarAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-        request.setAttribute("pagina", "/pages/funcionario/clientes/listar.jsp");
-        
+        request.setAttribute("pagina", "/pages/admin/usuarios/listarFuncionarios.jsp");
         String funcaoMsg = (String) request.getAttribute("funcaoMsg");
         String funcaoStatus = (String) request.getAttribute("funcaoStatus");
 
         if (funcaoMsg == null || funcaoStatus == null) {
-            funcaoMsg = "Carregando Clientes";
+            funcaoMsg = "Carregando Usuários de Funcionários";
             funcaoStatus = "info";
         }
 
-        ArrayList<Cliente> arr = new ArrayList<Cliente>();
-        
-        ClienteDAO clienteDAO = new ClienteDAO();
-        PessoaDAO pessoaDAO = new PessoaDAO();
+        ArrayList<Usuario> arrFuncionarioComum = new ArrayList<Usuario>();
+        ArrayList<Usuario> arrFuncionarioAdmin = new ArrayList<Usuario>();
+        ArrayList<Usuario> arr = new ArrayList<Usuario>();
+
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        arr = clienteDAO.listar();
+        Usuario usuarioFuncionarioComum = new Usuario(PerfilDeAcesso.FUNCIONARIOCOMUM);
+        arrFuncionarioComum = usuarioDAO.listarPerfil(usuarioFuncionarioComum);
         
-        for (Cliente cliente : arr) {
-            pessoaDAO.buscar(cliente);
-            usuarioDAO.buscarId(cliente.getUsuario());
-        }
+        Usuario usuarioFuncionarioAdmin = new Usuario(PerfilDeAcesso.FUNCIONARIOADMIN);
+        arrFuncionarioAdmin = usuarioDAO.listarPerfil(usuarioFuncionarioAdmin);
+        
+        arr.addAll(arrFuncionarioComum);
+        arr.addAll(arrFuncionarioAdmin);
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-        
-        request.setAttribute("pgperfil", "Clientes");
+        request.setAttribute("pgperfil", "Funcionarios");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         

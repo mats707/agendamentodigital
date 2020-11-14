@@ -22,6 +22,7 @@ import javax.servlet.annotation.MultipartConfig;
  * @author alunocmc
  */
 @WebServlet(name = "controleFuncionario", urlPatterns = {
+    "/ListarFuncionarios",
     "/Funcionario/Alterar",
     "/Funcionario/Home",
     "/Funcionario/MinhaConta"})
@@ -52,12 +53,14 @@ public class ControleFuncionario extends HttpServlet {
             }
 
             if (uri.equals(request.getContextPath() + "/Funcionario/Alterar")) {
-                acao = "Alterar";
+                acao = "AlterarFuncionario";
             } else if (uri.equals(request.getContextPath() + "/Funcionario/Home")) {
                 acao = "Home";
             } else if (uri.equals(request.getContextPath() + "/Funcionario/MinhaConta")) {
                 acao = "MinhaConta";
                 acao = validarAcaoSecundaria(acao, acao_secundaria);
+            } else if (uri.equals(request.getContextPath() + "/ListarFuncionarios")) {
+                acao = "Listar";
             } else {
                 response.sendRedirect("acessoNegado.jsp");
             }

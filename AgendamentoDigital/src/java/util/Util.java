@@ -23,7 +23,7 @@ public class Util {
 
     public static boolean isInteger(String str) {
         if (str != null) {
-            str = str.replaceAll("([+()\\-a-z ]+)", "");
+            str = str.replaceAll("([+()\\_-a-z ]+)", "");
             return str != null && str.matches("[0-9]*");
         } else {
             return false;

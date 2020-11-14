@@ -183,9 +183,15 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}/ListarUsuario" id="listarUsuario" class="nav-link">
+                            <a href="${site}/Usuario/Funcionario/Listar" id="listarFuncionarios" class="nav-link">
                                 <i class="fas fa-user-tag nav-icon"></i>
-                                <p>Listar</p>
+                                <p>Listar Funcionários</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="${site}/Usuario/Cliente/Listar" id="listarClientes" class="nav-link">
+                                <i class="fas fa-user-tag nav-icon"></i>
+                                <p>Listar Clientes</p>
                             </a>
                         </li>
                     </ul>
