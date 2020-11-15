@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
@@ -19,11 +21,12 @@ import util.ConectaBanco;
 public class ClienteDAO implements IClienteDAO {
 
     private static final String LISTAR = "SELECT id, pessoa FROM sistema.cliente ORDER BY id;";
-    private static final String LISTAR_PESSOA = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON u.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id ORDER BY u.id;";
-    private static final String BUSCAR_USUARIO = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil FROM sistema.cliente c INNER JOIN sistema.pessoa p ON c.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE u.id = ? ORDER BY u.id;";
+    private static final String LISTAR_PESSOA = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil, u.ativo FROM sistema.cliente c INNER JOIN sistema.pessoa p ON u.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id ORDER BY u.id;";
+    private static final String BUSCAR_USUARIO = "SELECT c.id as idCli, p.id as idPessoa, p.nome, p.dataNascimento, u.id as idUsuario, u.email, u.celular, pf.nome as perfil, u.ativo FROM sistema.cliente c INNER JOIN sistema.pessoa p ON c.pessoa = p.id INNER JOIN sistema.usuario u ON p.usuario = u.id INNER JOIN sistema.perfilacesso pf ON u.perfil = pf.id WHERE u.id = ? ORDER BY u.id;";
     private static final String BUSCAR = "SELECT id, pessoa FROM sistema.cliente WHERE id= ?;";
     private static final String CADASTRAR = "INSERT INTO sistema.cliente (id, pessoa) VALUES (NEXTVAL('sistema.sqn_cliente'),(SELECT id FROM sistema.pessoa WHERE id = ?));";
     private static final String DELETE = " FROM cliente WHERE id=?;";
+    private static final String ALTERAR = "UPDATE sistema.pessoa SET nome=?, datanascimento=?::DATE WHERE id=?;";
 
     private Connection conexao;
 
@@ -151,12 +154,13 @@ public class ClienteDAO implements IClienteDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                usuario.setAtivo(rs.getBoolean("ativo"));
 
                 cliente.setUsuario(usuario);
             }
 
         } catch (Exception ex) {
-
+            ex.getMessage();
         } finally {
 
             try {
@@ -166,6 +170,46 @@ public class ClienteDAO implements IClienteDAO {
             }
 
         }
+    }
+
+    @Override
+    public String alterar(Cliente cliente) {
+        
+        String sqlReturnCode = "0";
+        
+        String patternDataNascimento = "yyyy-MM-dd";
+        DateFormat df = new SimpleDateFormat(patternDataNascimento);
+
+        try {
+
+            conexao = ConectaBanco.getConexao();
+
+            PreparedStatement pstmt = conexao.prepareStatement(ALTERAR);
+
+            pstmt.setString(1, cliente.getNome());
+            pstmt.setString(2, df.format(cliente.getDataNascimento()));
+            pstmt.setInt(3, cliente.getIdPessoa());
+
+            pstmt.execute();
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+
+            sqlReturnCode = sqlErro.getSQLState();
+
+            return sqlReturnCode;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+
     }
 
     @Override

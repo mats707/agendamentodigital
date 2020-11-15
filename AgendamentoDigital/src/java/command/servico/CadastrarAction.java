@@ -43,8 +43,8 @@ public class CadastrarAction implements ICommand {
 
         request.setAttribute("pagina", "pages/admin/servicos/cadastrar.jsp");
 
-        String nome = request.getParameter("nome");
-        String descricao = request.getParameter("descricao");
+        String nome = Util.stringToUTF8(request.getParameter("nome"));
+        String descricao = Util.stringToUTF8(request.getParameter("descricao"));
         String categoriaFinal = request.getParameter("categoriaFinal");
         String valor = request.getParameter("valor");
         String duracao = request.getParameter("duracao");
@@ -97,8 +97,8 @@ public class CadastrarAction implements ICommand {
             categoria.setIdCategoriaServico(Integer.parseInt(categoriaFinal));
 
             Servico objServico = new Servico();
-            objServico.setNome(Util.stringToUTF8(nome));
-            objServico.setDescricao(Util.stringToUTF8(descricao));
+            objServico.setNome(nome);
+            objServico.setDescricao(descricao);
             objServico.setCategoria(categoria);
             objServico.setValor(BigDecimal.valueOf(Double.parseDouble(valor)));
             objServico.setDuracao(tempo);

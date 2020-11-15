@@ -18,7 +18,7 @@ public class geraHash {
      */
     public static String hashPassword(String pass) {
         String passCrypt = "";
-        if (pass != "") {
+        if (pass != "" && pass != null) {
             passCrypt = BCrypt.hashpw(pass, BCrypt.gensalt(12));
         }
         return passCrypt;

@@ -312,6 +312,8 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
+        <!-- Mask Money -->
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -324,6 +326,12 @@
 
                 $('[data-mask]').inputmask()
 
+                //Initialize MaskMoney
+                $('[type=money]').maskMoney({
+                    thousands: '.',
+                    decimal: ','
+                })
+
             })
         </script>
         <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
@@ -332,6 +340,7 @@
 
         <script>
             var result = ${msg};
+            console.log(result);
             includeHTMLNav("servicos", "listarServico");
             lerTabela(result);
             var callSweet = "${funcaoMsgOperation}";

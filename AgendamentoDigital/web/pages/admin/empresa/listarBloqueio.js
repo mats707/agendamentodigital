@@ -74,7 +74,7 @@ function lerTabela(result) {
 
             sweet("  Lista de bloqueios carregados", "success", 1500);
         } else {
-            sweet(" N√£o h√° bloqueios", "info", 3000);
+            sweet(" N„o h· bloqueios", "info", 3000);
         }
     }
 
@@ -104,17 +104,17 @@ function sweetCancelar(element) {
 
     swalWithBootstrapButtons.fire({
         title: 'Tem certeza?',
-        text: "Este bloqueio ser√° apagado do sistema!",
+        text: "Este bloqueio ser· apagado do sistema!",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sim, cancelar!',
-        cancelButtonText: 'N√£o, voltar!',
+        cancelButtonText: 'N„o, voltar!',
         reverseButtons: true
     }).then((result) => {
         console.log(result);
         if (result.value) {
             swalWithBootstrapButtons.fire(
-                    'Solicita√ß√£o conclu√≠da!',
+                    'SolicitaÁ„o concluÌda!',
                     'Clique em OK para prosseguir.',
                     'success'
                     );
@@ -125,7 +125,7 @@ function sweetCancelar(element) {
                 ) {
             swalWithBootstrapButtons.fire(
                     'Fechando...',
-                    'Seu bloqueio est√° seguro :)',
+                    'Seu bloqueio est· seguro :)',
                     'error'
                     );
         }

@@ -8,22 +8,22 @@
 }(this, (function (moment) { 'use strict';
 
 
-    var weekEndings = 'vasárnap hétfőn kedden szerdán csütörtökön pénteken szombaton'.split(' ');
+    var weekEndings = 'vas�rnap hétfőn kedden szerd�n csütörtökön pénteken szombaton'.split(' ');
     function translate(number, withoutSuffix, key, isFuture) {
         var num = number;
         switch (key) {
             case 's':
-                return (isFuture || withoutSuffix) ? 'néhány másodperc' : 'néhány másodperce';
+                return (isFuture || withoutSuffix) ? 'néh�ny m�sodperc' : 'néh�ny m�sodperce';
             case 'ss':
-                return num + (isFuture || withoutSuffix) ? ' másodperc' : ' másodperce';
+                return num + (isFuture || withoutSuffix) ? ' m�sodperc' : ' m�sodperce';
             case 'm':
                 return 'egy' + (isFuture || withoutSuffix ? ' perc' : ' perce');
             case 'mm':
                 return num + (isFuture || withoutSuffix ? ' perc' : ' perce');
             case 'h':
-                return 'egy' + (isFuture || withoutSuffix ? ' óra' : ' órája');
+                return 'egy' + (isFuture || withoutSuffix ? ' óra' : ' ór�ja');
             case 'hh':
-                return num + (isFuture || withoutSuffix ? ' óra' : ' órája');
+                return num + (isFuture || withoutSuffix ? ' óra' : ' ór�ja');
             case 'd':
                 return 'egy' + (isFuture || withoutSuffix ? ' nap' : ' napja');
             case 'dd':
@@ -44,9 +44,9 @@
     }
 
     var hu = moment.defineLocale('hu', {
-        months : 'január_február_március_április_május_június_július_augusztus_szeptember_október_november_december'.split('_'),
-        monthsShort : 'jan_feb_márc_ápr_máj_jún_júl_aug_szept_okt_nov_dec'.split('_'),
-        weekdays : 'vasárnap_hétfő_kedd_szerda_csütörtök_péntek_szombat'.split('_'),
+        months : 'janu�r_febru�r_m�rcius_�prilis_m�jus_június_július_augusztus_szeptember_október_november_december'.split('_'),
+        monthsShort : 'jan_feb_m�rc_�pr_m�j_jún_júl_aug_szept_okt_nov_dec'.split('_'),
+        weekdays : 'vas�rnap_hétfő_kedd_szerda_csütörtök_péntek_szombat'.split('_'),
         weekdaysShort : 'vas_hét_kedd_sze_csüt_pén_szo'.split('_'),
         weekdaysMin : 'v_h_k_sze_cs_p_szo'.split('_'),
         longDateFormat : {

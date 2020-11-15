@@ -14,7 +14,7 @@
             prev: "Trước",
             next: "Tiếp",
             today: "Hôm nay",
-            month: "Tháng",
+            month: "Th�ng",
             week: "Tuần",
             day: "Ngày",
             list: "Lịch biểu"

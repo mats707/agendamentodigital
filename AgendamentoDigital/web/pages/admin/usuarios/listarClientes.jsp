@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendamento Digital | Listar Usuários</title>
+        <title>Agendamento Digital | Lista de Usuários | Clientes</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -36,7 +36,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="../sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -45,12 +45,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1>Lista de Usuários</h1>
+                                <h1>Usuários - Lista de Clientes</h1>
                             </div>
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Lista de Usuários</li>
+                                    <li class="breadcrumb-item active">Usuários / Clientes</li>
                                 </ol>
                             </div>
                         </div>
@@ -64,7 +64,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h3 class="card-title">Usuários Cadastrados</h3>
+                                        <h3 class="card-title">Clientes cadastrados</h3>
 
 
                                     </div>
@@ -84,7 +84,7 @@
             <!-- /.content-wrapper -->
 
             <!-- Footer -->
-            <jsp:include page="footer.jsp"/>
+            <jsp:include page="../footer.jsp"/>
 
         </div>
         <!-- ./wrapper -->
@@ -92,7 +92,7 @@
         <!-- edit Modal-->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarUsuario" action="${site}/AlterarUsuario" method="post">
+                <form id="alterarUsuario" action="${site}/Usuario/Cliente/Alterar" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Alterar Usuário? </h5>
@@ -120,14 +120,6 @@
                                                 <span class="fas fa-phone"></span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
-                                        <label id="editedPerfil1_lbl" class="btn bg-info">
-                                            <input type="radio" name="editedPerfil" id="editedPerfil1" autocomplete="off" checked value="COMUM"> Funcionário
-                                        </label>
-                                        <label id="editedPerfil2_lbl" class="btn bg-info">
-                                            <input type="radio" name="editedPerfil" id="editedPerfil2" autocomplete="off" value="ADMINISTRADOR"> Administrador
-                                        </label>
                                     </div>
 
                                     <div class="input-group mb-3">
@@ -161,7 +153,7 @@
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="deletarUsuario" action="${site}/DeletarUsuario" method="post">
+                <form id="deletarUsuario" action="${site}/Usuario/Cliente/Desativar" method="post">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Excluir Usuário? </h5>
@@ -272,17 +264,12 @@
 
             })
         </script>
-        <script src="${site}/pages/admin/listarUsuario.js" type="text/javascript"></script>
+        <script src="${site}/pages/admin/usuarios/listarClientes.js" type="text/javascript"></script>
         <script>
             var result = ${msg};
-            includeHTMLNav("usuarios", "listarUsuario");
+            includeHTMLNav("usuarios", "listarClientes");
             lerJson(result);
-            var callSweet = "${funcaoMsgOperation}";
-            if (callSweet != "") {
-                sweet(callSweet, "${funcaoStatusOperation}", 6000);
-            } else {
-                sweet("${funcaoMsg}", "${funcaoStatus}", 3000);
-            }
+            sweet("${funcaoMsg}", "${funcaoStatus}", 4000);
         </script>
 
         <!-- PAGE PLUGINS -->

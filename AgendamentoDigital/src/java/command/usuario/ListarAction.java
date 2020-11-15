@@ -23,7 +23,7 @@ public class ListarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
         
-        request.setAttribute("pagina", "pages/admin/listarUsuario.jsp");
+        request.setAttribute("pagina", "pages/admin/usuarios/listarUsuario.jsp");
 
         ArrayList<Usuario> arr = new ArrayList<Usuario>();
 
@@ -36,6 +36,7 @@ public class ListarAction implements ICommand {
         String funcaoMsg = "Carregando Usuários";
         String funcaoStatus = "info";
 
+        request.setAttribute("pgperfil", "Usuarios");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         

@@ -111,7 +111,7 @@ function sweetDesativar() {
 
     swalWithBootstrapButtons.fire({
         title: 'Tem certeza?',
-        text: "Seu usuario ser√° desativado, podendo ser reativado depois!",
+        text: "Seu usuario ser· desativado, podendo ser reativado depois!",
         type: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sim, cancelar!',
@@ -121,7 +121,7 @@ function sweetDesativar() {
         console.log(result);
         if (result.value) {
             swalWithBootstrapButtons.fire(
-                    'Solicita√ß√£o conclu√≠da!',
+                    'SolicitaÁ„o conclu√≠da!',
                     'Clique em OK para prosseguir.',
                     'success'
                     );
@@ -132,7 +132,7 @@ function sweetDesativar() {
                 ) {
             swalWithBootstrapButtons.fire(
                     'Fechando...',
-                    'Seu bloqueio est√° seguro :)',
+                    'Seu bloqueio est· seguro :)',
                     'error'
                     );
         }

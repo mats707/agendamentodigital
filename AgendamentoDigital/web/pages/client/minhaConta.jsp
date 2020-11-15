@@ -140,11 +140,11 @@
                         </div>
                     </div><!-- End of .container -->
                 </div>
-                                                    <form id="formDesativar" name="formDesativar" action="${site}/DesativarCliente" method="post">
-                                                        <div class="col-md-2">
-                                                            <button type="button" class="btn btn-block btn-danger" onclick="sweetDesativar()">Desativar conta</button> 
-                                                        </div>
-                                                    </form>
+                <form id="formDesativar" name="formDesativar" action="${site}/DesativarCliente" method="post">
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-block btn-danger" onclick="sweetDesativar()">Desativar conta</button> 
+                    </div>
+                </form>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
@@ -182,9 +182,9 @@
         <script src="${site}/plugins/bootstrap-fileinput/5.1.2/js/locales/pt-BR.js" type="text/javascript"></script>
         <script charset="ISO-8859-1" src="${site}/pages/client/js/minhaConta.js" type="text/javascript"></script>
         <script>
-                                                    sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
-                                                    console.log("${funcaoMsg}");
-                                                    includeHTMLNav("home", "");
+                                                                sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
+                                                                console.log("${funcaoMsg}");
+                                                                includeHTMLNav("home", "");
         </script>
 
         <!-- Mask js -->

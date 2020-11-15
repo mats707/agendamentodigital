@@ -76,79 +76,6 @@ public class PessoaDAO implements IPessoaDAO {
 
         }
     }
-
-    @Override
-    public void buscar_usuario(Cliente cliente) {
-
-        try {
-
-            //Conexao
-            conexao = ConectaBanco.getConexao();
-
-            //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_USUARIO);
-            pstmt.setInt(1, cliente.getUsuario().getIdUsuario());
-            
-            //Resetando Usuario
-            Usuario usuarioAntigo = cliente.getUsuario();
-            usuarioAntigo.setIdUsuario(null);
-            cliente.setUsuario(usuarioAntigo);
-
-            //executa
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                cliente.setIdPessoa(Integer.parseInt(rs.getString("id")));
-                cliente.setNome(rs.getString("nome"));
-                cliente.setDataNascimento(rs.getDate("dataNascimento"));
-
-                Usuario usuario = new Usuario();
-                usuario.setIdUsuario(Integer.parseInt(rs.getString("usuario")));
-                cliente.setUsuario(usuario);
-            }
-
-        } catch (Exception ex) {
-
-        } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-    }
-
-//    @Override
-//    public void buscar(Pessoa pessoa) {
-//
-//        try {
-//            //Conexao
-//            conexao = ConectaBanco.getConexao();
-//            //cria comando SQL
-//            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR);
-//
-//            pstmt.setString(1, pessoa.getNome());
-//            //executa
-//            ResultSet rs = pstmt.executeQuery();
-//
-//            // como a query ira retornar somente um registro, faremos o NEXT
-//            while (rs.next()) {
-//                pessoa.setIdPessoa(rs.getInt("id"));
-//            }
-//        } catch (Exception e) {
-//
-//            //
-//        } finally {
-//
-//            try {
-//                conexao.close();
-//            } catch (SQLException ex) {
-//                Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
-//    }
     
     @Override
     public void buscar(Pessoa pessoa) {
@@ -225,7 +152,7 @@ public class PessoaDAO implements IPessoaDAO {
     }
 
     @Override
-    public boolean excluir(Pessoa pessoa) {
+    public boolean deletar(Pessoa pessoa) {
 
         try {
 

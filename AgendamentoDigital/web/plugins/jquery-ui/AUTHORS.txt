@@ -16,7 +16,7 @@ Jörn Zaefferer <joern.zaefferer@gmail.com>
 Marc Grabanski <m@marcgrabanski.com>
 Keith Wood <kbwood@iinet.com.au>
 Brandon Aaron <brandon.aaron@gmail.com>
-Scott González <scott.gonzalez@gmail.com>
+Scott Gonz�lez <scott.gonzalez@gmail.com>
 Eduardo Lundgren <eduardolundgren@gmail.com>
 Aaron Eisenberger <aaronchi@gmail.com>
 Joan Piedra <theneojp@gmail.com>
@@ -41,7 +41,7 @@ Jack Hsu <jack.hsu@gmail.com>
 Adam Sontag <ajpiano@ajpiano.com>
 Carl Fürstenberg <carl@excito.com>
 Kevin Dalman <development@allpro.net>
-Alberto Fernández Capel <afcapel@gmail.com>
+Alberto Fern�ndez Capel <afcapel@gmail.com>
 Jacek Jędrzejewski (http://jacek.jedrzejewski.name)
 Ting Kuei <ting@kuei.com>
 Samuel Cormier-Iijima <sam@chide.it>
@@ -254,7 +254,7 @@ Steven Luscher <jquerycla@steveluscher.com>
 Gan Eng Chin <engchin.gan@gmail.com>
 Gabriel Schulhof <gabriel.schulhof@intel.com>
 Alexander Schmitz <arschmitz@gmail.com>
-Vilhjálmur Skúlason <vis@dmm.is>
+Vilhj�lmur Skúlason <vis@dmm.is>
 Siebrand Mazeland <siebrand@kitano.nl>
 Mohsen Ekhtiari <mohsenekhtiari@yahoo.com>
 Pere Orga <gotrunks@gmail.com>

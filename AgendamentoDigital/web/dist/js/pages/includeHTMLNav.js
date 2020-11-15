@@ -1,6 +1,6 @@
-function includeHTMLNav(menuPai, pagina) {
+function includeHTMLNav2(menuPai, pagina) {
     var itemMenu = ["home", "empresa", "usuarios", "servicos", "agenda", "categorias"];
-    var subitemPagina = ["cadastrarUsuario", "listarUsuario",
+    var subitemPagina = ["cadastrarUsuario", "listarFuncionarios", "listarClientes",
         "cadastrarServico", "listarServico",
         "visualizarAgenda"];
 
@@ -23,6 +23,20 @@ function includeHTMLNav(menuPai, pagina) {
                 element.classList.add("active");
             }
         }
+    }
+
+}
+
+function includeHTMLNav(menuPai, pagina) {
+    var element = document.getElementById(pagina);
+    if (element != null) {
+        element.classList.add("active");
+        document.getElementById("menuPai" + menuPai).classList.add("menu-open");
+    }
+
+    var element = document.getElementById(menuPai);
+    if (element != null) {
+        element.classList.add("active");
     }
 
 }

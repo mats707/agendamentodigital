@@ -5,6 +5,7 @@
  */
 package command.cliente;
 
+import builder.cliente.ClienteBuilder;
 import command.usuario.*;
 import dao.ClienteDAO;
 import dao.PessoaDAO;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.Cliente;
 import modelos.PerfilDeAcesso;
+import modelos.Pessoa;
 import modelos.Usuario;
 import util.Util;
 import util.geraHash;
@@ -29,27 +31,41 @@ public class AlterarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "MinhaConta");
+        //Verifica Usuario logado
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+            request.setAttribute("pagina", "/Funcionario/Cliente/Listar");
+        } else {
+            request.setAttribute("pagina", "MinhaConta");
+        }
 
         String nome = request.getParameter("inputName");
         String dataNascimento = request.getParameter("inputDataNasc");
         String celular = request.getParameter("inputCelular");
-
-        String formatDataNascimento = "yyyy-MM-dd";
+        String email = request.getParameter("inputEmail");
+        String alterarSenha = request.getParameter("chkAlterarSenha");
+        String senha = request.getParameter("inputSenha");
+        String chkSenha = request.getParameter("inputChkSenha");
 
         //Instanciando Cliente
         Cliente objCliente = new Cliente();
 
-        String funcaoMsg;
-        String funcaoStatus;
+        UsuarioDAO usuarioDAO = new UsuarioDAO();
+        PessoaDAO pessoaDAO = new PessoaDAO();
+        ClienteDAO clienteDAO = new ClienteDAO();
 
-        //Verifica Usuario Cliente
-        //cria uma sessao para resgatar o usuario
-        HttpSession sessaoUsuario = request.getSession();
-        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        String funcaoMsg = "";
+        String funcaoStatus = "";
+
         if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.CLIENTECOMUM)) {
             objCliente = (Cliente) sessaoUsuario.getAttribute("cliente");
             objCliente.setUsuario(usuarioAutenticado);
+        } else if (usuarioAutenticado != null
+                && (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM) || usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM))) {
+            String id = request.getParameter("idCliente");
+            objCliente.setIdCliente(Integer.parseInt(id));
         } else {
             objCliente.setIdCliente(Integer.parseInt(null));
             funcaoMsg = "Conta não autenticada!";
@@ -59,26 +75,59 @@ public class AlterarAction implements ICommand {
             return funcaoMsg;
         }
 
-        if (Util.isInteger(celular) && Util.isValidName(nome) && dataNascimento != null) {
-            objCliente.setDataNascimento(Util.getValidDate(dataNascimento, formatDataNascimento));
-            objCliente.setNome(nome);
-            objCliente.getUsuario().setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")));
+        if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && Util.isValidName(nome) && dataNascimento != null) {
 
-            PessoaDAO pessoaDAO = new PessoaDAO();
-            String sqlState = pessoaDAO.alterar(objCliente);
+            Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, senha, celular).constroi();
+            Cliente clienteAlterado = new Cliente();
+            clienteAlterado.setNome(cliente.getNome());
+            clienteAlterado.setDataNascimento(cliente.getDataNascimento());
+            clienteAlterado.setUsuario((Usuario) cliente.getUsuario());
+
+            cliente.setIdCliente(objCliente.getIdCliente());
+
+            clienteDAO.buscar(cliente);
+            pessoaDAO.buscar(cliente);
+            usuarioDAO.buscarId(cliente.getUsuario());
+
+            clienteAlterado.setIdPessoa(cliente.getIdPessoa());
+            clienteAlterado.getUsuario().setIdUsuario(cliente.getUsuario().getIdUsuario());
+            clienteAlterado.setIdCliente(objCliente.getIdCliente());
+
+            String sqlState = clienteDAO.alterar(clienteAlterado);
 
             if ("0".equals(sqlState)) {
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                sqlState = usuarioDAO.alterarCelular(objCliente.getUsuario());
-                if ("0".equals(sqlState)) {
-                    funcaoMsg = "Alterado com sucesso!";
-                    funcaoStatus = "success";
+
+                String sqlStateAlterarUsuario = usuarioDAO.alterarUsuario(clienteAlterado.getUsuario());
+
+                if (sqlStateAlterarUsuario == "0") {
+                    if ("on".equals(alterarSenha) && !"".equals(senha) && !"".equals(chkSenha)) {
+                        clienteAlterado.getUsuario().setSenha(geraHash.hashPassword(senha));
+                        if (geraHash.checkPassword(chkSenha, clienteAlterado.getUsuario().getSenha())) {
+                            sqlState = usuarioDAO.alterarSenha(clienteAlterado.getUsuario());
+                            if (sqlState == "0") {
+                                funcaoMsg = "Dados do cliente e do usuário alterados com sucesso\\nSenha alterada com sucesso!";
+                                funcaoStatus = "success";
+                            } else {
+                                funcaoMsg = "Dados do cliente e do usuário alterados com sucesso\\nMas não foi possível alterar a senha, tente novamente!";
+                                funcaoStatus = "warning";
+                            }
+                        } else {
+                            funcaoMsg = "Senhas diferentes!";
+                            funcaoStatus = "warning";
+                        }
+                    } else {
+                        funcaoMsg = "Dados do cliente e do usuário alterados com sucesso!";
+                        funcaoStatus = "success";
+                    }
+                } else if ("23505".equals(sqlStateAlterarUsuario)) {
+                    funcaoMsg = "Dados do cliente alterados com sucesso!\\nMas não foi possível alterar o email nem celular, tente outro por favor!";
+                    funcaoStatus = "error";
                 } else {
-                    funcaoMsg = "Não foi possível alterar seus dados, tente novamente!";
+                    funcaoMsg = "Dados do cliente alterados com sucesso!\\nMas não foi possível alterar o usuário, tente novamente!";
                     funcaoStatus = "error";
                 }
             } else {
-                funcaoMsg = "Não foi possível alterar seus dados, tente novamente!";
+                funcaoMsg = "Não foi possível alterar os dados, tente novamente!\\nValide nome e data de nascimento!";
                 funcaoStatus = "error";
             }
         } else {

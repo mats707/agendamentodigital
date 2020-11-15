@@ -24,7 +24,7 @@
         eventLimitText: function (n) {
             return "+další: " + n;
         },
-        noEventsMessage: "Žádné akce k zobrazení"
+        noEventsMessage: "Ž�dné akce k zobrazení"
     };
 
     return cs;

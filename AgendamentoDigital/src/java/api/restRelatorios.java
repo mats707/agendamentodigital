@@ -46,14 +46,14 @@ public class restRelatorios {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Servicos/MaisAgendado")
-    public String getMaisAgendado() throws SQLException, ClassNotFoundException {
+    @Path("/Servicos/Agendamentos")
+    public String getAgendamentos() throws SQLException, ClassNotFoundException {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisAgendado();
+        arr = objRelatorioDAO.listarAgendamentos();
 
         JsonArray arrJson = new JsonArray();
 
@@ -73,14 +73,14 @@ public class restRelatorios {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Servicos/MaisAgendado/{mes}/{ano}")
-    public String getMaisAgendadoPeriodo(@PathParam("mes") Integer mes, @PathParam("ano") Integer ano) throws SQLException, ClassNotFoundException {
+    @Path("/Servicos/Agendamentos/{mes}/{ano}")
+    public String getAgendamentosPeriodo(@PathParam("mes") Integer mes, @PathParam("ano") Integer ano) throws SQLException, ClassNotFoundException {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisAgendadoPeriodo(mes, ano);
+        arr = objRelatorioDAO.listarAgendamentosPeriodo(mes, ano);
 
         JsonArray arrJson = new JsonArray();
 
@@ -100,14 +100,14 @@ public class restRelatorios {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Servicos/MaisTrabalhado")
-    public String getMaisTrabalhado() throws SQLException, ClassNotFoundException {
+    @Path("/Servicos/Funcionarios")
+    public String getFuncionarios() throws SQLException, ClassNotFoundException {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisTrabalhado();
+        arr = objRelatorioDAO.listarFuncionarios();
 
         JsonArray arrJson = new JsonArray();
 
@@ -162,8 +162,8 @@ public class restRelatorios {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/Agendamentos/Funcionario/{idFuncionario}")
-    public String getAgendamentosFuncionario(@PathParam("idFuncionario") Integer idFuncionario) throws SQLException, ClassNotFoundException {
+    @Path("/Agendamentos/Funcionario/{idFuncionario}/{status}")
+    public String getAgendamentosFuncionario(@PathParam("idFuncionario") Integer idFuncionario, @PathParam("status") String status) throws SQLException, ClassNotFoundException {
 
         //Instanciando Cliente
         Funcionario objFuncionario = new Funcionario();
@@ -176,7 +176,7 @@ public class restRelatorios {
         PessoaDAO objPessoaDao = new PessoaDAO();
         ServicoDAO objServicoDao = new ServicoDAO();
 
-        ArrayList<Agendamento> arr = objAgendamentoDao.listarFuncionario(new Agendamento(objFuncionario));
+        ArrayList<Agendamento> arr = objAgendamentoDao.listarFuncionario(new Agendamento(objFuncionario, StatusAgendamento.valueOf(status)));
 
         for (Agendamento objAgendamento : arr) {
             objClienteDao.buscar(objAgendamento.getCliente());

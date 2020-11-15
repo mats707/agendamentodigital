@@ -13,19 +13,37 @@ import dao.RelatoriosDAO;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modelos.PerfilDeAcesso;
 import modelos.RelatorioServico;
 import modelos.StatusAgendamento;
+import modelos.Usuario;
 
 /**
  *
  * @author Rafael Pereira
  */
-public class MaisAgendadoPeriodoAction implements ICommand {
+public class AgendamentosPeriodoAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        //Verifica Perfil Usuario
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        String perfil = "";
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOADMIN)) {
+            perfil = "admin";
+        } else if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+            perfil = "funcionario";
+        }
+
+        request.setAttribute("pagina", "/pages/funcionario/relatorios/relatorio.jsp");
+
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         StatusAgendamento status = null;
+        String statusMsg = "";
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         String funcaoMsg = "";
@@ -38,12 +56,15 @@ public class MaisAgendadoPeriodoAction implements ICommand {
             switch (status_String) {
                 case "AGUARDANDOATENDIMENTO":
                     status = StatusAgendamento.AGUARDANDOATENDIMENTO;
+                    statusMsg = "Aguardando Atendimento";
                     break;
                 case "FINALIZADO":
                     status = StatusAgendamento.FINALIZADO;
+                    statusMsg = "Finalizados";
                     break;
                 case "CANCELADO":
                     status = StatusAgendamento.CANCELADO;
+                    statusMsg = "Cancelados";
                     break;
                 default:
                     status_String = null;
@@ -58,17 +79,17 @@ public class MaisAgendadoPeriodoAction implements ICommand {
 
                 ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
                 if (status_String != null) {
-                    arr = objRelatorioDAO.listarMaisAgendadoPeriodoStatus(mes, ano, status);
-                    request.setAttribute("pgRelatorio", "Serviços " + status + " no periodo de " + mes + "/" + ano);
+                    arr = objRelatorioDAO.listarAgendamentosPeriodoStatus(mes, ano, status);
+                    request.setAttribute("pgRelatorio", "Serviços " + statusMsg + " no período de " + mes + "/" + ano);
                 } else {
-                    arr = objRelatorioDAO.listarMaisAgendadoPeriodo(mes, ano);
-                    request.setAttribute("pgRelatorio", "Serviços utilizados no periodo de " + mes + "/" + ano);
+                    arr = objRelatorioDAO.listarAgendamentosPeriodo(mes, ano);
+                    request.setAttribute("pgRelatorio", "Serviços agendados no período de " + mes + "/" + ano);
                 }
                 if (arr.size() != 0) {
                     funcaoMsg = "Filtro realizado com sucesso!";
                     funcaoStatus = "success";
                 } else {
-                    funcaoMsg = "Filtro realizado com sucesso, porém não dados para o mesmo!";
+                    funcaoMsg = "Nenhuma informação encontrada para o filtro selecionado!";
                     funcaoStatus = "info";
                 }
 
@@ -83,20 +104,19 @@ public class MaisAgendadoPeriodoAction implements ICommand {
                 }
 
                 String json = arrJson.toString();
-
-                request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
-                request.setAttribute("pgjs", "maisAgendado");
-                request.setAttribute("command", "MaisAgendado");
-                request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
-                request.setAttribute("pgTitulo", "Relatorios de Serviços");
+                request.setAttribute("pgperfil", perfil);
+                request.setAttribute("pgjs", "agendamentos");
+                request.setAttribute("command", "Agendamentos");
+                request.setAttribute("pgAba", "Relatório de agendamentos");
+                request.setAttribute("pgTitulo", "Relatório de agendamentos");
 
                 request.setAttribute("funcaoMsg", funcaoMsg);
                 request.setAttribute("funcaoStatus", funcaoStatus);
                 return json;
             } else {
-                funcaoMsg = "Verifique os campos mes e ano<br> Os dados estão incopativeis";
+                funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
                 funcaoStatus = "error";
-                request.setAttribute("pagina", "/Relatorios/Servicos/MaisAgendado");
+                request.setAttribute("pagina", "/Relatórios/Servicos/Agendamentos");
                 request.setAttribute("funcaoMsg", funcaoMsg);
                 request.setAttribute("funcaoStatus", funcaoStatus);
                 return null;
@@ -104,15 +124,20 @@ public class MaisAgendadoPeriodoAction implements ICommand {
             }
         } else if (status_String != null) {
             ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
+<<<<<<< HEAD:AgendamentoDigital/src/java/command/relatorios/MaisAgendadoPeriodoAction.java
             
             arr = objRelatorioDAO.listarMaisAgendadoStatus(status);
+=======
+
+            arr = objRelatorioDAO.listarAgendamentosStatus(status);
+>>>>>>> feature-funcionario:AgendamentoDigital/src/java/command/relatorios/AgendamentosPeriodoAction.java
             request.setAttribute("pgRelatorio", "Serviços " + status);
 
             if (arr.size() != 0) {
                 funcaoMsg = "Filtro realizado com sucesso!";
                 funcaoStatus = "success";
             } else {
-                funcaoMsg = "Filtro realizado com sucesso, porém não dados para o mesmo!";
+                funcaoMsg = "Nenhuma informação encontrada para o filtro selecionado!";
                 funcaoStatus = "info";
             }
 
@@ -128,19 +153,18 @@ public class MaisAgendadoPeriodoAction implements ICommand {
 
             String json = arrJson.toString();
 
-            request.setAttribute("pagina", "/pages/admin/relatorios/relatorio.jsp");
-            request.setAttribute("pgjs", "maisAgendado");
-            request.setAttribute("command", "MaisAgendado");
-            request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
-            request.setAttribute("pgTitulo", "Relatorios de Serviços");
-
+            request.setAttribute("pgperfil", perfil);
+            request.setAttribute("pgjs", "agendamentos");
+            request.setAttribute("command", "Agendamentos");
+            request.setAttribute("pgAba", "Relatório de agendamentos");
+            request.setAttribute("pgTitulo", "Relatórios de agendamentos");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return json;
         } else {
-            funcaoMsg = "Verifique os campos mes e ano<br> Os dados estão incopativeis";
+                funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
             funcaoStatus = "error";
-            request.setAttribute("pagina", "/Relatorios/Servicos/MaisAgendado");
+            request.setAttribute("pagina", "/Relatórios/Servicos/Agendamentos");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return null;

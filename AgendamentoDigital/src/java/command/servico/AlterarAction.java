@@ -49,7 +49,7 @@ public class AlterarAction implements ICommand {
         if (idServico != null && nome != null && descricao != null && categoriaFinal != null
                 && valor != null && duracao != null && funcionariosString != null) {
             //Ajustes no formato dos campos
-            valor = valor.replace(",", ".");
+            valor = valor.replace(".", "").replace(",", ".");
             Duration tempo = Duration.ofHours(Integer.parseInt("00"));
             tempo = tempo.plusMinutes(Integer.parseInt(duracao));
             tempo = tempo.plusSeconds(Integer.parseInt("00"));

@@ -16,24 +16,24 @@
 	$.extend( $.validator.messages, {
 		required: "Este campo é obrigatorio.",
 		remote: "Por favor, cubre este campo.",
-		email: "Por favor, escribe unha dirección de correo válida.",
-		url: "Por favor, escribe unha URL válida.",
-		date: "Por favor, escribe unha data válida.",
-		dateISO: "Por favor, escribe unha data (ISO) válida.",
-		number: "Por favor, escribe un número válido.",
+		email: "Por favor, escribe unha dirección de correo v�lida.",
+		url: "Por favor, escribe unha URL v�lida.",
+		date: "Por favor, escribe unha data v�lida.",
+		dateISO: "Por favor, escribe unha data (ISO) v�lida.",
+		number: "Por favor, escribe un número v�lido.",
 		digits: "Por favor, escribe só díxitos.",
-		creditcard: "Por favor, escribe un número de tarxeta válido.",
+		creditcard: "Por favor, escribe un número de tarxeta v�lido.",
 		equalTo: "Por favor, escribe o mesmo valor de novo.",
 		extension: "Por favor, escribe un valor cunha extensión aceptada.",
-		maxlength: $.validator.format( "Por favor, non escribas máis de {0} caracteres." ),
+		maxlength: $.validator.format( "Por favor, non escribas m�is de {0} caracteres." ),
 		minlength: $.validator.format( "Por favor, non escribas menos de {0} caracteres." ),
 		rangelength: $.validator.format( "Por favor, escribe un valor entre {0} e {1} caracteres." ),
 		range: $.validator.format( "Por favor, escribe un valor entre {0} e {1}." ),
 		max: $.validator.format( "Por favor, escribe un valor menor ou igual a {0}." ),
 		min: $.validator.format( "Por favor, escribe un valor maior ou igual a {0}." ),
-		nifES: "Por favor, escribe un NIF válido.",
-		nieES: "Por favor, escribe un NIE válido.",
-		cifES: "Por favor, escribe un CIF válido."
+		nifES: "Por favor, escribe un NIF v�lido.",
+		nieES: "Por favor, escribe un NIE v�lido.",
+		cifES: "Por favor, escribe un CIF v�lido."
 	} );
 }( jQuery ) );
 return $;

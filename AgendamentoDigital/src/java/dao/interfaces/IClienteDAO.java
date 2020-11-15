@@ -26,4 +26,6 @@ public interface IClienteDAO {
 
     public String cadastrar(Cliente cliente);
 
+    public String alterar(Cliente cliente);
+
 }

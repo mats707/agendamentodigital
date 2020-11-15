@@ -17,13 +17,11 @@ public interface IPessoaDAO {
 
     public ArrayList<Pessoa> listar();
 
-    public void buscar_usuario(Cliente cliente);
-
     public void buscar(Pessoa pessoa);
 
-    public String alterar(Pessoa Pessoa);
+    public String alterar(Pessoa pessoa);
 
-    public boolean excluir(Pessoa pessoa);
+    public boolean deletar(Pessoa pessoa);
 
     public String cadastrar(Pessoa Pessoa);
 

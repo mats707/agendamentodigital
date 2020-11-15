@@ -1,9 +1,3 @@
-<%-- 
-    Document   : maisagendado
-    Created on : 01/09/2020, 14:29:36
-    Author     : Rafael Pereira
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -43,7 +37,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="../sidebar-menu.jsp"/>
+            <jsp:include page="../../${pgperfil}/sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -149,7 +143,7 @@
             <!-- /.content-wrapper -->
 
             <!-- Footer -->
-            <jsp:include page="../footer.jsp"/>
+            <jsp:include page="../../${pgperfil}/footer.jsp"/>
 
         </div>
         <!-- ./wrapper -->
@@ -217,10 +211,10 @@
         })
     </script>
 
-    <script src="${site}/pages/admin/relatorios/${pgjs}.js" type="text/javascript"></script>
+    <script charset="ISO-8529" src="${site}/pages/funcionario/relatorios/${pgjs}.js" type="text/javascript"></script>
 
     <script>
-        sweet("${funcaoMsg}", "${funcaoStatus}", 2000);
+        sweet("${funcaoMsg}", "${funcaoStatus}", 4000);
         var result = ${msg};
         includeHTMLNav("maisAgendado", "maisAgendado");
         lerJson(result);

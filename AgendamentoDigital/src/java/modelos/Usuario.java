@@ -21,7 +21,7 @@ public class Usuario implements ILogavel {
 
     private PerfilDeAcesso perfil;
 
-    private InputStream fotoPerfil;
+    private Boolean ativo;
 
     public Integer getIdUsuario() {
         return idUsuario;
@@ -63,20 +63,21 @@ public class Usuario implements ILogavel {
         this.celular = celular;
     }
 
-    public InputStream getFotoPerfil() {
-        return fotoPerfil;
+    public Boolean getAtivo() {
+        return ativo;
     }
 
-    public void setFotoPerfil(InputStream fotoPerfil) {
-        this.fotoPerfil = fotoPerfil;
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
     }
 
-    public Usuario(Integer idUsuario, String email, String senha, Long celular, PerfilDeAcesso perfil) {
+    public Usuario(Integer idUsuario, String email, String senha, Long celular, PerfilDeAcesso perfil, Boolean ativo) {
         this.idUsuario = idUsuario;
         this.email = email;
         this.senha = senha;
         this.celular = celular;
         this.perfil = perfil;
+        this.ativo = ativo;
     }
 
     public Usuario() {
@@ -101,4 +102,7 @@ public class Usuario implements ILogavel {
         this.idUsuario = idUsuario;
     }
 
+    public Usuario(PerfilDeAcesso perfil) {
+        this.perfil = perfil;
+    }
 }

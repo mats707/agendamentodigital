@@ -142,7 +142,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             + "OR  (tab_cli.horarioFinalAgendamento::time > tab_param.horarioSolicitado\n"
             + "AND tab_cli.horarioFinalAgendamento::time < tab_param.horarioFinalSolicitado);";
     private static final String LISTAR_CLIENTE = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.cliente=? and s.nome=? ORDER BY dataAgendamento, horarioAgendamento";
-    private static final String LISTAR_FUNCIONARIO = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE funcionario=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
+    private static final String LISTAR_FUNCIONARIO = "SELECT a.id, a.dataAgendamento::DATE, a.horarioAgendamento::TIME, a.cliente, a.servico, a.funcionario, s.nome as status FROM sistema.agendamento a INNER JOIN sistema.statusAgendamento s ON a.status = s.id WHERE a.funcionario=? and s.nome=? ORDER BY dataAgendamento, horarioAgendamento";
     private static final String LISTAR_STATUS = "SELECT id, dataAgendamento::DATE, horarioAgendamento::TIME, cliente, servico, funcionario, status FROM sistema.agendamento WHERE status=? ORDER BY dataAgendamento, horarioAgendamento, cliente";
     private static final String DELETAR = "DELETE FROM sistema.agendamento WHERE id = ?";
     private static final String BUSCAR_AGENDAMENTO = "select ag.id, ag.dataAgendamento::DATE, ag.horarioAgendamento::TIME, ag.cliente,ag.servico,ag.funcionario,s.nome as status \n"
@@ -419,6 +419,7 @@ public class AgendamentoDAO implements IAgendamentoDAO {
             //cria comando SQL
             PreparedStatement pstmt = conexao.prepareStatement(LISTAR_FUNCIONARIO);
             pstmt.setInt(1, agendamento.getFuncionario().getIdFuncionario());
+            pstmt.setString(2, agendamento.getStatus().toString());
 
             //executa
             ResultSet rs = pstmt.executeQuery();
@@ -441,8 +442,6 @@ public class AgendamentoDAO implements IAgendamentoDAO {
                 Funcionario objFuncionario = new Funcionario();
                 objFuncionario.setIdFuncionario(rs.getInt("funcionario"));
                 novoAgendamento.setFuncionario(objFuncionario);
-
-                System.out.println(objgson.toJson(novoAgendamento));
                 //add na lista
                 listaAgendamento.add(novoAgendamento);
             }

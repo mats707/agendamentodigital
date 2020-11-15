@@ -12,13 +12,6 @@
         <li class="nav-item d-none d-sm-inline-block">
             <a href="${site}/MinhaConta" class="nav-link">Minha Conta</a>
         </li>
-    </ul>
-
-    <!-- Right navbar links -->
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contato</a>
-        </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a class="nav-link" href="${site}/ControleAcesso?acao=Sair">Sair</a>
         </li>
@@ -29,7 +22,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="home.jsp" class="brand-link">
+    <a href="${site}/HomeCliente" class="brand-link">
         <img src="${site}/dist/img/AdminLTELogo.png" alt="Agendamento Digital" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">Agendamento Digital</span>

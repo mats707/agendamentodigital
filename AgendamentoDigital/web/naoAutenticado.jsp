@@ -12,7 +12,7 @@
         <!--===============================================================================================-->	
         <link rel="icon" type="image/png" href="util/imagens/favicon.png"/>
         
-        <link rel="stylesheet" href="estilos/nao-autenticado/css/style.css">
+        <link rel="stylesheet" href="dist/css/nao-autenticado/css/style.css">
 
 
     </head>

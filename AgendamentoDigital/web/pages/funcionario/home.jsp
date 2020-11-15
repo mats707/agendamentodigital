@@ -72,11 +72,25 @@
                     <div class="container-fluid">
                         <div class="card">
                             <div class="card-header border-0">
-                                <h3 class="card-title">Agendamentos Aguardando Atendimento</h3>
+                                <h3 class="card-title">Meus agendamentos</h3>
                                 <div class="card-tools">
                                     <a href="#" class="btn btn-tool btn-sm">
                                         <i class="fas fa-calendar"></i>
                                     </a>
+                                </div>
+                            </div>
+                            <div class="container-fluid border rounded">     
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select name="selectStatus" id="selectStatus" class="form-control select select-danger" data-dropdown-css-class="select2-danger" onchange="carregarAgendamentos(${funcionario.idFuncionario})">
+                                                <option selected disabled value="AGUARDANDOATENDIMENTO">-- Selecione a situação --</option>
+                                                <option value="AGUARDANDOATENDIMENTO">Aguardando por atendimento</option>
+                                                <option value="FINALIZADO">Finalizado</option>
+                                                <option value="CANCELADO">Cancelado</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -112,10 +126,10 @@
         <script charset="ISO-8859-1" src="${site}/pages/funcionario/js/listar.js" type="text/javascript"></script>
 
         <script>
-            sweet(" ${funcaoMsg}", "${funcaoStatus}", 4000);
-            includeHTMLNav("home", "");
-            var idFuncionario = '${funcionario.idFuncionario}';
-            carregarMaisAgendado(idFuncionario);
+                                                sweet(" ${funcaoMsg}", "${funcaoStatus}", 4000);
+                                                includeHTMLNav("home", "");
+                                                var idFuncionario = '${funcionario.idFuncionario}';
+                                                carregarAgendamentos(idFuncionario);
         </script>
     </body>
 </html>

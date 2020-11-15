@@ -96,8 +96,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     private Connection conexao;
 
     @Override
-    public ArrayList<RelatorioServico> listarMaisAgendado() {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarAgendamentos() {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -114,11 +114,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeServico(rs.getString("servico"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -129,8 +129,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     @Override
-    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodo(int mes, int ano) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarAgendamentosPeriodo(int mes, int ano) {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -151,11 +151,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeServico(rs.getString("servico"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -165,9 +165,14 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
+<<<<<<< HEAD
     @Override
     public ArrayList<RelatorioServico> listarMaisAgendadoPeriodoStatus(int mes, int ano, StatusAgendamento status) {
         ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+=======
+    public ArrayList<RelatorioServico> listarAgendamentosPeriodoStatus(int mes, int ano, StatusAgendamento status) {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
+>>>>>>> feature-funcionario
 
         try {
 
@@ -190,11 +195,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeServico(rs.getString("servico"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -204,8 +209,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-    public ArrayList<RelatorioServico> listarMaisAgendadoStatus(StatusAgendamento status) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarAgendamentosStatus(StatusAgendamento status) {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -224,11 +229,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeServico(rs.getString("servico"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -239,8 +244,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     @Override
-    public ArrayList<RelatorioServico> listarMaisTrabalhado() {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarFuncionarios() {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -256,11 +261,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("funcionario"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -271,8 +276,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     @Override
-    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodo(int mes, int ano) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarFuncionariosPeriodo(int mes, int ano) {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -293,11 +298,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("funcionario"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -307,8 +312,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodoStatus(int mes, int ano, StatusAgendamento status) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarFuncionariosPeriodoStatus(int mes, int ano, StatusAgendamento status) {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -330,11 +335,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("funcionario"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -344,8 +349,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-    public ArrayList<RelatorioServico> listarMaisTrabalhadoStatus(StatusAgendamento status) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+    public ArrayList<RelatorioServico> listarFuncionariosStatus(StatusAgendamento status) {
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -363,11 +368,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("funcionario"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -378,7 +383,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     public ArrayList<RelatorioServico> listarCliente() {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -394,11 +399,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("cliente"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -409,7 +414,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     public ArrayList<RelatorioServico> listarClientePeriodo(int mes, int ano) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -430,11 +435,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("cliente"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -445,7 +450,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     public ArrayList<RelatorioServico> listarClientePeriodoStatus(int mes, int ano, StatusAgendamento status) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -467,11 +472,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("cliente"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();
@@ -482,7 +487,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
     }
 
     public ArrayList<RelatorioServico> listarClienteStatus(StatusAgendamento status) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
+        ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
@@ -500,11 +505,11 @@ public class RelatoriosDAO implements IRelatoriosDAO {
                 novoRelatorio.setNomeFuncionario(rs.getString("cliente"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
-                listaMaisAgendado.add(novoRelatorio);
+                listaAgendamentos.add(novoRelatorio);
             }
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } catch (Exception ex) {
-            return listaMaisAgendado;
+            return listaAgendamentos;
         } finally {
             try {
                 conexao.close();

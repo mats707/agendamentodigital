@@ -98,7 +98,8 @@ public class Agendamento {
         this.status = status;
     }    
 
-    public Agendamento(Funcionario funcionario) {
+    public Agendamento(Funcionario funcionario,StatusAgendamento status) {
         this.funcionario = funcionario;
+        this.status = status;
     }    
 }

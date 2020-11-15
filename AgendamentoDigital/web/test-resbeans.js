@@ -49,7 +49,7 @@
 function TestSupport() {
     this.wadlDoc = null;
     this.wadlURL = '';
-    this.wadlErr = 'Não é possível acessar o WADL. Reinicie a aplicação RESTful e atualize esta página ou forneça o URL aqui. Isso pode ser causado pela implementação REST sem fornecer o arquivo WADL automaticamente (como JBoss RESTEasy). Nesse caso, gere-o previamente de maneira manual ou alterne para bibliotecas Jersey.';
+    this.wadlErr = 'Não é possível acessar o WADL. Reinicie a aplica��o RESTful e atualize esta p�gina ou forneça o URL aqui. Isso pode ser causado pela implementa��o REST sem fornecer o arquivo WADL automaticamente (como JBoss RESTEasy). Nesse caso, gere-o previamente de maneira manual ou alterne para bibliotecas Jersey.';
     this.currentValidUrl = '';
     this.breadCrumbs = [];
     this.currentMethod = '';
@@ -124,7 +124,7 @@ TestSupport.prototype = {
             this.wdr.updateMenu(this.wadlURL, ts.wadlDoc);
         } else {
             this.setvisibility('main', 'inherit');
-            this.updatepage('content', '<span class=bld>Página de Ajuda</span><br/><br/><p>Não é possível acessar o WADL. Reinicie a aplicação REST e atualize esta página. Isso pode ser causado pela implementação REST sem fornecer o arquivo WADL automaticamente (como JBoss RESTEasy). Nesse caso, gere-o previamente de maneira manual ou alterne para bibliotecas Jersey.</p><p>Se você ainda vir esse erro e estiver acessando essa página usando o Firefox com o plug-in Firebug, <br/>será necessário desativar o firebug para arquivos locais. Ou seja, na barra de menus do Firefox, marque <br/>Ferramentas > Firebug > Desativar Firebug para Arquivos Locais</p>');
+            this.updatepage('content', '<span class=bld>P�gina de Ajuda</span><br/><br/><p>Não é possível acessar o WADL. Reinicie a aplica��o REST e atualize esta p�gina. Isso pode ser causado pela implementa��o REST sem fornecer o arquivo WADL automaticamente (como JBoss RESTEasy). Nesse caso, gere-o previamente de maneira manual ou alterne para bibliotecas Jersey.</p><p>Se você ainda vir esse erro e estiver acessando essa p�gina usando o Firefox com o plug-in Firebug, <br/>ser� necess�rio desativar o firebug para arquivos locais. Ou seja, na barra de menus do Firefox, marque <br/>Ferramentas > Firebug > Desativar Firebug para Arquivos Locais</p>');
         }            
     },
 
@@ -494,7 +494,7 @@ TestSupport.prototype = {
     clearAll : function() {
         this.clearOutput();
         document.getElementById('req_headers').style.visibility="hidden";
-        this.updatepage('request', 'Selecione um nó na barra de navegação (no lado esquerdo desta página) para testar.');
+        this.updatepage('request', 'Selecione um nó na barra de navega��o (no lado esquerdo desta p�gina) para testar.');
         this.updatepage('testaction', '');
         this.updatepage('testinput', '');
         this.updatepage('navigation', '');
@@ -808,7 +808,7 @@ TestSupport.prototype = {
             params = cURL.substring(cURL.indexOf('?')+1);
             cURL = cURL.substring(0, cURL.indexOf('?')+1);
         }
-        var s = 'Solicitação: ' + this.currentMethod + ' ' + cURL + '\n<br/>' + params +
+        var s = 'Solicita��o: ' + this.currentMethod + ' ' + cURL + '\n<br/>' + params +
                     '\n\n<br/><br/>Status: ' + xmlHttpReq.status + ' (' + xmlHttpReq.statusText + ')'+
                     '\n\n<br/><br/>Time-Stamp: ' + ' ' + xmlHttpReq.getResponseHeader('Date') + '';
         var prevs = '';
@@ -825,7 +825,7 @@ TestSupport.prototype = {
 
     updateContent : function (content) {
         var showRaw = true;
-        var cErr = 'O conteúdo pode não ter a Relação Conteúdo-Continente. Veja a View Bruta do conteúdo.';
+        var cErr = 'O conteúdo pode não ter a Rela��o Conteúdo-Continente. Veja a View Bruta do conteúdo.';
         if(content != null && content != undefined) {
             try {
                 if(content.indexOf("RequestFailed -->") != -1)
@@ -1004,7 +1004,7 @@ TestSupport.prototype = {
             }
         }
         if(actived)
-            return '<td class="Tab1TblSelTd_sun4"><div title="Seleção Atual: Campo de Texto" class="Tab1SelTxtNew_sun4"><a name="selectedTabAnchor" id="tab'+id+'"/>'+name+'</div></td>';
+            return '<td class="Tab1TblSelTd_sun4"><div title="Sele��o Atual: Campo de Texto" class="Tab1SelTxtNew_sun4"><a name="selectedTabAnchor" id="tab'+id+'"/>'+name+'</div></td>';
         else {
             if(id == '')
                 return '<td style="visibility: hidden;"><a href="javascript:ts.showViews(\''+id+'\')" class="Tab1Lnk_sun4" id="tab'+id+'">'+name+'</a></td>';
@@ -1250,7 +1250,7 @@ TestSupport.prototype = {
             }
             var tab = 'width: 20px; border-right: #2574B7 1px solid; border-top: #2574B7 1px solid; border-left: #2574B7 1px solid; border-bottom: #2574B7 1px solid; color: #000000; text-align: center;';
             var addActionStr = '<div style="'+tab+'"><a style="text-decoration: none" href="javascript:ts.closeDebug()"><span style="color: red">X</span></a></div>';        
-            dbgComp.innerHTML = '<table><tr><td><span style="color: blue">Janela Depuração do Rest</span></td><td>'+addActionStr + '</td></tr></table><br/>';
+            dbgComp.innerHTML = '<table><tr><td><span style="color: blue">Janela Depura��o do Rest</span></td><td>'+addActionStr + '</td></tr></table><br/>';
         }
         var s = dbgComp.innerHTML;
         var now = new Date();
@@ -2049,7 +2049,7 @@ XHR.prototype = {
                   return 'Nenhum conteúdo na resposta';
               }
               if(rtext == undefined || rtext == '' || rtext.indexOf('HTTP Status') != -1) {
-                  var err = method+' SolicitaçãoFailed RequestFailed --> Status: (' 
+                  var err = method+' Solicita��oFailed RequestFailed --> Status: (' 
                   	   + xmlHttpReq.status+')\n<br/>'+
                       'Resposta: {<br/>' + xmlHttpReq.responseText + "<br/>}";
                   ts.debug('Failed XHR('+method+', '+url+'): '+err);

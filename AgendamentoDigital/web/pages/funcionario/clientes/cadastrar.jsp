@@ -6,7 +6,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendamento Digital | Cadastrar Usuário</title>
+        <title>Agendamento Digital | Cadastrar Cliente</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -36,7 +36,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="../sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -45,12 +45,12 @@
                     <div class="container-fluid">
                         <div class="row mb-2">
                             <div class="col-sm-6">
-                                <h1 class="m-0 text-dark">Cadastrar Usuário</h1>
+                                <h1 class="m-0 text-dark">Cadastrar Cliente</h1>
                             </div><!-- /.col -->
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-right">
                                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active">Usuário</li>
+                                    <li class="breadcrumb-item active">Cliente</li>
                                 </ol>
                             </div><!-- /.col -->
                         </div><!-- /.row -->
@@ -70,20 +70,28 @@
 
                                         <div class="card">
                                             <div class="card-body register-card-body">
-                                                <p class="login-box-msg">Cadastrar um novo usuário</p>
+                                                <p class="login-box-msg">Cadastrar um novo cliente</p>
 
-                                                <form id="cadastrarUsuario" autocomplete="off" action="${site}/CadastrarUsuario"  method="post" >
+                                                <form id="cadastrarUsuario" autocomplete="OFF" action="${site}/Funcionario/Cliente/Cadastrar"  method="post">
                                                     <div class="input-group mb-3">
-                                                        <input id="email" name="email" type="email" class="form-control" placeholder="Email">
+                                                        <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
-                                                                <span class="fas fa-envelope"></span>
+                                                                <span class="fas fa-user"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group mb-3">
+                                                        <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" required pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                <span class="fas fa-calendar"></span>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <!-- phone mask -->
                                                     <div class="input-group mb-3">
-                                                        <input id="celular" name="celular" type="text" class="form-control" placeholder="Celular" data-inputmask='"mask": "(99) 99999-9999"' data-mask>
+                                                        <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' required>
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-phone"></span>
@@ -91,7 +99,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-group mb-3">
-                                                        <input id="senha" name="senha" type="password" class="form-control" placeholder="Password">
+                                                        <input id="inputEmail" name="inputEmail" type="text" class="form-control mask" placeholder="Email" data-mask='email' required>
+                                                        <div class="input-group-append">
+                                                            <div class="input-group-text">
+                                                                <span class="fas fa-envelope"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group mb-3">
+                                                        <input id="inputPassword" name="inputPassword" type="password" class="form-control" placeholder="Digite uma senha" required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-lock"></span>
@@ -99,61 +115,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-group mb-3">
-                                                        <input id="chksenha" name="chksenha" type="password" class="form-control" placeholder="Retype password">
+                                                        <input id="inputChkPassword" name="inputChkPassword" type="password" class="form-control" placeholder="Confirme sua senha" required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-lock"></span>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="border  rounded p-2 mb-4">
-                                                        <label>Perfil</label>
-
-                                                        <div class="form-group justify-center">
-
-                                                            <div class="custom-control custom-radio">
-                                                                <input class="custom-control-input" type="radio" name="perfil" id="perfil1"  value="FUNCIONARIOCOMUM">
-                                                                <label for="perfil1" class="custom-control-label">Funcionário</label>
-                                                            </div>
-                                                            <div class="custom-control custom-radio">
-                                                                <input class="custom-control-input" type="radio" name="perfil" id="perfil2" value="ADMINISTRADOR">
-                                                                <label for="perfil2" class="custom-control-label">Administrador</label>
-                                                            </div>
-                                                            <div class="custom-control custom-radio">
-                                                                <input class="custom-control-input" type="radio" name="perfil" id="perfil3" value="CLIENTECOMUM" >
-                                                                <label for="perfil3" class="custom-control-label">Cliente</label>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
                                                     <div class="row">
-                                                        <div class="col-8">
-                                                            <!--<div class="icheck-primary">
-                                                                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                                                                <label for="agreeTerms">
-                                                                    I agree to the <a href="#">terms</a>
-                                                                </label>
-                                                            </div>-->
-                                                        </div>
-                                                        <!-- /.col -->
                                                         <div class="col-4">
                                                             <button type="submit" class="btn btn-block btn-success">Cadastrar</button>
                                                         </div>
                                                         <!-- /.col -->
                                                     </div>
                                                 </form>
-
-                                                <!--<div class="social-auth-links text-center">
-                                                    <p>- OR -</p>
-                                                    <a href="#" class="btn btn-block btn-primary">
-                                                        <i class="fab fa-facebook mr-2"></i>
-                                                        Cadastrar usando o Facebook
-                                                    </a>
-                                                    <a href="#" class="btn btn-block btn-danger">
-                                                        <i class="fab fa-google-plus mr-2"></i>
-                                                        Cadastrar usando o Google+
-                                                    </a>
-                                                </div>-->
                                             </div>
                                             <!-- /.form-box -->
                                         </div><!-- /.card -->
@@ -168,13 +143,8 @@
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
-            <footer class="main-footer">
-                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
-                All rights reserved.
-                <div class="float-right d-none d-sm-inline-block">
-                    <b>Version</b> 3.0.1-pre
-                </div>
-            </footer>
+            <!-- Footer -->
+            <jsp:include page="../footer.jsp"/>
 
             <!-- Control Sidebar -->
             <aside class="control-sidebar control-sidebar-dark">
@@ -186,7 +156,7 @@
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
         <script>
-            includeHTMLNav("usuarios", "cadastrarUsuario");
+            includeHTMLNav("Clientes", "cadastrar");
         </script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>
@@ -227,11 +197,12 @@
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
-
+        <!-- Mask js -->
+        <script src="${site}/dist/js/myMask.js" type="text/javascript"></script>
         <!-- SweetAlert2 -->
         <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
-        <script src="${site}/pages/admin/cadastrarUsuario.js" type="text/javascript"></script>
+        <script src="${site}/pages/funcionario/clientes/cadastrar.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
