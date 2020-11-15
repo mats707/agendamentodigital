@@ -3,12 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restUsuario.java</file>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/cliente/DesativarAction.java</file>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/api/restEmpresa.java</file>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/cliente/MinhaContaAction.java</file>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/UsuarioDAO.java</file>
-            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/dao/interfaces/IPessoaDAO.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/ListarAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/BuscarAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/DeletarAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/IniciarEdicaoAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/AlterarAction.java</file>
+            <file>file:/C:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/src/java/command/usuario/CadastrarAction.java</file>
         </group>
     </open-files>
 </project-private>

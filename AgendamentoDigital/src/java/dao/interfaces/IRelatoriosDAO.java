@@ -16,14 +16,28 @@ import modelos.StatusAgendamento;
  */
 public interface IRelatoriosDAO {
 
-    public ArrayList<RelatorioServico> listarMaisAgendado();
+    public ArrayList<RelatorioServico> listarAgendamentos();
 
-    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodo(int mes,int ano);
-    
+    public ArrayList<RelatorioServico> listarAgendamentosPeriodo(int mes, int ano);
+
+    public ArrayList<RelatorioServico> listarAgendamentosPeriodoStatus(int mes, int ano, StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarAgendamentosStatus(StatusAgendamento status);
+
     public ArrayList<RelatorioServico> listarMaisTrabalhado();
 
-    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodo(int mes,int ano);
-    
-    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodoStatus (int mes, int ano, StatusAgendamento status);
+    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodo(int mes, int ano);
+
+    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodoStatus(int mes, int ano, StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarMaisTrabalhadoStatus(StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarCliente();
+
+    public ArrayList<RelatorioServico> listarClientePeriodo(int mes, int ano);
+
+    public ArrayList<RelatorioServico> listarClientePeriodoStatus(int mes, int ano, StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarClienteStatus(StatusAgendamento status);
 
 }
