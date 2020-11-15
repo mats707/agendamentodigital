@@ -72,9 +72,9 @@
                                             <div class="card-body register-card-body">
                                                 <p class="login-box-msg">Cadastrar um novo cliente</p>
 
-                                                <form id="cadastrarUsuario" autocomplete="off" action="${site}/Funcionario/Cliente/Cadastrar"  method="post">
+                                                <form id="cadastrarUsuario" autocomplete="OFF" action="${site}/Funcionario/Cliente/Cadastrar"  method="post">
                                                     <div class="input-group mb-3">
-                                                        <input id="nome" name="nome" type="text" class="form-control" placeholder="Nome completo">
+                                                        <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-user"></span>
@@ -82,7 +82,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-group mb-3">
-                                                        <input id="dataNascimento" name="dataNascimento" type="date" class="form-control" placeholder="Data Nascimento">
+                                                        <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" required pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-calendar"></span>
@@ -91,7 +91,7 @@
                                                     </div>
                                                     <!-- phone mask -->
                                                     <div class="input-group mb-3">
-                                                        <input id="celular" name="celular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone'>
+                                                        <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' required>
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-phone"></span>
@@ -99,7 +99,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-group mb-3">
-                                                        <input id="email" name="email" type="text" class="form-control mask" placeholder="Email" data-mask='email'>
+                                                        <input id="inputEmail" name="inputEmail" type="text" class="form-control mask" placeholder="Email" data-mask='email' required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-envelope"></span>
@@ -107,7 +107,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-group mb-3">
-                                                        <input id="senha" name="senha" type="password" class="form-control" placeholder="Digite uma senha">
+                                                        <input id="inputPassword" name="inputPassword" type="password" class="form-control" placeholder="Digite uma senha" required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-lock"></span>
@@ -115,7 +115,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="input-group mb-3">
-                                                        <input id="chksenha" name="chksenha" type="password" class="form-control" placeholder="Confirme sua senha">
+                                                        <input id="inputChkPassword" name="inputChkPassword" type="password" class="form-control" placeholder="Confirme sua senha" required>
                                                         <div class="input-group-append">
                                                             <div class="input-group-text">
                                                                 <span class="fas fa-lock"></span>
@@ -156,7 +156,7 @@
 
         <script src="${site}/dist/js/pages/includeHTMLNav.js" type="text/javascript"></script>
         <script>
-            includeHTMLNav("usuarios", "cadastrarUsuario");
+            includeHTMLNav("Clientes", "cadastrar");
         </script>
         <!-- jQuery -->
         <script src="${site}/plugins/jquery/jquery.min.js"></script>

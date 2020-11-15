@@ -22,7 +22,7 @@ import modelos.Usuario;
  *
  * @author Rafael Pereira
  */
-public class MaisTrabalhadoAction implements ICommand {
+public class FuncionariosAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -47,15 +47,15 @@ public class MaisTrabalhadoAction implements ICommand {
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisTrabalhado();
+        arr = objRelatorioDAO.listarFuncionarios();
         if (request.getAttribute("funcaoMsg") != null) {
             funcaoMsg = request.getAttribute("funcaoMsg").toString();
             funcaoStatus = request.getAttribute("funcaoStatus").toString();
         } else if (arr.size() != 0) {
-            funcaoMsg = "Busca concluida, dados encontrados!";
+            funcaoMsg = "Relatório de funcionários carregado com sucesso!";
             funcaoStatus = "success";
         } else {
-            funcaoMsg = "Busca concluida, porém não dados para o mesmo!";
+            funcaoMsg = "Nenhuma informação encontrada!";
             funcaoStatus = "error";
         }
 
@@ -72,11 +72,11 @@ public class MaisTrabalhadoAction implements ICommand {
 
         String json = arrJson.toString();
         request.setAttribute("pgperfil", perfil);
-        request.setAttribute("pgjs", "maisTrabalhado");
-        request.setAttribute("command", "MaisTrabalhado");
+        request.setAttribute("pgjs", "funcionarios");
+        request.setAttribute("command", "Funcionarios");
         request.setAttribute("pgAba", "Relatório de funcionários");
-        request.setAttribute("pgTitulo", "Relatórios de Funcionários");
-        request.setAttribute("pgRelatorio", "Funcionários que mais finalizaram serviços");
+        request.setAttribute("pgTitulo", "Relatório de Funcionários");
+        request.setAttribute("pgRelatorio", "Quantidade de serviços realizados por funcionário");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         return json;

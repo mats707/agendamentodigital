@@ -22,7 +22,9 @@ public interface IUsuarioDAO {
 
     public ArrayList<Usuario> listarPerfil(Usuario usuario);
 
-    public void buscar(Usuario usuario);
+    public void buscarEmail(Usuario usuario);
+
+    public void buscarEmailCelular(Usuario usuario);
 
     public Usuario buscaCompleta(Usuario usuario);
 
@@ -33,5 +35,9 @@ public interface IUsuarioDAO {
     public String alterarCelular(Usuario usuario);
 
     public String deletar(Usuario usuario);
+
+    public String ativar(Usuario usuario);
+
+    public String desativar(Usuario usuario);
 
 }

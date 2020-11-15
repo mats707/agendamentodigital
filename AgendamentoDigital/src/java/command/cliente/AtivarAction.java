@@ -33,7 +33,7 @@ import modelos.Usuario;
  *
  * @author Rafael Pereira
  */
-public class DesativarAction implements ICommand {
+public class AtivarAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -73,13 +73,13 @@ public class DesativarAction implements ICommand {
         if (objCliente.getUsuario() != null) {
 
             UsuarioDAO usuarioDAO = new UsuarioDAO();
-            sqlState = usuarioDAO.desativar(objCliente.getUsuario());
+            sqlState = usuarioDAO.ativar(objCliente.getUsuario());
 
             if ("0".equals(sqlState)) {
-                funcaoMsg = "Desativado com sucesso!";
+                funcaoMsg = "Ativado com sucesso!";
                 funcaoStatus = "success";
             } else {
-                funcaoMsg = "Não foi possível desativar o usuário, tente novamente mais tarde!";
+                funcaoMsg = "Não foi possível ativar o usuário, tente novamente mais tarde!";
                 funcaoStatus = "error";
             }
         } else {
@@ -101,7 +101,7 @@ public class DesativarAction implements ICommand {
             try {
                 dataAgendamento = new SimpleDateFormat("MMM dd, yyyy").parse(s);
             } catch (ParseException ex) {
-                Logger.getLogger(DesativarAction.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AtivarAction.class.getName()).log(Level.SEVERE, null, ex);
             }
             return dataAgendamento;
         }

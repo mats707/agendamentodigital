@@ -60,15 +60,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="${site}/Funcionario/AgendarServico" id="agendarServico" class="nav-link">
-                        <i class="fas fa-calendar-plus nav-icon"></i>
-                        <p>Agendar Serviço</p>
-                    </a>
-                </li>
-
-
-                <li id="menuPaiclientes" class="nav-item has-treeview">
+                <li id="menuPaiClientes" class="nav-item has-treeview">
                     <a href="#" id="clientes" class="nav-link">
                         <i class="nav-icon far fa-user"></i>
                         <p>
@@ -78,13 +70,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="${site}/Funcionario/Cliente/Cadastrar" id="cadastrarCliente" class="nav-link">
+                            <a href="${site}/Funcionario/Cliente/Cadastrar" id="cadastrar" class="nav-link">
                                 <i class="fas fa-user-plus nav-icon"></i>
                                 <p>Cadastrar</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}/Funcionario/Cliente/Listar" id="listarClientes" class="nav-link">
+                            <a href="${site}/Funcionario/Cliente/Listar" id="listar" class="nav-link">
                                 <i class="fas fa-user-tag nav-icon"></i>
                                 <p>Listar</p>
                             </a>
@@ -101,13 +93,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="${site}/Relatorios/Servicos/MaisAgendado" id="relatorioServicoMaisAgendado" class="nav-link">
+                            <a href="${site}/Relatorios/Servicos/Agendamentos" id="relatorioServicoAgendamentos" class="nav-link">
                                 <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Serviços agendados</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}/Relatorios/Servicos/MaisTrabalhado" id="relatorioCliente" class="nav-link">
+                            <a href="${site}/Relatorios/Servicos/Funcionarios" id="relatorioCliente" class="nav-link">
                                 <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Funcionários</p>
                             </a>

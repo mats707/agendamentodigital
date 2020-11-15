@@ -22,11 +22,10 @@ import modelos.Usuario;
  *
  * @author Rafael Pereira
  */
-public class MaisAgendadoAction implements ICommand {
-
+public class ClientesAction implements ICommand{
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
+        
         //Verifica Perfil Usuario
         //cria uma sessao para resgatar o usuario
         HttpSession sessaoUsuario = request.getSession();
@@ -34,28 +33,29 @@ public class MaisAgendadoAction implements ICommand {
         Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
         if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOADMIN)) {
             perfil = "admin";
-        } else if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+        } else if (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)){
             perfil = "funcionario";
         }
-
+        
         request.setAttribute("pagina", "/pages/funcionario/relatorios/relatorio.jsp");
-
+        
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+        
         String funcaoMsg = "";
         String funcaoStatus = "";
 
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarMaisAgendado();
+        arr = objRelatorioDAO.listarCliente();
         if (request.getAttribute("funcaoMsg") != null) {
             funcaoMsg = request.getAttribute("funcaoMsg").toString();
             funcaoStatus = request.getAttribute("funcaoStatus").toString();
         } else if (arr.size() != 0) {
-            funcaoMsg = "Busca concluida, dados encontrados!";
+            funcaoMsg = "Relatório de clientes carregado com sucesso!";
             funcaoStatus = "success";
         } else {
-            funcaoMsg = "Busca concluida, porém não dados para o mesmo!";
+            funcaoMsg = "Nenhuma informação encontrada!";
             funcaoStatus = "error";
         }
 
@@ -66,21 +66,21 @@ public class MaisAgendadoAction implements ICommand {
             json.remove("idAgendamento");
             json.remove("idCliente");
             json.remove("idFuncionario");
+            json.remove("idServico");
             arrJson.add(json);
         }
 
         String json = arrJson.toString();
         request.setAttribute("pgperfil", perfil);
-        request.setAttribute("pgjs", "maisAgendado");
-        request.setAttribute("command", "MaisAgendado");
-        request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
-        request.setAttribute("pgTitulo", "Relatorios de Serviços");
-        request.setAttribute("pgRelatorio", "Serviços mais utilizados total");
+        request.setAttribute("pgjs", "clientes");
+        request.setAttribute("command", "Cliente");
+        request.setAttribute("pgAba", "Relatório de Clientes");
+        request.setAttribute("pgTitulo", "Relatório de Clientes");
+        request.setAttribute("pgRelatorio", "Quantidade de serviços realizados por cliente");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
 
         return json;
 
     }
-
 }

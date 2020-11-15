@@ -211,7 +211,7 @@
         })
     </script>
 
-    <script src="${site}/pages/funcionario/relatorios/${pgjs}.js" type="text/javascript"></script>
+    <script charset="ISO-8529" src="${site}/pages/funcionario/relatorios/${pgjs}.js" type="text/javascript"></script>
 
     <script>
         sweet("${funcaoMsg}", "${funcaoStatus}", 4000);

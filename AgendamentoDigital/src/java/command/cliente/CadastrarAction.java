@@ -54,6 +54,9 @@ public class CadastrarAction implements ICommand {
         password = request.getParameter("inputPassword");
         chkpassword = request.getParameter("inputChkPassword");
 
+        String funcaoMsg = "";
+        String funcaoStatus = "";
+
         if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && nome != null && dataNascimento != null) {
             Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, password, celular).constroi();
 
@@ -63,7 +66,7 @@ public class CadastrarAction implements ICommand {
                 UsuarioDAO usuarioDao = new UsuarioDAO();
                 String sqlStateUsuario = usuarioDao.cadastraNovoUsuario(cliente.getUsuario());
 
-                if (sqlStateUsuario == "0") {
+                if ("0".equals(sqlStateUsuario)) {
 
                     //Instância Pessoa através da classe Cliente, utilizando passagem por ref. será atribuído ao objeto o ID que foi gerado após o cadastro
                     Pessoa objPessoa = new Pessoa();
@@ -74,7 +77,7 @@ public class CadastrarAction implements ICommand {
                     PessoaDAO pessoaDao = new PessoaDAO();
                     String sqlStatePessoa = pessoaDao.cadastrar(objPessoa);
 
-                    if (sqlStatePessoa == "0") {
+                    if ("0".equals(sqlStatePessoa)) {
                         //Atribui o ID da Pessoa (que possuí Usuário) no objeto Cliente
                         //Apesar de ser herança e não ter o campo pessoa dentro de cliente, no banco de dados teremos o campo 'pessoa'
                         cliente.setIdPessoa(objPessoa.getIdPessoa());
@@ -83,38 +86,40 @@ public class CadastrarAction implements ICommand {
 
                         String sqlStateCliente = clienteDao.cadastrar(cliente);
 
-                        if (sqlStateCliente == "0") {
-                            request.setAttribute("colorMsg", "success");
-                            return "Cadastrado com sucesso!";
+                        if ("0".equals(sqlStateCliente)) {
+                            funcaoStatus = "success";
+                            funcaoMsg = "Cadastrado com sucesso!";
                         } else {
                             pessoaDao.deletar(objPessoa);
                             usuarioDao.deletar(cliente.getUsuario());
-                            request.setAttribute("colorMsg", "danger");
-                            return "Cliente inválido! Entre em contato com o suporte.";
+                            funcaoStatus = "error";
+                            funcaoMsg = "Cliente inválido! Entre em contato com o suporte.";
                         }
                     } else {
 
                         usuarioDao.deletar(cliente.getUsuario());
 
-                        request.setAttribute("colorMsg", "danger");
-                        return "Cliente inválido! Entre em contato com o suporte.";
+                        funcaoStatus = "error";
+                        funcaoMsg = "Cliente inválido! Entre em contato com o suporte.";
                     }
                 } else if ("23505".equals(sqlStateUsuario)) {
-                    request.setAttribute("colorMsg", "danger");
-                    return "Tente outro email ou celular!";
+                    funcaoStatus = "error";
+                    funcaoMsg = "Tente outro email ou celular!";
                 } else {
-                    request.setAttribute("colorMsg", "danger");
-                    return "Não foi possível cadastrar, tente novamente ou entre em contato com o suporte!";
+                    funcaoStatus = "error";
+                    funcaoMsg = "Não foi possível cadastrar, tente novamente ou entre em contato com o suporte!";
                 }
 
             } else {
-                request.setAttribute("colorMsg", "warning");
-                return "Senhas diferentes!";
+                funcaoStatus = "warning";
+                funcaoMsg = "Senhas diferentes!";
             }
         } else {
-            request.setAttribute("colorMsg", "");
-            return "";
+            funcaoStatus = "";
+            funcaoMsg = "";
         }
-
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
+        return funcaoMsg;
     }
 }

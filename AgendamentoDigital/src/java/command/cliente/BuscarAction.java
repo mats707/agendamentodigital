@@ -33,7 +33,7 @@ public class BuscarAction implements ICommand {
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-        usuarioDAO.buscar(objUsuario);
+        usuarioDAO.buscarEmail(objUsuario);
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 

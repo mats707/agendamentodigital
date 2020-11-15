@@ -35,11 +35,9 @@ public class ClienteListarAction implements ICommand {
         }
 
         ArrayList<Usuario> arr = new ArrayList<Usuario>();
-        
-        PerfilDeAcesso perfil = PerfilDeAcesso.CLIENTECOMUM;
 
         UsuarioDAO usuarioDAO = new UsuarioDAO();
-        Usuario usuario = new Usuario(perfil);
+        Usuario usuario = new Usuario(PerfilDeAcesso.CLIENTECOMUM);
 
         arr = usuarioDAO.listarPerfil(usuario);
 

@@ -144,7 +144,7 @@ public class restEmail {
         //Construindo a String para enviar o e-mail
         String listaEmailDestinatarios = montarEmailsDestinatarios(emailsDestinatarios);
 
-        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios + ",math.tcl@gmail.com");
+        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios);
         utilEmail.setAssunto("Confirmação de agendamento - " + objServico.getNome());
         utilEmail.setCabecalho("Serviço: " + objServico.getNome());
         utilEmail.setCorpo("Olá,\n"
@@ -231,7 +231,7 @@ public class restEmail {
         //Construindo a String para enviar o e-mail
         String listaEmailDestinatarios = montarEmailsDestinatarios(emailsDestinatarios);
 
-        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios + ",math.tcl@gmail.com");
+        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios);
         utilEmail.setAssunto("Cancelamento de agendamento - " + objServico.getNome());
         utilEmail.setCabecalho("Serviço: " + objServico.getNome());
         utilEmail.setCorpo("Olá,\n"
@@ -317,7 +317,7 @@ public class restEmail {
         //Construindo a String para enviar o e-mail
         String listaEmailDestinatarios = montarEmailsDestinatarios(emailsDestinatarios);
 
-        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios + ",math.tcl@gmail.com");
+        utilEmail.setListEmailsDestinarios(listaEmailDestinatarios);
         utilEmail.setAssunto("Finalização de agendamento - " + objServico.getNome());
         utilEmail.setCabecalho("Serviço: " + objServico.getNome());
         utilEmail.setCorpo("Olá,\n"

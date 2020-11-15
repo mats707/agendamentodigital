@@ -31,6 +31,7 @@
         <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <link href="${site}/pages/funcionario/clientes/clientes.css" rel="stylesheet" type="text/css"/>
     </head>
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
@@ -90,40 +91,61 @@
         <!-- ./wrapper -->
 
         <!-- edit Modal-->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="alterarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="alterarUsuario" action="${site}/Cliente/Alterar" method="post">
+                <form id="alterarUsuario" action="${site}/Funcionario/Cliente/Alterar" method="post" autocomplete="off" >
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Alterar Usuário? </h5>
+                            <h5 class="modal-title" id="exampleModalLabel">Alterar Cliente? </h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="row align-items-center justify-content-center">
+                        <div class="row mt-3 align-items-center justify-content-center">
                             <div class="register-box">
-                                <div class="card">
-                                    <input id="idUsuario" name="idUsuario" type="text" class="form-control" placeholder="idUsuario" hidden>
-                                    <div class="input-group mb-3">
-                                        <input id="editedEmail" name="editedEmail" type="email" class="form-control" placeholder="Email">
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-envelope"></span>
-                                            </div>
+                                <input id="idCliente" name="idCliente" type="text" class="form-control" hidden>
+                                <div class="input-group mb-3">
+                                    <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" required>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-user"></span>
                                         </div>
                                     </div>
-                                    <!-- phone mask -->
-                                    <div class="input-group mb-3">
-                                        <input id="editedCelular" name="editedCelular" type="text" class="form-control" placeholder="Celular" data-inputmask='"mask": "(99) 99999-9999"' data-mask>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-phone"></span>
-                                            </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input id="inputDataNasc" name="inputDataNasc" type="date" class="form-control" placeholder="Data Nascimento" required pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}">
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-calendar"></span>
                                         </div>
                                     </div>
-
+                                </div>
+                                <!-- phone mask -->
+                                <div class="input-group mb-3">
+                                    <input id="inputCelular" name="inputCelular" type="text" class="form-control mask" placeholder="Celular" data-mask='telefone' required>
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-phone"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <input id="inputEmail" name="inputEmail" type="text" class="form-control mask" placeholder="Email" data-mask='email' required>
+                                    <div class="input-group-append">
+                                        <div class="input-group-text">
+                                            <span class="fas fa-envelope"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="icheck-primary d-inline">
+                                        <input type="checkbox" id="chkAlterarSenha" name="chkAlterarSenha" onclick="formAlterarSenha();">
+                                        <label for="chkAlterarSenha">Alterar senha?</label>
+                                    </div>
+                                </div>
+                                <div id="divAlterarSenha" style="display: none;">
                                     <div class="input-group mb-3">
-                                        <input id="editedPassword" name="editedPassword" type="password" class="form-control" placeholder="Password">
+                                        <input id="inputSenha" name="inputSenha" type="password" class="form-control" placeholder="Digite uma senha" readonly>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-lock"></span>
@@ -131,7 +153,7 @@
                                         </div>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <input id="editedChkpassword" name="editedChkpassword" type="password" class="form-control" placeholder="Retype password">
+                                        <input id="inputChkSenha" name="inputChkSenha" type="password" class="form-control" placeholder="Confirme sua senha" readonly>
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-lock"></span>
@@ -142,62 +164,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button id="btnAlterar" type="submit" class="btn btn-success btn-block" data-msg="${funcaoMsg}">Alterar</button>
+                            <button id="btnAlterar" type="submit" class="btn btn-success btn-block">Alterar</button>
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Voltar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
-        <!-- delete Modal-->
-        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <form id="deletarUsuario" action="${site}/Cliente/Desativar" method="post">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Excluir Usuário? </h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="row align-items-center justify-content-center">
-                            <p class="danger">Ao excluir o usuário permanecerá cadastrado, porém estará INATIVO!</p>
-
-                            <div class="register-box">
-                                <div class="card">
-                                    <input id="idUsuarioDeleted" name="idUsuarioDeleted" type="text" class="form-control" placeholder="idUsuario" hidden>
-                                    <div class="input-group mb-3">
-                                        <input id="deletedEmail" name="deletedEmail" type="email" class="form-control" placeholder="Email" readonly>
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-envelope"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- phone mask -->
-                                    <div class="input-group mb-3">
-                                        <input id="deletedCelular" name="deletedCelular" type="text" class="form-control" placeholder="Celular" readonly data-inputmask='"mask": "(99) 99999-9999"' data-mask readonly>
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-phone"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="input-group mb-3">
-                                        <input id="deletedPerfil" name="deletedPerfil" type="text" class="form-control" placeholder="Perfil" readonly>
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-user"></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button  id="btnDeletar" type="submit" class="btn btn-danger btn-block">Desastivar Usuário</button>
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
                 </form>
@@ -212,8 +180,11 @@
         <script src="${site}/plugins/jquery-ui/jquery-ui.min.js"></script>
         <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
         <script>
-            $.widget.bridge('uibutton', $.ui.button)
+                                            $.widget.bridge('uibutton', $.ui.button)
         </script>
+        <!-- Moment.js -->
+        <script src="${site}/plugins/moment/moment.min.js"></script>
+        <script src="${site}/plugins/moment/locale/pt-br.js" charset="UTF-8"></script>
         <!-- Bootstrap 4 -->
         <script src="${site}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- ChartJS -->
@@ -225,8 +196,7 @@
         <script src="${site}/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
         <!-- jQuery Knob Chart -->
         <script src="${site}/plugins/jquery-knob/jquery.knob.min.js"></script>
-        <!-- daterangepicker -->
-        <script src="${site}/plugins/moment/moment.min.js"></script>
+        <!-- daterangepicker -->        
         <script src="${site}/plugins/daterangepicker/daterangepicker.js"></script>
         <!-- Tempusdominus Bootstrap 4 -->
         <script src="${site}/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
@@ -240,8 +210,7 @@
         <script src="${site}/dist/js/pages/dashboard.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="${site}/dist/js/demo.js"></script>
-        <!-- InputMask -->
-        <script src="${site}/plugins/moment/moment.min.js"></script>
+        <!-- InputMask -->>
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
@@ -251,25 +220,26 @@
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
         <script>
-            $(function () {
-                //Initialize Select2 Elements
-                $('.select2').select2()
+                                            $(function () {
+                                                //Initialize Select2 Elements
+                                                $('.select2').select2()
 
-                //Initialize Select2 Elements
-                $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                })
+                                                //Initialize Select2 Elements
+                                                $('.select2bs4').select2({
+                                                    theme: 'bootstrap4'
+                                                })
 
-                $('[data-mask]').inputmask()
+                                                $('[data-mask]').inputmask()
 
-            })
+                                            })
         </script>
-        <script src="${site}/pages/funcionario/clientes/listar.js" type="text/javascript"></script>
+        <script charset="ISO-8529" src="${site}/pages/funcionario/clientes/listar.js" type="text/javascript"></script>
         <script>
-            var result = ${msg};
-            includeHTMLNav("usuarios", "listarClientes");
-            lerJson(result);
-            sweet("${funcaoMsg}", "${funcaoStatus}", 4000);
+                                            var result = ${msg};
+                                            includeHTMLNav("Clientes", "listar");
+                                            console.log("${funcaoMsg}");
+                                            sweet("${funcaoMsg}", "${funcaoStatus}", 4000);
+                                            lerTabela(result);
         </script>
 
         <!-- PAGE PLUGINS -->

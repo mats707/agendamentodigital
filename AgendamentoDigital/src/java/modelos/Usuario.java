@@ -21,6 +21,8 @@ public class Usuario implements ILogavel {
 
     private PerfilDeAcesso perfil;
 
+    private Boolean ativo;
+
     public Integer getIdUsuario() {
         return idUsuario;
     }
@@ -61,12 +63,21 @@ public class Usuario implements ILogavel {
         this.celular = celular;
     }
 
-    public Usuario(Integer idUsuario, String email, String senha, Long celular, PerfilDeAcesso perfil) {
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Usuario(Integer idUsuario, String email, String senha, Long celular, PerfilDeAcesso perfil, Boolean ativo) {
         this.idUsuario = idUsuario;
         this.email = email;
         this.senha = senha;
         this.celular = celular;
         this.perfil = perfil;
+        this.ativo = ativo;
     }
 
     public Usuario() {

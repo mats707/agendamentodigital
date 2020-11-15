@@ -52,7 +52,6 @@ public class ListarAction implements ICommand {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         
-        request.setAttribute("pgperfil", "Clientes");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
         

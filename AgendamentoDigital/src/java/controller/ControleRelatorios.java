@@ -21,13 +21,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControleRelatorios", urlPatterns = {"/ControleRelatorios",
     "/RelatoriosServico",
-    "/MaisAgendados",
-    "/Relatorios/Servicos/MaisAgendado",
-    "/Relatorios/Servicos/MaisAgendado/Periodo",
-    "/Relatorios/Servicos/MaisTrabalhado",
-    "/Relatorios/Servicos/MaisTrabalhado/Periodo",
-    "/Relatorios/Servicos/Cliente",
-    "/Relatorios/Servicos/Cliente/Periodo"
+    "/Agendamentos",
+    "/Relatorios/Servicos/Agendamentos",
+    "/Relatorios/Servicos/Agendamentos/Periodo",
+    "/Relatorios/Servicos/Funcionarios",
+    "/Relatorios/Servicos/Funcionarios/Periodo",
+    "/Relatorios/Servicos/Clientes",
+    "/Relatorios/Servicos/Clientes/Periodo"
 
 })
 public class ControleRelatorios extends HttpServlet {
@@ -48,18 +48,18 @@ public class ControleRelatorios extends HttpServlet {
             String uri = request.getRequestURI();
             String acao = "";
 
-            if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisAgendado")) {
-                acao = "MaisAgendado";
-            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisAgendado/Periodo")) {
-                acao = "MaisAgendadoPeriodo";
-            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisTrabalhado/Periodo")) {
-                acao = "MaisTrabalhadoPeriodo";
-            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/MaisTrabalhado")) {
-                acao = "MaisTrabalhado";
-            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Cliente/Periodo")) {
-                acao = "ClientePeriodo";
-            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Cliente")) {
-                acao = "Cliente";
+            if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Agendamentos")) {
+                acao = "Agendamentos";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Agendamentos/Periodo")) {
+                acao = "AgendamentosPeriodo";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Funcionarios/Periodo")) {
+                acao = "FuncionariosPeriodo";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Funcionarios")) {
+                acao = "Funcionarios";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Clientes/Periodo")) {
+                acao = "ClientesPeriodo";
+            } else if (uri.equals(request.getContextPath() + "/Relatorios/Servicos/Clientes")) {
+                acao = "Clientes";
             } else {
                 response.sendRedirect("404.jsp");
             }

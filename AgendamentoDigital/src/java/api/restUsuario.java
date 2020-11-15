@@ -61,7 +61,7 @@ public class restUsuario {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/BuscarEmail/{email}")
-    public String buscarUsuarioNome(@PathParam("email") String email) throws SQLException, ClassNotFoundException {
+    public String buscarUsuarioEmail(@PathParam("email") String email) throws SQLException, ClassNotFoundException {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
@@ -70,7 +70,7 @@ public class restUsuario {
         Usuario usuario = new Usuario();
         usuario.setEmail(email);
         
-        objDao.buscar(usuario);
+        objDao.buscarEmail(usuario);
 
         return objgson.toJson(usuario);
     }

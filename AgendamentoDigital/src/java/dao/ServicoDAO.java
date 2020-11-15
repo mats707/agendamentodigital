@@ -59,14 +59,6 @@ public class ServicoDAO implements IServicoDAO {
     Date date = new Date();
     SimpleDateFormat simpDate24 = new SimpleDateFormat("kk:mm:ss");
 
-    public static String removeLastCharacter(String str) {
-        String result = null;
-        if ((str != null) && (str.length() > 0)) {
-            result = str.substring(0, str.length() - 1);
-        }
-        return result;
-    }
-
     @Override
     public String cadastrar(Servico servico) {
 

@@ -23,10 +23,11 @@ import modelos.Usuario;
  *
  * @author Rafael Pereira
  */
-public class ClientePeriodoAction implements ICommand {
+public class AgendamentosPeriodoAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
         //Verifica Perfil Usuario
         //cria uma sessao para resgatar o usuario
         HttpSession sessaoUsuario = request.getSession();
@@ -42,30 +43,35 @@ public class ClientePeriodoAction implements ICommand {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
         StatusAgendamento status = null;
+        String statusMsg = "";
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
+        String funcaoMsg = "";
+        String funcaoStatus = "";
         String mes_String = request.getParameter("mes");
         String ano_String = request.getParameter("ano");
-        String funcaoMsg;
-        String funcaoStatus;
         String status_String = request.getParameter("status");
 
         if (status_String != null) {
             switch (status_String) {
                 case "AGUARDANDOATENDIMENTO":
                     status = StatusAgendamento.AGUARDANDOATENDIMENTO;
+                    statusMsg = "Aguardando Atendimento";
                     break;
                 case "FINALIZADO":
                     status = StatusAgendamento.FINALIZADO;
+                    statusMsg = "Finalizados";
                     break;
                 case "CANCELADO":
                     status = StatusAgendamento.CANCELADO;
+                    statusMsg = "Cancelados";
                     break;
                 default:
                     status_String = null;
                     break;
             }
         }
+
         if (mes_String != null && ano_String != null) {
             int mes = Integer.parseInt(mes_String);
             int ano = Integer.parseInt(ano_String);
@@ -73,18 +79,20 @@ public class ClientePeriodoAction implements ICommand {
 
                 ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
                 if (status_String != null) {
-                    arr = objRelatorioDAO.listarClientePeriodoStatus(mes, ano, status);
+                    arr = objRelatorioDAO.listarAgendamentosPeriodoStatus(mes, ano, status);
+                    request.setAttribute("pgRelatorio", "Serviços " + statusMsg + " no período de " + mes + "/" + ano);
                 } else {
-                    arr = objRelatorioDAO.listarClientePeriodo(mes, ano);
+                    arr = objRelatorioDAO.listarAgendamentosPeriodo(mes, ano);
+                    request.setAttribute("pgRelatorio", "Serviços agendados no período de " + mes + "/" + ano);
                 }
-
                 if (arr.size() != 0) {
                     funcaoMsg = "Filtro realizado com sucesso!";
                     funcaoStatus = "success";
                 } else {
-                    funcaoMsg = "Filtro realizado com sucesso, porém não dados para o mesmo!";
+                    funcaoMsg = "Nenhuma informação encontrada para o filtro selecionado!";
                     funcaoStatus = "info";
                 }
+
                 JsonArray arrJson = new JsonArray();
 
                 for (RelatorioServico objRelatorio : arr) {
@@ -92,40 +100,39 @@ public class ClientePeriodoAction implements ICommand {
                     json.remove("idAgendamento");
                     json.remove("idCliente");
                     json.remove("idFuncionario");
-                    json.remove("idServico");
                     arrJson.add(json);
                 }
 
                 String json = arrJson.toString();
                 request.setAttribute("pgperfil", perfil);
-                request.setAttribute("pgjs", "cliente");
-                request.setAttribute("command", "Cliente");
-                request.setAttribute("pgAba", "Relatorio de cliente");
-                request.setAttribute("pgTitulo", "Relatorios de Clientes");
-                request.setAttribute("pgRelatorio", "Clientes que mais finalizaram serviços periodo de " + mes + "/" + ano);
+                request.setAttribute("pgjs", "agendamentos");
+                request.setAttribute("command", "Agendamentos");
+                request.setAttribute("pgAba", "Relatório de agendamentos");
+                request.setAttribute("pgTitulo", "Relatório de agendamentos");
+
                 request.setAttribute("funcaoMsg", funcaoMsg);
                 request.setAttribute("funcaoStatus", funcaoStatus);
                 return json;
-
             } else {
-                funcaoMsg = "Verifique os campos mes e ano<br> Os dados estão incopativeis";
+                funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
                 funcaoStatus = "error";
-                request.setAttribute("pagina", "/Relatorios/Servicos/Cliente");
+                request.setAttribute("pagina", "/Relatórios/Servicos/Agendamentos");
                 request.setAttribute("funcaoMsg", funcaoMsg);
                 request.setAttribute("funcaoStatus", funcaoStatus);
                 return null;
+
             }
         } else if (status_String != null) {
             ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
 
-            arr = objRelatorioDAO.listarClienteStatus(status);
+            arr = objRelatorioDAO.listarAgendamentosStatus(status);
             request.setAttribute("pgRelatorio", "Serviços " + status);
 
             if (arr.size() != 0) {
                 funcaoMsg = "Filtro realizado com sucesso!";
                 funcaoStatus = "success";
             } else {
-                funcaoMsg = "Filtro realizado com sucesso, porém não dados para o mesmo!";
+                funcaoMsg = "Nenhuma informação encontrada para o filtro selecionado!";
                 funcaoStatus = "info";
             }
 
@@ -136,33 +143,28 @@ public class ClientePeriodoAction implements ICommand {
                 json.remove("idAgendamento");
                 json.remove("idCliente");
                 json.remove("idFuncionario");
-                json.remove("idServico");
                 arrJson.add(json);
             }
 
             String json = arrJson.toString();
 
             request.setAttribute("pgperfil", perfil);
-            request.setAttribute("pgjs", "maisAgendado");
-            request.setAttribute("command", "MaisAgendado");
-            request.setAttribute("pgAba", "Relatorio de serviço mais agendado");
-            request.setAttribute("pgTitulo", "Relatorios de Serviços");
-
+            request.setAttribute("pgjs", "agendamentos");
+            request.setAttribute("command", "Agendamentos");
+            request.setAttribute("pgAba", "Relatório de agendamentos");
+            request.setAttribute("pgTitulo", "Relatórios de agendamentos");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return json;
         } else {
-            funcaoMsg = "Verifique os campos mes e ano<br> Os dados estão incopativeis";
+                funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
             funcaoStatus = "error";
-            request.setAttribute("pagina", "/Relatorios/Servicos/Cliente");
+            request.setAttribute("pagina", "/Relatórios/Servicos/Agendamentos");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return null;
+
         }
-
-    }
-
-    public void retornaerro() {
 
     }
 

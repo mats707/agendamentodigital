@@ -29,25 +29,24 @@ public class UsuarioDAO implements IUsuarioDAO {
             + "WHERE id = ?";
     private static final String ALTERAR_SENHA = "UPDATE sistema.usuario SET senha = ? WHERE id = ?";
     private static final String ALTERAR_CELULAR = "UPDATE sistema.usuario SET celular = ? WHERE id = ?";
-    private static final String ALTERAR_FOTO_PERFIL = "UPDATE sistema.usuario SET fotoPerfil = ? WHERE id = ?";
-    private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String AUTENTICA_USUARIO = "SELECT u.id, u.email, u.senha, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=? and u.ativo=true";
-    private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String BUSCAR = "SELECT u.id, u.email, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.email=?";
-    private static final String BUSCAR_ID = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String BUSCAR_ID = "SELECT u.id, u.email, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.id=?";
-    private static final String BUSCAR_FOTO_PERFIL = "SELECT u.fotoPerfil FROM sistema.usuario u WHERE u.id=?";
-    private static final String LISTAR = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String BUSCAR_EMAIL_CELULAR = "SELECT u.id, u.email, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+            + "ON u.perfil = p.id WHERE u.email=? and u.celular=?";
+    private static final String LISTAR = "SELECT u.id, u.email, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.ativo=true ORDER BY u.email;";
-    private static final String LISTAR_PERFIL = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String LISTAR_PERFIL = "SELECT u.id, u.email, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.ativo=true AND perfil = (select id from sistema.perfilacesso where lower(nome) ilike lower(?)) ORDER BY u.email;";
     private static final String DELETAR = "DELETE FROM sistema.usuario WHERE id = ?";
-    private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
+    private static final String BUSCA_COMPLETA = "SELECT u.id, u.email, u.celular, p.nome as perfil, u.ativo FROM sistema.usuario u INNER JOIN sistema.perfilacesso p "
             + "ON u.perfil = p.id WHERE u.id=? AND u.email=? AND u.celular=? AND p.nome=?";
     private static final int BUFFER_SIZE = 4096;
-    private static final String DESATIVAR = "UPDATE sistema.usuario\n"
-            + "SET ativo=false\n"
-            + "WHERE ID=?;";
+    private static final String DESATIVAR = "UPDATE sistema.usuario SET ativo=false WHERE ID=?;";
+    private static final String ATIVAR = "UPDATE sistema.usuario SET ativo=true WHERE ID=?;";
 
     private Connection conexao;
 
@@ -107,6 +106,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 usuarioAutenticado.setSenha(rsUsuario.getString("senha"));
                 usuarioAutenticado.setCelular(rsUsuario.getLong("celular"));
                 usuarioAutenticado.setPerfil(PerfilDeAcesso.valueOf(rsUsuario.getString("perfil")));
+                usuarioAutenticado.setAtivo(rsUsuario.getBoolean("ativo"));
             }
         } catch (SQLException sqlErro) {
             throw new RuntimeException(sqlErro);
@@ -142,6 +142,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 novoUsuario.setEmail(rs.getString("email"));
                 novoUsuario.setCelular(Long.parseLong(rs.getString("celular")));
                 novoUsuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                novoUsuario.setAtivo(rs.getBoolean("ativo"));
 
                 //add na lista
                 listaUsuario.add(novoUsuario);
@@ -184,6 +185,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 novoUsuario.setEmail(rs.getString("email"));
                 novoUsuario.setCelular(Long.parseLong(rs.getString("celular")));
                 novoUsuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                novoUsuario.setAtivo(rs.getBoolean("ativo"));
 
                 //add na lista
                 listaUsuario.add(novoUsuario);
@@ -206,7 +208,7 @@ public class UsuarioDAO implements IUsuarioDAO {
     }
 
     @Override
-    public void buscar(Usuario usuario) {
+    public void buscarEmail(Usuario usuario) {
 
         try {
 
@@ -228,6 +230,48 @@ public class UsuarioDAO implements IUsuarioDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                usuario.setAtivo(rs.getBoolean("ativo"));
+            }
+
+        } catch (Exception ex) {
+
+        } finally {
+
+            try {
+                conexao.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    @Override
+    public void buscarEmailCelular(Usuario usuario) {
+
+        try {
+
+            //Conexao
+            conexao = ConectaBanco.getConexao();
+
+            //cria comando SQL
+            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_EMAIL_CELULAR);
+
+            pstmt.setString(1, usuario.getEmail());
+            pstmt.setLong(2, usuario.getCelular());
+
+            usuario.setEmail("Não encontrado");
+            usuario.setCelular(Long.MIN_VALUE);
+
+            //executa
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setCelular(Long.parseLong(rs.getString("celular")));
+                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                usuario.setAtivo(rs.getBoolean("ativo"));
             }
 
         } catch (Exception ex) {
@@ -265,60 +309,13 @@ public class UsuarioDAO implements IUsuarioDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                usuario.setAtivo(rs.getBoolean("ativo"));
             }
 
         } catch (Exception ex) {
 
         } finally {
 
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UsuarioDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-    }
-
-    public void buscarFotoPerfil(Usuario usuario) {
-        String filename = "perfil_" + usuario.getIdUsuario().toString() + "_" + Math.random();
-
-        String filepath = "D:/ProjetoAgendamentoDigital/GIT/PFC/agendamentodigital/AgendamentoDigital/build/web/upload/profile/photos/" + filename + ".jpg";
-
-        try {
-
-            //Conexao
-            conexao = ConectaBanco.getConexao();
-
-            //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(BUSCAR_FOTO_PERFIL);
-
-            pstmt.setInt(1, usuario.getIdUsuario());
-
-            //executa
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                usuario.setIdUsuario(Integer.parseInt(rs.getString("id")));
-                usuario.setEmail(rs.getString("email"));
-                usuario.setCelular(Long.parseLong(rs.getString("celular")));
-                usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
-                Blob blob = rs.getBlob("fotoPerfil");
-                OutputStream outputStream;
-                try (InputStream inputStream1 = blob.getBinaryStream()) {
-                    outputStream = new FileOutputStream(filepath);
-                    int bytesRead = -1;
-                    byte[] buffer = new byte[BUFFER_SIZE];
-                    while ((bytesRead = inputStream1.read(buffer)) != -1) {
-                        outputStream.write(buffer, 0, bytesRead);
-                    }
-                }
-                outputStream.close();
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        } finally {
             try {
                 conexao.close();
             } catch (SQLException ex) {
@@ -357,6 +354,7 @@ public class UsuarioDAO implements IUsuarioDAO {
                 usuario.setEmail(rs.getString("email"));
                 usuario.setCelular(Long.parseLong(rs.getString("celular")));
                 usuario.setPerfil(PerfilDeAcesso.valueOf(rs.getString("perfil")));
+                usuario.setAtivo(rs.getBoolean("ativo"));
             }
 
             return usuario;
@@ -513,6 +511,7 @@ public class UsuarioDAO implements IUsuarioDAO {
         }
     }
 
+    @Override
     public String desativar(Usuario usuario) {
         String sqlReturnCode = "0";
 
@@ -520,6 +519,35 @@ public class UsuarioDAO implements IUsuarioDAO {
         try {
             conexao = ConectaBanco.getConexao();
             pstmt = conexao.prepareStatement(DESATIVAR);
+            pstmt.setInt(1, usuario.getIdUsuario());
+
+            pstmt.executeUpdate();
+
+            return sqlReturnCode;
+
+        } catch (SQLException sqlErro) {
+            sqlReturnCode = sqlErro.getSQLState();
+            return sqlReturnCode;
+
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+    }
+
+    @Override
+    public String ativar(Usuario usuario) {
+        String sqlReturnCode = "0";
+
+        PreparedStatement pstmt;
+        try {
+            conexao = ConectaBanco.getConexao();
+            pstmt = conexao.prepareStatement(ATIVAR);
             pstmt.setInt(1, usuario.getIdUsuario());
 
             pstmt.executeUpdate();

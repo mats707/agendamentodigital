@@ -23,6 +23,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import modelos.Cliente;
+import modelos.Usuario;
+import util.Util;
+
 /**
  * REST Web Service
  *
@@ -51,12 +54,12 @@ public class restCliente {
     public String getCliente() throws SQLException, ClassNotFoundException {
 
         ArrayList<Cliente> arr = new ArrayList<Cliente>();
-        
+
         ClienteDAO clienteDAO = new ClienteDAO();
         PessoaDAO pessoaDAO = new PessoaDAO();
         UsuarioDAO usuarioDAO = new UsuarioDAO();
         arr = clienteDAO.listar();
-        
+
         for (Cliente cliente : arr) {
             pessoaDAO.buscar(cliente);
             usuarioDAO.buscarId(cliente.getUsuario());
@@ -66,6 +69,7 @@ public class restCliente {
 
         return objgson.toJson(arr);
     }
+
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Path("/ListarCompleto")
@@ -74,13 +78,13 @@ public class restCliente {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
         ClienteDAO objDao = new ClienteDAO();
-        
+
         ArrayList<Cliente> arr;
         arr = objDao.listarCompleto();
 
         return objgson.toJson(arr);
     }
-    
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/BuscarNome/{nome}")
@@ -89,11 +93,37 @@ public class restCliente {
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
         ClienteDAO objDao = new ClienteDAO();
-        
+
         Cliente cliente = new Cliente();
         cliente.setNome(nome);
-        
+
         objDao.buscar(cliente);
+
+        return objgson.toJson(cliente);
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/Buscar/{email}/{celular}")
+    public String buscarEmailCelular(@PathParam("email") String email, @PathParam("celular") String celular) throws SQLException, ClassNotFoundException {
+
+        Gson objgson = new GsonBuilder().setPrettyPrinting().create();
+
+        ClienteDAO clienteDao = new ClienteDAO();
+        UsuarioDAO usuarioDao = new UsuarioDAO();
+
+        Usuario usuario = new Usuario();
+        Cliente cliente = new Cliente();
+
+        if (Util.isInteger(celular) && Util.isValidEmailAddress(email)) {
+            usuario.setEmail(email);
+            usuario.setCelular(Long.parseLong(celular.replace("(", "").replace(")", "").replace("-", "").replace("_", "").replace(" ", "")));
+            usuarioDao.buscarEmailCelular(usuario);
+            cliente.setUsuario(usuario);
+            clienteDao.buscarUsuario(cliente);
+        } else{
+            cliente = new Cliente();
+        }
 
         return objgson.toJson(cliente);
     }

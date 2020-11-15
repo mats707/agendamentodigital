@@ -23,7 +23,10 @@ import javax.servlet.annotation.MultipartConfig;
  */
 @WebServlet(name = "controleCliente", urlPatterns = {
     "/CadastrarCliente",
+    "/Funcionario/Cliente/Alterar",
     "/Funcionario/Cliente/Cadastrar",
+    "/Funcionario/Cliente/Desativar",
+    "/Funcionario/Cliente/Ativar",
     "/Funcionario/Cliente/Listar",
     "/ListarClientes",
     "/BuscarCliente",
@@ -66,7 +69,8 @@ public class ControleCliente extends HttpServlet {
             } else if (uri.equals(request.getContextPath() + "/Funcionario/Cliente/Cadastrar")
                     || uri.equals(request.getContextPath() + "/CadastrarCliente")) {
                 acao = "Cadastrar";
-            } else if (uri.equals(request.getContextPath() + "/AlterarCliente")) {
+            } else if (uri.equals(request.getContextPath() + "/Funcionario/Cliente/Alterar")
+                    || uri.equals(request.getContextPath() + "/AlterarCliente")) {
                 acao = "Alterar";
             } else if (uri.equals(request.getContextPath() + "/BuscarCliente")) {
                 acao = "Buscar";
@@ -75,8 +79,12 @@ public class ControleCliente extends HttpServlet {
             } else if (uri.equals(request.getContextPath() + "/MinhaConta")) {
                 acao = "MinhaConta";
                 acao = validarAcaoSecundaria(acao, acao_secundaria);
-            } else if (uri.equals(request.getContextPath() + "/DesativarCliente")) {
+            } else if (uri.equals(request.getContextPath() + "/Funcionario/Cliente/Desativar")
+                    || uri.equals(request.getContextPath() + "/DesativarCliente")) {
                 acao = "Desativar";
+            } else if (uri.equals(request.getContextPath() + "/Funcionario/Cliente/Ativar")
+                    || uri.equals(request.getContextPath() + "/AtivarCliente")) {
+                acao = "Ativar";
             } else {
                 response.sendRedirect("404.jsp");
             }

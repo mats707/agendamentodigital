@@ -19,7 +19,7 @@ function sweet(title, type, timer) {
 
 
 function lerJson(result) {
-    $("#target").html('<table id="tabMaisAgendado" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">ServiÃ§o</th><th style="width: auto">Vezes realizadas</th></tr></thead>' + $.map(result, function (d) {
+    $("#target").html('<table id="tabAgendamentos" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">Serviço</th><th style="width: auto">Vezes realizadas</th></tr></thead>' + $.map(result, function (d) {
         return '<tr><td>' + $.map(d, function (e) {
             return e;
         }).join('</td><td>') + '</tr>'
