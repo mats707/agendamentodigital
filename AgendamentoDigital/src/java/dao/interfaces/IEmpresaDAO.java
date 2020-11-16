@@ -18,6 +18,6 @@ public interface IEmpresaDAO {
 
     public void buscar(Empresa objEmpresa);
     
-    public String alterar(Empresa objEmpresa);
+    public String atualizar(Empresa objEmpresa);
 
 }

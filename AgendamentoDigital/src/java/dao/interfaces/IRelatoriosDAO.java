@@ -26,6 +26,7 @@ public interface IRelatoriosDAO {
 
     public ArrayList<RelatorioServico> listarFuncionarios();
 
+<<<<<<< HEAD
     public ArrayList<RelatorioServico> listarFuncionariosPeriodo(int mes, int ano);
 
     public ArrayList<RelatorioServico> listarFuncionariosPeriodoStatus(int mes, int ano, StatusAgendamento status);
@@ -39,5 +40,14 @@ public interface IRelatoriosDAO {
     public ArrayList<RelatorioServico> listarClientesPeriodoStatus(int mes, int ano, StatusAgendamento status);
 
     public ArrayList<RelatorioServico> listarClientesStatus(StatusAgendamento status);
+=======
+<<<<<<< HEAD
+    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodo(int mes,int ano);
+    
+    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodoStatus (int mes, int ano, StatusAgendamento status);
+=======
+    public ArrayList<RelatorioServico> listarFuncionariosPeriodo(int mes,int ano);
+>>>>>>> feature-funcionario
+>>>>>>> feature-documento
 
 }

@@ -124,8 +124,13 @@ public class AgendamentosPeriodoAction implements ICommand {
             }
         } else if (status_String != null) {
             ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
+<<<<<<< HEAD:AgendamentoDigital/src/java/command/relatorios/MaisAgendadoPeriodoAction.java
+            
+            arr = objRelatorioDAO.listarMaisAgendadoStatus(status);
+=======
 
             arr = objRelatorioDAO.listarAgendamentosStatus(status);
+>>>>>>> feature-funcionario:AgendamentoDigital/src/java/command/relatorios/AgendamentosPeriodoAction.java
             request.setAttribute("pgRelatorio", "Serviços " + status);
 
             if (arr.size() != 0) {

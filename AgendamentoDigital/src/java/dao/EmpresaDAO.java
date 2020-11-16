@@ -43,7 +43,7 @@ public class EmpresaDAO implements IEmpresaDAO {
             + "	email\n"
             + "from sistema.empresa;";
 
-    private static final String ALTERAR = "UPDATE sistema.empresa\n"
+    private static final String ATUALIZAR = "UPDATE sistema.empresa\n"
             + "SET nome=?,\n"
             + "horainicialtrabalho=?::TIME,\n"
             + "horafinaltrabalho=?::TIME,\n"
@@ -131,7 +131,7 @@ public class EmpresaDAO implements IEmpresaDAO {
     }
 
     @Override
-    public String alterar(Empresa objEmpresa) {
+    public String atualizar(Empresa objEmpresa) {
 
         //Conexao
         conexao = ConectaBanco.getConexao();
@@ -151,7 +151,7 @@ public class EmpresaDAO implements IEmpresaDAO {
             for (Long telefone : objEmpresa.getTelefone()) {
                 arrtelefones.add(String.valueOf(telefone));
             }
-            pstmt = conexao.prepareStatement(ALTERAR);
+            pstmt = conexao.prepareStatement(ATUALIZAR);
             pstmt.setString(1, objEmpresa.getNome());
             pstmt.setTime(2, objEmpresa.getHoraInicialTrabalho());
             pstmt.setTime(3, objEmpresa.getHoraFinalTrabalho());
