@@ -31,16 +31,6 @@ public class AlterarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        //Verifica Usuario logado
-        //cria uma sessao para resgatar o usuario
-        HttpSession sessaoUsuario = request.getSession();
-        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
-        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
-            request.setAttribute("pagina", "/Funcionario/Cliente/Listar");
-        } else {
-            request.setAttribute("pagina", "MinhaConta");
-        }
-
         String nome = request.getParameter("inputName");
         String dataNascimento = request.getParameter("inputDataNasc");
         String celular = request.getParameter("inputCelular");
@@ -48,6 +38,21 @@ public class AlterarAction implements ICommand {
         String alterarSenha = request.getParameter("chkAlterarSenha");
         String senha = request.getParameter("inputSenha");
         String chkSenha = request.getParameter("inputChkSenha");
+
+        //Verifica Usuario logado
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+            request.setAttribute("pagina", "/Funcionario/Cliente/Listar");
+            email = request.getParameter("inputEmail");
+            alterarSenha = request.getParameter("chkAlterarSenha");
+            senha = request.getParameter("inputSenha");
+            chkSenha = request.getParameter("inputChkSenha");
+        } else {
+            request.setAttribute("pagina", "/Cliente/MinhaConta");
+            email = usuarioAutenticado.getEmail();
+        }
 
         //Instanciando Cliente
         Cliente objCliente = new Cliente();

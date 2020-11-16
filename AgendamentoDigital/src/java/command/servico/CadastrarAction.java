@@ -41,7 +41,7 @@ public class CadastrarAction implements ICommand {
         restEmpresa apiEmpresa = new restEmpresa();
         Empresa objEmpresa = apiEmpresa.buscar();
 
-        request.setAttribute("pagina", "pages/admin/servicos/cadastrar.jsp");
+        request.setAttribute("pagina", "/pages/admin/servicos/cadastrar.jsp");
 
         String nome = Util.stringToUTF8(request.getParameter("nome"));
         String descricao = Util.stringToUTF8(request.getParameter("descricao"));

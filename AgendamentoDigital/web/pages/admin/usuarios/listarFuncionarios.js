@@ -8,7 +8,7 @@ $(document).ready(function () {
     {
         tabUser.rows[i].onclick = function ()
         {
-            var email = this.cells[1].innerHTML;
+            var email = this.cells[0].innerHTML;
             carregarUsuario(email);
         };
     }
@@ -79,10 +79,45 @@ function sweet(title, type, timer) {
     });
 }
 
-function lerJson(result) {
-    $("#target").html('<table id="tabUser" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">Email</th><th style="width: auto">Celular</th><th style="width: auto">Perfil</th><th style="width: auto">Edit</th><th style="width: auto">Delete</th></tr></thead>' + $.map(result, function (d) {
-        return '<tr><td>' + $.map(d, function (e) {
-            return e;
-        }).join('</td><td>') + '</td><td><a href="" id="edituser" class="nav-link" data-toggle="modal" data-target="#editModal" ><i class="nav-icon fas fa-edit"></i></a></td><td><a href="#" id="deleteuser" class="nav-link" data-toggle="modal" data-target="#deleteModal" ><i class="nav-icon fas fa-trash-alt"></i></a></td></tr>'
-    }).join('\n') + '</table>');
+function lerTabela(result) {
+    Obj = result;
+    console.log(Obj);
+    var page = window.location.pathname.split(/\/(.+)/)[1].split(/\/(.+)/)[1];
+    var nameproject = "/" + window.location.pathname.split('/')[1] + "/";
+    document.getElementById("target").innerHTML = '<table id="tabUser" name="tabUser" class="table table-hover"><thead class="thead-dark">\n\
+        <tr><th style="width: 100%">E-Mail</th>\n\
+            <th style="width: auto">Celular</th>\n\
+            <th style="width: auto">Perfil</th>\n\
+            <th style="width: auto">Situação</th>\n\
+            <th style="width: auto">Alterar</th>\n\
+            <th style="width: auto">Desativar</th>\n\
+        </tr></thead></table>';
+    var table = document.getElementById("tabUser");
+    if (Obj != null) {
+        if (Obj.length > 0) {
+            for (var i = 0; i < Obj.length; i++) {
+
+                var row = table.insertRow(-1); //Insere no ultimo registro
+                var cell0 = row.insertCell(0); //Email
+                var cell1 = row.insertCell(1); //Celular
+                var cell2 = row.insertCell(2); //Perfil
+                var cell3 = row.insertCell(3); //Situação
+                var cell4 = row.insertCell(4); //Alterar
+                var cell5 = row.insertCell(5); //Desativar
+                cell0.innerHTML = Obj[i].email;
+                cell1.innerHTML = Obj[i].celular;
+                cell2.innerHTML = Obj[i].perfil;
+                cell3.innerHTML = (Obj[i].ativo) ? "Ativado" : "Desativado";
+                cell4.innerHTML = "<a id='alterarUsuario'  href='#' class='nav-link' data-toggle='modal' data-target='#editModal' ><i class='nav-icon fas fa-edit'></i></a>";
+                cell5.innerHTML = "<a href='#' id='deleteuser' class='nav-link' data-toggle='modal' data-target='#deleteModal' ><i class='nav-icon fas fa-trash-alt'></i></a>";
+            }
+            if (page == "Usuario/Funcionario/Listar") {
+                sweet("  Funcionários carregados", "success", 2000);
+            }
+        } else {
+            if (page == "Usuario/Funcionario/Listar")
+                sweet(" Não há funcionários cadastrados", "info", 3000);
+        }
+    }
+
 }

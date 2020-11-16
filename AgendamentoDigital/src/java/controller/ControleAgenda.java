@@ -21,10 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControleAgenda", urlPatterns = {
     "/AgendarServico",
-    "/VisualizarAgenda",
-    "/Home",
-    "/CancelarAgendamento",
-    "/Funcionario/AgendarServico",
+    "/Cliente/Agendamento/Cancelar",
     "/Funcionario/CancelarAgendamento",
     "/Funcionario/ConcluirAgendamento"})
 public class ControleAgenda extends HttpServlet {
@@ -47,11 +44,7 @@ public class ControleAgenda extends HttpServlet {
 
             if (uri.equals(request.getContextPath() + "/AgendarServico")) {
                 acao = "Agendar";
-            } else if (uri.equals(request.getContextPath() + "/VisualizarAgenda")) {
-                acao = "Visualizar";
-            } else if (uri.equals(request.getContextPath() + "/Home")) {
-                acao = "Visualizar";
-            } else if (uri.equals(request.getContextPath() + "/CancelarAgendamento")) {
+            } else if (uri.equals(request.getContextPath() + "/Cliente/Agendamento/Cancelar")) {
                 acao = "Cancelar";
             } else if (uri.equals(request.getContextPath() + "/Funcionario/CancelarAgendamento")) {
                 acao = "FuncionarioCancelar";

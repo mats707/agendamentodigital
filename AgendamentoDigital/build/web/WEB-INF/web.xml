@@ -8,15 +8,12 @@
         <filter-name>AcessoFuncionarioAdministrador</filter-name>
         <url-pattern>/pages/admin/</url-pattern>
         <url-pattern>/pages/funcionario/</url-pattern>
+        <url-pattern>/Administrador/</url-pattern>
+        <url-pattern>/Administrador/*</url-pattern>
         <url-pattern>/Relatorios</url-pattern>
         <url-pattern>/CadastrarUsuario</url-pattern>
         <url-pattern>/Usuario</url-pattern>
         <url-pattern>/Usuario/*</url-pattern>
-        <url-pattern>/CadastrarServico</url-pattern>
-        <url-pattern>/ListarServico</url-pattern>
-        <url-pattern>/BuscarServico</url-pattern>
-        <url-pattern>/ExcluirServico</url-pattern>
-        <url-pattern>/AlterarServico</url-pattern>
         <url-pattern>/CadastrarCategoriaServico</url-pattern>
     </filter-mapping>
     
@@ -28,6 +25,7 @@
         <filter-name>AcessoFuncionarioComum</filter-name>
         <url-pattern>/pages/funcionario/</url-pattern>
         <url-pattern>/Funcionario</url-pattern>
+        <url-pattern>/Funcionario/*</url-pattern>
         <url-pattern>/Relatorios</url-pattern>
     </filter-mapping>
     
@@ -39,9 +37,8 @@
         <filter-name>AcessoClienteComum</filter-name>
         <url-pattern>/pages/client/*</url-pattern>
         <url-pattern>/AgendarServico</url-pattern>
-        <url-pattern>/VisualizarAgenda</url-pattern>
-        <url-pattern>/MinhaConta</url-pattern>
-        <url-pattern>/Home</url-pattern>
+        <url-pattern>/Cliente/</url-pattern>
+        <url-pattern>/Cliente/*</url-pattern>
     </filter-mapping>
     
     <filter>

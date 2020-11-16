@@ -38,19 +38,22 @@ public class DesativarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        JsonElement jsonCliente = null;
+
         //Verifica Usuario logado
         //cria uma sessao para resgatar o usuario
         HttpSession sessaoUsuario = request.getSession();
         Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
         if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
             request.setAttribute("pagina", "/Funcionario/Cliente/Listar");
+            String cliente = request.getParameter("cliente");
+            if (cliente != null) {
+                JsonParser parser = new JsonParser();
+                jsonCliente = parser.parse(cliente);
+            }
         } else {
-            request.setAttribute("pagina", "HomeAction");
+            request.setAttribute("pagina", "/ControleAcesso?acao=Sair");
         }
-
-        String cliente = request.getParameter("cliente");
-        JsonParser parser = new JsonParser();
-        JsonElement jsonCliente = parser.parse(cliente);
 
         String sqlState = "0";
         String funcaoMsg = "";
@@ -95,7 +98,7 @@ public class DesativarAction implements ICommand {
     public class JsonDateDeserializer implements JsonDeserializer<Date> {
 
         public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            
+
             String s = json.getAsJsonPrimitive().getAsString();
             Date dataAgendamento = new Date();
             try {

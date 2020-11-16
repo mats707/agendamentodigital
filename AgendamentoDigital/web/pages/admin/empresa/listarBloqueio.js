@@ -64,7 +64,7 @@ function lerTabela(result) {
                 cellHora.innerHTML = ObjBloqueio[i].horaInicial;
                 cellDuracao.innerHTML = ObjBloqueio[i].duracaoBloqueio + " minutos"; //Sem Bloqueio adapter .seconds / 60 
                 cellData.innerHTML = ObjBloqueio[i].dataBloqueio;
-                cancelar.innerHTML = "<form id='formCancelar-" + i + "' action='" + nameproject + "/CancelarBloqueio' method='POST'>"
+                cancelar.innerHTML = "<form id='formCancelar-" + i + "' action='" + nameproject + "/Administrador/BloqueioAgenda/Cancelar' method='POST'>"
                         + "\n\<input type='hidden' name='dataBloqueio' value=" + ObjBloqueio[i].dataBloqueio + ">"
                         + "\n\<input type='hidden' name='horaInicialBloqueio' value=" + ObjBloqueio[i].horaInicial + ">"
                         + "\n\<input type='hidden' name='funcionarioBloqueio' value=" + ObjBloqueio[i].funcionario.idFuncionario + ">"

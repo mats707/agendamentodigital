@@ -77,7 +77,7 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <form id="formCategoria" action="${site}/CadastrarCategoriaServico">
+                                        <form id="formCategoria" action="${site}/CadastrarCategoriaServico" method="POST">
                                         </form>
                                         <div class="row align-items-top justify-content-center">
                                             <div id="divNovaCategoria" class="col-lg form-group">

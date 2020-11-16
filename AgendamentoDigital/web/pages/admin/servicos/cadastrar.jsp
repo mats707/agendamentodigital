@@ -75,7 +75,7 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form id="frmCadastrarServico" action="${site}/CadastrarServico" method="post">
+                        <form id="frmCadastrarServico" action="${site}/Administrador/Servico/Cadastrar" method="post">
                             <div class="row">
                                 <div class="col-md-6">
 

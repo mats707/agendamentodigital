@@ -22,8 +22,7 @@ import javax.servlet.annotation.MultipartConfig;
  * @author alunocmc
  */
 @WebServlet(name = "controleFuncionario", urlPatterns = {
-    "/ListarFuncionarios",
-    "/Funcionario/Alterar",
+    "/Administrador/Home",
     "/Funcionario/Home",
     "/Funcionario/MinhaConta"})
 public class ControleFuncionario extends HttpServlet {
@@ -52,15 +51,11 @@ public class ControleFuncionario extends HttpServlet {
                 acao_secundaria = null;
             }
 
-            if (uri.equals(request.getContextPath() + "/Funcionario/Alterar")) {
-                acao = "AlterarFuncionario";
-            } else if (uri.equals(request.getContextPath() + "/Funcionario/Home")) {
+            if (uri.equals(request.getContextPath() + "/Funcionario/Home") || uri.equals(request.getContextPath() + "/Administrador/Home")) {
                 acao = "Home";
             } else if (uri.equals(request.getContextPath() + "/Funcionario/MinhaConta")) {
                 acao = "MinhaConta";
                 acao = validarAcaoSecundaria(acao, acao_secundaria);
-            } else if (uri.equals(request.getContextPath() + "/ListarFuncionarios")) {
-                acao = "Listar";
             } else {
                 response.sendRedirect("acessoNegado.jsp");
             }

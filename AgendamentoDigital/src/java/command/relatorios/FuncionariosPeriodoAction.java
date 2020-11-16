@@ -137,6 +137,7 @@ public class FuncionariosPeriodoAction implements ICommand {
                 json.remove("idAgendamento");
                 json.remove("idCliente");
                 json.remove("idFuncionario");
+                json.remove("idServico");
                 arrJson.add(json);
             }
 

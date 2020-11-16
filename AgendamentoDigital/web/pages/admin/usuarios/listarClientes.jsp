@@ -264,11 +264,11 @@
 
             })
         </script>
-        <script src="${site}/pages/admin/usuarios/listarClientes.js" type="text/javascript"></script>
+        <script charset="ISO-8529" src="${site}/pages/admin/usuarios/listarClientes.js" type="text/javascript"></script>
         <script>
             var result = ${msg};
             includeHTMLNav("usuarios", "listarClientes");
-            lerJson(result);
+            lerTabela(result);
             sweet("${funcaoMsg}", "${funcaoStatus}", 4000);
         </script>
 

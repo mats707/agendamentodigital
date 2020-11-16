@@ -20,13 +20,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author Rafael Pereira
  */
 @WebServlet(name = "ControleEmpresa", urlPatterns = {"/ControleEmpresa",
-    "/BuscarEmpresa",
-    "/AtualizarEmpresa",
-    "/MenuBloqueio",
-    "/CadastrarBloqueio",
-    "/ListarBloqueio",
-    "/ListarBloqueio/Funcionario",
-    "/CancelarBloqueio"})
+    "/Administrador/Empresa",
+    "/Administrador/Empresa/Atualizar",
+    "/Administrador/BloqueioAgenda/Menu",
+    "/Administrador/BloqueioAgenda/Cadastrar",
+    "/Administrador/BloqueioAgenda/Listar",
+    "/Administrador/BloqueioAgenda/Listar/Funcionario",
+    "/Administrador/BloqueioAgenda/Cancelar"})
 public class ControleEmpresa extends HttpServlet {
 
     /**
@@ -45,19 +45,19 @@ public class ControleEmpresa extends HttpServlet {
             String uri = request.getRequestURI();
             String acao = "";
 
-            if (uri.equals(request.getContextPath() + "/BuscarEmpresa")) {
+            if (uri.equals(request.getContextPath() + "/Administrador/Empresa")) {
                 acao = "BuscarEmpresa";
-            } else if (uri.equals(request.getContextPath() + "/AtualizarEmpresa")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/Empresa/Atualizar")) {
                 acao = "AtualizarEmpresa";
-            } else if (uri.equals(request.getContextPath() + "/MenuBloqueio")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/BloqueioAgenda/Menu")) {
                 acao = "MenuBloqueio";
-            } else if (uri.equals(request.getContextPath() + "/CadastrarBloqueio")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/BloqueioAgenda/Cadastrar")) {
                 acao = "CadastrarBloqueio";
-            } else if (uri.equals(request.getContextPath() + "/ListarBloqueio")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/BloqueioAgenda/Listar")) {
                 acao = "ListarBloqueio";
-            } else if (uri.equals(request.getContextPath() + "/ListarBloqueio/Funcionario")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/BloqueioAgenda/Listar/Funcionario")) {
                 acao = "ListarBloqueioFuncionario";
-            } else if (uri.equals(request.getContextPath() + "/CancelarBloqueio")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/BloqueioAgenda/Cancelar")) {
                 acao = "CancelarBloqueio";
             } else {
                 response.sendRedirect("404.jsp");

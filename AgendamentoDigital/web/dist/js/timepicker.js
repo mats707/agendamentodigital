@@ -118,7 +118,6 @@ function buscarEmpresa() {
                 }
                 if (Obj != null) {
                     ObjEmpresa = Obj;
-                    sweet(" Empresa encontrada!", "success", 4000);
                 }
             }
         }

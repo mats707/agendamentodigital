@@ -7,7 +7,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Agendamento Digital | Principal</title>
+        <title>Agendamento Digital | Bloqueio de Agenda</title>
 
         <c:set var="site" value="${'/AgendamentoDigital'}" scope="application"  />
         <!-- Font Awesome Icons -->
@@ -64,7 +64,7 @@
                 <!-- /.content-header -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form id="filtrarPeriodo" action="${site}/ListarBloqueio/Funcionario" method="post">
+                        <form id="filtrarPeriodo" action="${site}/Administrador/BloqueioAgenda/Listar/Funcionario" method="post">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div id="groupFiltro" name="groupFiltro" class="form-group">

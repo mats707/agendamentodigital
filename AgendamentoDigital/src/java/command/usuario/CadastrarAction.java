@@ -108,7 +108,7 @@ public class CadastrarAction implements ICommand {
                     funcaoStatus = "error";
                 }
             } else if ("23505".equals(sqlStateUsuario)) {
-                funcaoMsg = "Funcionário inválido! Entre em contato com o suporte.";
+                funcaoMsg = "Tente outro email ou celular!";
                 funcaoStatus = "error";
             } else {
                 funcaoMsg = "Não foi possível cadastrar, tente novamente ou entre em contato com o suporte!";

@@ -73,9 +73,9 @@ public class ClientesPeriodoAction implements ICommand {
 
                 ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
                 if (status_String != null) {
-                    arr = objRelatorioDAO.listarClientePeriodoStatus(mes, ano, status);
+                    arr = objRelatorioDAO.listarClientesPeriodoStatus(mes, ano, status);
                 } else {
-                    arr = objRelatorioDAO.listarClientePeriodo(mes, ano);
+                    arr = objRelatorioDAO.listarClientesPeriodo(mes, ano);
                 }
 
                 if (arr.size() != 0) {
@@ -98,8 +98,8 @@ public class ClientesPeriodoAction implements ICommand {
 
                 String json = arrJson.toString();
                 request.setAttribute("pgperfil", perfil);
-                request.setAttribute("pgjs", "cliente");
-                request.setAttribute("command", "Cliente");
+                request.setAttribute("pgjs", "clientes");
+                request.setAttribute("command", "Clientes");
                 request.setAttribute("pgAba", "Relatório de Clientes");
                 request.setAttribute("pgTitulo", "Relatório de Clientes");
                 request.setAttribute("pgRelatorio", "Quantidade de serviços realizados por clientes no período de " + mes + "/" + ano);
@@ -110,7 +110,7 @@ public class ClientesPeriodoAction implements ICommand {
             } else {
                 funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
                 funcaoStatus = "error";
-                request.setAttribute("pagina", "/Relatorios/Servicos/Cliente");
+                request.setAttribute("pagina", "/Relatorios/Servicos/Clientes");
                 request.setAttribute("funcaoMsg", funcaoMsg);
                 request.setAttribute("funcaoStatus", funcaoStatus);
                 return null;
@@ -118,7 +118,7 @@ public class ClientesPeriodoAction implements ICommand {
         } else if (status_String != null) {
             ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
 
-            arr = objRelatorioDAO.listarClienteStatus(status);
+            arr = objRelatorioDAO.listarClientesStatus(status);
             request.setAttribute("pgRelatorio", "Serviços " + status);
 
             if (arr.size() != 0) {
@@ -144,7 +144,7 @@ public class ClientesPeriodoAction implements ICommand {
 
             request.setAttribute("pgperfil", perfil);
             request.setAttribute("pgjs", "clientes");
-            request.setAttribute("command", "Cliente");
+            request.setAttribute("command", "Clientes");
             request.setAttribute("pgAba", "Relatório de Clientes");
             request.setAttribute("pgTitulo", "Relatório de Clientes");
 
@@ -154,7 +154,7 @@ public class ClientesPeriodoAction implements ICommand {
         } else {
             funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
             funcaoStatus = "error";
-            request.setAttribute("pagina", "/Relatorios/Servicos/Cliente");
+            request.setAttribute("pagina", "/Relatorios/Servicos/Clientes");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return null;

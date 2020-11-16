@@ -46,7 +46,7 @@
     <body class="hold-transition sidebar-mini layout-boxed sidebar-collapse">
         <div class="wrapper">
             <!-- Navbar & Menu-->
-            <jsp:include page="sidebar-menu.jsp"/>
+            <jsp:include page="/pages/client/sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
@@ -79,26 +79,6 @@
                                         <div id="colImg" class="col-md-2 col-sm-2 col-xs-12 col-img">
                                             <!-- Background image -->
                                         </div>
-                                        <div class="col-md-5 col-sm-5 col-xs-12  padding border-right">
-                                            <p class="lead">Foto de Perfil</p>
-
-                                            <div class="col-sm-4 text-center">
-                                                <form action="${site}/ControleClienteMinhaConta" method="post" enctype="multipart/form-data">
-                                                    <div class="kv-avatar">
-                                                        <div class="file-loading">
-                                                            <input id="fotoPerfil" name="fotoPerfil" type="file" required>
-                                                            <input name="acao" type="text" value="AlterarFotoPerfil" hidden>
-                                                        </div>
-                                                    </div>
-                                                    <div class="kv-avatar-hint">
-                                                        <small>Select file < 1500 KB</small>
-                                                    </div>
-                                                    <div class="text-right">
-                                                        <button id="btnAlterarFotoPerfil" type="submit" class="btn btn-primary btn-block">Alterar Foto</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
 
                                         <div class="col-md-5 col-sm-5 col-xs-12  padding">
                                             <p class="lead">Alterar Meus Dados</p>
@@ -108,7 +88,7 @@
                                                     Data de Nascimento: <fmt:formatDate pattern = "dd/MM/yyyy" value="${objCliente.dataNascimento}"/></a>
                                                 <a id="itemCelular" href="#" class="list-group-item list-group-item-action" onclick="editarDados(this);">Celular: ${objCliente.usuario.celular}</a>
                                             </div>
-                                            <form class="mt-2" action="${site}/MinhaConta" method="post">
+                                            <form class="mt-2" action="${site}/Cliente/MinhaConta" method="post">
                                                 <div id="groupNome" class="input-group mb-3" style="display: none">
                                                     <input id="inputName" name="inputName" type="text" class="form-control" placeholder="Nome completo" readonly value="${objCliente.nome}">
                                                     <div class="input-group-append">
@@ -140,16 +120,17 @@
                         </div>
                     </div><!-- End of .container -->
                 </div>
-                <form id="formDesativar" name="formDesativar" action="${site}/DesativarCliente" method="post">
+                <form id="formDesativar" name="formDesativar" action="${site}/Cliente/MinhaConta" method="post">
+                    <input hidden name="acao" value="DesativarCliente">
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-block btn-danger" onclick="sweetDesativar()">Desativar conta</button> 
+                        <button type="button" class="btn btn-block btn-danger" onclick="sweetDesativar();">Desativar conta</button> 
                     </div>
                 </form>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
             <!-- Footer -->
-            <jsp:include page="footer.jsp"/>
+            <jsp:include page="/pages/client/footer.jsp"/>
         </div>
         <!-- ./wrapper -->
 

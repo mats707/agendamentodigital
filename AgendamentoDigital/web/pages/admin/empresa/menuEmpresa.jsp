@@ -70,7 +70,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card card-default">
-                                        <form action="${site}/AtualizarEmpresa" autocomplete="off" method="POST">
+                                        <form action="${site}/Administrador/Empresa/Atualizar" autocomplete="off" method="POST">
                                             <div class="card-header">
                                                 <h3 class="card-title">Meus Dados</h3>                                                                                 
                                             </div>

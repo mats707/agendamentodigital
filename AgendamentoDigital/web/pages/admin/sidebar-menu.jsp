@@ -7,7 +7,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="${site}/pages/admin/home.jsp" class="nav-link">Home</a>
+            <a href="${site}/Administrador/Home" class="nav-link">Home</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
             <a class="nav-link" href="${site}/ControleAcesso?acao=Sair">Sair</a>
@@ -19,7 +19,7 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="${site}/pages/admin/home.jsp" class="brand-link">
+    <a href="${site}/Administrador/Home" class="brand-link">
         <img src="${site}/dist/img/AdminLTELogo.png" alt="Agendamento Digital" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">Agendamento Digital</span>
@@ -33,7 +33,7 @@
                 <img src="https://ui-avatars.com/api/?rounded=true&background=fff&color=0a5&name=${usuarioAutenticado.email}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="${site}/BuscarEmpresa" class="d-block">${usuarioAutenticado.email}</a>
+                <a href="${site}/Administrador/Empresa" class="d-block">${usuarioAutenticado.email}</a>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="${site}/pages/admin/home.jsp" id="home" class="nav-link">
+                    <a href="${site}/Administrador/Home" id="home" class="nav-link">
                         <i class="nav-icon fas fa-home"></i>
                         <p>
                             Home
@@ -52,7 +52,7 @@
                 </li>                
                 
                 <li class="nav-item">
-                    <a href="${site}/BuscarEmpresa" id="buscarEmpresa" class="nav-link">
+                    <a href="${site}/Administrador/Empresa" id="buscarEmpresa" class="nav-link">
                         <i class="nav-icon fas fa-industry"></i>
                         <p>
                             Empresa
@@ -107,13 +107,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="${site}/CadastrarServico" id="cadastrarServico" class="nav-link">
+                            <a href="${site}/Administrador/Servico/Cadastrar" id="cadastrarServico" class="nav-link">
                                 <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Cadastrar</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}/ListarServico" id="listarServico" class="nav-link">
+                            <a href="${site}//Administrador/Servico/Listar" id="listarServico" class="nav-link">
                                 <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Listar</p>
                             </a>
@@ -150,7 +150,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="${site}/MenuBloqueio" id="menuBloqueio" class="nav-link">
+                    <a href="${site}/Administrador/BloqueioAgenda/Menu" id="menuBloqueio" class="nav-link">
                         <i class="nav-icon fas fa-calendar-minus"></i>
                         <p>
                             Bloqueio de agenda
@@ -158,7 +158,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="${site}/ListarBloqueio" id="listarBloqueio" class="nav-link">
+                    <a href="${site}/Administrador/BloqueioAgenda/Listar" id="listarBloqueio" class="nav-link">
                         <i class="nav-icon fas fa-calendar-minus"></i>
                         <p>
                             Listar bloqueio de agenda

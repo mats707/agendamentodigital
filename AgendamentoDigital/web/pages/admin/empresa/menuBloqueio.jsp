@@ -13,7 +13,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Agendamento Digital | Minha Empresa</title>
+        <title>Agendamento Digital | Bloqueio de Agenda</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Font Awesome -->
@@ -104,7 +104,7 @@
                                             </div>                                                                                    
                                         </div>
                                         <!-- informações da minha empresa-->
-                                        <form action="${site}/CadastrarBloqueio" method="POST">
+                                        <form action="${site}/Administrador/BloqueioAgenda/Cadastrar" method="POST">
                                             <div class="bootstrap-datetime">
                                                 <div class="form-group">
                                                     <label for="datepicker">Selecione o dia do agendamento:</label>
@@ -229,7 +229,7 @@
 <script src="${site}/plugins/toastr/toastr.min.js"></script>
 
 <!--MEU JS -->
-<script src="${site}/pages/admin/empresa/menuBloqueio.js" type="text/javascript"></script>
+<script charset="ISO-8529" src="${site}/pages/admin/empresa/menuBloqueio.js" type="text/javascript"></script>
 <script>
     $(function () {
         //Initialize Select2 Elements
@@ -274,7 +274,7 @@
             maxTime: '${maxTime}',
             defaultTime: '00',
             startTime: '00:00',
-            dynamic: true,
+            dynamic: false,
             dropdown: true,
             scrollbar: true
 

@@ -47,7 +47,7 @@ public class ClientesAction implements ICommand{
         RelatoriosDAO objRelatorioDAO = new RelatoriosDAO();
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
-        arr = objRelatorioDAO.listarCliente();
+        arr = objRelatorioDAO.listarClientes();
         if (request.getAttribute("funcaoMsg") != null) {
             funcaoMsg = request.getAttribute("funcaoMsg").toString();
             funcaoStatus = request.getAttribute("funcaoStatus").toString();
@@ -73,7 +73,7 @@ public class ClientesAction implements ICommand{
         String json = arrJson.toString();
         request.setAttribute("pgperfil", perfil);
         request.setAttribute("pgjs", "clientes");
-        request.setAttribute("command", "Cliente");
+        request.setAttribute("command", "Clientes");
         request.setAttribute("pgAba", "Relatório de Clientes");
         request.setAttribute("pgTitulo", "Relatório de Clientes");
         request.setAttribute("pgRelatorio", "Quantidade de serviços realizados por cliente");

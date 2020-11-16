@@ -116,7 +116,7 @@ public class AgendamentosPeriodoAction implements ICommand {
             } else {
                 funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
                 funcaoStatus = "error";
-                request.setAttribute("pagina", "/Relatórios/Servicos/Agendamentos");
+                request.setAttribute("pagina", "/Relatorios/Servicos/Agendamentos");
                 request.setAttribute("funcaoMsg", funcaoMsg);
                 request.setAttribute("funcaoStatus", funcaoStatus);
                 return null;
@@ -152,14 +152,14 @@ public class AgendamentosPeriodoAction implements ICommand {
             request.setAttribute("pgjs", "agendamentos");
             request.setAttribute("command", "Agendamentos");
             request.setAttribute("pgAba", "Relatório de agendamentos");
-            request.setAttribute("pgTitulo", "Relatórios de agendamentos");
+            request.setAttribute("pgTitulo", "Relatório de agendamentos");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return json;
         } else {
-                funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
+            funcaoMsg = "Verifique os campos mês e ano!\\nOs dados estão incompatíveis";
             funcaoStatus = "error";
-            request.setAttribute("pagina", "/Relatórios/Servicos/Agendamentos");
+            request.setAttribute("pagina", "/Relatorios/Servicos/Agendamentos");
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
             return null;

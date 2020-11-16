@@ -26,7 +26,7 @@ public class MinhaContaAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        request.setAttribute("pagina", "pages/client/minhaConta.jsp");
+        request.setAttribute("pagina", "/pages/client/minhaConta.jsp");
 
         Cliente objCliente = new Cliente();
 

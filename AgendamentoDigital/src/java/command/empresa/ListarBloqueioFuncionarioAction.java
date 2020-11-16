@@ -69,7 +69,7 @@ public class ListarBloqueioFuncionarioAction implements ICommand {
             }
             request.setAttribute("funcaoMsg", funcaoMsg);
             request.setAttribute("funcaoStatus", funcaoStatus);
-            request.setAttribute("pagina", "/ListarBloqueio");
+            request.setAttribute("pagina", "/Administrador/BloqueioAgenda/Listar");
             return null;
         }
 

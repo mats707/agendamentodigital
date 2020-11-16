@@ -69,7 +69,7 @@ function lerTabela(result) {
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
                 cellSituacao.innerHTML = ObjAgendamento[i].status;
                 cancelarAgendamento.innerHTML =
-                        "<form id='formCancelar-" + i + "' action='" + nameproject + "CancelarAgendamento' method='POST'>\n\
+                        "<form id='formCancelar-" + i + "' action='" + nameproject + "Cliente/Agendamento/Cancelar' method='POST'>\n\
                             <input type='hidden' name='servico' value=" + ObjAgendamento[i].servico.idServico + ">\n\
                             <input type='hidden' name='funcionario' value=" + ObjAgendamento[i].funcionario.idFuncionario + ">\n\
                             <input type='hidden' name='horaAgendamento' value=" + ObjAgendamento[i].horaAgendamento + ">\n\

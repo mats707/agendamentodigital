@@ -28,7 +28,7 @@ public class ListarAction implements ICommand {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
-        request.setAttribute("pagina", "pages/admin/servicos/listar.jsp");
+        request.setAttribute("pagina", "/pages/admin/servicos/listar.jsp");
 
         ServicoDAO objServicoDao = new ServicoDAO();
 

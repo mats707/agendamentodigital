@@ -55,7 +55,7 @@ public class ControleAcesso extends HttpServlet {
                     HttpSession sessaoUsuario = request.getSession();
                     sessaoUsuario.removeAttribute("usuarioAutenticado");
                     sessaoUsuario.removeAttribute("cliente");
-                    response.sendRedirect("index.jsp");
+                    response.sendRedirect("/AgendamentoDigital/");
                     break;
                 }
                 case "Validar": {
@@ -106,7 +106,7 @@ public class ControleAcesso extends HttpServlet {
                 funcionario.setUsuario(usuarioAutenticado);
                 funcionarioDAO.buscarUsuario(funcionario);
                 sessaoUsuario.setAttribute("funcionario", funcionario);
-                return ("pages/admin/home.jsp");
+                return ("Administrador/Home");
             case FUNCIONARIOCOMUM:
                 funcionario.setUsuario(usuarioAutenticado);
                 funcionarioDAO.buscarUsuario(funcionario);
@@ -116,7 +116,7 @@ public class ControleAcesso extends HttpServlet {
                 cliente.setUsuario(usuarioAutenticado);
                 clienteDAO.buscarUsuario(cliente);
                 sessaoUsuario.setAttribute("cliente", cliente);
-                return ("HomeCliente");
+                return ("Cliente/Home");
             default:
                 return ("");
         }

@@ -27,7 +27,7 @@ public class HomeAction implements ICommand {
         String funcaoMsg = "Carregando...";
         String funcaoStatus = "info";
 
-        request.setAttribute("pagina", "pages/client/home.jsp");
+        request.setAttribute("pagina", "/pages/client/home.jsp");
         request.setAttribute("funcaoMsg", funcaoMsg);
         request.setAttribute("funcaoStatus", funcaoStatus);
 

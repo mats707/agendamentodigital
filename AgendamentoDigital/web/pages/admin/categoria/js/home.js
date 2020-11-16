@@ -22,7 +22,7 @@ $(document).ready(function () {
                 descricoes.push(descVal);
                 document.getElementById('lblCategorias').innerHTML = "";
                 for (var i = 0; i < categorias.length; i++) {
-                    categorias[i] = categorias[i].replace(/[^0-9a-zA-Z ]+/g, '');
+                    //categorias[i] = categorias[i].replace(/[^0-9a-zA-Z ]+/g, '');
                     console.log(categorias[i]);
                     console.log(descricoes[i]);
                     document.getElementById('lblCategorias').innerHTML += categorias[i] + " > ";
@@ -33,15 +33,14 @@ $(document).ready(function () {
                 descricoes.pop();
                 document.getElementById('lblCategorias').innerHTML = "";
                 for (var i = 0; i < categorias.length; i++) {
-                    categorias[i] = categorias[i].replace(/[^0-9a-zA-Z ]+/g, '');
-                    descricoes[i] = descricoes[i].replace(/[^0-9a-zA-Z ]+/g, '');
+                    //categorias[i] = categorias[i].replace(/[^0-9a-zA-Z ]+/g, '');
+                    //descricoes[i] = descricoes[i].replace(/[^0-9a-zA-Z ]+/g, '');
                     console.log(categorias[i]);
                     console.log(descricoes[i]);
                     document.getElementById('lblCategorias').innerHTML += categorias[i] + " > ";
                 }
             };
             var addInput = function () {
-                console.log("Teste argumento da funcao: " + arguments[0]);
                 if (counter > 0 && arguments[0] == 'False') {
                     console.log(counter);
                     var input = document.createElement('input');

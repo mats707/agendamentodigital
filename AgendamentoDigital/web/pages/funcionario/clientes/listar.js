@@ -41,13 +41,6 @@ $(document).ready(function () {
         }
     }
 });
-function lerJson(result) {
-    $("#target").html('<table id="tabCliente" class="table table-bordered"><thead><tr><th style="width: auto">ID</th><th style="width: 100%">Email</th><th style="width: auto">Celular</th><th style="width: auto">Perfil</th><th style="width: auto">Edit</th><th style="width: auto">Delete</th></tr></thead>' + $.map(result, function (d) {
-        return '<tr><td>' + $.map(d, function (e) {
-            return e;
-        }).join('</td><td>') + '</td><td><a href="" id="edituser" class="nav-link" data-toggle="modal" data-target="#editModal" ><i class="nav-icon fas fa-edit"></i></a></td><td><a href="#" id="deleteuser" class="nav-link" data-toggle="modal" data-target="#deleteModal" ><i class="nav-icon fas fa-trash-alt"></i></a></td></tr>'
-    }).join('\n') + '</table>');
-}
 
 function lerTabela(result) {
     ObjCliente = result;
@@ -85,11 +78,11 @@ function lerTabela(result) {
                 cell4.innerHTML = (ObjCliente[i].usuario.ativo) ? "Ativado" : "Desativado";
                 cell5.innerHTML = "<a id='alterarCliente'  href='#' class='nav-link' data-toggle='modal' data-target='#alterarModal' ><i class='nav-icon fas fa-edit'></i></a>";
                 cell6.innerHTML = "<form id='formAtivar-" + i + "' action='" + nameproject + "Funcionario/Cliente/Ativar' method='POST'>\n\
-                            <input type='hidden' name='cliente' value='" + JSON.stringify(ObjCliente[i]) + "'>\n\
+                            <input type='hidden' name='cliente' value='" + JSON.stringify(ObjCliente[i]).replace("'","") + "'>\n\
                             <a id='btn-formAtivar-" + i + "' href='#' class='nav-link' onclick='sweetAtivar(this);'>\n\
                             <i class='nav-icon fas fa-check-circle'></a></form>";
                 cell7.innerHTML = "<form id='formDesativar-" + i + "' action='" + nameproject + "Funcionario/Cliente/Desativar' method='POST'>\n\
-                            <input type='hidden' name='cliente' value='" + JSON.stringify(ObjCliente[i]) + "'>\n\
+                            <input type='hidden' name='cliente' value='" + JSON.stringify(ObjCliente[i]).replace("'","") + "'>\n\
                             <a id='btn-formDesativar-" + i + "' href='#' class='nav-link' onclick='sweetDesativar(this);'>\n\
                             <i class='nav-icon fas fa-times-circle'></a></form>";
             }

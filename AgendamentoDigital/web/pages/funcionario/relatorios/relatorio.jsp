@@ -37,7 +37,7 @@
         <div class="wrapper">
 
             <!-- Navbar & Menu-->
-            <jsp:include page="../../${pgperfil}/sidebar-menu.jsp"/>
+            <jsp:include page="/pages/${pgperfil}/sidebar-menu.jsp"/>
 
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">

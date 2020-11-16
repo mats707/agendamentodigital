@@ -28,7 +28,7 @@ public class AlterarAction implements ICommand {
 
         ServicoDAO servicoDAO = new ServicoDAO();
 
-        request.setAttribute("pagina", "ListarServico");
+        request.setAttribute("pagina", "/Administrador/Servico/Listar");
 
         String idServico = request.getParameter("idServico");
         String nome = request.getParameter("editedNome");

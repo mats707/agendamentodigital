@@ -115,7 +115,7 @@
         <!-- edit Modal-->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="frmCadastrarServico" action="${site}/AlterarServico" method="POST"><div class="modal-content">
+                <form id="frmCadastrarServico" action="${site}/Administrador/Servico/Alterar" method="POST"><div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Alterar Serviço? </h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -224,7 +224,7 @@
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="deletarServico" action="${site}/DeletarServico" method="POST">
+                <form id="deletarServico" action="${site}/Administrador/Servico/Deletar" method="POST">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Excluir Serviço? </h5>

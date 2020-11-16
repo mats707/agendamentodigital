@@ -105,9 +105,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}/Relatorios/Servicos/Cliente" id="relatorioCliente" class="nav-link">
+                            <a href="${site}/Relatorios/Servicos/Clientes" id="relatorioCliente" class="nav-link">
                                 <i class="fas fa-caret-right nav-icon"></i>
-                                <p>Cliente</p>
+                                <p>Clientes</p>
                             </a>
                         </li>
                     </ul>

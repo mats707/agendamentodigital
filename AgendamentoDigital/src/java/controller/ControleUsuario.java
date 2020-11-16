@@ -61,16 +61,12 @@ public class ControleUsuario extends HttpServlet {
                 acao = "FuncionarioDesativar";
             } else if (uri.equals(request.getContextPath() + "/Usuario/Funcionario/Listar")) {
                 acao = "FuncionarioListar";
-            } else if (uri.equals(request.getContextPath() + "/ListarUsuario")) {
-                acao = "Listar";
             } else if (uri.equals(request.getContextPath() + "/IniciarEdicaoUsuario")) {
                 acao = "IniciarEdicao";
             } else if (uri.equals(request.getContextPath() + "/CadastrarUsuario")) {
                 acao = "Cadastrar";
             } else if (uri.equals(request.getContextPath() + "/AlterarUsuario")) {
                 acao = "Alterar";
-            } else if (uri.equals(request.getContextPath() + "/BuscarUsuario")) {
-                acao = "Buscar";
             } else {
                 response.sendRedirect("404.jsp");
             }

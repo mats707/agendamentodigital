@@ -26,68 +26,64 @@ import util.ConectaBanco;
  */
 public class RelatoriosDAO implements IRelatoriosDAO {
 
-    public static final String MAISAGENDADO = "select ser.id as idServico, ser.nome as servico, count(ag.servico) \n"
+    public static final String AGENDAMENTOS = "select ser.id as idServico, ser.nome as servico, count(ag.servico) \n"
             + " from sistema.agendamento as ag, sistema.servico as ser \n"
             + " where ag.servico=ser.id \n"
             + " group by ag.servico, ser.nome, ser.id \n"
             + " order by count(ag.servico) DESC;";
-    public static final String MAISAGENDADO_PERIODO = "select ser.id as idServico, ser.nome as servico, count(ag.servico)\n"
+    public static final String AGENDAMENTOS_PERIODO = "select ser.id as idServico, ser.nome as servico, count(ag.servico)\n"
             + " from sistema.agendamento as ag, sistema.servico as ser\n"
             + " where ag.servico=ser.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=?\n"
             + " group by ag.servico, ser.nome, ser.id \n"
             + " order by count(ag.servico) DESC;";
-
-    public static final String MAISAGENDADO_PERIODO_STATUS = "select ser.id as idServico, ser.nome as servico, count(ag.servico)\n"
+    public static final String AGENDAMENTOS_PERIODO_STATUS = "select ser.id as idServico, ser.nome as servico, count(ag.servico)\n"
             + " from sistema.agendamento as ag, sistema.servico as ser, sistema.statusagendamento as st \n"
             + " where ag.servico=ser.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=? and st.nome=? and st.id=ag.status \n"
             + " group by ag.servico, ser.nome, ser.id \n"
             + " order by count(ag.servico) DESC;";
-
-    public static final String MAISAGENDADO_STATUS = "select ser.id as idServico, ser.nome as servico, count(ag.servico)\n"
+    public static final String AGENDAMENTOS_STATUS = "select ser.id as idServico, ser.nome as servico, count(ag.servico)\n"
             + " from sistema.agendamento as ag, sistema.servico as ser, sistema.statusagendamento as st \n"
             + " where ag.servico=ser.id and st.nome=? and st.id=ag.status \n"
             + " group by ag.servico, ser.nome, ser.id \n"
             + " order by count(ag.servico) DESC;";
 
-    public static final String FUNCIONARIO_MAIS_TRABALHO_PERIODO = "select pe.nome as funcionario, count(ag.funcionario)\n"
-            + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func \n"
-            + " where pe.id=func.pessoa and ag.funcionario=func.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=? \n"
-            + " group by ag.funcionario, pe.nome \n"
-            + " order by count(ag.funcionario) DESC;";
-    public static final String FUNCIONARIO_MAIS_TRABALHO_PERIODO_STATUS = "select pe.nome as funcionario, count(ag.funcionario)\n"
-            + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func, sistema.statusagendamento as st \n"
-            + " where pe.id=func.pessoa and ag.funcionario=func.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=? and st.nome=? and st.id=ag.status \n"
-            + " group by ag.funcionario, pe.nome \n"
-            + " order by count(ag.funcionario) DESC;";
-    public static final String FUNCIONARIO_MAIS_TRABALHO_STATUS = "select pe.nome as funcionario, count(ag.funcionario)\n"
-            + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func, sistema.statusagendamento as st \n"
-            + " where pe.id=func.pessoa and ag.funcionario=func.id and st.nome=? and st.id=ag.status \n"
-            + " group by ag.funcionario, pe.nome \n"
-            + " order by count(ag.funcionario) DESC;";
-    public static final String FUNCIONARIO_MAIS_TRABALHO = "select pe.nome as funcionario, count(ag.funcionario)\n"
+    public static final String FUNCIONARIOS = "select pe.nome as funcionario, count(ag.funcionario)\n"
             + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func \n"
             + " where pe.id=func.pessoa and ag.funcionario=func.id \n"
             + " group by ag.funcionario, pe.nome \n"
             + " order by count(ag.funcionario) DESC;";
+    public static final String FUNCIONARIOS_PERIODO = "select pe.nome as funcionario, count(ag.funcionario)\n"
+            + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func \n"
+            + " where pe.id=func.pessoa and ag.funcionario=func.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=? \n"
+            + " group by ag.funcionario, pe.nome \n"
+            + " order by count(ag.funcionario) DESC;";
+    public static final String FUNCIONARIOS_PERIODO_STATUS = "select pe.nome as funcionario, count(ag.funcionario)\n"
+            + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func, sistema.statusagendamento as st \n"
+            + " where pe.id=func.pessoa and ag.funcionario=func.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=? and st.nome=? and st.id=ag.status \n"
+            + " group by ag.funcionario, pe.nome \n"
+            + " order by count(ag.funcionario) DESC;";
+    public static final String FUNCIONARIOS_STATUS = "select pe.nome as funcionario, count(ag.funcionario)\n"
+            + " from sistema.agendamento as ag, sistema.pessoa as pe, sistema.funcionario as func, sistema.statusagendamento as st \n"
+            + " where pe.id=func.pessoa and ag.funcionario=func.id and st.nome=? and st.id=ag.status \n"
+            + " group by ag.funcionario, pe.nome \n"
+            + " order by count(ag.funcionario) DESC;";
 
-    public static final String CLIENTE = "select pe.nome as cliente, count(ag.cliente) \n"
+    public static final String CLIENTES = "select pe.nome as cliente, count(ag.cliente) \n"
             + "from sistema.agendamento as ag, sistema.pessoa as pe, sistema.cliente as cli \n"
             + "where pe.id=cli.pessoa and ag.cliente=cli.id \n"
             + "group by ag.cliente, pe.nome \n"
             + "order by count(ag.cliente) DESC;";
-    public static final String CLIENTE_PERIODO = "select pe.nome as cliente, count(ag.cliente) \n"
+    public static final String CLIENTES_PERIODO = "select pe.nome as cliente, count(ag.cliente) \n"
             + "from sistema.agendamento as ag, sistema.pessoa as pe, sistema.cliente as cli \n"
             + "where pe.id=cli.pessoa and ag.cliente=cli.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=?\n"
             + "group by ag.cliente, pe.nome \n"
             + "order by count(ag.cliente) DESC;";
-
-    public static final String CLIENTE_PERIODO_STATUS = "select pe.nome as cliente, count(ag.cliente) \n"
+    public static final String CLIENTES_PERIODO_STATUS = "select pe.nome as cliente, count(ag.cliente) \n"
             + "from sistema.agendamento as ag, sistema.pessoa as pe, sistema.cliente as cli, sistema.statusagendamento as st \n"
             + "where pe.id=cli.pessoa and ag.cliente=cli.id and date_part('month',ag.dataagendamento)=? and date_part('year',ag.dataagendamento)=? and st.nome=? and st.id=ag.status \n"
             + "group by ag.cliente, pe.nome \n"
             + "order by count(ag.cliente) DESC;";
-
-    public static final String CLIENTE_STATUS = "select pe.nome as cliente, count(ag.cliente) \n"
+    public static final String CLIENTES_STATUS = "select pe.nome as cliente, count(ag.cliente) \n"
             + "from sistema.agendamento as ag, sistema.pessoa as pe, sistema.cliente as cli, sistema.statusagendamento as st \n"
             + "where pe.id=cli.pessoa and ag.cliente=cli.id and st.nome=? and st.id=ag.status \n"
             + "group by ag.cliente, pe.nome \n"
@@ -103,7 +99,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(MAISAGENDADO);
+            PreparedStatement pstmt = conexao.prepareStatement(AGENDAMENTOS);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -136,7 +132,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(MAISAGENDADO_PERIODO);
+            PreparedStatement pstmt = conexao.prepareStatement(AGENDAMENTOS_PERIODO);
 
             if (mes > 0 && mes < 13) {
                 pstmt.setInt(1, mes);
@@ -165,6 +161,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
+    @Override
     public ArrayList<RelatorioServico> listarAgendamentosPeriodoStatus(int mes, int ano, StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
@@ -172,7 +169,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(MAISAGENDADO_PERIODO_STATUS);
+            PreparedStatement pstmt = conexao.prepareStatement(AGENDAMENTOS_PERIODO_STATUS);
 
             if (mes > 0 && mes < 13) {
                 pstmt.setInt(1, mes);
@@ -203,6 +200,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
+    @Override
     public ArrayList<RelatorioServico> listarAgendamentosStatus(StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
@@ -210,7 +208,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(MAISAGENDADO_STATUS);
+            PreparedStatement pstmt = conexao.prepareStatement(AGENDAMENTOS_STATUS);
 
             pstmt.setString(1, status.toString());
 
@@ -245,7 +243,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIO_MAIS_TRABALHO);
+            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIOS);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -277,7 +275,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIO_MAIS_TRABALHO_PERIODO);
+            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIOS_PERIODO);
 
             if (mes > 0 && mes < 13) {
                 pstmt.setInt(1, mes);
@@ -306,6 +304,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
+    @Override
     public ArrayList<RelatorioServico> listarFuncionariosPeriodoStatus(int mes, int ano, StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
@@ -313,7 +312,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIO_MAIS_TRABALHO_PERIODO_STATUS);
+            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIOS_PERIODO_STATUS);
 
             if (mes > 0 && mes < 13) {
                 pstmt.setInt(1, mes);
@@ -343,6 +342,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
+    @Override
     public ArrayList<RelatorioServico> listarFuncionariosStatus(StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
@@ -350,9 +350,9 @@ public class RelatoriosDAO implements IRelatoriosDAO {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIO_MAIS_TRABALHO_PERIODO_STATUS);
+            PreparedStatement pstmt = conexao.prepareStatement(FUNCIONARIOS_PERIODO_STATUS);
 
-            pstmt.setString(3, status.toString());
+            pstmt.setString(1, status.toString());
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -375,15 +375,16 @@ public class RelatoriosDAO implements IRelatoriosDAO {
             }
         }
     }
-    
-    public ArrayList<RelatorioServico> listarCliente() {
+
+    @Override
+    public ArrayList<RelatorioServico> listarClientes() {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(CLIENTE);
+            PreparedStatement pstmt = conexao.prepareStatement(CLIENTES);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -407,15 +408,15 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-
-    public ArrayList<RelatorioServico> listarClientePeriodo(int mes, int ano) {
+    @Override
+    public ArrayList<RelatorioServico> listarClientesPeriodo(int mes, int ano) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(CLIENTE_PERIODO);
+            PreparedStatement pstmt = conexao.prepareStatement(CLIENTES_PERIODO);
 
             if (mes > 0 && mes < 13) {
                 pstmt.setInt(1, mes);
@@ -444,14 +445,15 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-    public ArrayList<RelatorioServico> listarClientePeriodoStatus(int mes, int ano, StatusAgendamento status) {
+    @Override
+    public ArrayList<RelatorioServico> listarClientesPeriodoStatus(int mes, int ano, StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(CLIENTE_PERIODO_STATUS);
+            PreparedStatement pstmt = conexao.prepareStatement(CLIENTES_PERIODO_STATUS);
 
             if (mes > 0 && mes < 13) {
                 pstmt.setInt(1, mes);
@@ -481,16 +483,17 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-    public ArrayList<RelatorioServico> listarClienteStatus(StatusAgendamento status) {
+    @Override
+    public ArrayList<RelatorioServico> listarClientesStatus(StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
 
             conexao = ConectaBanco.getConexao();
 
-            PreparedStatement pstmt = conexao.prepareStatement(CLIENTE_PERIODO_STATUS);
+            PreparedStatement pstmt = conexao.prepareStatement(CLIENTES_STATUS);
 
-            pstmt.setString(3, status.toString());
+            pstmt.setString(1, status.toString());
 
             ResultSet rs = pstmt.executeQuery();
 

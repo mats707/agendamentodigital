@@ -1,31 +1,4 @@
 var nameproject = getContextPath();
-$(document).ready(function () {
-    var alturaFormulario = document.getElementById("panel").offsetHeight;
-    document.getElementById("colImg").style.height = alturaFormulario + "px";
-});
-
-
-var btnCust = '';
-//var btnCust = '<button type="button" class="btn btn-secondary" title="Add picture tags" ' +
-//        'onclick="alert(\'Call your custom code here.\')">' +
-//        '<i class="fas fa-tags"></i>' +
-//        '</button>';
-$("#fotoPerfil").fileinput({
-    overwriteInitial: true,
-    maxFileSize: 1500,
-    showClose: false,
-    showCaption: false,
-    showBrowse: false,
-    browseOnZoneClick: true,
-    removeLabel: '',
-    removeIcon: '<i class="fas fa-trash-alt"></i>',
-    removeTitle: 'Cancel or reset changes',
-    elErrorContainer: '#kv-avatar-errors-2',
-    msgErrorClass: 'alert alert-block alert-danger',
-    defaultPreviewContent: '<img src="' + nameproject + '/images/user_sample/profile-picture.jpg" alt="Your Avatar" style="width: 150px"><h6 class="text-muted">Click to select</h6>',
-    layoutTemplates: {main2: '{preview} ' + btnCust + ' {remove} {browse}'},
-    allowedFileExtensions: ["jpg", "png", "gif"]
-});
 
 function editarDados(element) {
     console.log(element);
@@ -111,18 +84,18 @@ function sweetDesativar() {
 
     swalWithBootstrapButtons.fire({
         title: 'Tem certeza?',
-        text: "Seu usuario será desativado, podendo ser reativado depois!",
+        text: "Seu usuario será desativado e desconectado! Para reativar será necessário entrar em contato com a empresa!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Sim, cancelar!',
-        cancelButtonText: 'NÃ£o, voltar!',
+        confirmButtonText: 'Sim, desativar!',
+        cancelButtonText: 'Não, voltar...',
         reverseButtons: true
     }).then((result) => {
         console.log(result);
         if (result.value) {
             swalWithBootstrapButtons.fire(
-                    'Solicitação concluÃ­da!',
-                    'Clique em OK para prosseguir.',
+                    'Solicitação concluída!',
+                    'Desconectando...',
                     'success'
                     );
             submit();
@@ -132,8 +105,8 @@ function sweetDesativar() {
                 ) {
             swalWithBootstrapButtons.fire(
                     'Fechando...',
-                    'Seu bloqueio está seguro :)',
-                    'error'
+                    'Sua conta está segura :)',
+                    'info'
                     );
         }
     });

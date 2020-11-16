@@ -31,7 +31,7 @@ public class AtualizarEmpresaAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("pagina", "pages/admin/empresa/menuEmpresa.jsp");
+        request.setAttribute("pagina", "/pages/admin/empresa/menuEmpresa.jsp");
 
         //Obtendo os parametros do REQUEST
         String nome = request.getParameter("nome");

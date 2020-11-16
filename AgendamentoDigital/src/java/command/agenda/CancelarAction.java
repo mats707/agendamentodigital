@@ -40,7 +40,7 @@ public class CancelarAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("pagina", "pages/client/home.jsp");
+        request.setAttribute("pagina", "/pages/client/home.jsp");
 
         //Obtendo os parametros do REQUEST
         String idServico = request.getParameter("servico");

@@ -210,10 +210,13 @@
         <script src="${site}/dist/js/pages/dashboard.js"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="${site}/dist/js/demo.js"></script>
-        <!-- InputMask -->>
+        <!-- InputMask -->
         <script src="${site}/plugins/inputmask/min/jquery.inputmask.bundle.min.js"></script>
         <!-- Select2 -->
         <script src="${site}/plugins/select2/js/select2.full.min.js"></script>
+        <!-- Mask js -->
+        <script src="${site}/dist/js/myMask.js" type="text/javascript"></script>
+        <!-- SweetAlert2 -->
         <!-- SweetAlert2 -->
         <script src="${site}/plugins/sweetalert2/sweetalert2.min.js"></script>
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>

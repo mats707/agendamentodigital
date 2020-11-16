@@ -34,7 +34,7 @@ public class MenuBloqueioAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("pagina", "pages/admin/empresa/menuBloqueio.jsp");
+        request.setAttribute("pagina", "/pages/admin/empresa/menuBloqueio.jsp");
         objDao.buscar(Obj);
         String startTime = Obj.getHoraInicialTrabalho().toString();
         String maxTime = Obj.getHoraFinalTrabalho().toString();

@@ -38,19 +38,22 @@ public class AtivarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
+        JsonElement jsonCliente = null;
+        
         //Verifica Usuario logado
         //cria uma sessao para resgatar o usuario
         HttpSession sessaoUsuario = request.getSession();
         Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
-        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+        if (usuarioAutenticado != null && (usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM) || usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOADMIN))) {
             request.setAttribute("pagina", "/Funcionario/Cliente/Listar");
+            String cliente = request.getParameter("cliente");
+            if (cliente != null) {
+                JsonParser parser = new JsonParser();
+                jsonCliente = parser.parse(cliente);
+            }
         } else {
-            request.setAttribute("pagina", "HomeAction");
+            request.setAttribute("pagina", "/Cliente/Home");
         }
-
-        String cliente = request.getParameter("cliente");
-        JsonParser parser = new JsonParser();
-        JsonElement jsonCliente = parser.parse(cliente);
 
         String sqlState = "0";
         String funcaoMsg = "";

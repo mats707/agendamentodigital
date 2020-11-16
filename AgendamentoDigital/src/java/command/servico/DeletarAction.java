@@ -25,7 +25,7 @@ public class DeletarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "ListarServico");
+        request.setAttribute("pagina", "/Administrador/Servico/Listar");
 
         Integer id = Integer.parseInt(request.getParameter("idServicoDeleted"));
         String deletedNome = request.getParameter("deletedNome");
