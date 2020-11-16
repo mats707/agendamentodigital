@@ -161,18 +161,9 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-<<<<<<< HEAD
     @Override
-=======
-<<<<<<< HEAD
-    @Override
-    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodoStatus(int mes, int ano, StatusAgendamento status) {
-        ArrayList<RelatorioServico> listaMaisAgendado = new ArrayList<RelatorioServico>();
-=======
->>>>>>> feature-documento
     public ArrayList<RelatorioServico> listarAgendamentosPeriodoStatus(int mes, int ano, StatusAgendamento status) {
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
->>>>>>> feature-funcionario
 
         try {
 
@@ -385,12 +376,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-<<<<<<< HEAD
     @Override
     public ArrayList<RelatorioServico> listarClientes() {
-=======
-    public ArrayList<RelatorioServico> listarCliente() {
->>>>>>> feature-documento
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
@@ -421,12 +408,8 @@ public class RelatoriosDAO implements IRelatoriosDAO {
         }
     }
 
-<<<<<<< HEAD
     @Override
     public ArrayList<RelatorioServico> listarClientesPeriodo(int mes, int ano) {
-=======
-    public ArrayList<RelatorioServico> listarClientePeriodo(int mes, int ano) {
->>>>>>> feature-documento
         ArrayList<RelatorioServico> listaAgendamentos = new ArrayList<RelatorioServico>();
 
         try {
