@@ -56,7 +56,7 @@ $(document).ready(function () {
                             } else {
                                 document.getElementById("btnVoltarCategoria").style.display = 'block';
                             }
-                            $("#editedValor").val(Obj.valor.toFixed(2));
+                            $("#editedValor").val(Obj.valor.toFixed(2).toString().replace(".", ","));
                             $("#editedDuracao").val(Obj.duracao.seconds / 60);
                             var values = [];
                             for (var i = 0; i < Obj.funcionarios.length; i++) {
@@ -98,7 +98,7 @@ function lerTabela(result) {
                 cellId.innerHTML = ObjServico[i].idServico;
                 cellServico.innerHTML = ObjServico[i].nome;
                 cellDescricao.innerHTML = ObjServico[i].descricao;
-                cellValor.innerHTML = "R$ " + ObjServico[i].valor.toFixed(2);
+                cellValor.innerHTML = "R$ " + ObjServico[i].valor.toFixed(2).toString().replace(".", ",");
                 cellDuracao.innerHTML = (ObjServico[i].duracao.seconds / 60) + " minutos";
                 cellEdit.innerHTML = '<a href="#" id="edituser" class="nav-link" data-toggle="modal" data-target="#editModal" ><i class="nav-icon fas fa-edit"></i></a>';
                 cellDelete.innerHTML = '<a href="#" id="deleteuser" class="nav-link" data-toggle="modal" data-target="#deleteModal" ><i class="nav-icon fas fa-trash-alt"></i></a>';

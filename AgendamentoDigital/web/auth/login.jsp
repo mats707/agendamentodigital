@@ -95,13 +95,6 @@
                                             </div>
                                         </form>
 
-
-                                        <p class="text-${colorMsg} mb-3">
-                                            <c:if test="${msg!=null}">
-                                                ${msg}
-                                            </c:if>
-                                        </p>
-
                                         <!--<div class="social-auth-links text-center mb-3">
                                             <p>- OU -</p>
                                             <a href="#" class="btn btn-block btn-primary">
@@ -188,18 +181,15 @@
                                                 <!-- /.col -->
                                             </div>
                                         </form>
-
-
-
                                     </div>
                                 </div>
-                                <div c                                                lass="footer">
-                                    <button id="btnBackLogin" data-action="Lo                                                gin" class="btn btn-simple" rel="tooltip" title="Voltar para LOGIN" onclick="rotateCard(this)">
+                                <div class="footer">
+                                    <button id="btnBackLogin" data-action="Login" class="btn btn-simple" rel="tooltip" title="Voltar para LOGIN" onclick="rotateCard(this)">
                                         <i class="fa fa-reply"></i> Voltar
                                     </button>
-                                    
+
                                 </div>
-                            </div> <!-- end back panel                                                                        -->
+                            </div> <!-- end back panel-->
                         </div> <!-- end card -->
                     </div> <!-- end card-container -->
                 </div>
@@ -218,7 +208,7 @@
         <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.js"></script>
         <!-- Login js -->
-        <script src="${site}/auth/js/login.js" type="text/javascript"></script>
+        <script charset="ISO-8529" src="${site}/auth/js/login.js" type="text/javascript"></script>
         <!-- Mask js -->
         <script src="${site}/dist/js/myMask.js" type="text/javascript"></script>
         <!-- InputMask -->

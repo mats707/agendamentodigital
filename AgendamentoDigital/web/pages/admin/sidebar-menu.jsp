@@ -113,7 +113,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="${site}//Administrador/Servico/Listar" id="listarServico" class="nav-link">
+                            <a href="${site}/Administrador/Servico/Listar" id="listarServico" class="nav-link">
                                 <i class="fas fa-caret-right nav-icon"></i>
                                 <p>Listar</p>
                             </a>

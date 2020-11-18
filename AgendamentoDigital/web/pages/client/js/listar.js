@@ -65,7 +65,7 @@ function lerTabela(result) {
                 cellData.innerHTML = ObjAgendamento[i].dataAgendamento;
                 cellHora.innerHTML = ObjAgendamento[i].horaAgendamento;
                 cellDuracao.innerHTML = ObjAgendamento[i].servico.duracao.seconds / 60 + " minutos";
-                cellValor.innerHTML = "R$" + ObjAgendamento[i].servico.valor.toFixed(2);
+                cellValor.innerHTML = "R$" + ObjAgendamento[i].servico.valor.toFixed(2).toString().replace(".", ",");
                 cellFuncionario.innerHTML = ObjAgendamento[i].funcionario.nomePessoa;
                 cellSituacao.innerHTML = ObjAgendamento[i].status;
                 cancelarAgendamento.innerHTML =

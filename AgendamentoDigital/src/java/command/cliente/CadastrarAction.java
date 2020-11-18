@@ -45,7 +45,7 @@ public class CadastrarAction implements ICommand {
         if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
             request.setAttribute("pagina", "/pages/funcionario/clientes/cadastrar.jsp");
         } else {
-            request.setAttribute("pagina", "auth/login.jsp");
+            request.setAttribute("pagina", "/auth/login.jsp");
         }
         nome = request.getParameter("inputName");
         dataNascimento = request.getParameter("inputDataNasc");

@@ -45,7 +45,7 @@ public class ControleServico extends HttpServlet {
 
             if (uri.equals(request.getContextPath() + "/Administrador/Servico/Deletar")) {
                 acao = "Deletar";
-            } else if (uri.equals(request.getContextPath() + "//Administrador/Servico/Listar")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/Servico/Listar")) {
                 acao = "Listar";
             } else if (uri.equals(request.getContextPath() + "/Administrador/Servico/Cadastrar")) {
                 acao = "Cadastrar";

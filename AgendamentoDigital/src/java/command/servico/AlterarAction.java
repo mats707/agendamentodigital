@@ -16,6 +16,7 @@ import jdk.nashorn.internal.objects.NativeString;
 import modelos.CategoriaServico;
 import modelos.Funcionario;
 import modelos.Servico;
+import util.Util;
 
 /**
  *
@@ -31,8 +32,8 @@ public class AlterarAction implements ICommand {
         request.setAttribute("pagina", "/Administrador/Servico/Listar");
 
         String idServico = request.getParameter("idServico");
-        String nome = request.getParameter("editedNome");
-        String descricao = request.getParameter("editedDescricao");
+        String nome = Util.stringToUTF8(request.getParameter("editedNome"));
+        String descricao = Util.stringToUTF8(request.getParameter("editedDescricao"));
         String categoriaFinal = request.getParameter("categoriaFinal");
         String valor = request.getParameter("editedValor");
         String duracao = request.getParameter("editedDuracao");
