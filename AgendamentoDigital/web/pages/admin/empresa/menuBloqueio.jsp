@@ -231,6 +231,7 @@
 <!--MEU JS -->
 <script charset="ISO-8529" src="${site}/pages/admin/empresa/menuBloqueio.js" type="text/javascript"></script>
 <script>
+    includeHTMLNav("menuBloqueio", "");
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2();

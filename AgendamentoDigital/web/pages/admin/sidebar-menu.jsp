@@ -159,7 +159,7 @@
                 </li>
                 <li class="nav-item">
                     <a href="${site}/Administrador/BloqueioAgenda/Listar" id="listarBloqueio" class="nav-link">
-                        <i class="nav-icon fas fa-calendar-minus"></i>
+                        <i class="nav-icon fas fa-calendar"></i>
                         <p>
                             Listar bloqueio de agenda
                         </p>

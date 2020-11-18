@@ -7,6 +7,7 @@
     <filter-mapping>
         <filter-name>AcessoFuncionarioAdministrador</filter-name>
         <url-pattern>/pages/admin/</url-pattern>
+        <url-pattern>/pages/admin/*</url-pattern>
         <url-pattern>/pages/funcionario/</url-pattern>
         <url-pattern>/Administrador/</url-pattern>
         <url-pattern>/Administrador/*</url-pattern>
