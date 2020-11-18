@@ -25,8 +25,6 @@ public class Servico {
     
     private ArrayList<Funcionario> funcionarios;
 
-    private ArrayList<Integer> camposadicionais;
-
     public Integer getIdServico() {
         return idServico;
     }
@@ -83,14 +81,6 @@ public class Servico {
         this.funcionarios = funcionarios;
     }
 
-    public ArrayList<Integer> getCamposadicionais() {
-        return camposadicionais;
-    }
-
-    public void setCamposadicionais(ArrayList<Integer> camposadicionais) {
-        this.camposadicionais = camposadicionais;
-    }
-
     public Servico(Integer idServico, String nome, String descricao, BigDecimal valor, Duration duracao, CategoriaServico categoria, ArrayList<Funcionario> funcionarios, ArrayList<Integer> camposadicionais) {
         this.idServico = idServico;
         this.nome = nome;
@@ -99,7 +89,6 @@ public class Servico {
         this.duracao = duracao;
         this.categoria = categoria;
         this.funcionarios = funcionarios;
-        this.camposadicionais = camposadicionais;
     }
 
     public Servico(Integer idServico) {

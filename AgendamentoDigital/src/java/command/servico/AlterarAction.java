@@ -16,6 +16,7 @@ import jdk.nashorn.internal.objects.NativeString;
 import modelos.CategoriaServico;
 import modelos.Funcionario;
 import modelos.Servico;
+import util.Util;
 
 /**
  *
@@ -28,11 +29,11 @@ public class AlterarAction implements ICommand {
 
         ServicoDAO servicoDAO = new ServicoDAO();
 
-        request.setAttribute("pagina", "ListarServico");
+        request.setAttribute("pagina", "/Administrador/Servico/Listar");
 
         String idServico = request.getParameter("idServico");
-        String nome = request.getParameter("editedNome");
-        String descricao = request.getParameter("editedDescricao");
+        String nome = Util.stringToUTF8(request.getParameter("editedNome"));
+        String descricao = Util.stringToUTF8(request.getParameter("editedDescricao"));
         String categoriaFinal = request.getParameter("categoriaFinal");
         String valor = request.getParameter("editedValor");
         String duracao = request.getParameter("editedDuracao");
@@ -49,7 +50,7 @@ public class AlterarAction implements ICommand {
         if (idServico != null && nome != null && descricao != null && categoriaFinal != null
                 && valor != null && duracao != null && funcionariosString != null) {
             //Ajustes no formato dos campos
-            valor = valor.replace(",", ".");
+            valor = valor.replace(".", "").replace(",", ".");
             Duration tempo = Duration.ofHours(Integer.parseInt("00"));
             tempo = tempo.plusMinutes(Integer.parseInt(duracao));
             tempo = tempo.plusSeconds(Integer.parseInt("00"));

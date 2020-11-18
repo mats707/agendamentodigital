@@ -115,7 +115,7 @@
         <!-- edit Modal-->
         <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="frmCadastrarServico" action="${site}/AlterarServico" method="POST"><div class="modal-content">
+                <form id="frmCadastrarServico" action="${site}/Administrador/Servico/Alterar" method="POST"><div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Alterar Serviço? </h5>
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -224,7 +224,7 @@
         <!-- delete Modal-->
         <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form id="deletarServico" action="${site}/DeletarServico" method="get">
+                <form id="deletarServico" action="${site}/Administrador/Servico/Deletar" method="POST">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Excluir Serviço? </h5>
@@ -233,7 +233,7 @@
                             </button>
                         </div>
                         <div class="row align-items-center justify-content-center">
-                            <p class="danger">Ao excluir o Serviço permanecerá cadastrado, porém estará INATIVO!</p>
+                            <p class="danger">Será deletado somente se NÃO houver agendamento com este serviço!</p>
 
                             <div class="register-box">
                                 <div class="card">
@@ -258,7 +258,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button  id="btnDeletar" type="submit" class="btn btn-danger btn-block">Desastivar Serviço</button>
+                            <button  id="btnDeletar" type="submit" class="btn btn-danger btn-block">Deletar Serviço</button>
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                         </div>
                     </div>
@@ -312,6 +312,8 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
+        <!-- Mask Money -->
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -324,14 +326,21 @@
 
                 $('[data-mask]').inputmask()
 
+                //Initialize MaskMoney
+                $('[type=money]').maskMoney({
+                    thousands: '.',
+                    decimal: ','
+                })
+
             })
         </script>
-        <script src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarServico.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
 
         <script>
             var result = ${msg};
+            console.log(result);
             includeHTMLNav("servicos", "listarServico");
             lerTabela(result);
             var callSweet = "${funcaoMsgOperation}";

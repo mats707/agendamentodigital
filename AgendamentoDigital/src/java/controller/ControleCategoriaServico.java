@@ -21,10 +21,6 @@ import javax.servlet.RequestDispatcher;
  */
 @WebServlet(name = "controleCategoriaServico", urlPatterns = {
     "/CadastrarCategoriaServico",
-    "/ListarCategoriaServico",
-    "/BuscarCategoriaServico",
-    "/DeletarCategoriaServico",
-    "/AlterarCategoriaServico",
     "/CategoriaServico"})
 public class ControleCategoriaServico extends HttpServlet {
 
@@ -51,17 +47,11 @@ public class ControleCategoriaServico extends HttpServlet {
                 acao_secundaria = null;
             }
 
-            if (uri.equals(request.getContextPath() + "/DeletarCategoriaServico")) {
-                acao = "Deletar";
-            } else if (uri.equals(request.getContextPath() + "/ListarCategoriaServico")) {
-                acao = "Listar";
-            } else if (uri.equals(request.getContextPath() + "/CadastrarCategoriaServico")) {
+            if (uri.equals(request.getContextPath() + "/CadastrarCategoriaServico")) {
                 acao = "Cadastrar";
             } else if (uri.equals(request.getContextPath() + "/CategoriaServico")) {
                 acao = "CategoriaServico";
                 acao = validarAcaoSecundaria(acao, acao_secundaria);
-            } else if (uri.equals(request.getContextPath() + "/BuscarCategoriaServico")) {
-                acao = "Buscar";
             } else {
                 response.sendRedirect("404.jsp");
             }

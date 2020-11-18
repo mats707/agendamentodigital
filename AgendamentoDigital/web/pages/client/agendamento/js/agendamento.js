@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     function carregarCategoriaServico() {
         $.ajax({
-            url: nameproject + '/api/CategoriaServico/Listar/', //lugar onde a servlet estÃ¡
+            url: nameproject + '/api/CategoriaServico/Listar/', //lugar onde a servlet está
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
@@ -295,19 +295,19 @@ function carregarServicoSelecionado(id) {
             if (e.readyState == 4 && e.status == 200) {
                 try { //Converte a resposta HTTP JSON em um objeto JavaScript
                     var Obj = eval("(" + e.responseText + ")");
+                    sweet(" Carregando serviços", "info", 3000);
                 } catch (err) { //
                     // Mostra Aviso
-                    alert("Algo de errado aconteceu!");
-                    alert(err);
+                    setTimeout(() => {  sweet(" Algo de errado aconteceu!", "error", 4000); }, 2000);
+                    setTimeout(() => {  sweet(" " + err, "error", 4000);}, 2000);
                 }
                 if (Obj != null) {
                     if (Obj.length > 0) {
-                        sweet();
                         for (var i = 0; i < Obj.length; i++) {
                             $("#listaServico").append("<option value='" + Obj[i].idServico + "'>" + Obj[i].nome + "</option>");
                         }
                         document.getElementById("groupListaServicos").style.display = "block";
-                        sweet();
+                        sweet(" Serviços carregado", "success", 3000);
 
                     } else {
                         document.getElementById("groupListaServicos").style.display = "none";
@@ -345,7 +345,7 @@ function exibeServico() {
                 if (Obj != null) {
                     document.getElementById("nome").value = Obj.nome;
                     document.getElementById("descricao").value = Obj.descricao;
-                    document.getElementById("valor").value = Obj.valor.toFixed(2).toString().replace(".", ",");
+                    document.getElementById("valor").value = "R$ " + Obj.valor.toFixed(2).toString().replace(".", ",");
                     document.getElementById("duracao").value = Obj.duracao.seconds / 60; //Converte os segundos para minutos
                     for (var i = 0; i < Obj.funcionarios.length; i++) {
                         $("#listaFuncionarios").append("<option value='" + Obj.funcionarios[i].idFuncionario + "'>" + Obj.funcionarios[i].nomePessoa + "</option>");
@@ -363,16 +363,16 @@ function exibeServico() {
 
 }
 
-function sweet() {
+function sweet(title, type, timer) {
     const Toast = swal.mixin({
         toast: true,
         position: 'center',
         showConfirmButton: false,
-        timer: 3000
+        timer: timer
     });
     Toast.fire({
-        type: 'info',
-        title: ' Carregando Servi\xE7o'
+        type: type,
+        title: ' ' + title
     });
 }
 

@@ -27,6 +27,8 @@
         <link rel="stylesheet" href="${site}/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
         <!-- Google Font: Source Sans Pro -->
         <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+        <!-- Google Font: Source Sans Pro -->
+        <link href="${site}/pages/client/css/home.css" rel="stylesheet" type="text/css"/>
     </head>
     <!--
     BODY TAG OPTIONS:
@@ -62,9 +64,9 @@
                     </div><!-- /.container-fluid -->
                 </div>
                 <!-- /.content-header -->
-                
 
-                </form>
+
+
                 <!-- Main content -->
                 <div class="content">
                     <div class="container-fluid">
@@ -75,6 +77,20 @@
                                     <a href="#" class="btn btn-tool btn-sm">
                                         <i class="fas fa-calendar"></i>
                                     </a>
+                                </div>
+                            </div>
+                            <div class="container-fluid border rounded">     
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select name="selectStatus" id="selectStatus" class="form-control select select-danger" data-dropdown-css-class="select2-danger" onchange="carregarAgendamentos(${cliente.idCliente})">
+                                                <option selected disabled value="AGUARDANDOATENDIMENTO">-- Selecione a situação --</option>
+                                                <option value="AGUARDANDOATENDIMENTO">Aguardando por atendimento</option>
+                                                <option value="FINALIZADO">Finalizado</option>
+                                                <option value="CANCELADO">Cancelado</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body p-0">
@@ -110,20 +126,11 @@
         <script charset="ISO-8859-1" src="${site}/pages/client/js/listar.js" type="text/javascript"></script>
 
         <script>
-            const Toast = Swal.mixin({
-                toast: true,
-                position: 'center',
-                showConfirmButton: false,
-                timer: 1000
-            });
-            Toast.fire({
-                type: '${funcaoStatus}',
-                title: ' ${funcaoMsg}'
-            });
-            includeHTMLNav("home", "");
-            var idCliente = '${cliente.idCliente}';
-            carregarMaisAgendado(idCliente);
-           
+                                                sweet(" ${funcaoMsg}", "${funcaoStatus}", 4000);
+                                                includeHTMLNav("home", "");
+                                                var idCliente = '${cliente.idCliente}';
+                                                carregarAgendamentos(idCliente)
+
         </script>
     </body>
 </html>

@@ -28,7 +28,7 @@ public class ListarAction implements ICommand {
 
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
 
-        request.setAttribute("pagina", "pages/admin/servicos/listar.jsp");
+        request.setAttribute("pagina", "/pages/admin/servicos/listar.jsp");
 
         ServicoDAO objServicoDao = new ServicoDAO();
 
@@ -41,7 +41,7 @@ public class ListarAction implements ICommand {
         for (Servico objServico : arr) {
             if (objServico.getIdServico() != null) {
                 for (Funcionario objFuncionario : objServico.getFuncionarios()) {
-                    objFuncionarioDao.listarCompletoId(objFuncionario);
+                    objFuncionarioDao.buscar(objFuncionario);
                 }
                 objCategoriaServicoDAO.buscarId(objServico.getCategoria());
             }

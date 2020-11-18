@@ -9,11 +9,10 @@ $(document).ready(function () {
     // Funcao para carregar os dados da consulta nos respectivos campos
     function carregarEmpresa() {
         $.ajax({
-            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet est√°
+            url: nameproject + '/api/Empresa/Menu/Encontrar', //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {
-                    console.log(e.responseText);
                     try { //Converte a resposta HTTP JSON em um objeto JavaScript
                         var Obj = eval("(" + e.responseText + ")");
 
@@ -24,9 +23,11 @@ $(document).ready(function () {
                     }
                     if (Obj != null) {
                         $("#nome").val(Obj.nome);
-                        $("#horaInicialTrabalho").val(Obj.horaInicialTrabalho);
-                        $("#horaFinalTrabalho").val(Obj.horaFinalTrabalho);
-                        $("#intervaloAgendamentoGeralServico").val(Obj.intervaloAgendamentoGeralServico);
+                        $("#timepickerAbertura").val(Obj.horaInicialTrabalho);
+                        $("#timepickerEncerramento").val(Obj.horaFinalTrabalho);
+                        //$("#intervaloAgendamentoGeralServico").val(Obj.intervaloAgendamentoGeralServico);
+                        $('#intervaloAgendamentoGeralServico').data('durationPicker').setValue(Obj.intervaloAgendamentoGeralServico * 60);
+                        $('#periodoMinimoCancelamento').data('durationPicker').setValue(Obj.periodoMinimoCancelamento * 60);
                         $("#diaSemanaTrabalho").val(Obj.diaSemanaTrabalho);
                         for (var i = 0; i < Obj.diaSemanaTrabalho.length; i++)
                         {
@@ -63,7 +64,7 @@ $(document).ready(function () {
                         for (var i = 0; i < Obj.telefone.length; i++)
                         {
                             console.log("Telefone:" + i);
-                            document.getElementById("groupTelefone").innerHTML += "<input id='telefone-" + i + "' value=" + Obj.telefone[i] + " name='telefone' data-inputmask=\'\"mask\": \"(99) 99999-9999\"\' data-mask>";
+                            document.getElementById("groupTelefone").innerHTML += "<input id='telefone-" + i + "' value=" + Obj.telefone[i] + " name='telefone' class='form-control col-3 mask' data-mask='telefone'>";
                             countTelefone++;
                             console.log(countTelefone);
                         }
@@ -73,13 +74,16 @@ $(document).ready(function () {
                         //timePicker
                         $("#timepickerAbertura").val(Obj.horaInicialTrabalho.split(':')[0] + ":" + Obj.horaInicialTrabalho.split(':')[1]);
                         $("#timepickerEncerramento").val(Obj.horaFinalTrabalho.split(':')[0] + ":" + Obj.horaFinalTrabalho.split(':')[1]);
+                    }
 
+                    for (var j = 0; j < countTelefone; j++) {
+                        $("#telefone-" + j).focusin();
+                        $("#telefone-" + j).focusout();
                     }
                     //document.getEmelmentById("nome").innerHTML = Obj.nome;
                 }
             }
         });
-
 
     }
 });

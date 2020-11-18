@@ -31,17 +31,28 @@ import util.ConectaBanco;
 
 public class EmpresaDAO implements IEmpresaDAO {
 
-    private static final String BUSCAR = "select e.id, e.nome, e.horainicialtrabalho, e.horafinaltrabalho, e.intervaloagendamentogeralservico, e.diasemanatrabalho, e.telefone,e.email from sistema.empresa e";
+    private static final String BUSCAR = "SELECT\n"
+            + "	id,\n"
+            + "	nome,\n"
+            + "	horainicialtrabalho,\n"
+            + "	horafinaltrabalho,\n"
+            + "	intervaloagendamentogeralservico,\n"
+            + "	periodominimocancelamento,\n"
+            + "	diasemanatrabalho,\n"
+            + "	telefone,\n"
+            + "	email\n"
+            + "from sistema.empresa;";
 
-    private static final String ALTERAR = "update sistema.empresa\n"
-            + "set nome=?,\n"
+    private static final String ATUALIZAR = "UPDATE sistema.empresa\n"
+            + "SET nome=?,\n"
             + "horainicialtrabalho=?::TIME,\n"
             + "horafinaltrabalho=?::TIME,\n"
             + "intervaloagendamentogeralservico=?::INTERVAL\n,"
+            + "periodominimocancelamento=?::INTERVAL\n,"
             + "diasemanatrabalho=?,\n"
             + "telefone=?,\n"
             + "email=?\n"
-            + "where id=?;";
+            + "WHERE id=?;";
     private Connection conexao;
 
     Date date = new Date();
@@ -70,15 +81,19 @@ public class EmpresaDAO implements IEmpresaDAO {
                 objEmpresa.setHoraInicialTrabalho(rs.getTime("horainicialtrabalho"));
                 objEmpresa.setHoraFinalTrabalho(rs.getTime("horafinaltrabalho"));
                 // get the hours, minutes and seconds value and add it to the duration
-                String[] tempo = rs.getString("intervaloagendamentogeralservico").split(":");
-                Duration duracao = Duration.ofHours(Integer.parseInt(tempo[0]));
-                duracao = duracao.plusMinutes(Integer.parseInt(tempo[1]));
-                duracao = duracao.plusSeconds(Integer.parseInt(tempo[2]));
-                objEmpresa.setIntervaloAgendamentoGeralServico(duracao);
+                String[] tempoIntervaloAgendamentoGeralServico = rs.getString("intervaloagendamentogeralservico").split(":");
+                Duration duracaoIntervaloAgendamentoGeralServico = Duration.ofHours(Integer.parseInt(tempoIntervaloAgendamentoGeralServico[0]));
+                duracaoIntervaloAgendamentoGeralServico = duracaoIntervaloAgendamentoGeralServico.plusMinutes(Integer.parseInt(tempoIntervaloAgendamentoGeralServico[1]));
+                duracaoIntervaloAgendamentoGeralServico = duracaoIntervaloAgendamentoGeralServico.plusSeconds(Integer.parseInt(tempoIntervaloAgendamentoGeralServico[2]));
+                objEmpresa.setIntervaloAgendamentoGeralServico(duracaoIntervaloAgendamentoGeralServico);
+
+                String[] tempoPeriodoMinimoCancelamento = rs.getString("periodominimocancelamento").split(":");
+                Duration duracaoPeriodoMinimoCancelamento = Duration.ofHours(Integer.parseInt(tempoPeriodoMinimoCancelamento[0]));
+                duracaoPeriodoMinimoCancelamento = duracaoPeriodoMinimoCancelamento.plusMinutes(Integer.parseInt(tempoPeriodoMinimoCancelamento[1]));
+                duracaoPeriodoMinimoCancelamento = duracaoPeriodoMinimoCancelamento.plusSeconds(Integer.parseInt(tempoPeriodoMinimoCancelamento[2]));
+                objEmpresa.setPeriodoMinimoCancelamento(duracaoPeriodoMinimoCancelamento);
 
                 objEmpresa.setEmail(rs.getString("email"));
-                //objEmpresa.setTelefone(rs.getLong("telefone"));
-                //objEmpresa.setDiasSemanaTrabalho((ArrayList<String>) rs.getArray("diaSemanaTrabalho"));
 
                 arrayDiaSemanaTrabalho = rs.getArray("diasemanatrabalho");
                 if (arrayDiaSemanaTrabalho != null) {
@@ -116,66 +131,65 @@ public class EmpresaDAO implements IEmpresaDAO {
     }
 
     @Override
-    public boolean alterar(Empresa objEmpresa) {
+    public String atualizar(Empresa objEmpresa) {
+
+        //Conexao
+        conexao = ConectaBanco.getConexao();
+
+        String sqlReturnCode = "0";
+        Array arrayDia = null;
+        Array arrayTelefone = null;
+
+        PreparedStatement pstmt = null;
         try {
-
-            //Conexao
-            conexao = ConectaBanco.getConexao();
-
             ArrayList<String> dias = new ArrayList<String>();
-            //conexao.createArrayOf("VARCHAR", new Object[]{"1", "2", "3"});
-
             for (Integer diasTrabalhados : objEmpresa.getDiaSemanaTrabalho()) {
                 dias.add(String.valueOf(diasTrabalhados));
             }
 
-            Array arrayDia = null;
-
             ArrayList<String> arrtelefones = new ArrayList<String>();
-            //conexao.createArrayOf("VARCHAR", new Object[]{"1", "2", "3"});
-
             for (Long telefone : objEmpresa.getTelefone()) {
                 arrtelefones.add(String.valueOf(telefone));
             }
-            Array arrayTelefone = null;
-            //cria comando SQL
-            PreparedStatement pstmt = conexao.prepareStatement(ALTERAR);
-
-            //Passa ID como parametro
+            pstmt = conexao.prepareStatement(ATUALIZAR);
             pstmt.setString(1, objEmpresa.getNome());
             pstmt.setTime(2, objEmpresa.getHoraInicialTrabalho());
             pstmt.setTime(3, objEmpresa.getHoraFinalTrabalho());
             pstmt.setString(4, objEmpresa.getIntervaloAgendamentoGeralServico().toString());
+            pstmt.setString(5, objEmpresa.getPeriodoMinimoCancelamento().toString());
             try {
                 arrayDia = conexao.createArrayOf("INTEGER", dias.toArray());
             } catch (SQLException ex) {
                 Logger.getLogger(EmpresaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-            pstmt.setArray(5, arrayDia);
+            pstmt.setArray(6, arrayDia);
             try {
                 arrayTelefone = conexao.createArrayOf("BIGINT", arrtelefones.toArray());
             } catch (SQLException ex) {
                 Logger.getLogger(EmpresaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-            pstmt.setArray(6, arrayTelefone);
-            pstmt.setString(7, objEmpresa.getEmail());
-            pstmt.setInt(8, objEmpresa.getIdEmpresa());
+            pstmt.setArray(7, arrayTelefone);
+            pstmt.setString(8, objEmpresa.getEmail());
+            pstmt.setInt(9, objEmpresa.getIdEmpresa());
 
-            //executa
             pstmt.executeUpdate();
-            return true;
+            return sqlReturnCode;
 
-        } catch (Exception ex) {
-            return false;
-
-        } finally {
-
-            try {
-                conexao.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(EmpresaDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException sqlErro) {
+            sqlReturnCode = sqlErro.getSQLState();
+            if (sqlReturnCode.equalsIgnoreCase("23505")) { //Significa que violou uma unique constraint
+                return sqlErro.getMessage().split("\"")[1];
+            } else {
+                return sqlReturnCode;
             }
-
+        } finally {
+            if (conexao != null) {
+                try {
+                    conexao.close();
+                } catch (SQLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
         }
     }
 };

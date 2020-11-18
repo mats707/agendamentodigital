@@ -20,19 +20,29 @@ public class BuscarEmpresaAction implements ICommand {
 
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute("pagina", "pages/admin/empresa/menuEmpresa.jsp");
-        
+        request.setAttribute("pagina", "/pages/admin/empresa/menuEmpresa.jsp");
 
         Empresa objEmpresa = new Empresa();
-
         EmpresaDAO empresaDAO = new EmpresaDAO();
 
         empresaDAO.buscar(objEmpresa);
-        
-        
+
         Gson objgson = new GsonBuilder().setPrettyPrinting().create();
-        
-        request.setAttribute("obj",objEmpresa);
+
+        String funcaoMsg = null;
+        String funcaoStatus = null;
+
+        funcaoMsg = (String) request.getAttribute("funcaoMsg");
+        funcaoStatus = (String) request.getAttribute("funcaoStatus");
+
+        if (funcaoMsg == null || funcaoStatus == null) {
+            funcaoMsg = "Carregando...";
+            funcaoStatus = "info";
+        }
+
+        request.setAttribute("obj", objEmpresa);
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
 
         return objgson.toJson(objEmpresa);
     }

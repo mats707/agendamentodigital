@@ -19,14 +19,22 @@ public interface IAgendamentoDAO {
     public String cadastrar(Agendamento agendamento);
 
     public ArrayList<Agendamento> listar();
-    
-    public  ArrayList<Map<String, String>> listarHorariosOcupados(Agendamento agendamento);
-    
+
+    public ArrayList<Map<String, String>> listarHorariosOcupados(Agendamento agendamento);
+
     public ArrayList<Agendamento> listarCliente(Agendamento agendamento);
-    
-    public Agendamento buscaCompleta(Agendamento agendamento);
+
+    public ArrayList<Agendamento> listarFuncionario(Agendamento agendamento);
 
     public String alterarAgendamento(Agendamento agendamento);
+
+    public String alterarStatus(Agendamento agendamento);
+
+    public Agendamento buscar(Agendamento agendamento);
+
+    public Agendamento verificarStatusCliente(Agendamento agendamento);
+
+    public Agendamento verificarStatusFuncionario(Agendamento agendamento);
 
     public boolean excluir(Agendamento agendamento);
 

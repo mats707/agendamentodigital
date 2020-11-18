@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import jdk.nashorn.internal.objects.NativeString;
 import modelos.PerfilDeAcesso;
 import modelos.Servico;
+import util.Util;
 import util.geraHash;
 
 /**
@@ -24,7 +25,7 @@ public class DeletarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "ListarServico");
+        request.setAttribute("pagina", "/Administrador/Servico/Listar");
 
         Integer id = Integer.parseInt(request.getParameter("idServicoDeleted"));
         String deletedNome = request.getParameter("deletedNome");
@@ -37,8 +38,8 @@ public class DeletarAction implements ICommand {
         if (id != null && deletedNome != null && deletedDescricao != null) {
             Servico servico = new Servico();
             servico.setIdServico(id);
-            servico.setNome(deletedNome);
-            servico.setDescricao(deletedDescricao);
+            servico.setNome(Util.stringToUTF8(deletedNome));
+            servico.setDescricao(Util.stringToUTF8(deletedDescricao));
 
             ServicoDAO servicoDAO = new ServicoDAO();
             Servico servicoSolicitado = servicoDAO.buscaCompleta(servico);
@@ -51,7 +52,7 @@ public class DeletarAction implements ICommand {
                     funcaoMsgOperation = "Deletado com sucesso!";
                     funcaoStatusOperation = "success";
                 } else if (sqlState.equalsIgnoreCase("ERROR: update or delete on table \"servico\" violates foreign key constraint \"fkservico\" on table \"agendamento\"")) {
-                    funcaoMsgOperation = "Você possui um agendamento com esse serviço! Delete o agendamento primeiro!";
+                    funcaoMsgOperation = "Você possui um agendamento com esse serviço!\\n Não é possível deletar!";
                     funcaoStatusOperation = "error";
                 } else {
                     funcaoMsgOperation = "Não foi possível deletar o serviço, tente novamente mais tarde!";

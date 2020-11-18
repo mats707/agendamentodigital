@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -75,7 +75,7 @@
                 <!-- Main content -->
                 <section class="content">
                     <div class="container-fluid">
-                        <form id="frmCadastrarServico" action="${site}/CadastrarServico" method="post">
+                        <form id="frmCadastrarServico" action="${site}/Administrador/Servico/Cadastrar" method="post">
                             <div class="row">
                                 <div class="col-md-6">
 
@@ -247,6 +247,9 @@
         <script src="${site}/plugins/sweetalert2/sweetalert2.js"></script>
         <!-- Toastr -->
         <script src="${site}/plugins/toastr/toastr.min.js"></script>
+
+        <!-- Mask Money -->
+        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
         <script>
             $(function () {
                 //Initialize Select2 Elements
@@ -277,18 +280,15 @@
             });
 
         </script>
-        <script src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
-        <script src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
-        
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/cadastrar.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarCategorias.js" type="text/javascript"></script>
+        <script charset="ISO-8859-1" src="${site}/pages/admin/servicos/js/listarFuncionarios.js" type="text/javascript"></script>
+
         <!-- PAGE PLUGINS -->
         <!-- jQuery Mapael -->
         <script src="${site}/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
         <script src="${site}/plugins/raphael/raphael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/jquery.mapael.min.js"></script>
         <script src="${site}/plugins/jquery-mapael/maps/usa_states.min.js"></script>
-
-        <!-- Mask Money -->
-        <script src="${site}/plugins/jquery-maskmoney/jquery.maskMoney.min.js" type="text/javascript"></script>
     </body>
 </html>

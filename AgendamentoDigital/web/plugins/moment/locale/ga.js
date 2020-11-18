@@ -10,16 +10,16 @@
 
 
     var months = [
-        'Eanáir', 'Feabhra', 'Márta', 'Aibreán', 'Bealtaine', 'Méitheamh', 'Iúil', 'Lúnasa', 'Meán Fómhair', 'Deaireadh Fómhair', 'Samhain', 'Nollaig'
+        'Ean�ir', 'Feabhra', 'M�rta', 'Aibre�n', 'Bealtaine', 'Méitheamh', 'Iúil', 'Lúnasa', 'Me�n Fómhair', 'Deaireadh Fómhair', 'Samhain', 'Nollaig'
     ];
 
-    var monthsShort = ['Eaná', 'Feab', 'Márt', 'Aibr', 'Beal', 'Méit', 'Iúil', 'Lúna', 'Meán', 'Deai', 'Samh', 'Noll'];
+    var monthsShort = ['Ean�', 'Feab', 'M�rt', 'Aibr', 'Beal', 'Méit', 'Iúil', 'Lúna', 'Me�n', 'Deai', 'Samh', 'Noll'];
 
-    var weekdays = ['Dé Domhnaigh', 'Dé Luain', 'Dé Máirt', 'Dé Céadaoin', 'Déardaoin', 'Dé hAoine', 'Dé Satharn'];
+    var weekdays = ['Dé Domhnaigh', 'Dé Luain', 'Dé M�irt', 'Dé Céadaoin', 'Déardaoin', 'Dé hAoine', 'Dé Satharn'];
 
-    var weekdaysShort = ['Dom', 'Lua', 'Mái', 'Céa', 'Déa', 'hAo', 'Sat'];
+    var weekdaysShort = ['Dom', 'Lua', 'M�i', 'Céa', 'Déa', 'hAo', 'Sat'];
 
-    var weekdaysMin = ['Do', 'Lu', 'Má', 'Ce', 'Dé', 'hA', 'Sa'];
+    var weekdaysMin = ['Do', 'Lu', 'M�', 'Ce', 'Dé', 'hA', 'Sa'];
 
     var ga = moment.defineLocale('ga', {
         months: months,
@@ -38,7 +38,7 @@
         },
         calendar: {
             sameDay: '[Inniu ag] LT',
-            nextDay: '[Amárach ag] LT',
+            nextDay: '[Am�rach ag] LT',
             nextWeek: 'dddd [ag] LT',
             lastDay: '[Inné aig] LT',
             lastWeek: 'dddd [seo caite] [ag] LT',
@@ -53,8 +53,8 @@
             mm: '%d nóiméad',
             h: 'uair an chloig',
             hh: '%d uair an chloig',
-            d: 'lá',
-            dd: '%d lá',
+            d: 'l�',
+            dd: '%d l�',
             M: 'mí',
             MM: '%d mí',
             y: 'bliain',

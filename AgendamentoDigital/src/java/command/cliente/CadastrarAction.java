@@ -16,7 +16,9 @@ import modelos.Cliente;
 import builder.cliente.ClienteBuilder;
 import dao.PessoaDAO;
 import dao.UsuarioDAO;
+import javax.servlet.http.HttpSession;
 import modelos.Pessoa;
+import modelos.Usuario;
 import util.Util;
 import util.geraHash;
 
@@ -36,8 +38,15 @@ public class CadastrarAction implements ICommand {
     @Override
     public String executar(HttpServletRequest request, HttpServletResponse response) {
 
-        request.setAttribute("pagina", "auth/login.jsp");
-
+        //Verifica Usuario logado
+        //cria uma sessao para resgatar o usuario
+        HttpSession sessaoUsuario = request.getSession();
+        Usuario usuarioAutenticado = (Usuario) sessaoUsuario.getAttribute("usuarioAutenticado");
+        if (usuarioAutenticado != null && usuarioAutenticado.getPerfil().equals(PerfilDeAcesso.FUNCIONARIOCOMUM)) {
+            request.setAttribute("pagina", "/pages/funcionario/clientes/cadastrar.jsp");
+        } else {
+            request.setAttribute("pagina", "/auth/login.jsp");
+        }
         nome = request.getParameter("inputName");
         dataNascimento = request.getParameter("inputDataNasc");
         celular = request.getParameter("inputCelular");
@@ -45,16 +54,19 @@ public class CadastrarAction implements ICommand {
         password = request.getParameter("inputPassword");
         chkpassword = request.getParameter("inputChkPassword");
 
-        if (Util.isInteger(celular) && Util.isValidEmailAddress(email)) {
+        String funcaoMsg = "";
+        String funcaoStatus = "";
+
+        if (Util.isInteger(celular) && Util.isValidEmailAddress(email) && nome != null && dataNascimento != null) {
             Cliente cliente = ClienteBuilder.novoClienteBuilder().comNome(nome).nascidoEm(dataNascimento).comUsuario(email, password, celular).constroi();
 
-            if (geraHash.checkPassword(chkpassword,cliente.getUsuario().getSenha())) {
+            if (geraHash.checkPassword(chkpassword, cliente.getUsuario().getSenha())) {
 
                 //Realiza o cadastro do usuário com passagem por referência - Na função será atribuído ao objeto o ID que foi gerado após o cadastro
                 UsuarioDAO usuarioDao = new UsuarioDAO();
                 String sqlStateUsuario = usuarioDao.cadastraNovoUsuario(cliente.getUsuario());
 
-                if (sqlStateUsuario == "0") {
+                if ("0".equals(sqlStateUsuario)) {
 
                     //Instância Pessoa através da classe Cliente, utilizando passagem por ref. será atribuído ao objeto o ID que foi gerado após o cadastro
                     Pessoa objPessoa = new Pessoa();
@@ -65,45 +77,49 @@ public class CadastrarAction implements ICommand {
                     PessoaDAO pessoaDao = new PessoaDAO();
                     String sqlStatePessoa = pessoaDao.cadastrar(objPessoa);
 
-                    if (sqlStatePessoa == "0") {
+                    if ("0".equals(sqlStatePessoa)) {
                         //Atribui o ID da Pessoa (que possuí Usuário) no objeto Cliente
                         //Apesar de ser herança e não ter o campo pessoa dentro de cliente, no banco de dados teremos o campo 'pessoa'
                         cliente.setIdPessoa(objPessoa.getIdPessoa());
 
-                        ClienteDAO cienteDao = new ClienteDAO();
+                        ClienteDAO clienteDao = new ClienteDAO();
 
-                        String sqlStateCliente = cienteDao.cadastrar(cliente);
+                        String sqlStateCliente = clienteDao.cadastrar(cliente);
 
-                        if (sqlStateCliente == "0") {
-                            request.setAttribute("colorMsg", "success");
-                            return "Cadastrado com sucesso!";
+                        if ("0".equals(sqlStateCliente)) {
+                            funcaoStatus = "success";
+                            funcaoMsg = "Cadastrado com sucesso!";
                         } else {
-                            request.setAttribute("colorMsg", "danger");
-                            return "Cliente inválido! Entre em contato com o suporte.";
+                            pessoaDao.deletar(objPessoa);
+                            usuarioDao.deletar(cliente.getUsuario());
+                            funcaoStatus = "error";
+                            funcaoMsg = "Cliente inválido! Entre em contato com o suporte.";
                         }
                     } else {
 
                         usuarioDao.deletar(cliente.getUsuario());
 
-                        request.setAttribute("colorMsg", "danger");
-                        return "Cliente inválido! Entre em contato com o suporte.";
+                        funcaoStatus = "error";
+                        funcaoMsg = "Cliente inválido! Entre em contato com o suporte.";
                     }
                 } else if ("23505".equals(sqlStateUsuario)) {
-                    request.setAttribute("colorMsg", "danger");
-                    return "Tente outro email ou celular!";
+                    funcaoStatus = "error";
+                    funcaoMsg = "Tente outro email ou celular!";
                 } else {
-                    request.setAttribute("colorMsg", "danger");
-                    return "Não foi possível cadastrar, tente novamente ou entre em contato com o suporte!";
+                    funcaoStatus = "error";
+                    funcaoMsg = "Não foi possível cadastrar, tente novamente ou entre em contato com o suporte!";
                 }
 
             } else {
-                request.setAttribute("colorMsg", "warning");
-                return "Senhas diferentes!";
+                funcaoStatus = "warning";
+                funcaoMsg = "Senhas diferentes!";
             }
         } else {
-            request.setAttribute("colorMsg", "");
-            return "";
+            funcaoStatus = "";
+            funcaoMsg = "";
         }
-
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
+        return funcaoMsg;
     }
 }

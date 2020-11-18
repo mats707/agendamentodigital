@@ -32,9 +32,9 @@
         monthsParse: monthsParse,
         longMonthsParse: monthsParse,
         shortMonthsParse: monthsParse,
-        weekdays : 'domingo_lunes_martes_miércoles_jueves_viernes_sábado'.split('_'),
-        weekdaysShort : 'dom._lun._mar._mié._jue._vie._sáb.'.split('_'),
-        weekdaysMin : 'do_lu_ma_mi_ju_vi_sá'.split('_'),
+        weekdays : 'domingo_lunes_martes_miércoles_jueves_viernes_s�bado'.split('_'),
+        weekdaysShort : 'dom._lun._mar._mié._jue._vie._s�b.'.split('_'),
+        weekdaysMin : 'do_lu_ma_mi_ju_vi_s�'.split('_'),
         weekdaysParseExact : true,
         longDateFormat : {
             LT : 'h:mm A',

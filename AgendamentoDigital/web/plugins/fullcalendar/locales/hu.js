@@ -21,7 +21,7 @@
         },
         weekLabel: "Hét",
         allDayText: "Egész nap",
-        eventLimitText: "további",
+        eventLimitText: "tov�bbi",
         noEventsMessage: "Nincs megjeleníthető esemény"
     };
 

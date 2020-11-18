@@ -58,7 +58,7 @@ public class restServico {
 
         for (Servico objServico : arr) {
             for (Funcionario objFuncionario : objServico.getFuncionarios()) {
-                objFuncionarioDao.listarCompletoId(objFuncionario);
+                objFuncionarioDao.buscar(objFuncionario);
             }
             objCategoriaServicoDAO.buscarId(objServico.getCategoria());
         }
@@ -84,7 +84,7 @@ public class restServico {
 
         if (objServico.getIdServico() != null) {
             for (Funcionario objFuncionario : objServico.getFuncionarios()) {
-                objFuncionarioDao.listarCompletoId(objFuncionario);
+                objFuncionarioDao.buscar(objFuncionario);
             }
             objCategoriaServicoDAO.buscarId(objServico.getCategoria());
         }
@@ -111,7 +111,7 @@ public class restServico {
 
         for (Servico objServico : arr) {
             for (Funcionario objFuncionario : objServico.getFuncionarios()) {
-                objFuncionarioDao.listarCompletoId(objFuncionario);
+                objFuncionarioDao.buscar(objFuncionario);
             }
         }
 

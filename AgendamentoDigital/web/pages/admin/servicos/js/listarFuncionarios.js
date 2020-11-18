@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     function carregarFuncionario() {
         $.ajax({
-            url: nameproject + '/api/Funcionario/ListarCompleto/', //lugar onde a servlet est√°
+            url: nameproject + '/api/Funcionario/ListarCompleto/', //lugar onde a servlet est·
             type: "GET",
             complete: function (e, xhr, result) {
                 if (e.readyState == 4 && e.status == 200) {

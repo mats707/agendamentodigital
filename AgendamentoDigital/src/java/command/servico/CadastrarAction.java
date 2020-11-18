@@ -5,11 +5,13 @@
  */
 package command.servico;
 
+import api.restEmpresa;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.ServicoDAO;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,6 +25,8 @@ import modelos.CategoriaServico;
 import modelos.Funcionario;
 import modelos.Servico;
 import java.time.Duration;
+import modelos.Empresa;
+import util.Util;
 
 /**
  *
@@ -31,14 +35,16 @@ import java.time.Duration;
 public class CadastrarAction implements ICommand {
 
     @Override
-    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String executar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException, ClassNotFoundException {
 
         ServicoDAO servicoDAO = new ServicoDAO();
+        restEmpresa apiEmpresa = new restEmpresa();
+        Empresa objEmpresa = apiEmpresa.buscar();
 
-        request.setAttribute("pagina", "pages/admin/servicos/cadastrar.jsp");
+        request.setAttribute("pagina", "/pages/admin/servicos/cadastrar.jsp");
 
-        String nome = request.getParameter("nome");
-        String descricao = request.getParameter("descricao");
+        String nome = Util.stringToUTF8(request.getParameter("nome"));
+        String descricao = Util.stringToUTF8(request.getParameter("descricao"));
         String categoriaFinal = request.getParameter("categoriaFinal");
         String valor = request.getParameter("valor");
         String duracao = request.getParameter("duracao");
@@ -55,8 +61,25 @@ public class CadastrarAction implements ICommand {
         if (nome != null && descricao != null && categoriaFinal != null
                 && valor != null && duracao != null && funcionariosString != null) {
 
+            Long intervaloAgendamentoGeralServico = objEmpresa.getIntervaloAgendamentoGeralServico().toMinutes();
+            Long duracaoLong = Long.parseLong(duracao);
+
+            if (duracaoLong < intervaloAgendamentoGeralServico) {
+                funcaoMsg = "Duração inválida!\\nA empresa permite agendamentos com " + intervaloAgendamentoGeralServico.toString() + " minutos no mínimo!";
+                funcaoStatus = "error";
+                request.setAttribute("funcaoMsg", funcaoMsg);
+                request.setAttribute("funcaoStatus", funcaoStatus);
+                return funcaoMsg;
+            } else if (duracaoLong % intervaloAgendamentoGeralServico != 0) {
+                funcaoMsg = "Duração inválida!\\nA empresa permite duração a cada " + intervaloAgendamentoGeralServico.toString() + " minutos!";
+                funcaoStatus = "error";
+                request.setAttribute("funcaoMsg", funcaoMsg);
+                request.setAttribute("funcaoStatus", funcaoStatus);
+                return funcaoMsg;
+            }
+
             //Ajustes no formato dos campos
-            valor = valor.replace(",", ".");
+            valor = valor.replace(".", "").replace(",", ".");
             Duration tempo = Duration.ofHours(Integer.parseInt("00"));
             tempo = tempo.plusMinutes(Integer.parseInt(duracao));
             tempo = tempo.plusSeconds(Integer.parseInt("00"));
@@ -94,6 +117,8 @@ public class CadastrarAction implements ICommand {
             request.setAttribute("funcaoStatus", funcaoStatus);
             return funcaoMsg;
         }
+        request.setAttribute("funcaoMsg", funcaoMsg);
+        request.setAttribute("funcaoStatus", funcaoStatus);
         return funcaoMsg;
     }
 }

@@ -8,6 +8,7 @@ package dao.interfaces;
 import java.util.ArrayList;
 import modelos.Agendamento;
 import modelos.RelatorioServico;
+import modelos.StatusAgendamento;
 
 /**
  *
@@ -15,12 +16,27 @@ import modelos.RelatorioServico;
  */
 public interface IRelatoriosDAO {
 
-    public ArrayList<RelatorioServico> listarMaisAgendado();
+    public ArrayList<RelatorioServico> listarAgendamentos();
 
-    public ArrayList<RelatorioServico> listarMaisAgendadoPeriodo(int mes,int ano);
-    
-    public ArrayList<RelatorioServico> listarMaisTrabalhado();
+    public ArrayList<RelatorioServico> listarAgendamentosPeriodo(int mes, int ano);
 
-    public ArrayList<RelatorioServico> listarMaisTrabalhadoPeriodo(int mes,int ano);
+    public ArrayList<RelatorioServico> listarAgendamentosPeriodoStatus(int mes, int ano, StatusAgendamento status);
 
+    public ArrayList<RelatorioServico> listarAgendamentosStatus(StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarFuncionarios();
+
+    public ArrayList<RelatorioServico> listarFuncionariosPeriodo(int mes, int ano);
+
+    public ArrayList<RelatorioServico> listarFuncionariosPeriodoStatus(int mes, int ano, StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarFuncionariosStatus(StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarClientes();
+
+    public ArrayList<RelatorioServico> listarClientesPeriodo(int mes, int ano);
+
+    public ArrayList<RelatorioServico> listarClientesPeriodoStatus(int mes, int ano, StatusAgendamento status);
+
+    public ArrayList<RelatorioServico> listarClientesStatus(StatusAgendamento status);
 }

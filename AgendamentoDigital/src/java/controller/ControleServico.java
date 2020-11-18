@@ -20,11 +20,11 @@ import javax.servlet.RequestDispatcher;
  * @author alunocmc
  */
 @WebServlet(name = "controleServico", urlPatterns = {
-    "/CadastrarServico",
-    "/ListarServico",
-    "/BuscarServico",
-    "/DeletarServico",
-    "/AlterarServico"})
+    "/Administrador/Servico/Cadastrar",
+    "/Administrador/Servico/Listar",
+    "/Administrador/Servico/Buscar",
+    "/Administrador/Servico/Deletar",
+    "/Administrador/Servico/Alterar"})
 public class ControleServico extends HttpServlet {
 
     /**
@@ -43,16 +43,14 @@ public class ControleServico extends HttpServlet {
             String uri = request.getRequestURI();
             String acao = "";
 
-            if (uri.equals(request.getContextPath() + "/DeletarServico")) {
+            if (uri.equals(request.getContextPath() + "/Administrador/Servico/Deletar")) {
                 acao = "Deletar";
-            } else if (uri.equals(request.getContextPath() + "/ListarServico")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/Servico/Listar")) {
                 acao = "Listar";
-            } else if (uri.equals(request.getContextPath() + "/CadastrarServico")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/Servico/Cadastrar")) {
                 acao = "Cadastrar";
-            } else if (uri.equals(request.getContextPath() + "/AlterarServico")) {
+            } else if (uri.equals(request.getContextPath() + "/Administrador/Servico/Alterar")) {
                 acao = "Alterar";
-            } else if (uri.equals(request.getContextPath() + "/BuscarServico")) {
-                acao = "Buscar";
             } else {
                 response.sendRedirect("404.jsp");
             }

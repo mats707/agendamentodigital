@@ -23,7 +23,12 @@ import javax.servlet.RequestDispatcher;
     "/CadastrarUsuario",
     "/ListarUsuario",
     "/BuscarUsuario",
-    "/DeletarUsuario",
+    "/Usuario/Cliente/Alterar",
+    "/Usuario/Cliente/Desativar",
+    "/Usuario/Cliente/Listar",
+    "/Usuario/Funcionario/Alterar",
+    "/Usuario/Funcionario/Desativar",
+    "/Usuario/Funcionario/Listar",
     "/IniciarEdicaoUsuario",
     "/AlterarUsuario"})
 public class ControleUsuario extends HttpServlet {
@@ -44,18 +49,24 @@ public class ControleUsuario extends HttpServlet {
             String uri = request.getRequestURI();
             String acao = "";
 
-            if (uri.equals(request.getContextPath() + "/DeletarUsuario")) {
-                acao = "Deletar";
-            } else if (uri.equals(request.getContextPath() + "/ListarUsuario")) {
-                acao = "Listar";
+            if (uri.equals(request.getContextPath() + "/Usuario/Cliente/Alterar")) {
+                acao = "ClienteAlterar";
+            } else if (uri.equals(request.getContextPath() + "/Usuario/Cliente/Desativar")) {
+                acao = "ClienteDesativar";
+            } else if (uri.equals(request.getContextPath() + "/Usuario/Cliente/Listar")) {
+                acao = "ClienteListar";
+            } else if (uri.equals(request.getContextPath() + "/Usuario/Funcionario/Alterar")) {
+                acao = "FuncionarioAlterar";
+            } else if (uri.equals(request.getContextPath() + "/Usuario/Funcionario/Desativar")) {
+                acao = "FuncionarioDesativar";
+            } else if (uri.equals(request.getContextPath() + "/Usuario/Funcionario/Listar")) {
+                acao = "FuncionarioListar";
             } else if (uri.equals(request.getContextPath() + "/IniciarEdicaoUsuario")) {
                 acao = "IniciarEdicao";
             } else if (uri.equals(request.getContextPath() + "/CadastrarUsuario")) {
                 acao = "Cadastrar";
             } else if (uri.equals(request.getContextPath() + "/AlterarUsuario")) {
                 acao = "Alterar";
-            } else if (uri.equals(request.getContextPath() + "/BuscarUsuario")) {
-                acao = "Buscar";
             } else {
                 response.sendRedirect("404.jsp");
             }
@@ -77,7 +88,7 @@ public class ControleUsuario extends HttpServlet {
             rd.forward(request, response);
 
         } catch (Exception e) {
-            RequestDispatcher rd = request.getRequestDispatcher("erro.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/erro.jsp");
             request.setAttribute("erro", e);
             rd.forward(request, response);
         }

@@ -1,7 +1,7 @@
 var objCategoria;
 function buscarCategoriaServico(_callback, idCategoria) {
     $.ajax({
-        url: 'api/CategoriaServico/Buscar/' + idCategoria, //lugar onde a servlet est√°
+        url: 'api/CategoriaServico/Buscar/' + idCategoria, //lugar onde a servlet est·
         type: "GET",
         complete: function (e, xhr, result) {
             console.log("Ajax");

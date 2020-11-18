@@ -13,9 +13,9 @@
     var tzl = moment.defineLocale('tzl', {
         months : 'Januar_Fevraglh_Març_Avrïu_Mai_Gün_Julia_Guscht_Setemvar_Listopäts_Noemvar_Zecemvar'.split('_'),
         monthsShort : 'Jan_Fev_Mar_Avr_Mai_Gün_Jul_Gus_Set_Lis_Noe_Zec'.split('_'),
-        weekdays : 'Súladi_Lúneçi_Maitzi_Márcuri_Xhúadi_Viénerçi_Sáturi'.split('_'),
-        weekdaysShort : 'Súl_Lún_Mai_Már_Xhú_Vié_Sát'.split('_'),
-        weekdaysMin : 'Sú_Lú_Ma_Má_Xh_Vi_Sá'.split('_'),
+        weekdays : 'Súladi_Lúneçi_Maitzi_M�rcuri_Xhúadi_Viénerçi_S�turi'.split('_'),
+        weekdaysShort : 'Súl_Lún_Mai_M�r_Xhú_Vié_S�t'.split('_'),
+        weekdaysMin : 'Sú_Lú_Ma_M�_Xh_Vi_S�'.split('_'),
         longDateFormat : {
             LT : 'HH.mm',
             LTS : 'HH.mm.ss',
