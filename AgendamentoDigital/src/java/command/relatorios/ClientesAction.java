@@ -48,6 +48,7 @@ public class ClientesAction implements ICommand{
 
         ArrayList<RelatorioServico> arr = new ArrayList<RelatorioServico>();
         arr = objRelatorioDAO.listarClientes();
+        //Se retornar erro em período, exibe mensagem do erro, atributo
         if (request.getAttribute("funcaoMsg") != null) {
             funcaoMsg = request.getAttribute("funcaoMsg").toString();
             funcaoStatus = request.getAttribute("funcaoStatus").toString();

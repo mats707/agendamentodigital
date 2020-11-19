@@ -391,7 +391,7 @@ public class RelatoriosDAO implements IRelatoriosDAO {
             while (rs.next()) {
                 RelatorioServico novoRelatorio = new RelatorioServico();
 
-                novoRelatorio.setNomeFuncionario(rs.getString("cliente"));
+                novoRelatorio.setNomeCliente(rs.getString("cliente"));
                 novoRelatorio.setCount(Integer.parseInt(rs.getString("count")));
 
                 listaAgendamentos.add(novoRelatorio);
